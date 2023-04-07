@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HEAL.EquationSearch", "EquationSearch\HEAL.EquationSearch.csproj", "{C1D37BB7-1C05-40B5-B03D-4CB1C264D19B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HEAL.EquationSearch", "HEAL.EquationSearch\HEAL.EquationSearch.csproj", "{C1D37BB7-1C05-40B5-B03D-4CB1C264D19B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HEAL.NativeInterpreter", "HEAL.NativeInterpreter\HEAL.NativeInterpreter.csproj", "{17412D88-A28C-4168-977C-4081962EBB1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HEAL.EquationSearch.Test", "HEAL.EquationSearch.Test\HEAL.EquationSearch.Test.csproj", "{AB274265-B676-4F73-8C1D-536E084C1343}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HEAL.EquationSearch.Test", "HEAL.EquationSearch.Test\HEAL.EquationSearch.Test.csproj", "{AB274265-B676-4F73-8C1D-536E084C1343}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

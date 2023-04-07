@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EquationSearch\HEAL.EquationSearch.csproj" />
+    <ProjectReference Include="..\HEAL.EquationSearch\HEAL.EquationSearch.csproj" />
   </ItemGroup>
 
 </Project>
