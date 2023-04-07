@@ -41,6 +41,9 @@ Run the unit tests with
 dotnet test
 ```
 
+## Native interpreter
+The repository includes a binary of a native library (for Windows and Ubuntu 20.04) that is used for automatic differentiation and parameter optimization for efficiency. The C++ code for the native interpreter is not published yet.
+
 ## Citation
 
 This algorithm is based on [Kammerer et al, 2023](https://link.springer.com/chapter/10.1007/978-3-030-39958-0_5) ([preprint](https://arxiv.org/abs/2109.13895)) with several improvements developed after the publication.
