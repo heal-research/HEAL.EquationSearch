@@ -10,6 +10,83 @@ namespace HEAL.EquationSearch.Test {
       System.Globalization.CultureInfo.DefaultThreadCurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
     }
 
+
+    [DataTestMethod]
+    [DataRow(5, 1)] // p * x + p 
+    [DataRow(7, 2)] // p * x * x + p
+
+    // p * x + p * x + p // should be prevented because of distributivity 
+    // p * x * x * x + p
+    [DataRow(9, 3)]
+
+    // p * x + p * x * x + p 
+    // p * x * x * x * x + p
+    [DataRow(11, 5)]
+
+    public void OneDimensionalPolynomial(int maxLength, int expectedEvaluations) {
+      var rand = new Random(1234);
+      var x = Util.GenerateRandom(rand, 100, 1);
+      var y = Util.GenerateRandom(rand, 100);
+
+      var varNames = new string[] { "x" };
+
+      var grammar = new Grammar(varNames);
+      grammar.UsePolynomialRules();
+      var data = new Data(varNames, x, y);
+      var evaluator = new Evaluator();
+      var control = SearchControl<State, MinimizeDouble>.Start(new State(data, maxLength, grammar, evaluator))
+        .BreadthFirst();
+      Console.WriteLine($"Visited nodes: {control.VisitedNodes} evaluations: {evaluator.OptimizedExpressions}");
+      Assert.AreEqual(expectedEvaluations, evaluator.OptimizedExpressions); // 
+    }
+
+    [DataTestMethod]
+    [DataRow(5, 2)] // p (x|y) * p + 
+
+    // 7 p * x * x + p
+    // 7 p * x * y + p
+    // 7 p * y * y + p
+    [DataRow(7, 5)]
+
+    // p * x + p * x + p // should be prevented
+    // p * x + p * y + p 
+    // p * y + p * y + p // should be prevented
+    // p * x * x * x + p 
+    // p * x * x * y + p
+    // p * x * y * y + p
+    // p * y * y * y + p
+    [DataRow(9, 10)]
+
+    // p * x + p * x * x + p
+    // p * x + p * x * y + p
+    // p * x + p * y * y + p
+    // p * y + p * x * x + p 
+    // p * y + p * x * y + p
+    // p * y + p * y * y + p 
+    // p * x * x * x * x + p
+    // p * x * x * x * y + p
+    // p * x * x * y * y + p
+    // p * x * y * y * y + p
+    // p * y * y * y * y + p
+    [DataRow(11, 21)]
+
+
+    public void TwoDimensionalPolynomial(int maxLength, int expectedEvaluations) {
+      var rand = new Random(1234);
+      var x = Util.GenerateRandom(rand, 100, 2);
+      var y = Util.GenerateRandom(rand, 100);
+
+      var varNames = new string[] { "x", "y" };
+
+      var grammar = new Grammar(varNames); grammar.UsePolynomialRules();
+      var data = new Data(varNames, x, y);
+      var evaluator = new Evaluator();
+      var control = SearchControl<State, MinimizeDouble>.Start(new State(data, maxLength, grammar, evaluator))
+        .BreadthFirst();
+      Console.WriteLine($"Visited nodes: {control.VisitedNodes} evaluations: {evaluator.OptimizedExpressions}");
+      Assert.AreEqual(expectedEvaluations, evaluator.OptimizedExpressions); // 
+    }
+
     [DataTestMethod]
     [DataRow(1, 0)] // an expression that only has an intercept is not evaluated
     [DataRow(2, 0)] 
