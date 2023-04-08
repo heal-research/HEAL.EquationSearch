@@ -61,7 +61,7 @@ namespace HEAL.EquationSearch {
     }
 
     public class Expr {
-      private Expression expr;
+      private readonly Expression expr;
       public IEnumerable<Term> Terms { get; }
       /// <summary>
       /// Indexes of all term coefficients + the intercept

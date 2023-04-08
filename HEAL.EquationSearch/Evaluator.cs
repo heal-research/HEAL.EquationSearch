@@ -3,10 +3,10 @@ using System.Runtime.InteropServices;
 
 namespace HEAL.EquationSearch {
   // TODO: non-static
-  internal static class Evaluator {
-    public static long OptimizedExpressions;
+  internal class Evaluator {
+    public long OptimizedExpressions;
     // TODO: make iterations configurable
-    internal static double OptimizeAndEvaluate(Expression expr, Data data, int iterations = 10) {
+    internal double OptimizeAndEvaluate(Expression expr, Data data, int iterations = 10) {
       Interlocked.Increment(ref OptimizedExpressions);
 
       // Semantics.IndexOfTerms(expr, out var termRanges, out var coeffIdx);
@@ -16,9 +16,6 @@ namespace HEAL.EquationSearch {
 
       // compile all terms individually
       var code = CompileTerms(expr, terms, data, out var termIdx, out var paramIdx);
-
-      // initialize nonlinear parameters randomly
-      InitRandom(code, paramIdx);
 
       var result = new double[data.Rows];
 
@@ -48,7 +45,7 @@ namespace HEAL.EquationSearch {
 
 #if DEBUG
         // double check result
-        var evalMSE = Evaluate(expr, data);
+        var evalMSE = CalculateMSE(data.Target, Evaluate(expr, data));
         var relAbsErr = Math.Abs((MSE - evalMSE) / MSE);
         // notify user if there is an error larger than 0.1%
         if (relAbsErr > 1e-3)
@@ -61,15 +58,16 @@ namespace HEAL.EquationSearch {
       return MSE;
     }
 
-    // initial values for parameters
-    private static void InitRandom(NativeInstruction[] code, List<(int codePos, int exprPos)> paramIdx) {
-      foreach (var (codepos, _) in paramIdx) {
-        code[codepos].Coeff = Random.Shared.NextDouble() * 2 - 1; // uniform(-1,1)
-      }
+    internal double[] Evaluate(Expression expression, Data data) {
+      var semExpr = new Semantics.Term(expression, Semantics.GetLengths(expression), 0, expression.Length - 1); // treat the whole expression as a single term
+      var code = CompileTerms(expression, new[] { semExpr }, data, out var _, out var _);
+      var result = new double[data.Rows];
+      NativeWrapper.GetValues(code, data.AllRowIdx, result);
+      return result;
     }
 
     // TODO: can be removed (only used in State to handle the special case of a constant expression)
-    internal static double Variance(double[] y) {
+    internal double Variance(double[] y) {
       var ym = y.Average();
       var variance = 0.0;
       for (int i = 0; i < y.Length; i++) {
@@ -81,22 +79,17 @@ namespace HEAL.EquationSearch {
 
 
     // TODO: for debugging only
-    internal static double Evaluate(Expression expression, Data data) {
-      var semExpr = new Semantics.Term(expression, Semantics.GetLengths(expression), 0, expression.Length - 1); // treat the whole expression as a single term
-      var code = CompileTerms(expression, new[] { semExpr }, data, out var _, out var _);
-      var result = new double[data.Rows];
-      NativeWrapper.GetValues(code, data.AllRowIdx, result);
-
+    private double CalculateMSE(double[] target, double[] pred) {
       var mse = 0.0;
-      for (int i = 0; i < result.Length; i++) {
-        var res = data.Target[i] - result[i];
+      for (int i = 0; i < target.Length; i++) {
+        var res = target[i] - pred[i];
         mse += res * res;
       }
-      mse /= data.Rows;
+      mse /= target.Length;
       return mse;
     }
 
-    public static NativeInstruction[] CompileTerms(Expression expr, IEnumerable<Semantics.Term> terms, Data data,
+    private NativeInstruction[] CompileTerms(Expression expr, IEnumerable<Semantics.Term> terms, Data data,
       out List<int> termIdx, out List<(int codePos, int exprPos)> paramSyIdx) {
 
       if (cachedDataHandles == null || cachedData != data) {
@@ -120,7 +113,7 @@ namespace HEAL.EquationSearch {
             code[codeIdx].Coeff = paramSy.Value;
             code[codeIdx].Optimize = 1;
             paramSyIdx.Add((codePos: codeIdx, exprPos: exprIdx));
-          } else if(curSy is Grammar.ConstantSymbol constSy) {
+          } else if (curSy is Grammar.ConstantSymbol constSy) {
             code[codeIdx].Coeff = constSy.Value;
           } else {
             // for all other symbols update the code length
@@ -139,7 +132,7 @@ namespace HEAL.EquationSearch {
     }
 
 
-    private static int SymbolToOpCode(Grammar grammar, Grammar.Symbol symbol) {
+    private int SymbolToOpCode(Grammar grammar, Grammar.Symbol symbol) {
       if (symbol == grammar.Plus) {
         return (int)OpCode.Add;
       } else if (symbol == grammar.Times) {
@@ -162,11 +155,11 @@ namespace HEAL.EquationSearch {
     }
 
     [ThreadStatic]
-    private static Data? cachedData;
+    private Data? cachedData;
     [ThreadStatic]
-    private static Dictionary<string, GCHandle>? cachedDataHandles;
+    private Dictionary<string, GCHandle>? cachedDataHandles;
 
-    private static void InitCache(Data data) {
+    private void InitCache(Data data) {
       cachedData = data;
       // cache new data (but free old data first)
       if (cachedDataHandles != null) {

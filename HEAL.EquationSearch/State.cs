@@ -1,4 +1,5 @@
-﻿using TreesearchLib;
+﻿using HEAL.NativeInterpreter;
+using TreesearchLib;
 
 namespace HEAL.EquationSearch {
 
@@ -10,19 +11,26 @@ namespace HEAL.EquationSearch {
     private readonly int maxLength;
     private readonly Grammar grammar;
     private readonly Expression expression;
+    private readonly Evaluator evaluator;
+    internal Data Data => data;
+    public Grammar Grammar => grammar;
+    public Expression Expression => expression;
+    internal Evaluator Evaluator => evaluator;
 
-    public State(Data data, int maxLength, Grammar grammar) {
+    public State(Data data, int maxLength, Grammar grammar, Evaluator evaluator) {
       this.data = data;
       this.maxLength = maxLength;
       this.grammar = grammar;
+      this.evaluator = evaluator;
       this.expression = new Expression(grammar, new[] { grammar.Start });
     }
 
-    public State(Data data, int maxLength, Grammar grammar, Expression expression) {
+    public State(Data data, int maxLength, Grammar grammar, Expression expression, Evaluator evaluator) {
       this.data = data;
       this.maxLength = maxLength;
       this.grammar = grammar;
       this.expression = expression;
+      this.evaluator = evaluator;
     }
 
     public State(State original) {
@@ -31,6 +39,7 @@ namespace HEAL.EquationSearch {
       this.maxLength = original.maxLength;
       this.grammar = original.grammar;
       this.expression = original.expression;
+      this.evaluator = evaluator;
     }
 
     public bool IsTerminal => expression.Length >= maxLength || expression.IsSentence;
@@ -41,12 +50,12 @@ namespace HEAL.EquationSearch {
     public MinimizeDouble? Quality {
       get {
         if (expression.IsSentence) {
-           if (!quality.HasValue) {
+          if (!quality.HasValue) {
             if (expression.Length == 1) {
               // the expression is a constant. TODO: remove special case and handle in Evaluator
-              quality = new MinimizeDouble(Evaluator.Variance(data.Target));
+              quality = new MinimizeDouble(evaluator.Variance(data.Target));
             } else {
-              quality = new MinimizeDouble(Evaluator.OptimizeAndEvaluate(expression, data));
+              quality = new MinimizeDouble(evaluator.OptimizeAndEvaluate(expression, data));
             }
           }
           return quality;
@@ -54,17 +63,33 @@ namespace HEAL.EquationSearch {
           return null;
         }
       }
+      set {
+        // Heuristics are allowed to set the quality of the state (to prevent duplicate evaluation)
+        this.quality = value;
+      }
     }
+
 
     public object Clone() {
       return new State(this);
     }
 
     public IEnumerable<State> GetBranches() {
-      return grammar.CreateAllDerivations(expression)
+      return Grammar.CreateAllDerivations(expression)
         .Where(expr => expr.Length <= maxLength)
         .Where(Semantics.IsCanonicForm) // we only accept expressions in canonic form to prevent visiting duplicate expressions
-        .Select(expr => new State(data, maxLength, grammar, expr));
+        .Select(expr => {
+          var newState = new State(data, maxLength, grammar, expr, evaluator);
+          // TODO: this is true only when the quality solely depends on the error (and does not include length of the expression)
+          // if the number of parameters in the original expression and the new expression is the same
+          // then the quality of the state is the same.
+          // We could actually link the quality (use the same object). If one of the states is evaluated, all equivalent states are evaluated.
+          // TODO: in general we could have a shared hashtable of qualities that is used for all expressions that are semantically the same (same semantic hash).
+          if(this.Quality != null && expression.Count(sy => sy is Grammar.ParameterSymbol) == expr.Count(sy => sy is Grammar.ParameterSymbol)) {
+            newState.Quality = this.Quality;
+          }
+          return newState;
+        });
     }
 
     public override string ToString() {

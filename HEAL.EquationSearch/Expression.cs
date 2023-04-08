@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using HEAL.NativeInterpreter;
+using System.Collections;
 
 namespace HEAL.EquationSearch {
   public class Expression : IEnumerable<Grammar.Symbol> {
@@ -28,13 +29,27 @@ namespace HEAL.EquationSearch {
       // terminalClassSymbols must be cloned
       int j = 0;
       for (int i = 0; i < pos; i++) { newSyString[j++] = syString[i].Clone(); }
-      for (int i = 0; i < replSyString.Length; i++) { newSyString[j++] = replSyString[i].Clone(); }
+
+      // copy replacement
+      for (int i = 0; i < replSyString.Length; i++) {
+        newSyString[j] = replSyString[i].Clone();
+
+        // if the replacement contains parameters they are initialized randomly
+        
+        // TODO: use of shared random is problematic because of non-determinism and synchronization overhead
+        if (newSyString[j] is Grammar.ParameterSymbol paramSy) {
+          paramSy.Value = Random.Shared.NextDouble() * 2 - 1; // uniform(-1,1)
+        }
+        j++;
+      }
+
       for (int i = pos + 1; i < syString.Length; i++) { newSyString[j++] = syString[i].Clone(); }
+
       return new Expression(Grammar, newSyString);
     }
 
     internal void UpdateCoefficients(int[] idx, double[] coeff) {
-      for(int i=0;i<idx.Length;i++) {
+      for (int i = 0; i < idx.Length; i++) {
         ((Grammar.ParameterSymbol)syString[idx[i]]).Value = coeff[i];
       }
     }

@@ -40,6 +40,7 @@ namespace HEAL.EquationSearch.Test {
     [DataRow(20)]
     [DataRow(25)]
     [DataRow(30)]
+    [DataRow(50)]
     public void Poly10PolynomialGrammar(int maxLength) {
       var rand = new Random(1234);
       var x = Util.GenerateRandom(rand, 100, 10);

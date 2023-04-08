@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using HEAL.NativeInterpreter;
+using System.Numerics;
 
 namespace HEAL.EquationSearch {
   public class Grammar {
@@ -125,6 +126,21 @@ namespace HEAL.EquationSearch {
         yield return expression.Replace(idx, alternative);
       }
     }
+
+
+    // TODO: necessary? Better solution possible?
+    // For heuristics we replace all NT-symbols with a T-symbol to allow evaluation.
+    // We could replace all NT-symbols with a parameter, but this can lead to over-parameterization
+    internal Symbol[] GetDefaultReplacment(Symbol symbol) {
+      if (symbol == Expr) return new[] { new ParameterSymbol(0.0) };
+      if (symbol == Term) return new[] { One };
+      if (symbol == Factor) return new[] { One };
+      if (symbol == PolyExpr) return new[] { new ParameterSymbol(0.0) };
+      if (symbol == PolyTerm) return new[] { One };
+      if (symbol == PolyFactor) return new[] { One };
+      return new[] { new ParameterSymbol(0.0) }; // default
+    }
+
 
     #region symbols
     // TODO Symbol and TerminalSymbol are generic classes.

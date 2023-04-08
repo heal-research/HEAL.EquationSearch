@@ -50,11 +50,11 @@ namespace HEAL.EquationSearch.Test {
 
       var grammar = new Grammar(varNames);
       var data = new Data(varNames, x, y);
-      Evaluator.OptimizedExpressions = 0;
-      var control = SearchControl<State, MinimizeDouble>.Start(new State(data, maxLength, grammar))
+      var evaluator = new Evaluator();
+      var control = SearchControl<State, MinimizeDouble>.Start(new State(data, maxLength, grammar, evaluator))
         .BreadthFirst();
-      Console.WriteLine($"Visited nodes: {control.VisitedNodes} evaluations: {Evaluator.OptimizedExpressions}");
-      Assert.AreEqual(expectedEvaluations, Evaluator.OptimizedExpressions); // 
+      Console.WriteLine($"Visited nodes: {control.VisitedNodes} evaluations: {evaluator.OptimizedExpressions}");
+      Assert.AreEqual(expectedEvaluations, evaluator.OptimizedExpressions); // 
     }
 
     [DataTestMethod]
@@ -145,11 +145,11 @@ namespace HEAL.EquationSearch.Test {
 
       var grammar = new Grammar(varNames);
       var data = new Data(varNames, x, y);
-      Evaluator.OptimizedExpressions = 0;
-      var control = SearchControl<State, MinimizeDouble>.Start(new State(data, maxLength, grammar))
+      var evaluator = new Evaluator();
+      var control = SearchControl<State, MinimizeDouble>.Start(new State(data, maxLength, grammar, evaluator))
         .BreadthFirst();
-      Console.WriteLine($"Visited nodes: {control.VisitedNodes} evaluations: {Evaluator.OptimizedExpressions}");
-      Assert.AreEqual(expectedEvaluations, Evaluator.OptimizedExpressions); // 
+      Console.WriteLine($"Visited nodes: {control.VisitedNodes} evaluations: {evaluator.OptimizedExpressions}");
+      Assert.AreEqual(expectedEvaluations, evaluator.OptimizedExpressions); // 
     }
   }
 }
