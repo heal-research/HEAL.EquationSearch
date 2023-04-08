@@ -15,30 +15,28 @@ namespace HEAL.EquationSearch.Test {
     [DataRow(2, 0)] 
     [DataRow(3, 0)] 
     [DataRow(4, 0)] 
-    [DataRow(5, 1)] // p x * p + 
+    [DataRow(5, 1)] // 0.009979 x * 0.4848 +
     [DataRow(6, 1)] 
-    [DataRow(7, 2)] // p x x * * p +
-    [DataRow(8, 3)] // p p x * exp * p +
+    [DataRow(7, 2)] // -0.03922 x x * * 0.5021 +
+    [DataRow(8, 3)] // len: 8 -0.1587 -8.429 x * exp * 0.5075 +
 
-    // p x * p x * p + +      // TODO: this should be prevented because of distributivity
-    // p x x * x * * p +
-    [DataRow(9, 5)] 
+    // len: 9 0 x * 0.009979 x * 0.4848 + +
+    // len: 9 -0.07303 x x * x * * 0.5064 +
+    [DataRow(9, 5)]
 
-    // p p x x * * exp * p +
-    // p x p x * exp * * p +
+    // len: 10 -2.445e-05 9.84 x x * * exp * 0.5049 +
+    // len: 10 -2.935e-08 x 16.48 x * exp * * 0.5049 +
     [DataRow(10, 7)]
 
-    // p p x * 1 + 1 / * p +
-    // p p x * 1 + abs log * p +
-    // p p p x * exp * exp * p +
-    // p x * p x x * * p + +
-    // p x x * x * x * * p +
+    // len: 11 -0.000544 -1.067 x * 1 + 1 / * 0.4943 +
+    // len: 11 0.02309 55.29 x * 1 + abs log * 0.4179 +
+    // len: 11 0.7447 x * -0.7458 x x * * 0.3601 + +
+    // len: 11 -0.1003 x x * x * x * * 0.5075 +
     [DataRow(11, 12)]
 
-    // p x * p p x * exp * p + +
-    // p p x x * x * * exp * p +
-    // p x p x x * * exp * * p +
-    // p x x * p x * exp * * p +
+    // len: 12 0.4838 x * -0.02075 3.362 x * exp * 0.4133 + +
+    // len: 12 0.7164 x -2.483 x x * * exp * * 0.3524 +
+    // len: 12 -9.952e-08 x x * 15.25 x * exp * * 0.5049 +
     [DataRow(12, 16)]
 
     public void OneDimensional(int maxLength, int expectedEvaluations) {

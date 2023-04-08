@@ -27,11 +27,13 @@ namespace HEAL.EquationSearch {
           Console.WriteLine($"Found new best solution with {quality} after {ctrl.Elapsed} {ctrl.BestQualityState}");
           if (quality.Value < earlyStopQuality) cts.Cancel(); // early stopping
         })
-        .BeamSearch(beamWidth: 10000, Heuristics.PartialMSE /*, depthLimit: depthLimit*/);
-        // .BreadthFirst();
+        // .BeamSearch(beamWidth: 2000, Heuristics.PartialMSE /*, depthLimit: depthLimit*/);
+        .BreadthFirst();
 
-      Console.WriteLine($"Quality: {control.BestQuality} nodes: {control.VisitedNodes} ({(control.VisitedNodes / control.Elapsed.TotalSeconds):F2} nodes/sec) " +
-        $"VarPro evals: {evaluator.OptimizedExpressions} ({(evaluator.OptimizedExpressions / control.Elapsed.TotalSeconds):F2} nodes/sec) runtime: {control.Elapsed}");
+      Console.WriteLine($"Quality: {control.BestQuality} nodes: {control.VisitedNodes} ({(control.VisitedNodes / control.Elapsed.TotalSeconds):F2} nodes/sec)\n" +
+        $"VarPro evals: {evaluator.OptimizedExpressions} ({(evaluator.OptimizedExpressions / control.Elapsed.TotalSeconds):F2} nodes/sec)\n" +
+        $"Evaluation cache miss rate: {100*evaluator.OptimizedExpressions / (double)evaluator.EvaluatedExpressions:g3}%\n" +
+        $"runtime: {control.Elapsed}");
 
       BestExpression = control.BestQualityState.Expression;
       BestMSE = control.BestQuality.Value.Value;

@@ -81,7 +81,7 @@ namespace HEAL.EquationSearch {
       // Fact -> var_1 | ... | var_n
       //         | 1 / ( PolyExpr )
       //         | log ( abs ( PolyExpr ) )
-      //         | exp(param * Term)
+      //         | exp(param * PolyTerm)
       // PolyExpr -> param * PolyTerm + 1 | param * PolyTerm + PolyExpr
       // PolyTerm -> PolyFact | PolyFact * PolyTerm
       // PolyFact -> var_1 | ... | var_n
@@ -101,7 +101,7 @@ namespace HEAL.EquationSearch {
       rules[Factor] = Variables.Select(varSy => new Symbol[] { varSy }).ToList();
       rules[Factor].Add(new[] { PolyExpr, One, Div });
       rules[Factor].Add(new[] { PolyExpr, Abs, Log });
-      rules[Factor].Add(new[] { Parameter, Term, Times, Exp });
+      rules[Factor].Add(new[] { Parameter, PolyTerm, Times, Exp });
 
 
       rules[PolyExpr] = new List<Symbol[]>() {

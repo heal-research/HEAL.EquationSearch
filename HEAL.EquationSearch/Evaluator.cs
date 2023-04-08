@@ -1,16 +1,25 @@
 ﻿using HEAL.NativeInterpreter;
+using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
 
 namespace HEAL.EquationSearch {
-  // TODO: non-static
   internal class Evaluator {
-    public long OptimizedExpressions;
+    public long OptimizedExpressions => exprQualities.Count;
+    public long EvaluatedExpressions = 0;
     // TODO: make iterations configurable
-    internal double OptimizeAndEvaluate(Expression expr, Data data, int iterations = 10) {
-      Interlocked.Increment(ref OptimizedExpressions);
 
-      // Semantics.IndexOfTerms(expr, out var termRanges, out var coeffIdx);
+    public ConcurrentDictionary<ulong, double> exprQualities = new ConcurrentDictionary<ulong, double>();
+
+    internal double OptimizeAndEvaluate(Expression expr, Data data, int iterations = 10) {
+
       var semExpr = new Semantics.Expr(expr);
+      var semHash = semExpr.GetHashValue();
+      Interlocked.Increment(ref EvaluatedExpressions);
+      if (exprQualities.TryGetValue(semHash, out double quality)) {
+        // TODO: parameters of expression are not set in this case
+        return quality;
+      }
+
       var terms = semExpr.Terms;
       var coeffIdx = semExpr.CoeffIdx.ToArray();
 
@@ -19,7 +28,7 @@ namespace HEAL.EquationSearch {
 
       var result = new double[data.Rows];
 
-      var MSE = double.MaxValue;
+      var mse = double.MaxValue;
       // optimize parameters
 
       var solverOptions = new SolverOptions() { Iterations = iterations, Algorithm = 1 };
@@ -40,22 +49,27 @@ namespace HEAL.EquationSearch {
             paramSy.Value = instr.Coeff;
         }
 
-        MSE = summary.FinalCost * 2 / data.Rows;
+        mse = summary.FinalCost * 2 / data.Rows;
 
 
 #if DEBUG
         // double check result
         var evalMSE = CalculateMSE(data.Target, Evaluate(expr, data));
-        var relAbsErr = Math.Abs((MSE - evalMSE) / MSE);
+        var relAbsErr = Math.Abs((mse - evalMSE) / mse);
         // notify user if there is an error larger than 0.1%
         if (relAbsErr > 1e-3)
-          System.Console.Error.WriteLine($"Evaluation of optimized expression returns {100 * relAbsErr}% different result {evalMSE} than VarPro {MSE}.");
+          System.Console.Error.WriteLine($"Evaluation of optimized expression returns {100 * relAbsErr}% different result {evalMSE} than VarPro {mse}.");
 #endif
 
       } else {
         return double.MaxValue; // optimization failed
       }
-      return MSE;
+
+      // for debugging and unit tests
+      Console.Error.WriteLine($"len: {expr.Length} {expr}");
+
+      exprQualities.GetOrAdd(semHash, mse);
+      return mse;
     }
 
     internal double[] Evaluate(Expression expression, Data data) {

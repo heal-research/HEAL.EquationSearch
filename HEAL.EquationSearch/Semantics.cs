@@ -1,4 +1,6 @@
-﻿using static HEAL.EquationSearch.Semantics;
+﻿using System.Diagnostics;
+using System.Reflection.Metadata;
+using static HEAL.EquationSearch.Semantics;
 
 namespace HEAL.EquationSearch {
   public class Semantics {
@@ -7,11 +9,12 @@ namespace HEAL.EquationSearch {
       // 1. for commutative operators (x ° y = y ° x) we only allow the form such that order(x) <= order(y)
       // 2. for (param * x + param * y) is not allowed if (order(x) == order(y)) the same term
 
-      var ok = IsCanonicForCommutative(expr) && IsCanonicForDistributive(expr);
-      
-      // for debugging and unit tests
-      // Console.Error.WriteLine($"{ok} {expr}");
-      return ok;
+      // var ok = IsCanonicForCommutative(expr) && IsCanonicForDistributive(expr);
+
+      // TODO: enforcing canonical form can be problematic because it makes heuristic search harder.
+      // i.e. if we detect that x5*x6 is the best first term, we can not expand this to x5*x6 + x1*x2 and need to backtrack instead
+
+      return true;
     }
 
     public static bool IsCanonicForCommutative(Expression expr) {
@@ -60,9 +63,56 @@ namespace HEAL.EquationSearch {
       return lengths;
     }
 
+
+    // A bitwise hash function written by Justin Sobel. hash functions adapted from http://partow.net/programming/hashfunctions/index.html#AvailableHashFunctions 
+    private static ulong JSHash(byte[] input) {
+      ulong hash = 1315423911;
+      for (int i = 0; i < input.Length; ++i)
+        hash ^= (hash << 5) + input[i] + (hash >> 2);
+      return hash;
+    }
+
+    // same as above but for ulong inputs
+    public static ulong JSHash(ulong[] input) {
+      var bytes = new byte[input.Length * sizeof(ulong)];
+      Buffer.BlockCopy(input, 0, bytes, 0, bytes.Length);
+      return JSHash(bytes);
+    }
+
+    public static ulong JSHash(ulong[] input, ulong parent) {
+      var bytes = new byte[(input.Length + 1 )* sizeof(ulong)];
+      Buffer.BlockCopy(input, 0, bytes, 0, input.Length * sizeof(ulong));
+      Buffer.BlockCopy(BitConverter.GetBytes(parent), 0, bytes, dstOffset: input.Length * sizeof(ulong), count: sizeof(ulong));
+      return JSHash(bytes);
+    }
+
+    public static ulong ComputeHash(Expression expr, int[] lengths, ulong[] exprHashValues, ulong[] nodeHashValues, int i) {
+      var sy = expr[i];
+      const int size = sizeof(ulong);
+      var childHashes = new ulong[sy.Arity + 1];
+      var bytes = new byte[(sy.Arity + 1) * size];
+
+      for (int j = i - 1, k = 0; k < sy.Arity; ++k, j -= lengths[j]) {
+        childHashes[k] = exprHashValues[j];
+      }
+      childHashes[sy.Arity] = nodeHashValues[i];
+      if (IsCommutative(expr.Grammar, sy)) Array.Sort(childHashes, 0, sy.Arity);
+      Buffer.BlockCopy(childHashes, 0, bytes, 0, bytes.Length);
+      return JSHash(bytes);
+    }
+
+
+
+    private static bool IsCommutative(Grammar grammar, Grammar.Symbol sy) {
+      return sy == grammar.Plus || sy == grammar.Times;
+    }
+
+    // TODO: We need the capability to get the terms of an expression only for the evaluator.
+    // For hashing it is sufficient to distinguish between TreeNodes with commutative children and those without
     public class Expr {
       private readonly Expression expr;
       public IEnumerable<Term> Terms { get; }
+
       /// <summary>
       /// Indexes of all term coefficients + the intercept
       /// </summary>
@@ -103,12 +153,17 @@ namespace HEAL.EquationSearch {
           }
         }
       }
+
+      internal ulong GetHashValue() {
+        // order of terms in expression is irrelevant
+        return JSHash(Terms.Select(t => t.GetHashValue()).OrderBy(h => h).ToArray());
+      }
     }
     // A term represents a term within an expression. 
     // Internally it is represented as a span of the expression.
     // The span does not include the multiplication with the coefficient
     // 
-    // Objects of Term and Factor are only used for comparisons / ordering
+    // Objects of Term and Factor are only used for comparisons / ordering / hashing
     public class Term : IComparable<Term> {
       public readonly Expression expr;
       public readonly int start;
@@ -157,6 +212,12 @@ namespace HEAL.EquationSearch {
         else throw new InvalidProgramException(); // cannot happen
       }
 
+      internal ulong GetHashValue() {
+        // order of factors is irrelevant
+        return JSHash(Factors.Select(t => t.GetHashValue()).OrderBy(h => h).ToArray());
+      }
+
+
       // for debugging
       public override string ToString() {
         return string.Join(" ", expr.Skip(start).Take(end - start + 1).Select(sy => sy.ToString()));
@@ -169,11 +230,24 @@ namespace HEAL.EquationSearch {
       public readonly int start;
       public readonly int end;
 
+      public IEnumerable<HashNode> Children;
+
       public Factor(Expression expr, int[] lengths, int start, int end) {
         this.expr = expr;
         this.start = start;
         this.lengths = lengths;
         this.end = end;
+        var children = new List<HashNode>();
+        GetChildrenRec(children, end);
+        this.Children = children;
+      }
+
+      private void GetChildrenRec(List<HashNode> children, int rootIdx) {
+        var c = rootIdx - 1; // first child idx
+        for (int cIdx = 0; cIdx < expr[rootIdx].Arity; cIdx++) {
+          children.Insert(0, new HashNode(expr, lengths, c - lengths[c] + 1, c)); // TODO: perf
+          c = c - lengths[c];
+        }
       }
 
       public int CompareTo(Factor? other) {
@@ -183,6 +257,65 @@ namespace HEAL.EquationSearch {
         var thisOrdNum = Array.IndexOf(allSymbols, expr[end]); // root symbol of factor
         var otherOrdNum = Array.IndexOf(allSymbols, other.expr[other.end]); // root symbol of factor
         return thisOrdNum - otherOrdNum;
+      }
+
+      internal ulong GetHashValue() {
+        Debug.Assert(expr[end] is not Grammar.ParameterSymbol); // we cannot simply use getHashCode for symbols that are cloned.
+        var hashValues = Children.Select(ch => ch.GetHashValue()).ToArray();
+        return JSHash(hashValues, (ulong)expr[end].GetHashCode());
+      }
+
+      // for debugging
+      public override string ToString() {
+        return string.Join(" ", expr.Skip(start).Take(end - start + 1).Select(sy => sy.ToString()));
+      }
+    }
+
+    // TODO: ordering of children for commutative nodes
+    public class HashNode {
+      public readonly Expression expr;
+      private readonly int[] lengths;
+      public readonly int start;
+      public readonly int end;
+      public IEnumerable<HashNode> Children { get; private set; }
+
+      public HashNode(Expression expr, int[] lengths, int start, int end) {
+        this.expr = expr;
+        this.start = start;
+        this.lengths = lengths;
+        this.end = end;
+        var children = new List<HashNode>();
+        GetChildrenRec(children, end);
+        this.Children = children;
+      }
+
+      private void GetChildrenRec(List<HashNode> children, int rootIdx) {
+        var c = rootIdx - 1; // first child idx
+        // commutative operation -> collect all children using the same operation recursively
+        if (IsCommutative(expr.Grammar, expr[rootIdx]) && expr[rootIdx] == expr[c]) {
+          for (int cIdx = 0; cIdx < expr[rootIdx].Arity; cIdx++) {
+            GetChildrenRec(children, c);
+            c = c - lengths[c];
+          }
+        } else {
+
+          // collect only direct children
+          for (int cIdx = 0; cIdx < expr[rootIdx].Arity; cIdx++) {
+            children.Insert(0, new HashNode(expr, lengths, c - lengths[c] + 1, c)); // TODO: perf  
+            c = c - lengths[c];
+          }
+
+        }
+      }
+
+      internal ulong GetHashValue() {
+        // Debug.Assert(expr[end] is not Grammar.ParameterSymbol); // we cannot simply use getHashCode for symbols that are cloned.
+        // TODO: not sure how to handle this best
+        if (expr[end] is Grammar.ParameterSymbol) return 1223;
+
+        var hashValues = Children.Select(ch => ch.GetHashValue()).ToArray();
+        if (IsCommutative(expr.Grammar, expr[end])) Array.Sort(hashValues);
+        return JSHash(hashValues, (ulong)expr[end].GetHashCode());
       }
 
       // for debugging
