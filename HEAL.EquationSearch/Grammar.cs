@@ -1,11 +1,7 @@
-﻿using HEAL.NativeInterpreter;
-using System.Numerics;
-
-namespace HEAL.EquationSearch {
+﻿namespace HEAL.EquationSearch {
   public class Grammar {
     public Symbol Start => Expr;
 
-    // the order of occurance of symbols in this list is the order how the symbols may apprear in expressions (see Semantics)
     public IEnumerable<Symbol> AllSymbols {
       get {
         return new[] { One, Parameter }
@@ -26,7 +22,7 @@ namespace HEAL.EquationSearch {
     public Symbol Term = new Symbol("Term");
     public Symbol Factor = new Symbol("Factor");
     public Symbol PolyExpr = new Symbol("PolyExpr"); // allowed within log() and 1/()
-    public Symbol PolyTerm = new Symbol("PolyTerm");
+    public Symbol PolyTerm = new Symbol("PolyTerm"); // allowed within exp()
     public Symbol PolyFactor = new Symbol("PolyFactor");
 
     // terminals
@@ -38,7 +34,7 @@ namespace HEAL.EquationSearch {
     public Symbol Abs = new Symbol("abs", arity: 1);
 
     public Symbol One = new ConstantSymbol(1.0);
-    public Symbol Parameter = new ParameterSymbol(0.0); // terminal classes have a value
+    public Symbol Parameter = new ParameterSymbol(0.0);
 
     public VariableSymbol[] Variables;
 
@@ -128,10 +124,10 @@ namespace HEAL.EquationSearch {
     }
 
 
-    // TODO: necessary? Better solution possible?
     // For heuristics we replace all NT-symbols with a T-symbol to allow evaluation.
+    // TODO: necessary? Better solution possible?
     // We could replace all NT-symbols with a parameter, but this can lead to over-parameterization
-    internal Symbol[] GetDefaultReplacment(Symbol symbol) {
+    private Symbol[] GetDefaultReplacement(Symbol symbol) {
       if (symbol == Expr) return new[] { new ParameterSymbol(0.0) };
       if (symbol == Term) return new[] { One };
       if (symbol == Factor) return new[] { One };
@@ -139,6 +135,24 @@ namespace HEAL.EquationSearch {
       if (symbol == PolyTerm) return new[] { One };
       if (symbol == PolyFactor) return new[] { One };
       return new[] { new ParameterSymbol(0.0) }; // default
+    }
+
+    internal Expression MakeSentence(Expression expr) {
+      // Takes an unfinished expression and replaces all NTs with their defaults to make a sentence.
+      var ntIdx = expr.FirstIndexOfNT();
+#if DEBUG
+      // ASSERT: no parameter after the first NT
+      if (ntIdx >= 0) {
+        for (int i = ntIdx; i < expr.Length; i++) {
+          if (expr[i] is Grammar.ParameterSymbol) throw new InvalidProgramException();
+        }
+      }
+#endif
+      while (ntIdx >= 0) {
+        expr = expr.Replace(ntIdx, GetDefaultReplacement(expr[ntIdx]));
+        ntIdx = expr.FirstIndexOfNT();
+      }
+      return expr;
     }
 
 
@@ -182,6 +196,7 @@ namespace HEAL.EquationSearch {
       public string VariableName => value;
       public VariableSymbol(string varName) : base("var", varName) { }
     }
+
     public class ParameterSymbol : TerminalClassSymbol<double> {
       public double Value {
         get { return value; }
@@ -194,15 +209,22 @@ namespace HEAL.EquationSearch {
       public override string ToString() {
         return string.Format("{0:g4}", value);
       }
+
+      public override int GetHashCode() {
+        // all parameter objects are equal regardless of their value (this is necessary for semantic hashing)
+        return 5308417; // arbitrary prime number
+      }
+
+      public override bool Equals(object? other) {
+        return other is ParameterSymbol;
+      }
     }
     public class ConstantSymbol : TerminalClassSymbol<double> {
       public double Value {
         get { return value; }
       }
       public ConstantSymbol(double val) : base("p", val) { }
-      public override Symbol Clone() {
-        return new ConstantSymbol(value);
-      }
+
       public override string ToString() {
         return string.Format("{0:g4}", value);
       }

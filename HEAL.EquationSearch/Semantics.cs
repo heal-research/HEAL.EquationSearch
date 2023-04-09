@@ -1,55 +1,8 @@
-﻿using System.Diagnostics;
-using System.Reflection.Metadata;
-using static HEAL.EquationSearch.Semantics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 
 namespace HEAL.EquationSearch {
   public class Semantics {
-    public static bool IsCanonicForm(Expression expr) {
-      // we only allow expressions in canonical form
-      // 1. for commutative operators (x ° y = y ° x) we only allow the form such that order(x) <= order(y)
-      // 2. for (param * x + param * y) is not allowed if (order(x) == order(y)) the same term
-
-      // var ok = IsCanonicForCommutative(expr) && IsCanonicForDistributive(expr);
-
-      // TODO: enforcing canonical form can be problematic because it makes heuristic search harder.
-      // i.e. if we detect that x5*x6 is the best first term, we can not expand this to x5*x6 + x1*x2 and need to backtrack instead
-
-      return true;
-    }
-
-    public static bool IsCanonicForCommutative(Expression expr) {
-      var terms = new Expr(expr).Terms;
-      return terms.All(t => IsOrdered(t.Factors)) && IsOrdered(terms);
-    }
-
-    private static bool IsOrdered<T>(IEnumerable<T> factors) where T : IComparable<T> {
-      // the factors must be ordered
-      // for the ordering we use the symbol index in the grammar
-      // terminal symbols with smaller index must occur before those with larger indexes
-      // Order: param, var_1, ..., var_n,     
-
-      var enumerator = factors.GetEnumerator();
-
-      // assumes at least one factor
-      enumerator.MoveNext();
-      var prevFactor = enumerator.Current;
-      while (enumerator.MoveNext()) {
-        var curFactor = enumerator.Current;
-        if (curFactor.CompareTo(prevFactor) < 0) return false;
-        prevFactor = curFactor;
-      }
-      // all factors ordered
-      return true;
-    }
-
-    public static bool IsCanonicForDistributive(Expression expr) {
-      // we do not allow p1 * x + p2 * x because it can be represented as p3 * x
-      // where x are the same and have no nonlinear parameters
-
-      // TODO: detection of duplicate terms is not implemented yet
-      return true;
-    }
-
     public static int[] GetLengths(Expression expr) {
       var lengths = new int[expr.Length]; // length of each part
       for (int i = 0; i < expr.Length; i++) {
@@ -63,259 +16,116 @@ namespace HEAL.EquationSearch {
       return lengths;
     }
 
-
-    // A bitwise hash function written by Justin Sobel. hash functions adapted from http://partow.net/programming/hashfunctions/index.html#AvailableHashFunctions 
-    private static ulong JSHash(byte[] input) {
-      ulong hash = 1315423911;
-      for (int i = 0; i < input.Length; ++i)
-        hash ^= (hash << 5) + input[i] + (hash >> 2);
-      return hash;
-    }
-
-    // same as above but for ulong inputs
-    public static ulong JSHash(ulong[] input) {
-      var bytes = new byte[input.Length * sizeof(ulong)];
-      Buffer.BlockCopy(input, 0, bytes, 0, bytes.Length);
-      return JSHash(bytes);
-    }
-
-    public static ulong JSHash(ulong[] input, ulong parent) {
-      var bytes = new byte[(input.Length + 1 )* sizeof(ulong)];
-      Buffer.BlockCopy(input, 0, bytes, 0, input.Length * sizeof(ulong));
-      Buffer.BlockCopy(BitConverter.GetBytes(parent), 0, bytes, dstOffset: input.Length * sizeof(ulong), count: sizeof(ulong));
-      return JSHash(bytes);
-    }
-
-    public static ulong ComputeHash(Expression expr, int[] lengths, ulong[] exprHashValues, ulong[] nodeHashValues, int i) {
-      var sy = expr[i];
-      const int size = sizeof(ulong);
-      var childHashes = new ulong[sy.Arity + 1];
-      var bytes = new byte[(sy.Arity + 1) * size];
-
-      for (int j = i - 1, k = 0; k < sy.Arity; ++k, j -= lengths[j]) {
-        childHashes[k] = exprHashValues[j];
-      }
-      childHashes[sy.Arity] = nodeHashValues[i];
-      if (IsCommutative(expr.Grammar, sy)) Array.Sort(childHashes, 0, sy.Arity);
-      Buffer.BlockCopy(childHashes, 0, bytes, 0, bytes.Length);
-      return JSHash(bytes);
-    }
-
-
-
     private static bool IsCommutative(Grammar grammar, Grammar.Symbol sy) {
       return sy == grammar.Plus || sy == grammar.Times;
     }
 
-    // TODO: We need the capability to get the terms of an expression only for the evaluator.
-    // For hashing it is sufficient to distinguish between TreeNodes with commutative children and those without
-    public class Expr {
-      private readonly Expression expr;
-      public IEnumerable<Term> Terms { get; }
-
-      /// <summary>
-      /// Indexes of all term coefficients + the intercept
-      /// </summary>
-      public IEnumerable<int> CoeffIdx { get; }
-      public Expr(Expression expr) {
-        this.expr = expr;
-        var terms = new List<Term>();
-        var coeffIdx = new List<int>();
-
-        GetTermsRec(expr, expr.Length - 1, GetLengths(expr), terms, coeffIdx);
-        this.Terms = terms;
-        this.CoeffIdx = coeffIdx;
-      }
-
-      private static void GetTermsRec(Expression expr, int exprIdx, int[] lengths, List<Term> terms, List<int> coeffIndexes) {
-        // get terms
-        if (expr[exprIdx] == expr.Grammar.Plus) {
-          var c = exprIdx - 1; // first child idx
-          for (int cIdx = 0; cIdx < expr[exprIdx].Arity; cIdx++) {
-            GetTermsRec(expr, c, lengths, terms, coeffIndexes);
-            c = c - lengths[c];
-          }
-        } else {
-          // here we accept only "<coeff> <term> *" or "<coeff>"
-          if (expr[exprIdx] == expr.Grammar.Times) {
-            // calculate index of coefficient
-            var end = exprIdx - 1;
-            var start = end - lengths[end] + 1;
-            terms.Insert(0, new Term(expr, lengths, start, end)); // TODO: perf
-            var coeffIdx = start - 1;
-            if (expr[coeffIdx] is not Grammar.ParameterSymbol) throw new NotSupportedException("Invalid expression form. Expected: <coeff> <term> *");
-            coeffIndexes.Insert(0, coeffIdx); // TODO: perf
-          } else if (expr[exprIdx] is Grammar.ParameterSymbol) {
-            coeffIndexes.Insert(0, exprIdx); // TODO: perf
-          } else {
-            // Assert that each term has the pattern: <coeff * term> or just <coeff>
-            // throw new InvalidProgramException($"Term does not have the structure <coeff * term> in {string.Join(" ", expr.Select(sy => sy.ToString()))} at position {exprIdx}");
-          }
-        }
-      }
-
-      internal ulong GetHashValue() {
-        // order of terms in expression is irrelevant
-        return JSHash(Terms.Select(t => t.GetHashValue()).OrderBy(h => h).ToArray());
-      }
-    }
-    // A term represents a term within an expression. 
-    // Internally it is represented as a span of the expression.
-    // The span does not include the multiplication with the coefficient
-    // 
-    // Objects of Term and Factor are only used for comparisons / ordering / hashing
-    public class Term : IComparable<Term> {
-      public readonly Expression expr;
-      public readonly int start;
-      public readonly int end;
-      private readonly int[] lengths;
-
-      public IEnumerable<Factor> Factors { get; }
-
-      public Term(Expression expr, int[] lengths, int start, int end) {
-        this.expr = expr;
-        this.start = start;
-        this.end = end;
-        this.lengths = lengths;
-
-        var factors = new List<Factor>();
-        GetFactorsRec(expr, end, factors, lengths);
-        this.Factors = factors;
-      }
-
-      private static void GetFactorsRec(Expression expr, int factorIdx, List<Factor> factors, int[] lengths) {
-        if (expr[factorIdx] == expr.Grammar.Times) {
-          var c = factorIdx - 1; // first child idx
-          for (int cIdx = 0; cIdx < expr[factorIdx].Arity; cIdx++) {
-            GetFactorsRec(expr, c, factors, lengths);
-            c = c - lengths[c];
-          }
-        } else {
-          factors.Insert(0, new Factor(expr, lengths, factorIdx - lengths[factorIdx] + 1, factorIdx)); // TODO: perf
-        }
-      }
-
-      public int CompareTo(Term? other) {
-        if (other == null) throw new ArgumentNullException(nameof(other));
-
-        // lexicographic ordering over factors
-        var thisFactorEnum = Factors.GetEnumerator();
-        var otherFactorEnum = other.Factors.GetEnumerator();
-        while (thisFactorEnum.MoveNext() & otherFactorEnum.MoveNext()) {
-          var comp = thisFactorEnum.Current.CompareTo(otherFactorEnum.Current);
-          if (comp != 0) return comp;
-        }
-        // both have the same number of factors
-        if (thisFactorEnum.Current == null && otherFactorEnum.Current == null) return 0; // all factors equal and the same number of factors
-        else if (thisFactorEnum.Current == null) return -1; // other has more factors
-        else if (otherFactorEnum.Current == null) return 1; // this has more factors
-        else throw new InvalidProgramException(); // cannot happen
-      }
-
-      internal ulong GetHashValue() {
-        // order of factors is irrelevant
-        return JSHash(Factors.Select(t => t.GetHashValue()).OrderBy(h => h).ToArray());
-      }
-
-
-      // for debugging
-      public override string ToString() {
-        return string.Join(" ", expr.Skip(start).Take(end - start + 1).Select(sy => sy.ToString()));
-      }
+    private static bool IsAssociative(Grammar grammar, Grammar.Symbol sy) {
+      return sy == grammar.Plus || sy == grammar.Times || sy == grammar.Div;
     }
 
-    public class Factor : IComparable<Factor> {
-      public readonly Expression expr;
-      private readonly int[] lengths;
-      public readonly int start;
-      public readonly int end;
-
-      public IEnumerable<HashNode> Children;
-
-      public Factor(Expression expr, int[] lengths, int start, int end) {
-        this.expr = expr;
-        this.start = start;
-        this.lengths = lengths;
-        this.end = end;
-        var children = new List<HashNode>();
-        GetChildrenRec(children, end);
-        this.Children = children;
-      }
-
-      private void GetChildrenRec(List<HashNode> children, int rootIdx) {
-        var c = rootIdx - 1; // first child idx
-        for (int cIdx = 0; cIdx < expr[rootIdx].Arity; cIdx++) {
-          children.Insert(0, new HashNode(expr, lengths, c - lengths[c] + 1, c)); // TODO: perf
-          c = c - lengths[c];
-        }
-      }
-
-      public int CompareTo(Factor? other) {
-        if (other == null) throw new ArgumentNullException(nameof(other));
-
-        var allSymbols = expr.Grammar.AllSymbols.ToArray();
-        var thisOrdNum = Array.IndexOf(allSymbols, expr[end]); // root symbol of factor
-        var otherOrdNum = Array.IndexOf(allSymbols, other.expr[other.end]); // root symbol of factor
-        return thisOrdNum - otherOrdNum;
-      }
-
-      internal ulong GetHashValue() {
-        Debug.Assert(expr[end] is not Grammar.ParameterSymbol); // we cannot simply use getHashCode for symbols that are cloned.
-        var hashValues = Children.Select(ch => ch.GetHashValue()).ToArray();
-        return JSHash(hashValues, (ulong)expr[end].GetHashCode());
-      }
-
-      // for debugging
-      public override string ToString() {
-        return string.Join(" ", expr.Skip(start).Take(end - start + 1).Select(sy => sy.ToString()));
-      }
+    internal static ulong GetHashValue(Expression expr) {
+      return new HashNode(expr).HashValue;
     }
 
-    // TODO: ordering of children for commutative nodes
+
+
+    // This class is used for nodes within a tree that is used for calculating semantic hashes for expressions.
+    // The tree is build recursively when calling the constructor for the expression.
+    // The semantic hash function has the following capabilities:
+    //   - flatten out the sub-trees for associative expressions (x1 ° x2) ° x3 => x1 ° x2 ° x3 (a single node with three children)
+    //   - order sub-expressions of commutative expressions x2 ° x3 ° x1 => x1 ° x2 ° x3. The ordering is deterministic and based on the hash values of subexpressions.
+    // The steps make sure that most of the semantically equivalent expressions have the same hash value.
+    // We do not yet handle distributive operators p1 * x1 + p2 * x1 => p3 * x1. This is necessary to prevent duplicate terms.
     public class HashNode {
       public readonly Expression expr;
       private readonly int[] lengths;
       public readonly int start;
       public readonly int end;
-      public IEnumerable<HashNode> Children { get; private set; }
 
-      public HashNode(Expression expr, int[] lengths, int start, int end) {
+      private readonly List<HashNode> children;
+      public IEnumerable<HashNode> Children { get { return children; } }
+      public Grammar.Symbol Symbol => expr[end];
+
+      public ulong HashValue { get; private set; }
+
+      // constructor for the root nodes
+      public HashNode(Expression expr) : this(expr, GetLengths(expr), 0, expr.Length - 1) { }
+
+      // constructor for sub-expressions (sub-trees)
+      // The full tree of HashNodes for this expression is build bottom-up in the constructor.
+      private HashNode(Expression expr, int[] lengths, int start, int end) {
         this.expr = expr;
-        this.start = start;
         this.lengths = lengths;
+        this.start = start;
         this.end = end;
-        var children = new List<HashNode>();
-        GetChildrenRec(children, end);
-        this.Children = children;
+        this.children = new List<HashNode>();
+        if (expr[end].Arity > 0) {
+          GetChildrenRec(children, end); // collect all children of this node
+          if (IsCommutative(expr.Grammar, Symbol)) children.Sort(HashValueComparer);
+          Simplify();
+        }
+
+        HashValue = CalculateHashValue();
       }
 
-      private void GetChildrenRec(List<HashNode> children, int rootIdx) {
-        var c = rootIdx - 1; // first child idx
-        // commutative operation -> collect all children using the same operation recursively
-        if (IsCommutative(expr.Grammar, expr[rootIdx]) && expr[rootIdx] == expr[c]) {
-          for (int cIdx = 0; cIdx < expr[rootIdx].Arity; cIdx++) {
-            GetChildrenRec(children, c);
-            c = c - lengths[c];
-          }
-        } else {
+      // for sorting children by hashvalue above
+      private int HashValueComparer(HashNode x, HashNode y) {
+        if (x.HashValue < y.HashValue) return -1;
+        else if (x.HashValue == y.HashValue) return 0;
+        else return 1;
+      }
 
-          // collect only direct children
-          for (int cIdx = 0; cIdx < expr[rootIdx].Arity; cIdx++) {
-            children.Insert(0, new HashNode(expr, lengths, c - lengths[c] + 1, c)); // TODO: perf  
-            c = c - lengths[c];
+      private void Simplify() {
+        // remove all multiplications by one
+        if (Symbol == expr.Grammar.Times) {
+          for (int i = children.Count - 1; i >= 0; i--) {
+            if (children[i].Symbol == expr.Grammar.One) children.RemoveAt(i);
           }
+        }
 
+        // remove duplicate terms (which have the same hash value)
+        // Children are already sorted by hash value
+        if (Symbol == expr.Grammar.Plus) {
+          var c = 0;
+          while (c < children.Count - 1) {
+            Debug.Assert(children[c].HashValue <= children[c + 1].HashValue); // ASSERT: list sorted
+
+            // If the terms contain non-linear parameters we allow duplicates.
+            // e.g. we keep "p log(p + p x) + p log(p + p x)" or "p exp(p x) + p exp(p x)
+            if (children[c].HashValue == children[c + 1].HashValue && !children[c].HasNonlinearParameters()) {
+              children.RemoveAt(c + 1);
+            } else {
+              c++;
+            }
+          }
         }
       }
 
-      internal ulong GetHashValue() {
-        // Debug.Assert(expr[end] is not Grammar.ParameterSymbol); // we cannot simply use getHashCode for symbols that are cloned.
-        // TODO: not sure how to handle this best
-        if (expr[end] is Grammar.ParameterSymbol) return 1223;
+      private bool HasNonlinearParameters() {
+        return Symbol == expr.Grammar.Exp || Symbol == expr.Grammar.Log || Symbol == expr.Grammar.Div ||
+          children.Any(c => c.HasNonlinearParameters());
+      }
 
-        var hashValues = Children.Select(ch => ch.GetHashValue()).ToArray();
-        if (IsCommutative(expr.Grammar, expr[end])) Array.Sort(hashValues);
-        return JSHash(hashValues, (ulong)expr[end].GetHashCode());
+      private void GetChildrenRec(List<HashNode> children, int parentIndex) {
+        var c = parentIndex - 1; // first child idx
+        for (int cIdx = 0; cIdx < expr[parentIndex].Arity; cIdx++) {
+          // collect all children recursively for associative operations
+          if (IsAssociative(expr.Grammar, expr[parentIndex]) && expr[parentIndex] == expr[c]) {
+            GetChildrenRec(children, c);
+          } else {
+            children.Insert(0, new HashNode(expr, lengths, start: c - lengths[c] + 1, end: c)); // TODO: perf  
+          }
+          c = c - lengths[c];
+        }
+        if (expr[parentIndex].Arity == 0) {
+          children.Insert(0, new HashNode(expr, lengths, start: parentIndex - lengths[parentIndex] + 1, end: parentIndex)); // TODO: perf  
+        }
+      }
+
+      internal ulong CalculateHashValue() {
+        var hashValues = Children.Select(ch => ch.HashValue).ToArray();
+        return Hash.JSHash(hashValues, (ulong)expr[end].GetHashCode()); // hash values of children, followed by hash value of current symbol
       }
 
       // for debugging

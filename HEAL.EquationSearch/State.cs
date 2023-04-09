@@ -1,5 +1,4 @@
-﻿using HEAL.NativeInterpreter;
-using TreesearchLib;
+﻿using TreesearchLib;
 
 namespace HEAL.EquationSearch {
 
@@ -39,7 +38,7 @@ namespace HEAL.EquationSearch {
       this.maxLength = original.maxLength;
       this.grammar = original.grammar;
       this.expression = original.expression;
-      this.evaluator = evaluator;
+      this.evaluator = original.evaluator;
     }
 
     public bool IsTerminal => expression.Length >= maxLength || expression.IsSentence;
@@ -77,7 +76,6 @@ namespace HEAL.EquationSearch {
     public IEnumerable<State> GetBranches() {
       return Grammar.CreateAllDerivations(expression)
         .Where(expr => expr.Length <= maxLength)
-        .Where(Semantics.IsCanonicForm) // we only accept expressions in canonic form to prevent visiting duplicate expressions
         .Select(expr => {
           var newState = new State(data, maxLength, grammar, expr, evaluator);
           // TODO: this is true only when the quality solely depends on the error (and does not include length of the expression)

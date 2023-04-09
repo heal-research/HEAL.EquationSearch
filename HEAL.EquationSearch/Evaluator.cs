@@ -6,22 +6,23 @@ namespace HEAL.EquationSearch {
   internal class Evaluator {
     public long OptimizedExpressions => exprQualities.Count;
     public long EvaluatedExpressions = 0;
-    // TODO: make iterations configurable
 
     public ConcurrentDictionary<ulong, double> exprQualities = new ConcurrentDictionary<ulong, double>();
 
+    // TODO: make iterations configurable
     internal double OptimizeAndEvaluate(Expression expr, Data data, int iterations = 10) {
 
-      var semExpr = new Semantics.Expr(expr);
-      var semHash = semExpr.GetHashValue();
+      var semHash = Semantics.GetHashValue(expr);
       Interlocked.Increment(ref EvaluatedExpressions);
+
       if (exprQualities.TryGetValue(semHash, out double quality)) {
         // TODO: parameters of expression are not set in this case
         return quality;
       }
 
-      var terms = semExpr.Terms;
-      var coeffIdx = semExpr.CoeffIdx.ToArray();
+      var terms = new List<(int start, int end)>();
+      var coeffIndexes = new List<int>();
+      GetTerms(expr, terms, coeffIndexes);
 
       // compile all terms individually
       var code = CompileTerms(expr, terms, data, out var termIdx, out var paramIdx);
@@ -34,18 +35,18 @@ namespace HEAL.EquationSearch {
       var solverOptions = new SolverOptions() { Iterations = iterations, Algorithm = 1 };
       // NativeWrapper.Optimize(code, data.AllRowIdx, data.Target, data.Weights, solverOptions, result, out SolverSummary summary);
 
-      var coeff = new double[coeffIdx.Length];
+      var coeff = new double[coeffIndexes.Count];
       NativeWrapper.OptimizeVarPro(code, termIdx.ToArray(), data.AllRowIdx, data.Target, data.Weights, coeff, solverOptions, result, out var summary);
 
       // update parameters if successful
       if (summary.Success == 1 && !double.IsNaN(summary.FinalCost)) {
-        expr.UpdateCoefficients(coeffIdx, coeff);
+        expr.UpdateCoefficients(coeffIndexes.ToArray(), coeff);
 
-        foreach (var i in paramIdx) {
-          var instr = code[i.codePos];
+        foreach (var (codePos, exprPos) in paramIdx) {
+          var instr = code[codePos];
           if (instr.Optimize != 1) continue;
 
-          if (expr[i.exprPos] is Grammar.ParameterSymbol paramSy)
+          if (expr[exprPos] is Grammar.ParameterSymbol paramSy)
             paramSy.Value = instr.Coeff;
         }
 
@@ -66,15 +67,14 @@ namespace HEAL.EquationSearch {
       }
 
       // for debugging and unit tests
-      Console.Error.WriteLine($"len: {expr.Length} {expr}");
+      // Console.Error.WriteLine($"len: {expr.Length} hash: {semHash} {expr}");
 
       exprQualities.GetOrAdd(semHash, mse);
       return mse;
     }
 
     internal double[] Evaluate(Expression expression, Data data) {
-      var semExpr = new Semantics.Term(expression, Semantics.GetLengths(expression), 0, expression.Length - 1); // treat the whole expression as a single term
-      var code = CompileTerms(expression, new[] { semExpr }, data, out var _, out var _);
+      var code = CompileTerms(expression, new[] { (start: 0, end: expression.Length - 1) }, data, out var _, out var _);
       var result = new double[data.Rows];
       NativeWrapper.GetValues(code, data.AllRowIdx, result);
       return result;
@@ -103,7 +103,7 @@ namespace HEAL.EquationSearch {
       return mse;
     }
 
-    private NativeInstruction[] CompileTerms(Expression expr, IEnumerable<Semantics.Term> terms, Data data,
+    private NativeInstruction[] CompileTerms(Expression expr, IEnumerable<(int start, int end)> terms, Data data,
       out List<int> termIdx, out List<(int codePos, int exprPos)> paramSyIdx) {
 
       if (cachedDataHandles == null || cachedData != data) {
@@ -116,9 +116,9 @@ namespace HEAL.EquationSearch {
 
       paramSyIdx = new List<(int, int)>();
       int codeIdx = 0;
-      foreach (var t in terms) {
+      foreach (var (start, end) in terms) {
         // requires a postfix representation
-        for (int exprIdx = t.start; exprIdx <= t.end; exprIdx++) {
+        for (int exprIdx = start; exprIdx <= end; exprIdx++) {
           var curSy = expr[exprIdx];
           code[codeIdx] = new NativeInstruction { Arity = curSy.Arity, OpCode = SymbolToOpCode(expr.Grammar, curSy), Length = 1, Optimize = 0, Coeff = 1.0 };
           if (curSy is Grammar.VariableSymbol varSy) {
@@ -143,6 +143,38 @@ namespace HEAL.EquationSearch {
       }
 
       return code;
+    }
+
+    private static void GetTerms(Expression expr, List<(int start, int end)> terms, List<int> coeffIndexes) {
+      var lengths = Semantics.GetLengths(expr);
+      GetTermsRec(expr, expr.Length - 1, lengths, terms, coeffIndexes);
+    }
+
+    private static void GetTermsRec(Expression expr, int exprIdx, int[] lengths, List<(int start, int end)> terms, List<int> coeffIndexes) {
+      // get terms
+      if (expr[exprIdx] == expr.Grammar.Plus) {
+        var c = exprIdx - 1; // first child idx
+        for (int cIdx = 0; cIdx < expr[exprIdx].Arity; cIdx++) {
+          GetTermsRec(expr, c, lengths, terms, coeffIndexes);
+          c = c - lengths[c];
+        }
+      } else {
+        // here we accept only "<coeff> <term> *" or "<coeff>"
+        if (expr[exprIdx] == expr.Grammar.Times) {
+          // calculate index of coefficient
+          var end = exprIdx - 1;
+          var start = end - lengths[end] + 1;
+          terms.Insert(0, (start, end)); // TODO: perf
+          var coeffIdx = start - 1;
+          if (expr[coeffIdx] is not Grammar.ParameterSymbol) throw new NotSupportedException("Invalid expression form. Expected: <coeff> <term> *");
+          coeffIndexes.Insert(0, coeffIdx); // TODO: perf
+        } else if (expr[exprIdx] is Grammar.ParameterSymbol) {
+          coeffIndexes.Insert(0, exprIdx); // TODO: perf
+        } else {
+          // Assert that each term has the pattern: <coeff * term> or just <coeff>
+          // throw new InvalidProgramException($"Term does not have the structure <coeff * term> in {string.Join(" ", expr.Select(sy => sy.ToString()))} at position {exprIdx}");
+        }
+      }
     }
 
 

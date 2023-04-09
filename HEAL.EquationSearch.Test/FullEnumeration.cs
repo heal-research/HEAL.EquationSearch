@@ -105,15 +105,17 @@ namespace HEAL.EquationSearch.Test {
     // len: 10 -2.935e-08 x 16.48 x * exp * * 0.5049 +
     [DataRow(10, 7)]
 
-    // len: 11 -0.000544 -1.067 x * 1 + 1 / * 0.4943 +
-    // len: 11 0.02309 55.29 x * 1 + abs log * 0.4179 +
-    // len: 11 0.7447 x * -0.7458 x x * * 0.3601 + +
-    // len: 11 -0.1003 x x * x * x * * 0.5075 +
-    [DataRow(11, 12)]
+     // len: 11 -0.0001243 -1.123 x * 1 + 1 / * 0.4938 +
+     // len: 11 0.01543 -1.123 x * 1 + abs log * 0.5099 +
+     // len: 11 0.7447 x * -0.7458 x x * * 0.3601 + +
+     // len: 11 -0.1003 x x * x * x * * 0.5075 +
+    [DataRow(11, 11)]
 
-    // len: 12 0.4838 x * -0.02075 3.362 x * exp * 0.4133 + +
-    // len: 12 0.7164 x -2.483 x x * * exp * * 0.3524 +
-    // len: 12 -9.952e-08 x x * 15.25 x * exp * * 0.5049 +
+    // len: 12 0.4863 x * -0.02125 3.343 x * exp * 0.4136 + +
+    // len: 12 -0.01531 3.619 x * exp * 0.454 x * 0.4097 + +
+    // len: 12 -4.502e-05 x 9.221 x x * * exp * * 0.5049 +
+    // len: 12 -1.034e-07 x x * 15.21 x * exp * * 0.505 +
+    // len: 12 -8.504e-08 x 15.42 x * exp * x * * 0.5049 +
     [DataRow(12, 16)]
 
     public void OneDimensional(int maxLength, int expectedEvaluations) {

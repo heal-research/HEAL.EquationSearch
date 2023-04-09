@@ -3,6 +3,7 @@ namespace HEAL.EquationSearch {
 
   // TODO:
   // - persistence
+  // - CLI to run the algorithm for a CSV
   // - stop training anytime (returning best expression so far), and allow to continue running later
   // - Model evaluation results, AIC, BIC, MDL, ...
   // - Model archive or model selection based on MDL
