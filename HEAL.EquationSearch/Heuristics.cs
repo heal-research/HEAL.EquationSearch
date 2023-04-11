@@ -9,7 +9,7 @@
         expr = state.Grammar.MakeSentence(origExpr);
       }
 
-      if (expr.Length <= 1) return (float)state.Evaluator.Variance(state.Data.Target); // TODO: remove special case
+      if (expr.Length <= 1) return (float)Evaluator.Variance(state.Data.Target); // TODO: remove special case
       else {
         var quality = (float)state.Evaluator.OptimizeAndEvaluate(expr, state.Data);
         if (expr != origExpr) {

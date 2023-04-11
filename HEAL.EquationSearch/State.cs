@@ -52,7 +52,7 @@ namespace HEAL.EquationSearch {
           if (!quality.HasValue) {
             if (expression.Length == 1) {
               // the expression is a constant. TODO: remove special case and handle in Evaluator
-              quality = new MinimizeDouble(evaluator.Variance(data.Target));
+              quality = new MinimizeDouble(Evaluator.Variance(data.Target));
             } else {
               quality = new MinimizeDouble(evaluator.OptimizeAndEvaluate(expression, data));
             }

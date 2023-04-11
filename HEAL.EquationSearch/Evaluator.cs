@@ -81,7 +81,7 @@ namespace HEAL.EquationSearch {
     }
 
     // TODO: can be removed (only used in State to handle the special case of a constant expression)
-    internal double Variance(double[] y) {
+    internal static double Variance(double[] y) {
       var ym = y.Average();
       var variance = 0.0;
       for (int i = 0; i < y.Length; i++) {
@@ -93,7 +93,7 @@ namespace HEAL.EquationSearch {
 
 
     // TODO: for debugging only
-    private double CalculateMSE(double[] target, double[] pred) {
+    private static double CalculateMSE(double[] target, double[] pred) {
       var mse = 0.0;
       for (int i = 0; i < target.Length; i++) {
         var res = target[i] - pred[i];
@@ -178,7 +178,7 @@ namespace HEAL.EquationSearch {
     }
 
 
-    private int SymbolToOpCode(Grammar grammar, Grammar.Symbol symbol) {
+    private static int SymbolToOpCode(Grammar grammar, Grammar.Symbol symbol) {
       if (symbol == grammar.Plus) {
         return (int)OpCode.Add;
       } else if (symbol == grammar.Times) {

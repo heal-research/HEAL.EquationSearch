@@ -15,7 +15,6 @@ namespace HEAL.EquationSearch.Test {
     [DataRow(5, 1)] // p * x + p 
     [DataRow(7, 2)] // p * x * x + p
 
-    // p * x + p * x + p // should be prevented because of distributivity 
     // p * x * x * x + p
     [DataRow(9, 3)]
 
@@ -48,9 +47,7 @@ namespace HEAL.EquationSearch.Test {
     // 7 p * y * y + p
     [DataRow(7, 5)]
 
-    // p * x + p * x + p // should be prevented
     // p * x + p * y + p 
-    // p * y + p * y + p // should be prevented
     // p * x * x * x + p 
     // p * x * x * y + p
     // p * x * y * y + p
@@ -97,26 +94,25 @@ namespace HEAL.EquationSearch.Test {
     [DataRow(7, 2)] // -0.03922 x x * * 0.5021 +
     [DataRow(8, 3)] // len: 8 -0.1587 -8.429 x * exp * 0.5075 +
 
-    // len: 9 0 x * 0.009979 x * 0.4848 + +
     // len: 9 -0.07303 x x * x * * 0.5064 +
-    [DataRow(9, 5)]
+    [DataRow(9, 4)]
 
     // len: 10 -2.445e-05 9.84 x x * * exp * 0.5049 +
     // len: 10 -2.935e-08 x 16.48 x * exp * * 0.5049 +
-    [DataRow(10, 7)]
+    [DataRow(10, 6)]
 
      // len: 11 -0.0001243 -1.123 x * 1 + 1 / * 0.4938 +
      // len: 11 0.01543 -1.123 x * 1 + abs log * 0.5099 +
      // len: 11 0.7447 x * -0.7458 x x * * 0.3601 + +
      // len: 11 -0.1003 x x * x * x * * 0.5075 +
-    [DataRow(11, 11)]
+    [DataRow(11, 10)]
 
-    // len: 12 0.4863 x * -0.02125 3.343 x * exp * 0.4136 + +
-    // len: 12 -0.01531 3.619 x * exp * 0.454 x * 0.4097 + +
-    // len: 12 -4.502e-05 x 9.221 x x * * exp * * 0.5049 +
-    // len: 12 -1.034e-07 x x * 15.21 x * exp * * 0.505 +
-    // len: 12 -8.504e-08 x 15.42 x * exp * x * * 0.5049 +
-    [DataRow(12, 16)]
+
+    // len: 12  0.4674 x * -0.01764 3.499 x * exp * 0.4112 + +
+    // len: 12 -0.0003475 7.263 x x x * * * exp * 0.5052 +
+    // len: 12  0.7164 x -2.483 x x * * exp * * 0.3524 +
+    // len: 12 -1.028e-07 x x * 15.21 x * exp * * 0.505 +
+    [DataRow(12, 14)]
 
     public void OneDimensional(int maxLength, int expectedEvaluations) {
       var rand = new Random(1234);
@@ -151,26 +147,22 @@ namespace HEAL.EquationSearch.Test {
     // p p y * exp * p +
     [DataRow(8, 7)]
 
-    // p x * p x * p + +      // TODO: this should be prevented because of distributivity
     // p x * p y * p + +
-    // p y * p y * p + +     // TODO: this should be prevented because of distributivity
-
     // p x x * x * * p +
     // p x x * y * * p +
     // p x y * y * * p +
     // p y y * y * * p +
-    [DataRow(9, 14)]
+    [DataRow(9, 12)]
 
     // p p x x * * exp * p +
     // p p x y * * exp * p +
     // p p y y * * exp * p +
-    // p p y x * * exp * p +  // TODO should be prevented (commutativity in factors)
 
     // p x p x * exp * * p +
     // p x p y * exp * * p +
+    // p y p x * exp * * p +
     // p y p y * exp * * p +
-    // p y p x * exp * * p + // TODO should be prevented (commutativity in factors)
-    [DataRow(10, 20)]
+    [DataRow(10, 19)]
 
     // p p x * 1 + 1 / * p +
     // p p y * 1 + 1 / * p +
@@ -190,28 +182,29 @@ namespace HEAL.EquationSearch.Test {
     // p x y * y * y * * p +
     // p x y * y * y * * p +
     // p y y * y * y * * p +
-    [DataRow(11, 36)]
+    [DataRow(11, 34)]
 
     // p x * p p x * exp * p + +
     // p x * p p y * exp * p + +
+    // p y * p p x * exp * p + +
     // p y * p p y * exp * p + +
-
-    // p p x x * x * * exp * p +
-    // p p x x * y * * exp * p +
-    // p p x y * y * * exp * p +
-    // p p y y * y * * exp * p +
-
+    // p p x x x * * * exp * p +
+    // p p x x y * * * exp * p +
+    // p p x y y * * * exp * p +
+    // p p y y y * * * exp * p +
     // p x p x x * * exp * * p +
     // p x p x y * * exp * * p +
     // p x p y y * * exp * * p +
+    // p y p x x * * exp * * p +
+    // p y p x y * * exp * * p +
     // p y p y y * * exp * * p +
-
-
     // p x x * p x * exp * * p +
     // p x x * p y * exp * * p +
+    // p x y * p x * exp * * p +
     // p x y * p y * exp * * p +
+    // p y y * p x * exp * * p +
     // p y y * p y * exp * * p +
-    [DataRow(12, 51)]
+    [DataRow(12, 54)]
 
     public void TwoDimensional(int maxLength, int expectedEvaluations) {
       var rand = new Random(1234);
