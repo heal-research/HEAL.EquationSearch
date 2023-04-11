@@ -5,7 +5,7 @@ namespace HEAL.EquationSearch {
   /// <summary>
   /// Most important class for Treesearchlib. This class defines the search tree (via the grammar)
   /// </summary>
-  internal class State : IState<State, MinimizeDouble> {
+  public class State : IState<State, MinimizeDouble> {
     private readonly Data data;
     private readonly int maxLength;
     private readonly Grammar grammar;
@@ -93,6 +93,10 @@ namespace HEAL.EquationSearch {
     public override string ToString() {
       if (expression.IsSentence) return expression.ToInfixString();
       else return expression.ToString() ?? "<empty>";
+    }
+
+    internal ulong GetHashValue() {
+      return Semantics.GetHashValue(expression);
     }
   }
 }

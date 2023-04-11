@@ -22,14 +22,16 @@ namespace HEAL.EquationSearch {
       var data = new Data(varNames, x, y);
       var evaluator = new Evaluator();
       var cts = CancellationTokenSource.CreateLinkedTokenSource(token);
-      var control = SearchControl<State, MinimizeDouble>.Start(new State(data, maxLength, grammar, evaluator))
+      var control = GraphSearchControl.Start(new State(data, maxLength, grammar, evaluator))
         .WithCancellationToken(cts.Token)
         .WithImprovementCallback((ctrl, state, quality) => {
           Console.WriteLine($"Found new best solution with {quality} after {ctrl.Elapsed} {ctrl.BestQualityState}");
           if (quality.Value < earlyStopQuality) cts.Cancel(); // early stopping
-        })
-        .BeamSearch(beamWidth: 20000, Heuristics.PartialMSE /*, depthLimit: depthLimit*/);
-      // .BreadthFirst();
+        });
+
+      // Algorithms.BreadthSearch(control, control.InitialState, depth: 0, filterWidth: int.MaxValue, depthLimit: int.MaxValue, nodesReached: int.MaxValue);
+      TreesearchLib.Heuristics.BeamSearch(control, new PriorityBiLevelFIFOCollection<State>(control.InitialState), depth: 0, beamWidth: 1000, Heuristics.PartialMSE, filterWidth: int.MaxValue, depthLimit: int.MaxValue);
+
 
       if (control.BestQuality != null) {
         Console.WriteLine($"Quality: {control.BestQuality} nodes: {control.VisitedNodes} ({(control.VisitedNodes / control.Elapsed.TotalSeconds):F2} nodes/sec)\n" +

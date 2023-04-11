@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
 
 namespace HEAL.EquationSearch {
-  internal class Evaluator {
+  public class Evaluator {
     public long OptimizedExpressions => exprQualities.Count;
     public long EvaluatedExpressions = 0;
 
@@ -52,15 +52,6 @@ namespace HEAL.EquationSearch {
 
         mse = summary.FinalCost * 2 / data.Rows;
 
-
-#if DEBUG
-        // double check result
-        var evalMSE = CalculateMSE(data.Target, Evaluate(expr, data));
-        var relAbsErr = Math.Abs((mse - evalMSE) / mse);
-        // notify user if there is an error larger than 0.1%
-        if (relAbsErr > 1e-3)
-          System.Console.Error.WriteLine($"Evaluation of optimized expression returns {100 * relAbsErr}% different result {evalMSE} than VarPro {mse}.");
-#endif
 
       } else {
         return double.MaxValue; // optimization failed

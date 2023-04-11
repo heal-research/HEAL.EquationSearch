@@ -2,7 +2,7 @@
   /// <summary>
   /// Input and target vectors in column-oriented format. Vector for each variable can be accessed via its name.
   /// </summary>
-  internal class Data {
+  public class Data {
     private readonly Dictionary<string, double[]> values = new Dictionary<string, double[]>();
     public int Rows { get; }
     public int[] AllRowIdx { get; }
