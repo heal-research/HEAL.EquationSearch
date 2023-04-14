@@ -63,7 +63,7 @@
 
       rules[Term] = new List<Symbol[]>() {
         new Symbol[] { Factor },
-        new Symbol[] { Term, Factor, Times },
+        new Symbol[] { Factor, Term, Times },
       };
 
       // every variable is an alternative
@@ -90,7 +90,7 @@
 
       rules[Term] = new List<Symbol[]>() {
         new Symbol[] { Factor },
-        new Symbol[] { Term, Factor, Times },
+        new Symbol[] { Factor, Term, Times },
       };
 
       // every variable is an alternative
@@ -101,8 +101,8 @@
 
 
       rules[PolyExpr] = new List<Symbol[]>() {
-        new Symbol[] { Parameter, Term, Times, One, Plus }, // param * Term + 1
-        new Symbol[] { Parameter, Term, Times, PolyExpr, Plus }, // param * Term + LogExpr
+        new Symbol[] { Parameter, PolyTerm, Times, One, Plus }, // param * Term + 1
+        new Symbol[] { Parameter, PolyTerm, Times, PolyExpr, Plus }, // param * Term + LogExpr
       };
 
       rules[PolyTerm] = new List<Symbol[]>() {
