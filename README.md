@@ -25,7 +25,7 @@ Term -> Fact | Fact * Term
 Fact -> var_1 | ... | var_n
         | 1 / ( PolyExpr )
         | log ( abs ( PolyExpr ) )
-        | exp(param * Term)
+        | exp(param * PolyTerm)
 PolyExpr -> param * PolyTerm + 1 | param * PolyTerm + PolyExpr
 PolyTerm -> PolyFact | PolyFact * PolyTerm
 PolyFact -> var_1 | ... | var_n
