@@ -114,12 +114,12 @@ namespace HEAL.EquationSearch {
           if (IsAssociative(expr.Grammar, expr[parentIndex]) && expr[parentIndex] == expr[c]) {
             GetChildrenRec(children, c);
           } else {
-            children.Insert(0, new HashNode(expr, lengths, start: c - lengths[c] + 1, end: c)); // TODO: perf  
+            children.Add(new HashNode(expr, lengths, start: c - lengths[c] + 1, end: c));
           }
           c = c - lengths[c];
         }
         if (expr[parentIndex].Arity == 0) {
-          children.Insert(0, new HashNode(expr, lengths, start: parentIndex - lengths[parentIndex] + 1, end: parentIndex)); // TODO: perf  
+          children.Add(new HashNode(expr, lengths, start: parentIndex - lengths[parentIndex] + 1, end: parentIndex));
         }
       }
 
