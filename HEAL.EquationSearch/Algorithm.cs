@@ -3,8 +3,11 @@ namespace HEAL.EquationSearch {
 
   // TODO:
   // - persistence
+  // - Parallelization for GraphSearchControl
   // - CLI to run the algorithm for a CSV
   // - stop training anytime (returning best expression so far), and allow to continue running later
+  // - Heuristic value and quality value: MDL
+  // - Best-first search implementation in Treesearchlib
   // - Model evaluation results, AIC, BIC, MDL, ...
   // - Model archive or model selection based on MDL
   // - Connection to HEAL.NLR for simplification, prediction intervals, MDL, ...
@@ -29,7 +32,7 @@ namespace HEAL.EquationSearch {
           if (quality.Value < earlyStopQuality) cts.Cancel(); // early stopping
         });
 
-      // Algorithms.BreadthSearch(control, control.InitialState, depth: 0, filterWidth: int.MaxValue, depthLimit: int.MaxValue, nodesReached: int.MaxValue);
+      // ConcurrentAlgorithms.ParallelBreadthSearch(control, control.InitialState, depth: 0, filterWidth: int.MaxValue, depthLimit: int.MaxValue, maxDegreeOfParallelism: 16 /*, nodesReached: int.MaxValue*/);
       TreesearchLib.Heuristics.BeamSearch(control, new PriorityBiLevelFIFOCollection<State>(control.InitialState), depth: 0, beamWidth: 1000, Heuristics.PartialMSE, filterWidth: int.MaxValue, depthLimit: int.MaxValue);
 
 

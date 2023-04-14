@@ -78,6 +78,8 @@ namespace HEAL.EquationSearch {
         .Where(expr => expr.Length <= maxLength)
         .Select(expr => {
           var newState = new State(data, maxLength, grammar, expr, evaluator);
+
+
           // TODO: this is true only when the quality solely depends on the error (and does not include length of the expression)
           // if the number of parameters in the original expression and the new expression is the same
           // then the quality of the state is the same.
@@ -88,6 +90,7 @@ namespace HEAL.EquationSearch {
           }
           return newState;
         });
+      // TODO: order by heuristic value
     }
 
     public override string ToString() {
