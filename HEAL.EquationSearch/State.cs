@@ -50,12 +50,7 @@ namespace HEAL.EquationSearch {
       get {
         if (expression.IsSentence) {
           if (!quality.HasValue) {
-            if (expression.Length == 1) {
-              // the expression is a constant. TODO: remove special case and handle in Evaluator
-              quality = new MinimizeDouble(Evaluator.Variance(data.Target));
-            } else {
-              quality = new MinimizeDouble(evaluator.OptimizeAndEvaluate(expression, data));
-            }
+            quality = new MinimizeDouble(evaluator.OptimizeAndEvaluate(expression, data));
           }
           return quality;
         } else {
@@ -85,7 +80,7 @@ namespace HEAL.EquationSearch {
           // then the quality of the state is the same.
           // We could actually link the quality (use the same object). If one of the states is evaluated, all equivalent states are evaluated.
           // TODO: in general we could have a shared hashtable of qualities that is used for all expressions that are semantically the same (same semantic hash).
-          if(this.Quality != null && expression.Count(sy => sy is Grammar.ParameterSymbol) == expr.Count(sy => sy is Grammar.ParameterSymbol)) {
+          if (this.Quality != null && expression.Count(sy => sy is Grammar.ParameterSymbol) == expr.Count(sy => sy is Grammar.ParameterSymbol)) {
             newState.Quality = this.Quality;
           }
           return newState;

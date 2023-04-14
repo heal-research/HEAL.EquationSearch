@@ -27,6 +27,9 @@ namespace HEAL.EquationSearch {
       // compile all terms individually
       var code = CompileTerms(expr, terms, data, out var termIdx, out var paramIdx);
 
+      // no terms for which to optimize parameters -> return MSE of constant model
+      if (termIdx.Count == 0) return Variance(data.Target);
+
       var result = new double[data.Rows];
 
       var mse = double.MaxValue;
@@ -108,12 +111,14 @@ namespace HEAL.EquationSearch {
       paramSyIdx = new List<(int, int)>();
       int codeIdx = 0;
       foreach (var (start, end) in terms) {
+        var containsVariable = false;
         // requires a postfix representation
         for (int exprIdx = start; exprIdx <= end; exprIdx++) {
           var curSy = expr[exprIdx];
           code[codeIdx] = new NativeInstruction { Arity = curSy.Arity, OpCode = SymbolToOpCode(expr.Grammar, curSy), Length = 1, Optimize = 0, Coeff = 1.0 };
           if (curSy is Grammar.VariableSymbol varSy) {
             code[codeIdx].Data = cachedDataHandles[varSy.VariableName].AddrOfPinnedObject();
+            containsVariable |= true;
           } else if (curSy is Grammar.ParameterSymbol paramSy) {
             code[codeIdx].Coeff = paramSy.Value;
             code[codeIdx].Optimize = 1;
@@ -130,7 +135,10 @@ namespace HEAL.EquationSearch {
           }
           codeIdx++;
         }
-        termIdx.Add(codeIdx - 1);
+        // remove constant terms because VarPro will be unstable otherwise
+        if (containsVariable) {
+          termIdx.Add(codeIdx - 1);
+        }
       }
 
       return code;
