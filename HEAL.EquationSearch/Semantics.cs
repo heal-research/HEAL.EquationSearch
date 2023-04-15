@@ -123,7 +123,10 @@ namespace HEAL.EquationSearch {
       }
 
       internal ulong CalculateHashValue() {
-        var hashValues = Children.Select(ch => ch.HashValue).ToArray();
+        var hashValues = new ulong[children.Count];
+        for (int i = 0; i < children.Count; i++) {
+          hashValues[i] = children[i].HashValue;
+        }
         return Hash.JSHash(hashValues, (ulong)expr[end].GetHashCode()); // hash values of children, followed by hash value of current symbol
       }
 

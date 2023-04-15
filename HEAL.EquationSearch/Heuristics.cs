@@ -12,7 +12,6 @@
       var quality = (float)state.Evaluator.OptimizeAndEvaluate(expr, state.Data);
       if (expr != origExpr) {
         // write back optimized parameters
-        // Here we assume that there are no parameters after non-terminals (Assertion in ReplaceAllNtWithParameter)
         for (int i = 0; i < origExpr.Length; i++) {
           if (origExpr[i] is Grammar.ParameterSymbol origParamSy) {
             origParamSy.Value = ((Grammar.ParameterSymbol)expr[i]).Value;

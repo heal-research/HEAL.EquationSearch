@@ -1,5 +1,4 @@
 ﻿using HEAL.NativeInterpreter;
-using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
 
 namespace HEAL.EquationSearch {
@@ -8,7 +7,7 @@ namespace HEAL.EquationSearch {
     public long EvaluatedExpressions = 0;
 
     // TODO: this should not be necessary
-    public ConcurrentDictionary<ulong, double> exprQualities = new ConcurrentDictionary<ulong, double>();
+    public NonBlocking.ConcurrentDictionary<ulong, double> exprQualities = new();
 
     // TODO: make iterations configurable
     internal double OptimizeAndEvaluate(Expression expr, Data data, int iterations = 10) {
@@ -29,7 +28,7 @@ namespace HEAL.EquationSearch {
       var code = CompileTerms(expr, terms, data, out var termIdx, out var paramIdx);
 
       // no terms for which to optimize parameters -> return MSE of constant model
-      if (termIdx.Count == 0) return Variance(data.Target);
+      if (termIdx.Count == 0) { return Variance(data.Target); }
 
       var result = new double[data.Rows];
 
@@ -37,7 +36,6 @@ namespace HEAL.EquationSearch {
       // optimize parameters
 
       var solverOptions = new SolverOptions() { Iterations = iterations, Algorithm = 1 };
-      // NativeWrapper.Optimize(code, data.AllRowIdx, data.Target, data.Weights, solverOptions, result, out SolverSummary summary);
 
       var coeff = new double[coeffIndexes.Count];
       NativeWrapper.OptimizeVarPro(code, termIdx.ToArray(), data.AllRowIdx, data.Target, data.Weights, coeff, solverOptions, result, out var summary);

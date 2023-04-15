@@ -53,13 +53,13 @@ namespace HEAL.EquationSearch {
         if (expression.IsSentence) {
           quality = new MinimizeDouble(evaluator.OptimizeAndEvaluate(expression, data));
           return quality;
-        }
+        } 
 
         return null;
       }
       set {
         // Heuristics are allowed to set the quality of the state (to prevent duplicate evaluation)
-        this.quality = value;
+        quality = value;
       }
     }
 
@@ -71,11 +71,8 @@ namespace HEAL.EquationSearch {
     public IEnumerable<State> GetBranches() {
       return Grammar.CreateAllDerivations(expression)
         .Where(expr => expr.Length <= maxLength)
-        .Select(expr => {
-          var newState = new State(data, maxLength, grammar, expr, evaluator);
+        .Select(expr => new State(data, maxLength, grammar, expr, evaluator));
 
-          return newState;
-        });
       // TODO: order by heuristic value?
     }
 
