@@ -48,14 +48,14 @@ namespace HEAL.EquationSearch {
     private MinimizeDouble? quality = null; // cache quality to prevent duplicate evaluation (TODO: useful?)
     public MinimizeDouble? Quality {
       get {
+        if (quality.HasValue) return quality;
+
         if (expression.IsSentence) {
-          if (!quality.HasValue) {
-            quality = new MinimizeDouble(evaluator.OptimizeAndEvaluate(expression, data));
-          }
+          quality = new MinimizeDouble(evaluator.OptimizeAndEvaluate(expression, data));
           return quality;
-        } else {
-          return null;
         }
+
+        return null;
       }
       set {
         // Heuristics are allowed to set the quality of the state (to prevent duplicate evaluation)
@@ -74,18 +74,9 @@ namespace HEAL.EquationSearch {
         .Select(expr => {
           var newState = new State(data, maxLength, grammar, expr, evaluator);
 
-
-          // TODO: this is true only when the quality solely depends on the error (and does not include length of the expression)
-          // if the number of parameters in the original expression and the new expression is the same
-          // then the quality of the state is the same.
-          // We could actually link the quality (use the same object). If one of the states is evaluated, all equivalent states are evaluated.
-          // TODO: in general we could have a shared hashtable of qualities that is used for all expressions that are semantically the same (same semantic hash).
-          if (this.Quality != null && expression.Count(sy => sy is Grammar.ParameterSymbol) == expr.Count(sy => sy is Grammar.ParameterSymbol)) {
-            newState.Quality = this.Quality;
-          }
           return newState;
         });
-      // TODO: order by heuristic value
+      // TODO: order by heuristic value?
     }
 
     public override string ToString() {
