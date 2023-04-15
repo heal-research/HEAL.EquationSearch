@@ -1,9 +1,9 @@
-﻿using HEAL.NativeInterpreter;
-using System.Collections;
+﻿using System.Collections;
 
 namespace HEAL.EquationSearch {
   public class Expression : IEnumerable<Grammar.Symbol> {
     private readonly Grammar.Symbol[] syString;
+    public Grammar.Symbol[] SymbolString => syString;
     public Grammar.Symbol this[int pos] {
       get => syString[pos];
     }
@@ -17,35 +17,8 @@ namespace HEAL.EquationSearch {
 
     public Grammar Grammar { get; internal set; }
 
-    public int FirstIndexOfNT() {
+    private int FirstIndexOfNT() {
       return Array.FindIndex(syString, sy => sy.IsNonterminal);
-    }
-
-    // returns a new expression with the symbol at pos replaced with syString
-    public Expression Replace(int pos, Grammar.Symbol[] replSyString) {
-
-      var newSyString = new Grammar.Symbol[syString.Length - 1 + replSyString.Length];
-
-      // terminalClassSymbols must be cloned
-      int j = 0;
-      for (int i = 0; i < pos; i++) { newSyString[j++] = syString[i].Clone(); }
-
-      // copy replacement
-      for (int i = 0; i < replSyString.Length; i++) {
-        newSyString[j] = replSyString[i].Clone();
-
-        // if the replacement contains parameters they are initialized randomly
-        
-        // TODO: use of shared random is problematic because of non-determinism and synchronization overhead
-        if (newSyString[j] is Grammar.ParameterSymbol paramSy) {
-          paramSy.Value = Random.Shared.NextDouble() * 2 - 1; // uniform(-1,1)
-        }
-        j++;
-      }
-
-      for (int i = pos + 1; i < syString.Length; i++) { newSyString[j++] = syString[i].Clone(); }
-
-      return new Expression(Grammar, newSyString);
     }
 
     internal void UpdateCoefficients(int[] idx, double[] coeff) {

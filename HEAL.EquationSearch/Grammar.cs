@@ -1,4 +1,6 @@
-﻿namespace HEAL.EquationSearch {
+﻿using System.Text;
+
+namespace HEAL.EquationSearch {
   public class Grammar {
     public Symbol Start => Expr;
 
@@ -57,9 +59,8 @@
       // Term -> Fact | Fact * Term 
       // Fact -> var_1 | ... | var_n
 
-      // The following expanded version ensures that each expansion always adds at least one variable. This removes intermediate states.
-      // TODO: this expansion could potentially be created automatically from the base grammar definition.
-
+      // The following expanded version ensures that each expansion always adds at least one variable.
+      // This removes intermediate states.
       // Expr -> param 
       //         | param * (var_1 | ... | var_n) + Expr
       //         | param * (var_1 | ... | var_n) * Term + Expr
@@ -69,24 +70,28 @@
       // evaluator requires a postfix representation 
       rules[Expr] = new List<Symbol[]>() {
         new Symbol[] { Parameter }, // p
+        new Symbol[] { Parameter, Term, Times, Expr, Plus}, //  p * Term + Expr
       };
-      rules[Expr].AddRange(Variables.Select(varSy => new Symbol[] { Parameter, varSy, Times, Expr, Plus }));
-      rules[Expr].AddRange(Variables.Select(varSy => new Symbol[] { Parameter, varSy, Term, Times, Times, Expr, Plus }));
 
-      rules[Term] = new List<Symbol[]>();
-      rules[Term].AddRange(Variables.Select(varSy => new Symbol[] { varSy }));
-      rules[Term].AddRange(Variables.Select(varSy => new Symbol[] { varSy, Term, Times }));
+      rules[Term] = new List<Symbol[]>() {
+        new Symbol[] { Factor },
+        new Symbol[] { Factor, Term, Times },
+      };
+
+      rules[Factor] = Variables.Select(varSy => new Symbol[] { varSy }).ToList();
+      
+      ExpandRules();
     }
 
     public void UseFullRules() {
-
-      // Expr -> param | param * Term + Expr                              // Term in Expr limitiert (Terme lexikographisch sortiert nach Faktoren)
-      // Term -> Fact | Fact * Term                                       // Fact in Term limitiert (Faktoren in Term nach Alternative sortiert)
+      // Grammar:
+      // Expr -> param | param * Term + Expr
+      // Term -> Fact | Fact * Term
       // Fact -> var_1 | ... | var_n
-      //         | 1 / ( PolyExprOne )
-      //         | log ( abs ( PolyExprOne ) )
-      //         | exp(param * PolyTerm)
-      //         | cos(PolyExpr)
+      //         | 1 / '(' PolyExprOne ')'
+      //         | log '(' abs '(' PolyExprOne ')' ')'
+      //         | exp '(' param * PolyTerm ')'
+      //         | cos '(' PolyExpr ')'
       // PolyExpr    -> param * PolyTerm + param | param * PolyTerm + PolyExpr  // with intercept param
       // PolyExprOne -> param * PolyTerm + 1 | param * PolyTerm + PolyExprOne   // with constant one intercept
       // PolyTerm -> PolyFact | PolyFact * PolyTerm
@@ -130,17 +135,82 @@
 
       // every variable is an alternative
       rules[PolyFactor] = Variables.Select(varSy => new Symbol[] { varSy }).ToList();
+
+      ExpandRules();
     }
 
-    internal IEnumerable<Expression> CreateAllDerivations(Expression expression) {
+    private void ExpandRules() {
+      // Console.WriteLine($"Before expansion: {this}");
 
-      var idx = expression.FirstIndexOfNT();
+      // We want to ensure that each derivation introduces a new variables reference (to save intermediate states)
+      // For this we expand the rules until each rule contains a variable reference.
+      // This also ensures that our rules do not allow endless expansions.
+      var changed = true;
+      while (changed) {
+        changed = false;
+        // we iterate the NTs in reverse order (bottom up) for efficiency but the algorithm should work for any order
+        foreach (var ntSy in Nonterminals.Reverse()) {
+          var alternatives = rules[ntSy];
+
+          // go over all alternatives (including the newly introduced ones)
+          var altIdx = 0;
+          while (altIdx < alternatives.Count) {
+            var alt = alternatives[altIdx];
+            var ntIdx = Array.FindIndex(alt, sy => sy.IsNonterminal);
+            var varIdx = Array.FindIndex(alt, sy => sy is VariableSymbol);
+            // expand if a rule contains an NT but no variable reference
+            if (ntIdx >= 0 && varIdx < 0) {
+              // replace the existing alternative with all derivations
+              alternatives.RemoveAt(altIdx);
+              alternatives.InsertRange(altIdx, CreateAllDerivations(alt));
+              changed |= true;
+            } else {
+              altIdx++;
+            }
+          }
+        }
+      }
+
+      // Console.WriteLine($"After expansion: {this}");
+    }
+    internal int FirstIndexOfNT(Symbol[] syString) => Array.FindIndex(syString, sy => sy.IsNonterminal);
+    internal IEnumerable<Symbol[]> CreateAllDerivations(Symbol[] syString) {
+
+      var idx = FirstIndexOfNT(syString);
       if (idx < 0) yield break;
-      foreach (var alternative in rules[expression[idx]]) {
-        yield return expression.Replace(idx, alternative);
+      foreach (var alternative in rules[syString[idx]]) {
+        yield return Replace(syString, idx, alternative);
       }
     }
+    internal IEnumerable<Expression> CreateAllDerivations(Expression expression) =>
+      CreateAllDerivations(expression.SymbolString).Select(newStr => new Expression(this, newStr));
 
+    // returns a new string with the symbol at pos replaced with replSyString
+    public Symbol[] Replace(Symbol[] syString, int pos, Symbol[] replSyString) {
+
+      var newSyString = new Symbol[syString.Length - 1 + replSyString.Length];
+
+      // terminalClassSymbols must be cloned
+      int j = 0;
+      for (int i = 0; i < pos; i++) { newSyString[j++] = syString[i].Clone(); }
+
+      // copy replacement
+      for (int i = 0; i < replSyString.Length; i++) {
+        newSyString[j] = replSyString[i].Clone();
+
+        // if the replacement contains parameters they are initialized randomly
+
+        // TODO: use of shared random is problematic because of non-determinism and synchronization overhead
+        if (newSyString[j] is ParameterSymbol paramSy) {
+          paramSy.Value = Random.Shared.NextDouble() * 2 - 1; // uniform(-1,1)
+        }
+        j++;
+      }
+
+      for (int i = pos + 1; i < syString.Length; i++) { newSyString[j++] = syString[i].Clone(); }
+
+      return newSyString;
+    }
 
     // For heuristics we replace all NT-symbols with a T-symbol to allow evaluation.
     // TODO: necessary? Better solution possible?
@@ -157,12 +227,25 @@
 
     internal Expression MakeSentence(Expression expr) {
       // Takes an unfinished expression and replaces all NTs with their defaults to make a sentence.
-      var ntIdx = expr.FirstIndexOfNT();
+      var syString = expr.SymbolString;
+      var ntIdx = FirstIndexOfNT(syString);
       while (ntIdx >= 0) {
-        expr = expr.Replace(ntIdx, GetDefaultReplacement(expr[ntIdx]));
-        ntIdx = expr.FirstIndexOfNT();
+        syString = Replace(syString, ntIdx, GetDefaultReplacement(syString[ntIdx]));
+        ntIdx = FirstIndexOfNT(syString);
       }
-      return expr;
+      return new Expression(this, syString);
+    }
+
+    // for debugging
+    public override string ToString() {
+      var sb = new StringBuilder();
+      sb.AppendLine("G:");
+      foreach (var ntSy in Nonterminals) {
+        foreach (var alternative in rules[ntSy]) {
+          sb.AppendLine($"{ntSy,-20} -> {string.Join(" ", alternative.Select(sy => sy.ToString()))}");
+        }
+      }
+      return sb.ToString();
     }
 
 
