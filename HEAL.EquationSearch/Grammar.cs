@@ -50,24 +50,30 @@
     }
 
     public void UsePolynomialRules() {
-
+      // Original grammar definition:
       // Expr -> param | param * Term + Expr
       // Term -> Fact | Fact * Term 
       // Fact -> var_1 | ... | var_n
 
+      // The following expanded version ensures that each expansion always adds at least one variable. This removes intermediate states.
+      // TODO: this expansion could potentially be created automatically from the base grammar definition.
+
+      // Expr -> param 
+      //         | param * (var_1 | ... | var_n) + Expr
+      //         | param * (var_1 | ... | var_n) * Term + Expr
+      // Term -> var_1 | ... | var_n
+      //         | (var_1 | ... | var_n) * Term 
+
       // evaluator requires a postfix representation 
       rules[Expr] = new List<Symbol[]>() {
         new Symbol[] { Parameter }, // p
-        new Symbol[] { Parameter, Term, Times, Expr, Plus }, // p * Term + Expr
       };
+      rules[Expr].AddRange(Variables.Select(varSy => new Symbol[] { Parameter, varSy, Times, Expr, Plus }));
+      rules[Expr].AddRange(Variables.Select(varSy => new Symbol[] { Parameter, varSy, Term, Times, Times, Expr, Plus }));
 
-      rules[Term] = new List<Symbol[]>() {
-        new Symbol[] { Factor },
-        new Symbol[] { Factor, Term, Times },
-      };
-
-      // every variable is an alternative
-      rules[Factor] = Variables.Select(varSy => new Symbol[] { varSy }).ToList();
+      rules[Term] = new List<Symbol[]>();
+      rules[Term].AddRange(Variables.Select(varSy => new Symbol[] { varSy }));
+      rules[Term].AddRange(Variables.Select(varSy => new Symbol[] { varSy, Term, Times }));
     }
 
     public void UseFullRules() {
@@ -140,14 +146,6 @@
     internal Expression MakeSentence(Expression expr) {
       // Takes an unfinished expression and replaces all NTs with their defaults to make a sentence.
       var ntIdx = expr.FirstIndexOfNT();
-#if DEBUG
-      // ASSERT: no parameter after the first NT
-      if (ntIdx >= 0) {
-        for (int i = ntIdx; i < expr.Length; i++) {
-          if (expr[i] is Grammar.ParameterSymbol) throw new InvalidProgramException();
-        }
-      }
-#endif
       while (ntIdx >= 0) {
         expr = expr.Replace(ntIdx, GetDefaultReplacement(expr[ntIdx]));
         ntIdx = expr.FirstIndexOfNT();
