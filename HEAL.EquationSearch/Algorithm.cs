@@ -4,6 +4,8 @@ namespace HEAL.EquationSearch {
   // TODO:
   // - persistence
   // - Parallelization for GraphSearchControl
+  // - Use NonBlocking (nuget) dictionary for semantic state deduplication
+  // - Improve performance of semantic hashing (main bottleneck besides evaluation).
   // - CLI to run the algorithm for a CSV
   // - stop training anytime (returning best expression so far), and allow to continue running later
   // - Heuristic value and quality value: MDL
