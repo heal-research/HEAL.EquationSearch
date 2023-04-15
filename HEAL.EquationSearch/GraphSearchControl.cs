@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using TreesearchLib;
 
 namespace HEAL.EquationSearch {
@@ -16,7 +15,7 @@ namespace HEAL.EquationSearch {
       Cancellation = CancellationToken.None;
       Runtime = TimeSpan.MaxValue;
       NodeLimit = long.MaxValue;
-      visitedNodesSet = new ConcurrentDictionary<ulong, ulong>();
+      visitedNodesSet = new NonBlocking.ConcurrentDictionary<ulong, byte>();
     }
 
     private readonly Stopwatch stopwatch;
@@ -32,9 +31,10 @@ namespace HEAL.EquationSearch {
     public CancellationToken Cancellation { get; set; }
     public long NodeLimit { get; set; }
 
-    private readonly ConcurrentDictionary<ulong, ulong> visitedNodesSet; // a set would be sufficient, TODO: do we need concurrency here?
+    private NonBlocking.ConcurrentDictionary<ulong,byte> visitedNodesSet; // a set would be sufficient, TODO: do we need concurrency here?
 
-    public long VisitedNodes => visitedNodesSet.Count;
+    private long visitedNodes = 0;
+    public long VisitedNodes => visitedNodes; // this is the number of discarded + evaluated nodes
 
     public bool IsFinished => !stopwatch.IsRunning;
 
@@ -53,8 +53,9 @@ namespace HEAL.EquationSearch {
     }
 
     public VisitResult VisitNode(State state) {
+      visitedNodes++;
       var hash = state.GetHashValue();
-      if (!visitedNodesSet.TryAdd(hash, hash)) {
+      if (!visitedNodesSet.TryAdd(hash, 0)) {
         return VisitResult.Discard;
       } else {
 
@@ -82,13 +83,31 @@ namespace HEAL.EquationSearch {
         }
       }
       var otherGraphSearchControl = other as GraphSearchControl;
+      
       foreach (var tup in otherGraphSearchControl.visitedNodesSet) {
         visitedNodesSet.TryAdd(tup.Key, tup.Value);
       }
+      visitedNodes += other.VisitedNodes;
     }
 
     public static GraphSearchControl Start(State state) {
       return new GraphSearchControl(state);
+    }
+
+    public ISearchControl<State, MinimizeDouble> Fork(State state, bool withBestQuality, TimeSpan? maxTimeLimit = null) {
+      var fork = new GraphSearchControl(state);
+      fork.visitedNodesSet = visitedNodesSet; // we have to use the same (thread-safe!) set for de-duplication of states across threads
+      fork.NodeLimit = NodeLimit - VisitedNodes;
+      fork.Cancellation = Cancellation;
+      fork.Runtime = Runtime - stopwatch.Elapsed;
+      if (maxTimeLimit.HasValue && maxTimeLimit < fork.Runtime) {
+        fork.Runtime = maxTimeLimit.Value;
+      }
+      if (withBestQuality) {
+        fork.BestQuality = BestQuality;
+        fork.BestQualityState = BestQualityState;
+      }
+      return fork;
     }
   }
 
