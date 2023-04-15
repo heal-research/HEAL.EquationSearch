@@ -6,14 +6,14 @@
       get {
         return new[] { One, Parameter }
                      .Concat(Variables)
-                     .Concat(new[] { Plus, Times, Abs, Log, Exp, Div })
+                     .Concat(new[] { Plus, Times, Div, Abs, Log, Exp, Cos })
                      .Concat(Nonterminals);
       }
     }
 
     public IEnumerable<Symbol> Nonterminals {
       get {
-        return new[] { Expr, Term, Factor, PolyExpr, PolyTerm, PolyFactor };
+        return new[] { Expr, Term, Factor, PolyExpr, PolyExprOne, PolyTerm, PolyFactor };
       }
     }
 
@@ -21,7 +21,8 @@
     public Symbol Expr = new Symbol("Expr");
     public Symbol Term = new Symbol("Term");
     public Symbol Factor = new Symbol("Factor");
-    public Symbol PolyExpr = new Symbol("PolyExpr"); // allowed within log() and 1/()
+    public Symbol PolyExpr = new Symbol("PolyExpr"); // allowed within cos()
+    public Symbol PolyExprOne = new Symbol("PolyExprOne"); // allowed within log() and 1/()
     public Symbol PolyTerm = new Symbol("PolyTerm"); // allowed within exp()
     public Symbol PolyFactor = new Symbol("PolyFactor");
 
@@ -32,6 +33,7 @@
     public Symbol Exp = new Symbol("exp", arity: 1);
     public Symbol Log = new Symbol("log", arity: 1);
     public Symbol Abs = new Symbol("abs", arity: 1);
+    public Symbol Cos = new Symbol("cos", arity: 1);
 
     public Symbol One = new ConstantSymbol(1.0);
     public Symbol Parameter = new ParameterSymbol(0.0);
@@ -81,10 +83,12 @@
       // Expr -> param | param * Term + Expr                              // Term in Expr limitiert (Terme lexikographisch sortiert nach Faktoren)
       // Term -> Fact | Fact * Term                                       // Fact in Term limitiert (Faktoren in Term nach Alternative sortiert)
       // Fact -> var_1 | ... | var_n
-      //         | 1 / ( PolyExpr )
-      //         | log ( abs ( PolyExpr ) )
+      //         | 1 / ( PolyExprOne )
+      //         | log ( abs ( PolyExprOne ) )
       //         | exp(param * PolyTerm)
-      // PolyExpr -> param * PolyTerm + 1 | param * PolyTerm + PolyExpr
+      //         | cos(PolyExpr)
+      // PolyExpr    -> param * PolyTerm + param | param * PolyTerm + PolyExpr  // with intercept param
+      // PolyExprOne -> param * PolyTerm + 1 | param * PolyTerm + PolyExprOne   // with constant one intercept
       // PolyTerm -> PolyFact | PolyFact * PolyTerm
       // PolyFact -> var_1 | ... | var_n
 
@@ -101,14 +105,22 @@
 
       // every variable is an alternative
       rules[Factor] = Variables.Select(varSy => new Symbol[] { varSy }).ToList();
-      rules[Factor].Add(new[] { PolyExpr, One, Div });
-      rules[Factor].Add(new[] { PolyExpr, Abs, Log });
+      rules[Factor].Add(new[] { PolyExprOne, One, Div });
+      rules[Factor].Add(new[] { PolyExprOne, Abs, Log });
       rules[Factor].Add(new[] { Parameter, PolyTerm, Times, Exp });
+      rules[Factor].Add(new[] { PolyExpr, Cos });
 
 
+      // parametric intercept
       rules[PolyExpr] = new List<Symbol[]>() {
-        new Symbol[] { Parameter, PolyTerm, Times, One, Plus }, // param * Term + 1
-        new Symbol[] { Parameter, PolyTerm, Times, PolyExpr, Plus }, // param * Term + LogExpr
+        new Symbol[] { Parameter, PolyTerm, Times, Parameter, Plus }, // param * PolyTerm + param
+        new Symbol[] { Parameter, PolyTerm, Times, PolyExpr, Plus }, // param * PolyTerm + PolyExpr
+      };
+
+      // constant 1 intercept
+      rules[PolyExprOne] = new List<Symbol[]>() {
+        new Symbol[] { Parameter, PolyTerm, Times, One, Plus }, // param * PolyTerm + 1
+        new Symbol[] { Parameter, PolyTerm, Times, PolyExprOne, Plus }, // param * PolyTerm + PolyExprOne
       };
 
       rules[PolyTerm] = new List<Symbol[]>() {

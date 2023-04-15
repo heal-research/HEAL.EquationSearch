@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace HEAL.EquationSearch {
   public class Semantics {
@@ -103,8 +102,8 @@ namespace HEAL.EquationSearch {
       }
 
       private bool HasNonlinearParameters() {
-        return Symbol == expr.Grammar.Exp || Symbol == expr.Grammar.Log || Symbol == expr.Grammar.Div ||
-          children.Any(c => c.HasNonlinearParameters());
+        return Symbol == expr.Grammar.Exp || Symbol == expr.Grammar.Log || Symbol == expr.Grammar.Div || Symbol == expr.Grammar.Cos
+              || children.Any(c => c.HasNonlinearParameters());
       }
 
       private void GetChildrenRec(List<HashNode> children, int parentIndex) {

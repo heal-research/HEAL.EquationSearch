@@ -1,4 +1,3 @@
-using Newtonsoft.Json.Linq;
 using TreesearchLib;
 
 namespace HEAL.EquationSearch.Test {
@@ -89,30 +88,34 @@ namespace HEAL.EquationSearch.Test {
     [DataRow(2, 0)] 
     [DataRow(3, 0)] 
     [DataRow(4, 0)] 
-    [DataRow(5, 1)] // 0.009979 x * 0.4848 +
+    [DataRow(5, 1)] // p x * p +
     [DataRow(6, 1)] 
-    [DataRow(7, 2)] // -0.03922 x x * * 0.5021 +
-    [DataRow(8, 3)] // len: 8 -0.1587 -8.429 x * exp * 0.5075 +
+    [DataRow(7, 2)] // p x x * * p +
+    [DataRow(8, 3)] // len: 8 p p x * exp * p +
 
-    // len: 9 -0.07303 x x * x * * 0.5064 +
+    // len: 9 p x x * x * * p +
     [DataRow(9, 4)]
 
-    // len: 10 -2.445e-05 9.84 x x * * exp * 0.5049 +
-    // len: 10 -2.935e-08 x 16.48 x * exp * * 0.5049 +
-    [DataRow(10, 6)]
+    // len: 10 p p x x * * exp * p +
+    // len: 10 p x p x * exp * * p +
+    // len: 10 p x p x * exp * * p +
+    // len: 10 p p x * p + cos * p +
+    [DataRow(10, 7)]
 
-     // len: 11 -0.0001243 -1.123 x * 1 + 1 / * 0.4938 +
-     // len: 11 0.01543 -1.123 x * 1 + abs log * 0.5099 +
-     // len: 11 0.7447 x * -0.7458 x x * * 0.3601 + +
-     // len: 11 -0.1003 x x * x * x * * 0.5075 +
-    [DataRow(11, 10)]
+     // len: 11 p p x * 1 + 1 / * p +
+     // len: 11 p p x * 1 + abs log * p +
+     // len: 11 p x * p x x * * p + +
+     // len: 11 p x x * x * x * * p +
+    [DataRow(11, 11)]
 
 
-    // len: 12  0.4674 x * -0.01764 3.499 x * exp * 0.4112 + +
-    // len: 12 -0.0003475 7.263 x x x * * * exp * 0.5052 +
-    // len: 12  0.7164 x -2.483 x x * * exp * * 0.3524 +
-    // len: 12 -1.028e-07 x x * 15.21 x * exp * * 0.505 +
-    [DataRow(12, 14)]
+    // len: 12  p x * p p x * exp * p + +
+    // len: 12  p p x x x * * * exp * p +
+    // len: 12  p x p x x * * exp * * p +
+    // len: 12  p x x * p x * exp * * p +
+    // len: 12  p x p x * p + cos * * p +
+    // len: 12  p p x x * * p + cos * p +
+    [DataRow(12, 17)]
 
     public void OneDimensional(int maxLength, int expectedEvaluations) {
       var rand = new Random(1234);
@@ -162,7 +165,10 @@ namespace HEAL.EquationSearch.Test {
     // p x p y * exp * * p +
     // p y p x * exp * * p +
     // p y p y * exp * * p +
-    [DataRow(10, 19)]
+
+    // p p x * p + cos * p +
+    // p p y * p + cos * p +
+    [DataRow(10, 21)]
 
     // p p x * 1 + 1 / * p +
     // p p y * 1 + 1 / * p +
@@ -182,7 +188,7 @@ namespace HEAL.EquationSearch.Test {
     // p x y * y * y * * p +
     // p x y * y * y * * p +
     // p y y * y * y * * p +
-    [DataRow(11, 34)]
+    [DataRow(11, 36)]
 
     // p x * p p x * exp * p + +
     // p x * p p y * exp * p + +
@@ -204,7 +210,15 @@ namespace HEAL.EquationSearch.Test {
     // p x y * p y * exp * * p +
     // p y y * p x * exp * * p +
     // p y y * p y * exp * * p +
-    [DataRow(12, 54)]
+
+    // p p x x * * p + cos * p +    p*cos(p*x*x + p) + p
+    // p p x y * * p + cos * p +    p*cos(p*x*y + p) + p
+    // p p y y * * p + cos * p +    p*cos(p*y*y + p) + p
+    // p x p x * p + cos * * p +    p*x*cos(p*x + p) + p
+    // p x p y * p + cos * * p +    p*x*cos(p*y + p) + p
+    // p y p x * p + cos * * p +    p*y*cos(p*x + p) + p
+    // p y p y * p + cos * * p +    p*y*cos(p*y + p) + p
+    [DataRow(12, 63)]
 
     public void TwoDimensional(int maxLength, int expectedEvaluations) {
       var rand = new Random(1234);

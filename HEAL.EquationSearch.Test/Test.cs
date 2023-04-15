@@ -78,5 +78,23 @@ namespace HEAL.EquationSearch.Test {
       var alg = new Algorithm();
       alg.Fit(x, y, varNames, CancellationToken.None);
     }
+
+
+    [TestMethod]
+    public void Cos() {
+      var rand = new Random(1234);
+      var x = Util.GenerateRandom(rand, 100, 2);
+      var y = new double[100];
+      for (int i = 0; i < y.Length; i++) {
+        y[i] = 1.0 * Math.Cos(2 * x[i, 0] + 2) +
+               2.0 * Math.Cos(2 * x[i, 1] + 2);
+      }
+
+
+      var varNames = new string[] { "x1", "x2" };
+
+      var alg = new Algorithm();
+      alg.Fit(x, y, varNames, CancellationToken.None);
+    }
   }
 }

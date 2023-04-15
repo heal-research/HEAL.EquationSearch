@@ -7,6 +7,7 @@ namespace HEAL.EquationSearch {
     public long OptimizedExpressions => exprQualities.Count;
     public long EvaluatedExpressions = 0;
 
+    // TODO: this should not be necessary
     public ConcurrentDictionary<ulong, double> exprQualities = new ConcurrentDictionary<ulong, double>();
 
     // TODO: make iterations configurable
@@ -190,6 +191,8 @@ namespace HEAL.EquationSearch {
         return (int)OpCode.Log;
       } else if (symbol == grammar.Abs) {
         return (int)OpCode.Abs;
+      } else if (symbol == grammar.Cos) {
+        return (int)OpCode.Cos;
       } else if (symbol is Grammar.VariableSymbol) {
         return (int)OpCode.Variable;
       } else if (symbol is Grammar.ParameterSymbol) {
