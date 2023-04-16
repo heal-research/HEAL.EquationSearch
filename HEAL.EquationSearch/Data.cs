@@ -6,14 +6,17 @@
     private readonly Dictionary<string, double[]> values = new Dictionary<string, double[]>();
     public int Rows { get; }
     public int[] AllRowIdx { get; }
-    public double[] Weights { get; }
+    public double[] Weights { get; } // should be 1/sigma_err^2  for Gaussian likelihood
     public double[] Target { get; }
     public IEnumerable<string> VarNames { get; internal set; }
 
-    public Data(string[] variableNames, double[,] x, double[] y) {
+    public Data(string[] variableNames, double[,] x, double[] y, double[]? weight = null) {
       Rows = x.GetLength(0);
       this.AllRowIdx = Enumerable.Range(0, Rows).ToArray();
-      this.Weights = Enumerable.Repeat(1.0, Rows).ToArray(); // TODO support weights for alg
+      if (weight == null)
+        this.Weights = Enumerable.Repeat(1.0, Rows).ToArray();
+      else
+        this.Weights = weight;
       this.Target = y;
       this.VarNames = variableNames;
       var cols = x.GetLength(1);

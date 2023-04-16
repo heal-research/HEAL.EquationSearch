@@ -43,7 +43,7 @@ namespace HEAL.EquationSearch {
 
     public bool IsTerminal => expression.Length >= maxLength || expression.IsSentence;
 
-    public MinimizeDouble Bound => new MinimizeDouble(0.0);
+    public MinimizeDouble Bound => new MinimizeDouble(double.NegativeInfinity);
 
     private MinimizeDouble? quality = null; // cache quality to prevent duplicate evaluation (TODO: useful?)
     public MinimizeDouble? Quality {

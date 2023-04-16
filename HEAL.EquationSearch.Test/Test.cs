@@ -15,23 +15,28 @@ namespace HEAL.EquationSearch.Test {
     [DataRow(16)]
     [DataRow(18)]
     [DataRow(20)]
+    [DataRow(25)]
+    [DataRow(30)]
     public void Poly10DefaultGrammar(int maxLength) {
       var rand = new Random(1234);
-      var x = Util.GenerateRandom(rand, 100, 10);
+      var x = Util.GenerateRandom(rand, 100, 10, -1, 1);
       var y = new double[100];
+      var noiseRange = 0.02;
       for (int i = 0; i < y.Length; i++) {
         y[i] = x[i, 0] * x[i, 1]
           + x[i, 2] * x[i, 3]
           + x[i, 4] * x[i, 5]
           + x[i, 0] * x[i, 6] * x[i, 8]
-          + x[i, 2] * x[i, 5] * x[i, 9];
+          + x[i, 2] * x[i, 5] * x[i, 9]
+                    + rand.NextDouble() * noiseRange - noiseRange / 2;
+        ;
       }
 
 
       var varNames = new string[] { "x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9", "x10" };
 
       var alg = new Algorithm();
-      alg.Fit(x, y, varNames, CancellationToken.None, maxLength: maxLength, depthLimit: int.MaxValue);
+      alg.Fit(x, y, varNames, CancellationToken.None, maxLength: maxLength, depthLimit: int.MaxValue, noiseSigma: Math.Sqrt(noiseRange / 12));
     }
 
     [DataTestMethod]
@@ -43,14 +48,17 @@ namespace HEAL.EquationSearch.Test {
     [DataRow(50)]
     public void Poly10PolynomialGrammar(int maxLength) {
       var rand = new Random(1234);
-      var x = Util.GenerateRandom(rand, 100, 10);
+      var x = Util.GenerateRandom(rand, 100, 10, -1, 1);
       var y = new double[100];
+      var noiseRange = 0.02;
       for (int i = 0; i < y.Length; i++) {
         y[i] = x[i, 0] * x[i, 1]
           + x[i, 2] * x[i, 3]
           + x[i, 4] * x[i, 5]
           + x[i, 0] * x[i, 6] * x[i, 8]
-          + x[i, 2] * x[i, 5] * x[i, 9];
+          + x[i, 2] * x[i, 5] * x[i, 9]
+          + rand.NextDouble() * noiseRange - noiseRange / 2;
+        ;
       }
 
 
@@ -59,7 +67,7 @@ namespace HEAL.EquationSearch.Test {
       var alg = new Algorithm();
       var g = new Grammar(varNames);
       g.UsePolynomialRules();
-      alg.Fit(x, y, varNames, CancellationToken.None, grammar: g, maxLength: maxLength, depthLimit: int.MaxValue);
+      alg.Fit(x, y, varNames, CancellationToken.None, grammar: g, maxLength: maxLength, depthLimit: int.MaxValue, noiseSigma: Math.Sqrt(noiseRange / 12.0));
     }
 
     [TestMethod]
@@ -76,14 +84,14 @@ namespace HEAL.EquationSearch.Test {
       var varNames = new string[] { "x1", "x2" };
 
       var alg = new Algorithm();
-      alg.Fit(x, y, varNames, CancellationToken.None);
+      alg.Fit(x, y, varNames, CancellationToken.None, maxLength: 30, noiseSigma: 1e-5);
     }
 
 
     [TestMethod]
     public void Cos() {
       var rand = new Random(1234);
-      var x = Util.GenerateRandom(rand, 100, 2);
+      var x = Util.GenerateRandom(rand, 100, 2, -2, 2);
       var y = new double[100];
       for (int i = 0; i < y.Length; i++) {
         y[i] = 1.0 * Math.Cos(2 * x[i, 0] + 2) +
@@ -94,7 +102,7 @@ namespace HEAL.EquationSearch.Test {
       var varNames = new string[] { "x1", "x2" };
 
       var alg = new Algorithm();
-      alg.Fit(x, y, varNames, CancellationToken.None);
+      alg.Fit(x, y, varNames, CancellationToken.None, maxLength: 20, noiseSigma: 1e-3);
     }
   }
 }

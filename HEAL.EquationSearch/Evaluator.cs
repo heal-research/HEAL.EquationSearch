@@ -1,4 +1,7 @@
 ﻿using HEAL.NativeInterpreter;
+using System.ComponentModel.Design;
+using System.Diagnostics;
+using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 
 namespace HEAL.EquationSearch {
@@ -27,21 +30,28 @@ namespace HEAL.EquationSearch {
       // compile all terms individually
       var code = CompileTerms(expr, terms, data, out var termIdx, out var paramIdx);
 
-      // no terms for which to optimize parameters -> return MSE of constant model
-      if (termIdx.Count == 0) { return Variance(data.Target); }
+      // no terms for which to optimize parameters -> return default MDL
+      if (termIdx.Count == 0) {
+        // This case is not particularly interesting (average model).
+        // TODO: we could reuse expr here and set the parameter correctly. 
+        // TODO: here we would also need to take a weighted average. 
+        return MDL(new Expression(expr.Grammar, new Grammar.Symbol[] { new Grammar.ParameterSymbol(data.Target.Average()) }), data);
+      }
 
       var result = new double[data.Rows];
 
-      var mse = double.MaxValue;
+      quality = double.MaxValue;
+
       // optimize parameters
-
       var solverOptions = new SolverOptions() { Iterations = iterations, Algorithm = 1 };
-
       var coeff = new double[coeffIndexes.Count];
       NativeWrapper.OptimizeVarPro(code, termIdx.ToArray(), data.AllRowIdx, data.Target, data.Weights, coeff, solverOptions, result, out var summary);
 
+      // TODO: weights do not yet work correctly in varpro
+      for (int i = 0; i < coeff.Length; i++) coeff[i] *= data.Weights.Average();
+
       // update parameters if successful
-      if (summary.Success == 1 && !double.IsNaN(summary.FinalCost)) {
+      if (summary.Success == 1) {
         expr.UpdateCoefficients(coeffIndexes.ToArray(), coeff);
 
         foreach (var (codePos, exprPos) in paramIdx) {
@@ -52,18 +62,16 @@ namespace HEAL.EquationSearch {
             paramSy.Value = instr.Coeff;
         }
 
-        mse = summary.FinalCost * 2 / data.Rows;
-
-
-      } else {
-        return double.MaxValue; // optimization failed
+        // mse = summary.FinalCost * 2 / data.Rows;
       }
 
-      // for debugging and unit tests
-      // Console.Error.WriteLine($"len: {expr.Length} hash: {semHash} {expr}");
+      quality = MDL(expr, data);
 
-      exprQualities.GetOrAdd(semHash, mse);
-      return mse;
+      // for debugging and unit tests
+      // Console.Error.WriteLine($"len: {expr.Length} hash: {semHash} MDL: {quality} logLik: {summary.FinalCost} {expr}");
+
+      exprQualities.GetOrAdd(semHash, quality);
+      return quality;
     }
 
     internal double[] Evaluate(Expression expression, Data data) {
@@ -73,27 +81,100 @@ namespace HEAL.EquationSearch {
       return result;
     }
 
-    // TODO: can be removed (only used in State to handle the special case of a constant expression)
-    internal static double Variance(double[] y) {
-      var ym = y.Average();
-      var variance = 0.0;
-      for (int i = 0; i < y.Length; i++) {
-        var res = y[i] - ym;
-        variance += res * res;
+
+    // as described in https://arxiv.org/abs/2211.11461
+    // Deaglan J. Bartlett, Harry Desmond, Pedro G. Ferreira, Exhaustive Symbolic Regression, 2022
+
+    private double MDL(Expression expr, Data data) {
+      var code = CompileTerms(expr, new[] { (start: 0, end: expr.Length - 1) }, data, out var _, out var paramSyIdx);
+
+      var result = new double[data.Rows];
+      NativeWrapper.GetValues(code, data.AllRowIdx, result);
+
+      // total description length:
+      // L(D) = L(D|H) + L(H)
+
+      // c_j are constants
+      // theta_i are parameters
+      // k is the number of nodes
+      // n is the number of different symbols
+      // Delta_i is inverse precision of parameter i
+      // Delta_i are optimized to find minimum total description length
+      // The paper shows that the optima for delta_i are sqrt(12/I_ii)
+      // The formula implemented here is Equation (7).
+
+      // L(D) = -log(L(theta)) + k log n - p/2 log 3
+      //        + sum_j (1/2 log I_ii + log |theta_i| )
+
+      var logLike = GaussianLogLikelihood(data.Weights, data.Target, result);
+      var diagFisherInfo = ApproximateFisherInformation(logLike, code, paramSyIdx, data);
+      if (diagFisherInfo.Any(fi => fi <= 0)) return double.MaxValue;
+
+      int numNodes = expr.Length;
+      var constants = expr.OfType<Grammar.ConstantSymbol>().ToArray();
+      var numSymbols = expr.Select(sy => sy.GetHashCode()).Distinct().Count();
+      var parameters = expr.OfType<Grammar.ParameterSymbol>().ToArray();
+      int numParam = parameters.Length;
+
+      for (int i = 0; i < numParam; i++) {
+        // if the parameter estimate is not significantly different from zero
+        if (parameters[i].Value / Math.Sqrt(12.0 / diagFisherInfo[i]) < 1.0) {
+          // set param to zero and calculate MDL for the manipulated expression
+          ((Grammar.ParameterSymbol)expr[paramSyIdx[i].exprPos]).Value = 0.0;
+          
+          // update likelihood for manipulated expression
+          // As described in the ESR paper. More accurately we would need to set the value to zero, simplify and re-optimize the expression and recalculate logLik and FIM.
+          // Here we are not too concerned about this because the simplified expression is likely to be visited independently anyway. 
+          logLike = GaussianLogLikelihood(data.Weights, data.Target, result);
+        }
+
+        // TODO: a similar manipulation could be performed for multiplicative coefficients that are approximately equal to 1.0
       }
-      return variance / y.Length;
+
+      double paramCodeLength(int paramIdx) {
+        // ignore zeros
+        if (parameters[paramIdx].Value == 0) return 0.0;
+        else return 0.5 * Math.Log(diagFisherInfo[paramIdx]) - 0.5 * Math.Log(3) + Math.Log(Math.Abs(parameters[paramIdx].Value));
+      }
+
+      // The grammar does not allow negative or zero constants
+      return -logLike
+        + numNodes * Math.Log(numSymbols) + constants.Sum(ci => Math.Log(Math.Abs(ci.Value)))
+        + Enumerable.Range(0, numParam).Sum(i => paramCodeLength(i));
     }
 
-
-    // TODO: for debugging only
-    private static double CalculateMSE(double[] target, double[] pred) {
-      var mse = 0.0;
+    private double GaussianLogLikelihood(double[] weights, double[] target, double[] result) {
+      var logLik = 0.0;
       for (int i = 0; i < target.Length; i++) {
-        var res = target[i] - pred[i];
-        mse += res * res;
+        var res = target[i] - result[i];
+        logLik -= 0.5 * weights[i] * res * res;
       }
-      mse /= target.Length;
-      return mse;
+      return logLik;
+    }
+
+    private double[] ApproximateFisherInformation(double logLik, NativeInstruction[] code, List<(int codePos, int exprPos)> paramSyIdx, Data data) {
+      // numeric approximation of fisher information for each parameter (diagonal of fisher information matrix)
+      // TODO: it would be much better to extract the Jacobian from hl-native-interpreter instead
+      const double delta = 1e-6;
+      var fi = new double[paramSyIdx.Count];
+      var paramIdx = 0;
+      var tempResult = new double[data.Rows];
+      foreach (var (codePos, exprPos) in paramSyIdx) { // paramSyIdx is sorted
+        var origCoeff = code[codePos].Coeff;
+        code[codePos].Coeff = origCoeff - delta;
+        NativeWrapper.GetValues(code, data.AllRowIdx, tempResult);
+        var low = GaussianLogLikelihood(data.Weights, data.Target, tempResult);
+
+        code[codePos].Coeff = origCoeff + delta;
+        NativeWrapper.GetValues(code, data.AllRowIdx, tempResult);
+        var high = GaussianLogLikelihood(data.Weights, data.Target, tempResult);
+
+        // https://math.stackexchange.com/questions/2634825/approximating-second-derivative-from-taylors-theorem
+        // factor -1 for the Fisher information
+        fi[paramIdx++] = -(1 / delta / delta) * (low + high - 2 * logLik);
+        code[codePos].Coeff = origCoeff;
+      }
+      return fi;
     }
 
     private NativeInstruction[] CompileTerms(Expression expr, IEnumerable<(int start, int end)> terms, Data data,
@@ -139,6 +220,15 @@ namespace HEAL.EquationSearch {
           termIdx.Add(codeIdx - 1);
         }
       }
+
+#if DEBUG
+      // ASSERT that parameter indexes are sorted ascending
+      for (int i = 0; i < paramSyIdx.Count - 1; i++) {
+        if (paramSyIdx[i].codePos >= paramSyIdx[i + 1].codePos ||
+            paramSyIdx[i].exprPos >= paramSyIdx[i + 1].exprPos)
+          throw new InvalidProgramException("assertion failed");
+      }
+#endif
 
       return code;
     }
