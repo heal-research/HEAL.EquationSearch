@@ -37,7 +37,8 @@ namespace HEAL.EquationSearch {
       // for all operations we know the arity 
 
       var lengths = Semantics.GetLengths(this);
-      return ToInfixString(Length - 1, lengths);
+      var result = ToInfixString(Length - 1, lengths);
+      return result;
     }
 
     private string ToInfixString(int rootIdx, int[] lengths) {
@@ -53,6 +54,8 @@ namespace HEAL.EquationSearch {
       if (subExpressions.Any()) {
         if (subExpressions.Count == 1) {
           return rootStr + "(" + subExpressions[0] + ")"; // functions have a single subexpression (TODO: this is only true for now)
+        } else if (syString[rootIdx] == Grammar.Div) { // Division is (currently) the only binary operator with an expression as argument/denominator.
+          return subExpressions[1] + " " + rootStr + " (" + subExpressions[0] + ")";
         } else {
           return string.Join(" " + rootStr + " ", subExpressions);
         }
