@@ -36,7 +36,9 @@ namespace HEAL.EquationSearch.Test {
       var varNames = new string[] { "x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9", "x10" };
 
       var alg = new Algorithm();
-      alg.Fit(x, y, varNames, CancellationToken.None, maxLength: maxLength, depthLimit: int.MaxValue, noiseSigma: Math.Sqrt(noiseRange / 12));
+      // estimate sigma and use it and standard error in gaussian likelihood. sigma = sqrt(noiseRange / 2); weight_i = 1/simga²
+      var weights = Enumerable.Repeat(1 / (noiseRange / 12), y.Length).ToArray();
+      alg.Fit(x, y, varNames, CancellationToken.None, maxLength: maxLength, depthLimit: int.MaxValue, weights: weights);
     }
 
     [DataTestMethod]
@@ -67,7 +69,8 @@ namespace HEAL.EquationSearch.Test {
       var alg = new Algorithm();
       var g = new Grammar(varNames);
       g.UsePolynomialRules();
-      alg.Fit(x, y, varNames, CancellationToken.None, grammar: g, maxLength: maxLength, depthLimit: int.MaxValue, noiseSigma: Math.Sqrt(noiseRange / 12.0));
+      var weights = Enumerable.Repeat(1 / (noiseRange / 12), y.Length).ToArray();
+      alg.Fit(x, y, varNames, CancellationToken.None, grammar: g, maxLength: maxLength, depthLimit: int.MaxValue, weights: weights);
     }
 
     [TestMethod]
@@ -84,7 +87,7 @@ namespace HEAL.EquationSearch.Test {
       var varNames = new string[] { "x1", "x2" };
 
       var alg = new Algorithm();
-      alg.Fit(x, y, varNames, CancellationToken.None, maxLength: 30, noiseSigma: 1e-5);
+      alg.Fit(x, y, varNames, CancellationToken.None, maxLength: 30, weights: Enumerable.Repeat(1/Math.Pow(1e-5, 2), y.Length).ToArray());
     }
 
 
@@ -102,7 +105,7 @@ namespace HEAL.EquationSearch.Test {
       var varNames = new string[] { "x1", "x2" };
 
       var alg = new Algorithm();
-      alg.Fit(x, y, varNames, CancellationToken.None, maxLength: 20, noiseSigma: 1e-3);
+      alg.Fit(x, y, varNames, CancellationToken.None, maxLength: 20, weights: Enumerable.Repeat(1/1e-6, y.Length).ToArray());
     }
   }
 }
