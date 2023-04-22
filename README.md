@@ -20,13 +20,15 @@ Fact -> var_1 | ... | var_n
 
 Default (full) grammar:
 ```
-Expr -> param | param * Term + Expr    
-Term -> Fact | Fact * Term             
+Expr -> param | param * Term + Expr
+Term -> Fact | Fact * Term
 Fact -> var_1 | ... | var_n
-        | 1 / ( PolyExpr )
-        | log ( abs ( PolyExpr ) )
-        | exp(param * PolyTerm)
-PolyExpr -> param * PolyTerm + 1 | param * PolyTerm + PolyExpr
+        | 1 / '(' PolyExprOne ')'
+        | log '(' abs '(' PolyExprOne ')' ')'
+        | exp '(' param * PolyTerm ')'
+        | cos '(' PolyExpr ')'
+PolyExpr    -> param * PolyTerm + param | param * PolyTerm + PolyExpr 
+PolyExprOne -> param * PolyTerm + 1 | param * PolyTerm + PolyExprOne
 PolyTerm -> PolyFact | PolyFact * PolyTerm
 PolyFact -> var_1 | ... | var_n
 ```
@@ -39,6 +41,16 @@ dotnet build -c Release HEAL.EquationSearch
 Run the unit tests with
 ```sh
 dotnet test
+```
+
+## Using the CLI
+HEAL.EquationSearch.Console provides a simple command line interface to run the algorithm for CSV datafiles.
+
+Example to run on the Nikuradse (flow in rough pipes) dataset:
+```sh
+wget https://github.com/EpistasisLab/pmlb/blob/master/datasets/nikuradse_1/nikuradse_1.tsv.gz?raw=true -O nikuradse_1.tsv.gz
+gzip -d -c nikuradse_1.tsv.gz | sed 's/\t/,/g' > nikuradse_1.csv
+dotnet run --project .\HEAL.EquationSearch.Console\ -- --dataset nikuradse_1.csv --target target --train 0:332 --max-length 50 --noise-sigma 0.015
 ```
 
 ## Native interpreter
