@@ -47,12 +47,12 @@ namespace HEAL.EquationSearch {
       var subExpressions = new List<string>();
       var c = rootIdx - 1;
       for (int cIdx = 0; cIdx < numC; cIdx++) {
-        subExpressions.Insert(0, ToInfixString(c, lengths));
+        subExpressions.Insert(0, "(" + ToInfixString(c, lengths) + ")"); // Insert at front necessary?
         c = c - lengths[c];
       }
       if (subExpressions.Any()) {
         if (subExpressions.Count == 1) {
-          return rootStr + "(" + subExpressions[0] + ")"; // functions have a single subexpression (TODO: this is only true for now)
+          return rootStr + subExpressions[0];
         } else {
           return string.Join(" " + rootStr + " ", subExpressions);
         }
