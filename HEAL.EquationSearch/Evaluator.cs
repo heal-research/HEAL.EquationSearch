@@ -1,7 +1,4 @@
 ﻿using HEAL.NativeInterpreter;
-using System.ComponentModel.Design;
-using System.Diagnostics;
-using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 
 namespace HEAL.EquationSearch {
@@ -14,7 +11,6 @@ namespace HEAL.EquationSearch {
 
     // TODO: make iterations configurable
     internal double OptimizeAndEvaluate(Expression expr, Data data, int iterations = 10) {
-
       var semHash = Semantics.GetHashValue(expr);
       Interlocked.Increment(ref EvaluatedExpressions);
 
