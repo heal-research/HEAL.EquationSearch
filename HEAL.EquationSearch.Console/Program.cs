@@ -21,7 +21,7 @@ namespace HEAL.NonlinearRegression.Console {
 
       PrepareData(options, ref inputs, out var x, out var y, out var trainStart, out var trainEnd, out var testStart, out var testEnd, out var trainX, out var trainY);
       var alg = new Algorithm();
-        alg.Fit(trainX, trainY, inputs, CancellationToken.None, maxLength: options.MaxLength, noiseSigma: options.NoiseSigma, randSeed: options.Seed);
+      alg.Fit(trainX, trainY, inputs, CancellationToken.None, maxLength: options.MaxLength, noiseSigma: options.NoiseSigma, randSeed: options.Seed);
       // for detailed result analysis we could use HEAL.NLR
       System.Console.WriteLine($"RMSE (train): {EvaluateRMSE(alg, trainX, trainY):g5}");
 
