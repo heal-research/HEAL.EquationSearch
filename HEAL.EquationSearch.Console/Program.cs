@@ -21,14 +21,13 @@ namespace HEAL.NonlinearRegression.Console {
 
       PrepareData(options, ref inputs, out var x, out var y, out var trainStart, out var trainEnd, out var testStart, out var testEnd, out var trainX, out var trainY);
       var alg = new Algorithm();
-      alg.Fit(trainX, trainY, inputs, CancellationToken.None, maxLength: options.MaxLength, noiseSigma: options.NoiseSigma);
-
+        alg.Fit(trainX, trainY, inputs, CancellationToken.None, maxLength: options.MaxLength, noiseSigma: options.NoiseSigma, randSeed: options.Seed);
       // for detailed result analysis we could use HEAL.NLR
-      System.Console.WriteLine($"RMSE: {EvaluateRMSE(alg, trainX, trainY):g5}");
+      System.Console.WriteLine($"RMSE (train): {EvaluateRMSE(alg, trainX, trainY):g5}");
 
       // get test dataset
       Split(x, y, trainStart, trainEnd, testStart, testEnd, out _, out _, out var testX, out var testY);
-      System.Console.WriteLine($"RMSE: {EvaluateRMSE(alg, testX, testY):g5}");
+      System.Console.WriteLine($"RMSE (test): {EvaluateRMSE(alg, testX, testY):g5}");
     }
 
     private static double EvaluateRMSE(Algorithm alg, double[,] x, double[] y) {
@@ -185,7 +184,7 @@ namespace HEAL.NonlinearRegression.Console {
       [Option("shuffle", Required = false, Default = false, HelpText = "Switch to shuffle the dataset before fitting.")]
       public bool Shuffle { get; set; }
 
-      [Option("seed", Required = false, HelpText = "Random seed for shuffling.")]
+      [Option("seed", Required = false, HelpText = "Random seed.")]
       public int? Seed { get; set; }
     }
   }

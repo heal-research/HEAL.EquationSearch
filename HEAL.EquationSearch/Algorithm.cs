@@ -17,11 +17,13 @@ namespace HEAL.EquationSearch {
 
     public string[]? VariableNames { get; private set; }
 
-    public void Fit(double[,] x, double[] y, string[] varNames, CancellationToken token, Grammar? grammar = null, int maxLength = 20, int depthLimit = 20, double earlyStopQuality =double.NegativeInfinity, double noiseSigma = 1.0) {
+    public void Fit(double[,] x, double[] y, string[] varNames, CancellationToken token, Grammar? grammar = null, int maxLength = 20, int depthLimit = 20, double earlyStopQuality = double.NegativeInfinity, double noiseSigma = 1.0, int? randSeed = null) {
+      if (randSeed.HasValue) SharedRandom.SetSeed(randSeed.Value);
       if (x.GetLength(1) != varNames.Length) throw new ArgumentException("number of variables does not match number of columns in x");
       grammar ??= new Grammar(varNames); // default grammar if none supplied by user
+
       this.VariableNames = (string[])varNames.Clone();
-      var data = new Data(varNames, x, y, Enumerable.Repeat(1.0/(noiseSigma*noiseSigma), y.Length).ToArray());
+      var data = new Data(varNames, x, y, Enumerable.Repeat(1.0 / (noiseSigma * noiseSigma), y.Length).ToArray());
       var evaluator = new Evaluator();
       var cts = CancellationTokenSource.CreateLinkedTokenSource(token);
       var control = GraphSearchControl.Start(new State(data, maxLength, grammar, evaluator))

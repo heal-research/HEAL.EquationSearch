@@ -19,6 +19,7 @@ namespace HEAL.EquationSearch {
       }
     }
 
+
     // by convention nonterminal symbols start with an uppercase letter
     public Symbol Expr = new Symbol("Expr");
     public Symbol Term = new Symbol("Term");
@@ -40,9 +41,10 @@ namespace HEAL.EquationSearch {
     public Symbol One = new ConstantSymbol(1.0);
     public Symbol Parameter = new ParameterSymbol(0.0);
 
-    public VariableSymbol[] Variables;
+    private VariableSymbol[] Variables;
 
-    public Dictionary<Symbol, List<Symbol[]>> rules = new Dictionary<Symbol, List<Symbol[]>>();
+    private Dictionary<Symbol, List<Symbol[]>> rules = new Dictionary<Symbol, List<Symbol[]>>();
+
 
     public Grammar(string[] variableNames) {
       Variables = variableNames.Select(varName => new VariableSymbol(varName)).ToArray();
@@ -198,11 +200,9 @@ namespace HEAL.EquationSearch {
       for (int i = 0; i < replSyString.Length; i++) {
         newSyString[j] = replSyString[i].Clone();
 
-        // if the replacement contains parameters they are initialized randomly
-
-        // TODO: use of shared random is problematic because of non-determinism and synchronization overhead
+        // initialized parameters in the replacement randomly
         if (newSyString[j] is ParameterSymbol paramSy) {
-          paramSy.Value = Random.Shared.NextDouble() * 2 - 1; // uniform(-1,1)
+          paramSy.Value = SharedRandom.NextDouble() * 2 - 1; // uniform(-1,1)
         }
         j++;
       }
