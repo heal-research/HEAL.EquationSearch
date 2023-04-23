@@ -47,7 +47,12 @@ namespace HEAL.EquationSearch {
       var subExpressions = new List<string>();
       var c = rootIdx - 1;
       for (int cIdx = 0; cIdx < numC; cIdx++) {
-        subExpressions.Insert(0, "(" + ToInfixString(c, lengths) + ")"); // Insert at front necessary?
+        if (lengths[c] == 1) {
+          // no need to use ( ... ) for terminal symbols
+          subExpressions.Insert(0, ToInfixString(c, lengths));
+        } else {
+          subExpressions.Insert(0, "(" + ToInfixString(c, lengths) + ")");
+        }
         c = c - lengths[c];
       }
       if (subExpressions.Any()) {
