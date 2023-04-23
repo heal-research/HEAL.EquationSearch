@@ -120,16 +120,19 @@ namespace HEAL.EquationSearch {
       for (int i = 0; i < numParam; i++) {
         // if the parameter estimate is not significantly different from zero
         if (parameters[i].Value / Math.Sqrt(12.0 / diagFisherInfo[i]) < 1.0) {
-          // set param to zero and calculate MDL for the manipulated expression
-          ((Grammar.ParameterSymbol)expr[paramSyIdx[i].exprPos]).Value = 0.0;
           
+          // set param to zero and calculate MDL for the manipulated expression and code and re-evaluate 
+          ((Grammar.ParameterSymbol)expr[paramSyIdx[i].exprPos]).Value = 0.0;
+          code[paramSyIdx[i].codePos].Coeff = 0.0;
+          NativeWrapper.GetValues(code, data.AllRowIdx, result);
+
           // update likelihood for manipulated expression
           // As described in the ESR paper. More accurately we would need to set the value to zero, simplify and re-optimize the expression and recalculate logLik and FIM.
-          // Here we are not too concerned about this because the simplified expression is likely to be visited independently anyway. 
+          // Here we are not too concerned about this, because the simplified expression is likely to be visited independently anyway. 
           logLike = GaussianLogLikelihood(data.Weights, data.Target, result);
         }
 
-        // TODO: a similar manipulation could be performed for multiplicative coefficients that are approximately equal to 1.0
+        // IDEA: a similar manipulation could be performed for multiplicative coefficients that are approximately equal to 1.0
       }
 
       double paramCodeLength(int paramIdx) {
