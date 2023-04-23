@@ -35,14 +35,14 @@ namespace HEAL.EquationSearch {
 
       // Algorithms.BreadthSearch(control, control.InitialState, depth: 0, filterWidth: int.MaxValue, depthLimit: int.MaxValue, nodesReached: int.MaxValue);
       // ConcurrentAlgorithms.ParallelBreadthSearch(control, control.InitialState, depth: 0, filterWidth: int.MaxValue, depthLimit: int.MaxValue, maxDegreeOfParallelism: 16 /*, nodesReached: int.MaxValue*/);
-      TreesearchLib.Heuristics.BeamSearch(control, new PriorityBiLevelFIFOCollection<State>(control.InitialState), depth: 0, beamWidth: 1000, Heuristics.PartialQuality, filterWidth: int.MaxValue, depthLimit: int.MaxValue);
+      TreesearchLib.Heuristics.BeamSearch(control, new PriorityBiLevelFIFOCollection<State>(control.InitialState), depth: 0, beamWidth: 1000, Heuristics.PartialMSE, filterWidth: int.MaxValue, depthLimit: int.MaxValue);
 
 
       if (control.BestQuality != null) {
         Console.WriteLine($"Quality: {control.BestQuality} nodes: {control.VisitedNodes} ({(control.VisitedNodes / control.Elapsed.TotalSeconds):F2} nodes/sec)\n" +
           $"Evaluations (including cached): {evaluator.EvaluatedExpressions}\n" +
           $"VarPro evals: {evaluator.OptimizedExpressions} ({(evaluator.OptimizedExpressions / control.Elapsed.TotalSeconds):F2} expr/sec)\n" +
-          $"Evaluation cache miss rate: {100 * evaluator.OptimizedExpressions / (double)evaluator.EvaluatedExpressions:g3}%\n" +
+          $"Evaluator best cached value (MSE): {evaluator.exprQualities.Values.Min():g4}",
           $"runtime: {control.Elapsed}");
 
         BestExpression = control.BestQualityState.Expression;

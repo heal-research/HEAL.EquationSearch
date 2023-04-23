@@ -45,22 +45,18 @@ namespace HEAL.EquationSearch {
 
     public MinimizeDouble Bound => new MinimizeDouble(double.NegativeInfinity);
 
-    private MinimizeDouble? quality = null; // cache quality to prevent duplicate evaluation (TODO: useful?)
+    private MinimizeDouble? quality = null; // cache quality to prevent duplicate evaluation (TODO: necessary?)
     public MinimizeDouble? Quality {
       get {
         if (quality.HasValue) return quality;
 
         if (expression.IsSentence) {
-          quality = new MinimizeDouble(evaluator.OptimizeAndEvaluate(expression, data));
+          quality = new MinimizeDouble(evaluator.OptimizeAndEvaluateMDL(expression, data)); // we use MSE as heuristic but MDL for the quality of states
           return quality;
         } 
 
         return null;
-      }
-      set {
-        // Heuristics are allowed to set the quality of the state (to prevent duplicate evaluation)
-        quality = value;
-      }
+      }      
     }
 
 

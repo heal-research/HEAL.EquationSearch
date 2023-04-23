@@ -3,26 +3,79 @@ using System.Runtime.InteropServices;
 
 namespace HEAL.EquationSearch {
   public class Evaluator {
-    public long OptimizedExpressions => exprQualities.Count;
+    public long OptimizedExpressions = 0;
     public long EvaluatedExpressions = 0;
 
     // The caches in GraphSearchControl and Evaluator have different purposes.
     // The cache in GraphSearchControl prevents visiting duplicate states in the state graph.
-    // The cahce in Evaluator prevents duplicate evaluations. 
+    // The cache in Evaluator prevents duplicate evaluations. 
     // Currently, they are both necessary because GraphSearchControl calculates
-    // semantic hashes for expressions with nonterminal symbols, while the cache in 
-    // Evaluator only sees expressions where nonterminal symbols have been replaced by terminal symbols.
+    // semantic hashes for expressions with nonterminal symbols (this is necessary to distinguish terminal states from nonterminal states),
+    // while the cache in Evaluator only sees expressions where nonterminal symbols have been replaced by terminal symbols.
     public NonBlocking.ConcurrentDictionary<ulong, double> exprQualities = new();
 
     // TODO: make iterations configurable
-    internal double OptimizeAndEvaluate(Expression expr, Data data, int iterations = 10) {
+    // This method uses caching for efficiency.
+    // IMPORTANT: This method does not update parameter values in expr. Use for heuristic evaluation only.
+    internal double OptimizeAndEvaluateMSE(Expression expr, Data data, int iterations = 10) {
       var semHash = Semantics.GetHashValue(expr);
       Interlocked.Increment(ref EvaluatedExpressions);
 
-      if (exprQualities.TryGetValue(semHash, out double quality)) {
-        // TODO: parameters of expression are not set in this case
-        return quality;
+      if (exprQualities.TryGetValue(semHash, out double mse)) {
+        // NOTE: parameters of expression are not set in this case
+        return mse;
       }
+
+      var terms = new List<(int start, int end)>();
+      var coeffIndexes = new List<int>();
+      GetTerms(expr, terms, coeffIndexes);
+
+      // compile all terms individually
+      var code = CompileTerms(expr, terms, data, out var termIdx, out var paramIdx);
+
+      // no terms for which to optimize parameters -> return MSE for (weighted) mean model
+      if (termIdx.Count == 0) {
+        // This case is not particularly interesting (average model).
+        // TODO: we could reuse expr here and set the parameter correctly. 
+        var ym = data.Target.Average();
+        var sse = 0.0;
+        for(int i=0;i<data.Target.Length;i++) {
+          var res = data.Target[i] - ym;
+          sse += data.Weights[i] * res * res;
+        }
+        return sse / data.Target.Length; // MSE of mean model
+      }
+
+      var result = new double[data.Rows];
+
+      mse = double.MaxValue;
+
+      // optimize parameters
+      var solverOptions = new SolverOptions() { Iterations = iterations, Algorithm = 1 };
+      var coeff = new double[coeffIndexes.Count];
+      NativeWrapper.OptimizeVarPro(code, termIdx.ToArray(), data.AllRowIdx, data.Target, data.Weights, coeff, solverOptions, result, out var summary);
+      Interlocked.Increment(ref OptimizedExpressions);
+
+      // update parameters if optimization lead to an improvement
+      if (!double.IsNaN(summary.FinalCost) && summary.FinalCost < summary.InitialCost ) {
+        mse = summary.FinalCost * 2 / data.Rows;
+      } else {
+        mse = summary.InitialCost * 2 / data.Rows;
+        if (double.IsNaN(mse)) mse = double.MaxValue;
+      }
+
+      // for debugging and unit tests
+      // Console.Error.WriteLine($"len: {expr.Length} hash: {semHash} MDL: {quality} logLik: {summary.FinalCost} {expr}");
+
+      exprQualities.GetOrAdd(semHash, mse);
+      return mse;
+    }
+
+    // TODO: make iterations configurable
+    // This method always optimizes parameters in expr but does not use caching to make sure all parameters of the evaluated expressions are set correctly.
+    // Use this method to optimize the best solutions (found via MSE)
+    internal double OptimizeAndEvaluateMDL(Expression expr, Data data, int iterations = 10) {
+      Interlocked.Increment(ref EvaluatedExpressions);
 
       var terms = new List<(int start, int end)>();
       var coeffIndexes = new List<int>();
@@ -41,41 +94,37 @@ namespace HEAL.EquationSearch {
 
       var result = new double[data.Rows];
 
-      quality = double.MaxValue;
-
       // optimize parameters
       var solverOptions = new SolverOptions() { Iterations = iterations, Algorithm = 1 };
       var coeff = new double[coeffIndexes.Count];
+      // The first coefficient is always the intercept
       NativeWrapper.OptimizeVarPro(code, termIdx.ToArray(), data.AllRowIdx, data.Target, data.Weights, coeff, solverOptions, result, out var summary);
+      Interlocked.Increment(ref OptimizedExpressions);
 
-      // TODO: weights do not yet work correctly in varpro
+      // TODO: weights do not yet work correctly in varpro (this is actually a bug in the native interpreter)
       for (int i = 0; i < coeff.Length; i++) coeff[i] *= data.Weights.Average();
 
-      // update parameters if successful
+      // update parameters if optimization lead to an improvement
       if (summary.Success == 1) {
         expr.UpdateCoefficients(coeffIndexes.ToArray(), coeff);
-
+        
         foreach (var (codePos, exprPos) in paramIdx) {
           var instr = code[codePos];
           if (instr.Optimize != 1) continue;
-
+        
           if (expr[exprPos] is Grammar.ParameterSymbol paramSy)
             paramSy.Value = instr.Coeff;
         }
-
-        // mse = summary.FinalCost * 2 / data.Rows;
       }
-
-      quality = MDL(expr, data);
 
       // for debugging and unit tests
       // Console.Error.WriteLine($"len: {expr.Length} hash: {semHash} MDL: {quality} logLik: {summary.FinalCost} {expr}");
 
-      exprQualities.GetOrAdd(semHash, quality);
-      return quality;
+      return MDL(expr, data);
     }
 
     internal double[] Evaluate(Expression expression, Data data) {
+      Interlocked.Increment(ref EvaluatedExpressions);
       var code = CompileTerms(expression, new[] { (start: 0, end: expression.Length - 1) }, data, out var _, out var _);
       var result = new double[data.Rows];
       NativeWrapper.GetValues(code, data.AllRowIdx, result);
@@ -120,10 +169,12 @@ namespace HEAL.EquationSearch {
       for (int i = 0; i < numParam; i++) {
         // if the parameter estimate is not significantly different from zero
         if (parameters[i].Value / Math.Sqrt(12.0 / diagFisherInfo[i]) < 1.0) {
-          
+
           // set param to zero and calculate MDL for the manipulated expression and code and re-evaluate 
           ((Grammar.ParameterSymbol)expr[paramSyIdx[i].exprPos]).Value = 0.0;
           code[paramSyIdx[i].codePos].Coeff = 0.0;
+
+          Interlocked.Increment(ref EvaluatedExpressions);
           NativeWrapper.GetValues(code, data.AllRowIdx, result);
 
           // update likelihood for manipulated expression

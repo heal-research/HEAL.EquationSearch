@@ -1,6 +1,6 @@
 ﻿namespace HEAL.EquationSearch {
   internal class Heuristics {
-    public static float PartialQuality(State state) {
+    public static float PartialMSE(State state) {
       var origExpr = state.Expression;
       Expression expr;
       if (origExpr.IsSentence) {
@@ -9,17 +9,18 @@
         expr = state.Grammar.MakeSentence(origExpr);
       }
 
-      var quality = (float)state.Evaluator.OptimizeAndEvaluate(expr, state.Data);
+      var mse = (float)state.Evaluator.OptimizeAndEvaluateMSE(expr, state.Data);
+
+      // write back optimized parameters into original expression (to improve starting points for the derived expressions)
       if (expr != origExpr) {
-        // write back optimized parameters
         for (int i = 0; i < origExpr.Length; i++) {
           if (origExpr[i] is Grammar.ParameterSymbol origParamSy) {
             origParamSy.Value = ((Grammar.ParameterSymbol)expr[i]).Value;
           }
         }
-        state.Quality = new MinimizeDouble(quality);
       }
-      return quality;
+
+      return mse;
     }
   }
 }
