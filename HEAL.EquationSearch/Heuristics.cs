@@ -17,8 +17,8 @@
             origParamSy.Value = ((Grammar.ParameterSymbol)expr[i]).Value;
           }
         }
+        state.Quality = new MinimizeDouble(quality);
       }
-      state.Quality = new MinimizeDouble(quality);
       return quality;
     }
   }
