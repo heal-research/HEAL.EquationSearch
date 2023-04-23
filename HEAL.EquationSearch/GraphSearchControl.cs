@@ -31,7 +31,14 @@ namespace HEAL.EquationSearch {
     public CancellationToken Cancellation { get; set; }
     public long NodeLimit { get; set; }
 
-    private NonBlocking.ConcurrentDictionary<ulong,byte> visitedNodesSet; // a set would be sufficient, TODO: do we need concurrency here?
+
+    // The caches in GraphSearchControl and Evaluator have different purposes.
+    // The cache in GraphSearchControl prevents visiting duplicate states in the state graph.
+    // The cahce in Evaluator prevents duplicate evaluations. 
+    // Currently, they are both necessary because GraphSearchControl calculates
+    // semantic hashes for expressions with nonterminal symbols, while the cache in 
+    // Evaluator only sees expressions where nonterminal symbols have been replaced by terminal symbols.
+    private NonBlocking.ConcurrentDictionary<ulong,byte> visitedNodesSet; // a set would be sufficient. We need a concurrent set shared over all threads.
 
     private long visitedNodes = 0;
     public long VisitedNodes => visitedNodes; // this is the number of discarded + evaluated nodes
