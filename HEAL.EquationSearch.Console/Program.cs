@@ -22,6 +22,9 @@ namespace HEAL.NonlinearRegression.Console {
       PrepareData(options, ref inputs, out var x, out var y, out var trainStart, out var trainEnd, out var testStart, out var testEnd, out var trainX, out var trainY);
       var alg = new Algorithm();
       alg.Fit(trainX, trainY, inputs, CancellationToken.None, maxLength: options.MaxLength, noiseSigma: options.NoiseSigma, randSeed: options.Seed);
+
+      System.Console.WriteLine($"Best expression: {alg.BestExpression.ToInfixString()}");
+
       // for detailed result analysis we could use HEAL.NLR
       System.Console.WriteLine($"RMSE (train): {EvaluateRMSE(alg, trainX, trainY):g5}");
 
@@ -39,7 +42,7 @@ namespace HEAL.NonlinearRegression.Console {
         var res = y[i] - predY[i];
         sse += res * res;
       }
-      return sse / predY.Length;
+      return Math.Sqrt(sse / predY.Length);
     }
 
     private static void Shuffle(double[,] x, double[] y, Random rand) {
@@ -75,6 +78,9 @@ namespace HEAL.NonlinearRegression.Console {
         var toks = options.TrainingRange.Split(":");
         trainStart = int.Parse(toks[0]);
         trainEnd = int.Parse(toks[1]);
+        // when a training range is given, the test range is the remaining partition at the end
+        testStart = trainEnd + 1;
+        testEnd = m - 1;
       }
       if (options.TestingRange != null) {
         var toks = options.TestingRange.Split(":");
