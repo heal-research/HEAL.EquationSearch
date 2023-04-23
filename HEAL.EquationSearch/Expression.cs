@@ -49,9 +49,9 @@ namespace HEAL.EquationSearch {
       for (int cIdx = 0; cIdx < numC; cIdx++) {
         if (lengths[c] == 1) {
           // no need to use ( ... ) for terminal symbols
-          subExpressions.Insert(0, ToInfixString(c, lengths));
+          subExpressions.Add(ToInfixString(c, lengths));
         } else {
-          subExpressions.Insert(0, "(" + ToInfixString(c, lengths) + ")");
+          subExpressions.Add("(" + ToInfixString(c, lengths) + ")");
         }
         c = c - lengths[c];
       }
