@@ -50,7 +50,7 @@ Example to run on the Nikuradse (flow in rough pipes) dataset:
 ```sh
 wget https://github.com/EpistasisLab/pmlb/blob/master/datasets/nikuradse_1/nikuradse_1.tsv.gz?raw=true -O nikuradse_1.tsv.gz
 gzip -d -c nikuradse_1.tsv.gz | sed 's/\t/,/g' > nikuradse_1.csv
-dotnet run --project .\HEAL.EquationSearch.Console\ -- --dataset nikuradse_1.csv --target target --train 0:332 --max-length 50 --noise-sigma 0.015
+dotnet run --project .\HEAL.EquationSearch.Console\ -- --dataset nikuradse_1.csv --target target --train 0:361 --max-length 50 --noise-sigma 0.015 --seed 1234
 ```
 
 ## Native interpreter
