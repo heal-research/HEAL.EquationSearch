@@ -8,7 +8,7 @@ namespace HEAL.EquationSearch {
       get {
         return new[] { One, Parameter }
                      .Concat(Variables)
-                     .Concat(new[] { Plus, Times, Div, Abs, Log, Exp, Cos })
+                     .Concat(new[] { Plus, Times, Div, Abs, Log, Sqrt, Exp, Cos })
                      .Concat(Nonterminals);
       }
     }
@@ -35,6 +35,7 @@ namespace HEAL.EquationSearch {
     public Symbol Div = new Symbol("/", arity: 2);
     public Symbol Exp = new Symbol("exp", arity: 1);
     public Symbol Log = new Symbol("log", arity: 1);
+    public Symbol Sqrt = new Symbol("sqrt", arity: 1);
     public Symbol Abs = new Symbol("abs", arity: 1);
     public Symbol Cos = new Symbol("cos", arity: 1);
 
@@ -92,6 +93,7 @@ namespace HEAL.EquationSearch {
       // Fact -> var_1 | ... | var_n
       //         | 1 / '(' PolyExprOne ')'
       //         | log '(' abs '(' PolyExprOne ')' ')'
+      //         | sqrt '(' abs '(' PolyExprOne ')' ')'
       //         | exp '(' param * PolyTerm ')'
       //         | cos '(' PolyExpr ')'
       // PolyExpr    -> param * PolyTerm + param | param * PolyTerm + PolyExpr  // with intercept param
@@ -114,6 +116,7 @@ namespace HEAL.EquationSearch {
       rules[Factor] = Variables.Select(varSy => new Symbol[] { varSy }).ToList();
       rules[Factor].Add(new[] { PolyExprOne, One, Div });
       rules[Factor].Add(new[] { PolyExprOne, Abs, Log });
+      rules[Factor].Add(new[] { PolyExprOne, Abs, Sqrt });
       rules[Factor].Add(new[] { Parameter, PolyTerm, Times, Exp });
       rules[Factor].Add(new[] { PolyExpr, Cos });
 

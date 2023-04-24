@@ -332,6 +332,8 @@ namespace HEAL.EquationSearch {
         return (int)OpCode.Exp;
       } else if (symbol == grammar.Log) {
         return (int)OpCode.Log;
+      } else if (symbol == grammar.Sqrt) {
+        return (int)OpCode.Sqrt;
       } else if (symbol == grammar.Abs) {
         return (int)OpCode.Abs;
       } else if (symbol == grammar.Cos) {
