@@ -16,7 +16,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HEAL.EquationSearch.Console\HEAL.EquationSearch.Console.csproj" />
     <ProjectReference Include="..\HEAL.EquationSearch\HEAL.EquationSearch.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="CC_Hubble.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -1,3 +1,5 @@
+using Microsoft.VisualStudio.TestPlatform.TestHost;
+
 namespace HEAL.EquationSearch.Test {
   [TestClass]
   public class Test {
@@ -32,11 +34,11 @@ namespace HEAL.EquationSearch.Test {
         ;
       }
 
-
+      var noiseSigma = noiseRange  / Math.Sqrt(12);
       var varNames = new string[] { "x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9", "x10" };
 
       var alg = new Algorithm();
-      alg.Fit(x, y, varNames, CancellationToken.None, maxLength: maxLength, depthLimit: int.MaxValue, noiseSigma: Math.Sqrt(noiseRange / 12));
+      alg.Fit(x, y, noiseSigma, varNames, CancellationToken.None, maxLength: maxLength, depthLimit: int.MaxValue);
     }
 
     [DataTestMethod]
@@ -60,14 +62,14 @@ namespace HEAL.EquationSearch.Test {
           + rand.NextDouble() * noiseRange - noiseRange / 2;
         ;
       }
-
+      var noiseSigma = noiseRange / Math.Sqrt(12);
 
       var varNames = new string[] { "x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9", "x10" };
 
       var alg = new Algorithm();
       var g = new Grammar(varNames);
       g.UsePolynomialRules();
-      alg.Fit(x, y, varNames, CancellationToken.None, grammar: g, maxLength: maxLength, depthLimit: int.MaxValue, noiseSigma: Math.Sqrt(noiseRange / 12.0));
+      alg.Fit(x, y, noiseSigma, varNames, CancellationToken.None, grammar: g, maxLength: maxLength, depthLimit: int.MaxValue);
     }
 
     [TestMethod]
@@ -80,11 +82,10 @@ namespace HEAL.EquationSearch.Test {
                2.0 * Math.Log(2 * x[i, 1] + 2);
       }
 
-
       var varNames = new string[] { "x1", "x2" };
 
       var alg = new Algorithm();
-      alg.Fit(x, y, varNames, CancellationToken.None, maxLength: 30, noiseSigma: 1e-5);
+      alg.Fit(x, y, noiseSigma: 1e-8, varNames, CancellationToken.None, maxLength: 30); // use a small sigma (we actually have zero noise)
     }
 
 
@@ -97,12 +98,61 @@ namespace HEAL.EquationSearch.Test {
         y[i] = 1.0 * Math.Cos(2 * x[i, 0] + 2) +
                2.0 * Math.Cos(2 * x[i, 1] + 2);
       }
+      
+
+      var varNames = new string[] { "x1", "x2" };
+
+      var alg = new Algorithm();
+      alg.Fit(x, y, noiseSigma: 1e-8, varNames, CancellationToken.None, maxLength: 40); // use a small sigma (we actually have zero noise)
+    }
+
+    [TestMethod]
+    public void Linear() {
+      var rand = new Random(1234);
+      var x = Util.GenerateRandom(rand, 100, 2, -2, 2);
+      var y = new double[100];
+      for (int i = 0; i < y.Length; i++) {
+        y[i] = 2.0 * x[i, 0] + 3.0 * x[i, 1] + 4;
+      }
 
 
       var varNames = new string[] { "x1", "x2" };
 
       var alg = new Algorithm();
-      alg.Fit(x, y, varNames, CancellationToken.None, maxLength: 20, noiseSigma: 1e-3);
+      alg.Fit(x, y, noiseSigma: 1e-8, varNames, CancellationToken.None, maxLength: 20); // use a small sigma (we actually have zero noise)
+    }
+
+    [TestMethod]
+    public void LinearWeighted() {
+      var rand = new Random(1234);
+      var x = Util.GenerateRandom(rand, 100, 2, -2, 2);
+      var y = new double[100];
+      var w = new double[100];
+      var noiseRange = 0.4;
+      for (int i = 0; i < y.Length; i++) {
+        y[i] = 2.0 * x[i, 0] + 3.0 * x[i, 1] + 4
+          + rand.NextDouble() * noiseRange - noiseRange / 2;
+
+      }
+
+
+      var noiseSigma = noiseRange / Math.Sqrt(12);
+
+      var varNames = new string[] { "x1", "x2" };
+
+      var alg = new Algorithm();
+      alg.Fit(x, y, noiseSigma, varNames, CancellationToken.None, maxLength: 20); // use a small sigma (we actually have zero noise)
+    }
+
+    [TestMethod]
+    public void CosmicChronometer() {
+      // TODO: does not work correctly yet
+
+      // Run for Cosmic Chronometer dataset from Exhaustive Symbolic Regression
+      // https://github.com/DeaglanBartlett/ESR/blob/main/esr/data/CC_Hubble.dat
+      // https://arxiv.org/pdf/2211.11461.pdf
+      var parameters = "--dataset CC_Hubble.csv --target H --inputs z --train 0:31 --max-length 20 --noise-sigma H_err --seed 1234";
+      HEAL.EquationSearch.Console.Program.Main(parameters.Split(" ", StringSplitOptions.RemoveEmptyEntries));
     }
   }
 }

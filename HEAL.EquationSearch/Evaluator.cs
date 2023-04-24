@@ -41,19 +41,19 @@ namespace HEAL.EquationSearch {
         var sse = 0.0;
         for(int i=0;i<data.Target.Length;i++) {
           var res = data.Target[i] - ym;
-          sse += data.Weights[i] * res * res;
+          sse += data.InvNoiseVariance[i] * res * res;
         }
-        return sse / data.Target.Length; // MSE of mean model
+        return sse / data.Target.Length; // weighted MSE of mean model
       }
 
       var result = new double[data.Rows];
 
       mse = double.MaxValue;
 
-      // optimize parameters
-      var solverOptions = new SolverOptions() { Iterations = iterations, Algorithm = 1 };
+      // optimize parameters (objective: minimize sum_i (w_i^2 (y_i - y_pred_i)^2)  where we use w = 1/sErr²)
+      var solverOptions = new SolverOptions() { Iterations = iterations, Algorithm = 1 }; // Algorithm 1: Krogh Variable Projection
       var coeff = new double[coeffIndexes.Count];
-      NativeWrapper.OptimizeVarPro(code, termIdx.ToArray(), data.AllRowIdx, data.Target, data.Weights, coeff, solverOptions, result, out var summary);
+      NativeWrapper.OptimizeVarPro(code, termIdx.ToArray(), data.AllRowIdx, data.Target, data.InvNoiseSigma, coeff, solverOptions, result, out var summary);
       Interlocked.Increment(ref OptimizedExpressions);
 
       // update parameters if optimization lead to an improvement
@@ -63,9 +63,6 @@ namespace HEAL.EquationSearch {
         mse = summary.InitialCost * 2 / data.Rows;
         if (double.IsNaN(mse)) mse = double.MaxValue;
       }
-
-      // for debugging and unit tests
-      // Console.Error.WriteLine($"len: {expr.Length} hash: {semHash} MDL: {quality} logLik: {summary.FinalCost} {expr}");
 
       exprQualities.GetOrAdd(semHash, mse);
       return mse;
@@ -98,11 +95,11 @@ namespace HEAL.EquationSearch {
       var solverOptions = new SolverOptions() { Iterations = iterations, Algorithm = 1 };
       var coeff = new double[coeffIndexes.Count];
       // The first coefficient is always the intercept
-      NativeWrapper.OptimizeVarPro(code, termIdx.ToArray(), data.AllRowIdx, data.Target, data.Weights, coeff, solverOptions, result, out var summary);
+      NativeWrapper.OptimizeVarPro(code, termIdx.ToArray(), data.AllRowIdx, data.Target, data.InvNoiseSigma, coeff, solverOptions, result, out var summary);
       Interlocked.Increment(ref OptimizedExpressions);
 
       // TODO: weights do not yet work correctly in varpro (this is actually a bug in the native interpreter)
-      for (int i = 0; i < coeff.Length; i++) coeff[i] *= data.Weights.Average();
+      for (int i = 0; i < coeff.Length; i++) coeff[i] *= data.InvNoiseSigma.Average();
 
       // update parameters if optimization lead to an improvement
       if (summary.Success == 1) {
@@ -117,10 +114,11 @@ namespace HEAL.EquationSearch {
         }
       }
 
-      // for debugging and unit tests
-      // Console.Error.WriteLine($"len: {expr.Length} hash: {semHash} MDL: {quality} logLik: {summary.FinalCost} {expr}");
+      var mdl = MDL(expr, data);
 
-      return MDL(expr, data);
+      // for debugging and unit tests
+      Console.Error.WriteLine($"len: {expr.Length} MDL: {mdl} logLik: {summary.FinalCost} {expr}");
+      return mdl;
     }
 
     internal double[] Evaluate(Expression expression, Data data) {
@@ -156,7 +154,7 @@ namespace HEAL.EquationSearch {
       // L(D) = -log(L(theta)) + k log n - p/2 log 3
       //        + sum_j (1/2 log I_ii + log |theta_i| )
 
-      var logLike = GaussianLogLikelihood(data.Weights, data.Target, result);
+      var logLike = GaussianLogLikelihood(data.InvNoiseVariance, data.Target, result);
       var diagFisherInfo = ApproximateFisherInformation(logLike, code, paramSyIdx, data);
       if (diagFisherInfo.Any(fi => fi <= 0)) return double.MaxValue;
 
@@ -166,9 +164,11 @@ namespace HEAL.EquationSearch {
       var parameters = expr.OfType<Grammar.ParameterSymbol>().ToArray();
       int numParam = parameters.Length;
 
+      /*
+       * TODO: This does not work reliably yet
       for (int i = 0; i < numParam; i++) {
         // if the parameter estimate is not significantly different from zero
-        if (parameters[i].Value / Math.Sqrt(12.0 / diagFisherInfo[i]) < 1.0) {
+        if (Math.Abs(parameters[i].Value) / Math.Sqrt(12.0 / diagFisherInfo[i]) < 1.0) {
 
           // set param to zero and calculate MDL for the manipulated expression and code and re-evaluate 
           ((Grammar.ParameterSymbol)expr[paramSyIdx[i].exprPos]).Value = 0.0;
@@ -180,11 +180,12 @@ namespace HEAL.EquationSearch {
           // update likelihood for manipulated expression
           // As described in the ESR paper. More accurately we would need to set the value to zero, simplify and re-optimize the expression and recalculate logLik and FIM.
           // Here we are not too concerned about this, because the simplified expression is likely to be visited independently anyway. 
-          logLike = GaussianLogLikelihood(data.Weights, data.Target, result);
+          logLike = GaussianLogLikelihood(data.InvNoiseVariance, data.Target, result);
         }
 
         // IDEA: a similar manipulation could be performed for multiplicative coefficients that are approximately equal to 1.0
       }
+      */
 
       double paramCodeLength(int paramIdx) {
         // ignore zeros
@@ -198,11 +199,11 @@ namespace HEAL.EquationSearch {
         + Enumerable.Range(0, numParam).Sum(i => paramCodeLength(i));
     }
 
-    private double GaussianLogLikelihood(double[] weights, double[] target, double[] result) {
+    private double GaussianLogLikelihood(double[] invNoiseVariance, double[] target, double[] result) {
       var logLik = 0.0;
       for (int i = 0; i < target.Length; i++) {
         var res = target[i] - result[i];
-        logLik -= 0.5 * weights[i] * res * res;
+        logLik -= 0.5 * invNoiseVariance[i] * res * res;
       }
       return logLik;
     }
@@ -210,6 +211,7 @@ namespace HEAL.EquationSearch {
     private double[] ApproximateFisherInformation(double logLik, NativeInstruction[] code, List<(int codePos, int exprPos)> paramSyIdx, Data data) {
       // numeric approximation of fisher information for each parameter (diagonal of fisher information matrix)
       // TODO: it would be much better to extract the Jacobian from hl-native-interpreter instead
+      // TODO: this is numerically unstable!
       const double delta = 1e-6;
       var fi = new double[paramSyIdx.Count];
       var paramIdx = 0;
@@ -218,11 +220,11 @@ namespace HEAL.EquationSearch {
         var origCoeff = code[codePos].Coeff;
         code[codePos].Coeff = origCoeff - delta;
         NativeWrapper.GetValues(code, data.AllRowIdx, tempResult);
-        var low = GaussianLogLikelihood(data.Weights, data.Target, tempResult);
+        var low = GaussianLogLikelihood(data.InvNoiseVariance, data.Target, tempResult);
 
         code[codePos].Coeff = origCoeff + delta;
         NativeWrapper.GetValues(code, data.AllRowIdx, tempResult);
-        var high = GaussianLogLikelihood(data.Weights, data.Target, tempResult);
+        var high = GaussianLogLikelihood(data.InvNoiseVariance, data.Target, tempResult);
 
         // https://math.stackexchange.com/questions/2634825/approximating-second-derivative-from-taylors-theorem
         // factor -1 for the Fisher information

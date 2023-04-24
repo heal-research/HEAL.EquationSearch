@@ -30,11 +30,11 @@ namespace HEAL.EquationSearch.Test {
 
       var grammar = new Grammar(varNames);
       grammar.UsePolynomialRules();
-      var data = new Data(varNames, x, y);
+      var data = new Data(varNames, x, y, invNoiseVariance: Enumerable.Repeat(1.0, y.Length).ToArray());
       var evaluator = new Evaluator();
       var control = SearchControl<State, MinimizeDouble>.Start(new State(data, maxLength, grammar, evaluator))
         .BreadthFirst();
-      Console.WriteLine($"Visited nodes: {control.VisitedNodes} evaluations: {evaluator.OptimizedExpressions}");
+      System.Console.WriteLine($"Visited nodes: {control.VisitedNodes} evaluations: {evaluator.OptimizedExpressions}");
       Assert.AreEqual(expectedEvaluations, evaluator.OptimizedExpressions); // 
     }
 
@@ -75,11 +75,11 @@ namespace HEAL.EquationSearch.Test {
       var varNames = new string[] { "x", "y" };
 
       var grammar = new Grammar(varNames); grammar.UsePolynomialRules();
-      var data = new Data(varNames, x, y);
+      var data = new Data(varNames, x, y, invNoiseVariance: Enumerable.Repeat(1.0, y.Length).ToArray());
       var evaluator = new Evaluator();
       var control = SearchControl<State, MinimizeDouble>.Start(new State(data, maxLength, grammar, evaluator))
         .BreadthFirst();
-      Console.WriteLine($"Visited nodes: {control.VisitedNodes} evaluations: {evaluator.OptimizedExpressions}");
+      System.Console.WriteLine($"Visited nodes: {control.VisitedNodes} evaluations: {evaluator.OptimizedExpressions}");
       Assert.AreEqual(expectedEvaluations, evaluator.OptimizedExpressions); // 
     }
 
@@ -125,11 +125,11 @@ namespace HEAL.EquationSearch.Test {
       var varNames = new string[] { "x" };
 
       var grammar = new Grammar(varNames);
-      var data = new Data(varNames, x, y);
+      var data = new Data(varNames, x, y, invNoiseVariance: Enumerable.Repeat(1.0, y.Length).ToArray());
       var evaluator = new Evaluator();
       var control = SearchControl<State, MinimizeDouble>.Start(new State(data, maxLength, grammar, evaluator))
         .BreadthFirst();
-      Console.WriteLine($"Visited nodes: {control.VisitedNodes} evaluations: {evaluator.OptimizedExpressions}");
+      System.Console.WriteLine($"Visited nodes: {control.VisitedNodes} evaluations: {evaluator.OptimizedExpressions}");
       Assert.AreEqual(expectedEvaluations, evaluator.OptimizedExpressions); // 
     }
 
@@ -228,11 +228,11 @@ namespace HEAL.EquationSearch.Test {
       var varNames = new string[] { "x", "y" };
 
       var grammar = new Grammar(varNames);
-      var data = new Data(varNames, x, y);
+      var data = new Data(varNames, x, y, invNoiseVariance: Enumerable.Repeat(1.0, y.Length).ToArray());
       var evaluator = new Evaluator();
       var control = SearchControl<State, MinimizeDouble>.Start(new State(data, maxLength, grammar, evaluator))
         .BreadthFirst();
-      Console.WriteLine($"Visited nodes: {control.VisitedNodes} evaluations: {evaluator.OptimizedExpressions}");
+      System.Console.WriteLine($"Visited nodes: {control.VisitedNodes} evaluations: {evaluator.OptimizedExpressions}");
       Assert.AreEqual(expectedEvaluations, evaluator.OptimizedExpressions); // 
     }
   }

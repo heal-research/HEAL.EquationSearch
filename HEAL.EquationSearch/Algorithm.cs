@@ -4,7 +4,6 @@ namespace HEAL.EquationSearch {
   // TODO:
   // - persistence
   // - Improve performance of semantic hashing (main bottleneck besides evaluation).
-  // - CLI to run the algorithm for a CSV
   // - stop training anytime (returning best expression so far), and allow to continue running later
   // - Best-first search implementation in Treesearchlib
   // - Model evaluation results, AIC, BIC, MDL, ...
@@ -17,13 +16,18 @@ namespace HEAL.EquationSearch {
 
     public string[]? VariableNames { get; private set; }
 
-    public void Fit(double[,] x, double[] y, string[] varNames, CancellationToken token, Grammar? grammar = null, int maxLength = 20, int depthLimit = 20, double earlyStopQuality = double.NegativeInfinity, double noiseSigma = 1.0, int? randSeed = null) {
+    public void Fit(double[,] x, double[] y, double noiseSigma, string[] varNames, CancellationToken token, Grammar? grammar = null, int maxLength = 20, int depthLimit = 20, double earlyStopQuality = double.NegativeInfinity, int? randSeed = null) {
+      Fit(x, y, Enumerable.Repeat(noiseSigma, y.Length).ToArray(), varNames, token, grammar, maxLength, depthLimit, earlyStopQuality, randSeed);
+    }
+
+    public void Fit(double[,] x, double[] y, double[] noiseSigma, string[] varNames, CancellationToken token, Grammar? grammar = null, int maxLength = 20, int depthLimit = 20, double earlyStopQuality = double.NegativeInfinity, int? randSeed = null) {
       if (randSeed.HasValue) SharedRandom.SetSeed(randSeed.Value);
       if (x.GetLength(1) != varNames.Length) throw new ArgumentException("number of variables does not match number of columns in x");
       grammar ??= new Grammar(varNames); // default grammar if none supplied by user
 
       this.VariableNames = (string[])varNames.Clone();
-      var data = new Data(varNames, x, y, Enumerable.Repeat(1.0 / (noiseSigma * noiseSigma), y.Length).ToArray());
+      var data = new Data(varNames, x, y, invNoiseVariance: noiseSigma.Select(si => 1.0 / (si * si)).ToArray());
+
       var evaluator = new Evaluator();
       var cts = CancellationTokenSource.CreateLinkedTokenSource(token);
       var control = GraphSearchControl.Start(new State(data, maxLength, grammar, evaluator))
@@ -42,7 +46,7 @@ namespace HEAL.EquationSearch {
         Console.WriteLine($"Quality: {control.BestQuality} nodes: {control.VisitedNodes} ({(control.VisitedNodes / control.Elapsed.TotalSeconds):F2} nodes/sec)\n" +
           $"Evaluations (including cached): {evaluator.EvaluatedExpressions}\n" +
           $"VarPro evals: {evaluator.OptimizedExpressions} ({(evaluator.OptimizedExpressions / control.Elapsed.TotalSeconds):F2} expr/sec)\n" +
-          $"Evaluator best cached value (MSE): {evaluator.exprQualities.Values.Min():g4}",
+          $"Evaluator best cached value (MSE): {(evaluator.exprQualities.Values.Any()? evaluator.exprQualities.Values.Min().ToString("g4") : "no heuristic evaluations")}",
           $"runtime: {control.Elapsed}");
 
         BestExpression = control.BestQualityState.Expression;
@@ -54,7 +58,7 @@ namespace HEAL.EquationSearch {
       if (BestExpression == null) throw new InvalidOperationException("Call fit() first.");
       if (x.GetLength(1) != VariableNames.Length) throw new ArgumentException("x has different number of columns than the training dataset");
       var evaluator = new Evaluator();
-      var data = new Data(VariableNames, x, new double[x.GetLength(0)]); // no target
+      var data = new Data(VariableNames, x, new double[x.GetLength(0)], new double[x.GetLength(0)]); // no target, or noise variance
       return evaluator.Evaluate(BestExpression, data);
     }
   }

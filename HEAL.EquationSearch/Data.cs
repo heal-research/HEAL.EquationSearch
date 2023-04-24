@@ -6,17 +6,16 @@
     private readonly Dictionary<string, double[]> values = new Dictionary<string, double[]>();
     public int Rows { get; }
     public int[] AllRowIdx { get; }
-    public double[] Weights { get; } // should be 1/sigma_err^2  for Gaussian likelihood
+    public double[] InvNoiseVariance { get; } // 1/sErr²
+    public double[] InvNoiseSigma { get; } // 1/sErr
     public double[] Target { get; }
     public IEnumerable<string> VarNames { get; internal set; }
 
-    public Data(string[] variableNames, double[,] x, double[] y, double[]? weight = null) {
+    public Data(string[] variableNames, double[,] x, double[] y, double[] invNoiseVariance) {
       Rows = x.GetLength(0);
       this.AllRowIdx = Enumerable.Range(0, Rows).ToArray();
-      if (weight == null)
-        this.Weights = Enumerable.Repeat(1.0, Rows).ToArray();
-      else
-        this.Weights = weight;
+      this.InvNoiseVariance= invNoiseVariance;
+      this.InvNoiseSigma = invNoiseVariance.Select(si => Math.Sqrt(si)).ToArray(); // TODO use only one of var and sigma
       this.Target = y;
       this.VarNames = variableNames;
       var cols = x.GetLength(1);

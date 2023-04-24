@@ -5,6 +5,7 @@ namespace HEAL.EquationSearch {
 
   /// <summary>
   /// A custom search control that prevents duplicate states.
+  /// Used instead of the default search control from Treesearchlib.
   /// </summary>
   public class GraphSearchControl : ISearchControl<State, MinimizeDouble> {
     private GraphSearchControl(State state) {
@@ -34,7 +35,7 @@ namespace HEAL.EquationSearch {
 
     // The caches in GraphSearchControl and Evaluator have different purposes.
     // The cache in GraphSearchControl prevents visiting duplicate states in the state graph.
-    // The cahce in Evaluator prevents duplicate evaluations. 
+    // The cache in Evaluator prevents duplicate evaluations.
     // Currently, they are both necessary because GraphSearchControl calculates
     // semantic hashes for expressions with nonterminal symbols, while the cache in 
     // Evaluator only sees expressions where nonterminal symbols have been replaced by terminal symbols.
