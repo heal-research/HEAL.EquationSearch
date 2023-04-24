@@ -20,7 +20,7 @@ namespace HEAL.EquationSearch {
     }
 
     private static bool IsAssociative(Grammar grammar, Grammar.Symbol sy) {
-      return sy == grammar.Plus || sy == grammar.Times || sy == grammar.Div;
+      return sy == grammar.Plus || sy == grammar.Times;
     }
 
     internal static ulong GetHashValue(Expression expr) {
