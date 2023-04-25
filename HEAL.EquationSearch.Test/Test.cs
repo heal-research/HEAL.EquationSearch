@@ -166,8 +166,9 @@ namespace HEAL.EquationSearch.Test {
       // http://astroweb.cwru.edu/SPARC/
 
       // RAR_sigma.csv is created via:
-      // mlr --csv --from RAR.csv put '$sigma_tot = sqrt($gobs**2 + 0.67**2 * $gbar**2)' > RAR_sigma.csv
+      // mlr --csv --from RAR.csv put '$sigma_tot = sqrt($e_gobs**2 + 0.67**2 * $e_gbar**2)' > RAR_sigma.csv
       var parameters = "--dataset RAR_sigma.csv --target gobs --inputs gbar --train 0:2692 --max-length 30 --noise-sigma sigma_tot --seed 1234";
+
       HEAL.EquationSearch.Console.Program.Main(parameters.Split(" ", StringSplitOptions.RemoveEmptyEntries));
     }
 
