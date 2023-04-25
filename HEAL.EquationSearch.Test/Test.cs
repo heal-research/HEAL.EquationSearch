@@ -152,11 +152,24 @@ namespace HEAL.EquationSearch.Test {
       var parameters = "--dataset CC_Hubble.csv --target H --inputs z --train 0:31 --max-length 30 --noise-sigma H_err --seed 1234";
       HEAL.EquationSearch.Console.Program.Main(parameters.Split(" ", StringSplitOptions.RemoveEmptyEntries));
     }
+
     [TestMethod]
     public void CosmicChronometerX() {
       // as above but use x = z+1 and search for H(x)
       var parameters = "--dataset CC_Hubble.csv --target H --inputs x --train 0:31 --max-length 30 --noise-sigma H_err --seed 1234";
       HEAL.EquationSearch.Console.Program.Main(parameters.Split(" ", StringSplitOptions.RemoveEmptyEntries));
     }
+
+    [TestMethod]
+    public void RAR() {
+      // https://arxiv.org/abs/2301.04368
+      // http://astroweb.cwru.edu/SPARC/
+
+      // RAR_sigma.csv is created via:
+      // mlr --csv --from RAR.csv put '$sigma_tot = sqrt($gobs**2 + 0.67**2 * $gbar**2)' > RAR_sigma.csv
+      var parameters = "--dataset RAR_sigma.csv --target gobs --inputs gbar --train 0:2692 --max-length 30 --noise-sigma sigma_tot --seed 1234";
+      HEAL.EquationSearch.Console.Program.Main(parameters.Split(" ", StringSplitOptions.RemoveEmptyEntries));
+    }
+
   }
 }
