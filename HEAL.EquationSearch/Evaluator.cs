@@ -1,4 +1,5 @@
 ﻿using HEAL.NativeInterpreter;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace HEAL.EquationSearch {
@@ -53,6 +54,7 @@ namespace HEAL.EquationSearch {
       // optimize parameters (objective: minimize sum_i (w_i^2 (y_i - y_pred_i)^2)  where we use w = 1/sErr²)
       var solverOptions = new SolverOptions() { Iterations = iterations, Algorithm = 1 }; // Algorithm 1: Krogh Variable Projection
       var coeff = new double[coeffIndexes.Count];
+      Debug.Assert(coeffIndexes.Count == 1 + termIdx.Count); // one coefficient for each term + intercept
       NativeWrapper.OptimizeVarPro(code, termIdx.ToArray(), data.AllRowIdx, data.Target, data.InvNoiseSigma, coeff, solverOptions, result, out var summary);
       Interlocked.Increment(ref OptimizedExpressions);
 
@@ -97,9 +99,6 @@ namespace HEAL.EquationSearch {
       // The first coefficient is always the intercept
       NativeWrapper.OptimizeVarPro(code, termIdx.ToArray(), data.AllRowIdx, data.Target, data.InvNoiseSigma, coeff, solverOptions, result, out var summary);
       Interlocked.Increment(ref OptimizedExpressions);
-
-      // TODO: weights do not yet work correctly in varpro (this is actually a bug in the native interpreter)
-      for (int i = 0; i < coeff.Length; i++) coeff[i] *= data.InvNoiseSigma.Average();
 
       // update parameters if optimization lead to an improvement
       if (summary.Success == 1) {
