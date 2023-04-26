@@ -44,24 +44,34 @@ namespace HEAL.EquationSearch {
       var rootStr = syString[rootIdx].ToString();
       var numC = syString[rootIdx].Arity;
 
-      var subExpressions = new List<string>();
-      var c = rootIdx - 1;
+      var childRoot = rootIdx - 1;
+      var childExpressions = new List<string>();
       for (int cIdx = 0; cIdx < numC; cIdx++) {
-        if (lengths[c] == 1) {
-          // no need to use ( ... ) for terminal symbols
-          subExpressions.Add(ToInfixString(c, lengths));
-        } else {
-          subExpressions.Add("(" + ToInfixString(c, lengths) + ")");
+        var childExpression = ToInfixString(childRoot, lengths);
+        if (syString[rootIdx].Arity == 2 && syString[childRoot].Arity == 2 && syString[childRoot] != Grammar.Div) {
+          childExpression = $"({childExpression})";
+        } else if (syString[rootIdx] == Grammar.Div && syString[childRoot].Arity == 2) {
+          childExpression = $"({childExpression})";
+        } else if (syString[rootIdx] == Grammar.Pow && syString[childRoot] == Grammar.Div) {
+          // Div within pow is in parenthesis. I don't know why...
+          childExpression = $"({childExpression})";
         }
-        c = c - lengths[c];
+
+        childExpressions.Add(childExpression);
+        childRoot -= lengths[childRoot];
       }
-      if (subExpressions.Any()) {
-        if (subExpressions.Count == 1) {
-          return rootStr + subExpressions[0];
-        } else {
-          return string.Join(" " + rootStr + " ", subExpressions);
-        }
-      } else return rootStr;
+
+      var operatorPadding = syString[rootIdx] == Grammar.Plus ? " " : string.Empty;
+      if (syString[rootIdx].Arity == 2) {
+        return string.Join(operatorPadding + rootStr + operatorPadding, childExpressions);
+      }
+
+      if (syString[rootIdx].Arity == 1) {
+        return $"{rootStr}({childExpressions[0]})";
+      }
+      return rootStr;
+      
+
     }
 
     public IEnumerator<Grammar.Symbol> GetEnumerator() {
