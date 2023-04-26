@@ -33,6 +33,7 @@ namespace HEAL.EquationSearch {
     public Symbol Plus = new Symbol("+", arity: 2);
     public Symbol Times = new Symbol("*", arity: 2);
     public Symbol Div = new Symbol("/", arity: 2);
+    public Symbol Pow = new Symbol("**", arity: 2);
     public Symbol Exp = new Symbol("exp", arity: 1);
     public Symbol Log = new Symbol("log", arity: 1);
     public Symbol Sqrt = new Symbol("sqrt", arity: 1);
@@ -42,7 +43,7 @@ namespace HEAL.EquationSearch {
     public Symbol One = new ConstantSymbol(1.0);
     public Symbol Parameter = new ParameterSymbol(0.0);
 
-    private VariableSymbol[] Variables;
+    public VariableSymbol[] Variables { get; private set; }
 
     private Dictionary<Symbol, List<Symbol[]>> rules = new Dictionary<Symbol, List<Symbol[]>>();
 
@@ -143,6 +144,24 @@ namespace HEAL.EquationSearch {
 
       ExpandRules();
     }
+    
+    /// <summary>
+    /// Grammar for ESR base functions
+    /// </summary>
+    public void UseCoreMathGrammar() {
+      rules[Expr] = new List<Symbol[]>() {
+        new Symbol[] { Expr, Expr, Plus },
+        new Symbol[] { Expr, Expr, Times },
+        new Symbol[] { Expr, One, Div },
+        new Symbol[] { Expr, Expr, Div },
+        new Symbol[] { Expr, Expr, Pow },
+        
+        new Symbol[] { Factor }, // Hacky placeholder for variables
+        new Symbol[] { Parameter }
+      };
+
+      rules[Factor] = Variables.Select(varSy => new Symbol[] { varSy }).ToList();
+    }
 
     private void ExpandRules() {
       // Console.WriteLine($"Before expansion: {this}");
@@ -165,7 +184,7 @@ namespace HEAL.EquationSearch {
             var varIdx = Array.FindIndex(alt, sy => sy is VariableSymbol);
             // expand if a rule contains an NT but no variable reference
             if (ntIdx >= 0 && varIdx < 0) {
-              // replace the existing alternative with all derivations
+              // replace the existing  alternative with all derivations
               alternatives.RemoveAt(altIdx);
               alternatives.InsertRange(altIdx, CreateAllDerivations(alt));
               changed |= true;

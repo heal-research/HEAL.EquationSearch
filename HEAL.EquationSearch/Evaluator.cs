@@ -329,6 +329,8 @@ namespace HEAL.EquationSearch {
         return (int)OpCode.Mul;
       } else if (symbol == grammar.Div) {
         return (int)OpCode.Div;
+      } else if (symbol == grammar.Pow) {
+        return (int)OpCode.Power;
       } else if (symbol == grammar.Exp) {
         return (int)OpCode.Exp;
       } else if (symbol == grammar.Log) {

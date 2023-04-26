@@ -65,6 +65,40 @@ namespace HEAL.EquationSearch {
           Simplify();
         }
 
+        var parameterHash = CalculateHashValue(expr.Grammar.Parameter);
+
+        if (IsAssociative(expr.Grammar, Symbol)) { // remove multiple occurrences of parameters in "flattened" children 
+          while (children.Count(c => c.HashValue == parameterHash) > 1) {
+            children.Remove(children.First(c => c.HashValue == parameterHash));
+          }
+        }
+        
+        if (children.Any() && children.TrueForAll(c => c.HashValue == parameterHash || c.Symbol == expr.Grammar.One)) { // reduce subtrees only with parameters to one single parameter (for ESR only).
+          HashValue = parameterHash;
+          return;
+        }
+        if (expr[end].Arity == 2 && children.Count == 1) { // "Remove" binary operators that are reduced to a single argument
+          HashValue = children[0].HashValue;
+          return;
+        }
+
+        if (expr[end] == expr.Grammar.Div) {
+          if (children[0].HashValue == children[1].HashValue) {// remove "x / x"
+            HashValue = parameterHash;
+            return;
+          }
+
+          // make sure, x/0 == x*0
+          if (children[0].Symbol != this.expr.Grammar.One && children[1].HashValue == parameterHash) { // denominator is on index 0
+            expr.SymbolString[end] = expr.Grammar.Times;
+            children.Sort(HashValueComparer); // multiplication is commutative.
+            HashValue = CalculateHashValue();
+            return;
+          }
+          
+          // x/x/y = 1/y
+        }
+        
         HashValue = CalculateHashValue();
       }
 
@@ -102,8 +136,18 @@ namespace HEAL.EquationSearch {
       }
 
       private bool HasNonlinearParameters() {
-        return Symbol == expr.Grammar.Exp || Symbol == expr.Grammar.Log || Symbol == expr.Grammar.Div || Symbol == expr.Grammar.Cos
-              || children.Any(c => c.HasNonlinearParameters());
+        return 
+          (Symbol == expr.Grammar.Exp || 
+           Symbol == expr.Grammar.Log || 
+           Symbol == expr.Grammar.Div || 
+           Symbol == expr.Grammar.Cos || 
+           Symbol == expr.Grammar.Pow)
+              && children.Any(c => c.HasParameter());
+      }
+
+      private bool HasParameter() {
+        if (Symbol == expr.Grammar.Parameter) return true;
+        return children.Any(c => c.HasParameter());
       }
 
       private void GetChildrenRec(List<HashNode> children, int parentIndex) {
@@ -128,6 +172,10 @@ namespace HEAL.EquationSearch {
           hashValues[i] = children[i].HashValue;
         }
         return Hash.JSHash(hashValues, (ulong)expr[end].GetHashCode()); // hash values of children, followed by hash value of current symbol
+      }
+
+      internal ulong CalculateHashValue(Grammar.Symbol symbol) {
+        return Hash.JSHash(Array.Empty<ulong>(), (ulong)symbol.GetHashCode());
       }
 
       // for debugging
