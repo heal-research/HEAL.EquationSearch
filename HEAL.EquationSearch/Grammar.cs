@@ -8,7 +8,7 @@ namespace HEAL.EquationSearch {
       get {
         return new[] { One, Parameter }
                      .Concat(Variables)
-                     .Concat(new[] { Plus, Times, Div, Abs, Log, Sqrt, Exp, Cos })
+                     .Concat(new[] { Plus, Times, Pow, Div, Abs, Log, Sqrt, Exp, Cos })
                      .Concat(Nonterminals);
       }
     }
@@ -30,10 +30,10 @@ namespace HEAL.EquationSearch {
     public Symbol PolyFactor = new Symbol("PolyFactor");
 
     // terminals
-    public Symbol Plus = new Symbol("+", arity: 2);
-    public Symbol Times = new Symbol("*", arity: 2);
-    public Symbol Div = new Symbol("/", arity: 2);
-    public Symbol Pow = new Symbol("**", arity: 2);
+    public Symbol Plus = new Symbol("+", arity: 2, precedence: 0);
+    public Symbol Times = new Symbol("*", arity: 2, precedence: 1);
+    public Symbol Div = new Symbol("/", arity: 2, precedence: 1);
+    public Symbol Pow = new Symbol("**", arity: 2, precedence: 2); // unary and nullary symbols have precedence int.Max
     public Symbol Exp = new Symbol("exp", arity: 1);
     public Symbol Log = new Symbol("log", arity: 1);
     public Symbol Sqrt = new Symbol("sqrt", arity: 1);
@@ -280,10 +280,13 @@ namespace HEAL.EquationSearch {
       public bool IsNonterminal => char.IsUpper(Name[0]); // by convention nonterminal symbols start with uppercase letter
       public bool IsTerminal => !IsNonterminal;
       public int Arity { get; internal set; }
+      
+      public int Precedence { get; internal set; }
 
-      public Symbol(string name, int arity = 0) {
+      public Symbol(string name, int arity = 0, int precedence = 999) {
         this.Name = name;
         this.Arity = arity;
+        this.Precedence = precedence;
       }
 
       public virtual Symbol Clone() {

@@ -48,12 +48,7 @@ namespace HEAL.EquationSearch {
       var childExpressions = new List<string>();
       for (int cIdx = 0; cIdx < numC; cIdx++) {
         var childExpression = ToInfixString(childRoot, lengths);
-        if (syString[rootIdx].Arity == 2 && syString[childRoot].Arity == 2 && syString[childRoot] != Grammar.Div) {
-          childExpression = $"({childExpression})";
-        } else if (syString[rootIdx] == Grammar.Div && syString[childRoot].Arity == 2) {
-          childExpression = $"({childExpression})";
-        } else if (syString[rootIdx] == Grammar.Pow && syString[childRoot] == Grammar.Div) {
-          // Div within pow is in parenthesis. I don't know why...
+        if (syString[rootIdx].Precedence > syString[childRoot].Precedence) {
           childExpression = $"({childExpression})";
         }
 

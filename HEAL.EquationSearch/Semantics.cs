@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using MathNet.Symbolics;
 
 namespace HEAL.EquationSearch {
   public class Semantics {
@@ -95,8 +96,19 @@ namespace HEAL.EquationSearch {
             HashValue = CalculateHashValue();
             return;
           }
-          
-          // x/x/y = 1/y
+
+          var isNestedDiv = children[1].Symbol == expr.Grammar.Div;
+          var isNominatorOne = children[0].Symbol == expr.Grammar.One ||
+                               children[0].HashValue == parameterHash;
+          if (isNestedDiv && isNominatorOne) { // is nested div?
+            var childDiv = children[1];
+            var isChildNominatorOne = childDiv.children[0].Symbol == expr.Grammar.One ||
+                                      childDiv.children[0].HashValue == parameterHash;
+            if (isChildNominatorOne) {
+              HashValue = childDiv.HashValue;
+              return;
+            }
+          }
         }
         
         HashValue = CalculateHashValue();
