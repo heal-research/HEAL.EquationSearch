@@ -28,7 +28,7 @@ namespace HEAL.EquationSearch {
       this.VariableNames = (string[])varNames.Clone();
       var data = new Data(varNames, x, y, invNoiseVariance: noiseSigma.Select(si => 1.0 / (si * si)).ToArray());
 
-      var evaluator = new Evaluator();
+      var evaluator = new VarProEvaluator();
       var cts = CancellationTokenSource.CreateLinkedTokenSource(token);
       var control = GraphSearchControl.Start(new State(data, maxLength, grammar, evaluator))
         .WithCancellationToken(cts.Token)
@@ -57,7 +57,7 @@ namespace HEAL.EquationSearch {
     public double[] Predict(double[,] x) {
       if (BestExpression == null) throw new InvalidOperationException("Call fit() first.");
       if (x.GetLength(1) != VariableNames.Length) throw new ArgumentException("x has different number of columns than the training dataset");
-      var evaluator = new Evaluator();
+      var evaluator = new VarProEvaluator();
       var data = new Data(VariableNames, x, new double[x.GetLength(0)], new double[x.GetLength(0)]); // no target, or noise variance
       return evaluator.Evaluate(BestExpression, data);
     }

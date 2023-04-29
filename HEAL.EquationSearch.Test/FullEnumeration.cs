@@ -31,7 +31,7 @@ namespace HEAL.EquationSearch.Test {
       var grammar = new Grammar(varNames);
       grammar.UsePolynomialRules();
       var data = new Data(varNames, x, y, invNoiseVariance: Enumerable.Repeat(1.0, y.Length).ToArray());
-      var evaluator = new Evaluator();
+      var evaluator = new VarProEvaluator();
       var control = SearchControl<State, MinimizeDouble>.Start(new State(data, maxLength, grammar, evaluator))
         .BreadthFirst();
       System.Console.WriteLine($"Visited nodes: {control.VisitedNodes} evaluations: {evaluator.OptimizedExpressions}");
@@ -76,7 +76,7 @@ namespace HEAL.EquationSearch.Test {
 
       var grammar = new Grammar(varNames); grammar.UsePolynomialRules();
       var data = new Data(varNames, x, y, invNoiseVariance: Enumerable.Repeat(1.0, y.Length).ToArray());
-      var evaluator = new Evaluator();
+      var evaluator = new VarProEvaluator();
       var control = SearchControl<State, MinimizeDouble>.Start(new State(data, maxLength, grammar, evaluator))
         .BreadthFirst();
       System.Console.WriteLine($"Visited nodes: {control.VisitedNodes} evaluations: {evaluator.OptimizedExpressions}");
@@ -126,7 +126,7 @@ namespace HEAL.EquationSearch.Test {
 
       var grammar = new Grammar(varNames);
       var data = new Data(varNames, x, y, invNoiseVariance: Enumerable.Repeat(1.0, y.Length).ToArray());
-      var evaluator = new Evaluator();
+      var evaluator = new VarProEvaluator();
       var control = SearchControl<State, MinimizeDouble>.Start(new State(data, maxLength, grammar, evaluator))
         .BreadthFirst();
       System.Console.WriteLine($"Visited nodes: {control.VisitedNodes} evaluations: {evaluator.OptimizedExpressions}");
@@ -229,7 +229,7 @@ namespace HEAL.EquationSearch.Test {
 
       var grammar = new Grammar(varNames);
       var data = new Data(varNames, x, y, invNoiseVariance: Enumerable.Repeat(1.0, y.Length).ToArray());
-      var evaluator = new Evaluator();
+      var evaluator = new VarProEvaluator();
       var control = SearchControl<State, MinimizeDouble>.Start(new State(data, maxLength, grammar, evaluator))
         .BreadthFirst();
       System.Console.WriteLine($"Visited nodes: {control.VisitedNodes} evaluations: {evaluator.OptimizedExpressions}");

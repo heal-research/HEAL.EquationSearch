@@ -3,9 +3,12 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace HEAL.EquationSearch {
-  public class Evaluator {
-    public long OptimizedExpressions = 0;
-    public long EvaluatedExpressions = 0;
+  public class VarProEvaluator : IEvaluator {
+    private long optimizedExpressions = 0;
+    private long evaluatedExpressions = 0;
+    public long OptimizedExpressions => optimizedExpressions;
+
+    public long EvaluatedExpressions => evaluatedExpressions;
 
     // The caches in GraphSearchControl and Evaluator have different purposes.
     // The cache in GraphSearchControl prevents visiting duplicate states in the state graph.
@@ -18,9 +21,9 @@ namespace HEAL.EquationSearch {
     // TODO: make iterations configurable
     // This method uses caching for efficiency.
     // IMPORTANT: This method does not update parameter values in expr. Use for heuristic evaluation only.
-    internal double OptimizeAndEvaluateMSE(Expression expr, Data data, int iterations = 10) {
+    public double OptimizeAndEvaluateMSE(Expression expr, Data data, int iterations = 10) {
       var semHash = Semantics.GetHashValue(expr);
-      Interlocked.Increment(ref EvaluatedExpressions);
+      Interlocked.Increment(ref evaluatedExpressions);
 
       if (exprQualities.TryGetValue(semHash, out double mse)) {
         // NOTE: parameters of expression are not set in this case
@@ -56,7 +59,7 @@ namespace HEAL.EquationSearch {
       var coeff = new double[coeffIndexes.Count];
       Debug.Assert(coeffIndexes.Count == 1 + termIdx.Count); // one coefficient for each term + intercept
       NativeWrapper.OptimizeVarPro(code, termIdx.ToArray(), data.AllRowIdx, data.Target, data.InvNoiseSigma, coeff, solverOptions, result, out var summary);
-      Interlocked.Increment(ref OptimizedExpressions);
+      Interlocked.Increment(ref optimizedExpressions);
 
       // update parameters if optimization lead to an improvement
       if (!double.IsNaN(summary.FinalCost) && summary.FinalCost < summary.InitialCost ) {
@@ -73,13 +76,11 @@ namespace HEAL.EquationSearch {
     // TODO: make iterations configurable
     // This method always optimizes parameters in expr but does not use caching to make sure all parameters of the evaluated expressions are set correctly.
     // Use this method to optimize the best solutions (found via MSE)
-    internal double OptimizeAndEvaluateMDL(Expression expr, Data data, int iterations = 10) {
-      Interlocked.Increment(ref EvaluatedExpressions);
+    public double OptimizeAndEvaluateMDL(Expression expr, Data data, int iterations = 10) {
+      Interlocked.Increment(ref evaluatedExpressions);
 
       var terms = new List<(int start, int end)>();
       var coeffIndexes = new List<int>();
-      GetTerms(expr, terms, coeffIndexes);
-
       // compile all terms individually
       var code = CompileTerms(expr, terms, data, out var termIdx, out var paramIdx);
 
@@ -98,7 +99,7 @@ namespace HEAL.EquationSearch {
       var coeff = new double[coeffIndexes.Count];
       // The first coefficient is always the intercept
       NativeWrapper.OptimizeVarPro(code, termIdx.ToArray(), data.AllRowIdx, data.Target, data.InvNoiseSigma, coeff, solverOptions, result, out var summary);
-      Interlocked.Increment(ref OptimizedExpressions);
+      Interlocked.Increment(ref optimizedExpressions);
 
       // update parameters if optimization lead to an improvement
       if (summary.Success == 1) {
@@ -120,8 +121,9 @@ namespace HEAL.EquationSearch {
       return mdl;
     }
 
-    internal double[] Evaluate(Expression expression, Data data) {
-      Interlocked.Increment(ref EvaluatedExpressions);
+
+    public double[] Evaluate(Expression expression, Data data) {
+      Interlocked.Increment(ref evaluatedExpressions);
       var code = CompileTerms(expression, new[] { (start: 0, end: expression.Length - 1) }, data, out var _, out var _);
       var result = new double[data.Rows];
       NativeWrapper.GetValues(code, data.AllRowIdx, result);
