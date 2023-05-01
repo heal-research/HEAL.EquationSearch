@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using MathNet.Symbolics;
 
 namespace HEAL.EquationSearch {
   public class Semantics {

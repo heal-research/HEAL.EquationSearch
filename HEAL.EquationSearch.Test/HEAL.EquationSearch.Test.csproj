@@ -24,7 +24,10 @@
     <None Update="CC_Hubble.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="function_sets/**/unique_equations_*.txt">
+    <None Update="function_sets/**/*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="function_sets\normalize_generated.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

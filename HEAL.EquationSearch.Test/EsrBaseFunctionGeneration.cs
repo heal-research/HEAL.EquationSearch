@@ -13,6 +13,11 @@ public class EsrBaseFunctionGeneration {
   [DataRow(3)]
   [DataRow(4)]
   [DataRow(5)]
+  [DataRow(6)]
+  [DataRow(7)]
+  [DataRow(8)]
+  [DataRow(9)]
+  [DataRow(10)]
   public void OneDimensionalSpace(int maxLength) {
     var varNames = new [] { "x" };
 
@@ -22,24 +27,38 @@ public class EsrBaseFunctionGeneration {
   }
 
   private void EnumerateAll(Grammar grammar, int maxComplexity) {
+    
+    var allFunctionsFile = $"generated_complexity_{maxComplexity}.txt";
+    GenerateAllToFile(grammar, maxComplexity, allFunctionsFile);
+    System.Console.WriteLine($"All functions generated in file {Path.GetFullPath(allFunctionsFile)}.\n\n");
+
+    var uniqueFunctionsFile = $"generated_complexity_{maxComplexity}_normalized.txt";
+    NormalizeFilesWithSymPy(allFunctionsFile, uniqueFunctionsFile);
+    System.Console.WriteLine($"Unique functions written to {Path.GetFullPath(uniqueFunctionsFile)}.\n\n");
+
+    var esrFunctions = ReadEsrFunctionSet(maxComplexity);
+    var generatedFunctions = ReadGeneratedFunctions(uniqueFunctionsFile);
+    
+    CompareFunctionSets(esrFunctions, generatedFunctions);
+    
+    System.Console.WriteLine($"{esrFunctions.Length} ESR functions\n{generatedFunctions.Length} generated functions\n");
+  }
+
+  private void GenerateAllToFile(Grammar grammar, int maxComplexity, string filename) {
+    var visitedSentences = new HashSet<ulong>();
     var openPhrases = new Queue<Expression>();
     openPhrases.Enqueue(new Expression(grammar, new[] { grammar.Start }));
-
-    var visitedSentences = new HashSet<ulong>();
-
-    var linearModelHash = Semantics.GetHashValue(new Expression(grammar,
-      new[] { grammar.Variables[0], grammar.Parameter, grammar.Times, grammar.Parameter, grammar.Plus}));
-
-    List<string> generatedFunctions = new List<string>();
     
-    while(openPhrases.Any()) {
+    using StreamWriter resultWriter = new StreamWriter(filename);
+
+    while (openPhrases.Any()) {
       var peek = openPhrases.Dequeue();
-      foreach(var child in grammar.CreateAllDerivations(peek)) {
-        if(GetComplexity(child) > maxComplexity) continue;
-        
+      foreach (var child in grammar.CreateAllDerivations(peek)) {
+        if (GetComplexity(child) > maxComplexity) continue;
+
         if (child.IsSentence) {
           var childHash = Semantics.GetHashValue(child);
-          
+
           if (!visitedSentences.Contains(childHash)) {
             visitedSentences.Add(childHash);
 
@@ -47,53 +66,61 @@ public class EsrBaseFunctionGeneration {
             SetCoefficientsToZero(child);
 
             var childString = child.ToInfixString();
-            //childString = string.Join(" + ", childString.Split(" + ").OrderBy(t => t));
-            
-            generatedFunctions.Add(childString);
-            System.Console.WriteLine(childString);
+
+            // prepare parameters
+            childString = childString.Replace("0", "p");
+            resultWriter.WriteLine(childString);
           }
         } else {
           openPhrases.Enqueue(child);
         }
       }
     }
-    
-    System.Console.WriteLine($"{generatedFunctions.Count} functions generated");
-    
-    var esrFunctions = ReadEsrFunctionSet(maxComplexity);
-    CompareFunctionSets(esrFunctions, generatedFunctions.ToArray());
+  }
+
+  private void NormalizeFilesWithSymPy(string srcFile, string targetFile) {
+    // Simplify the remaining function with SymPy --> REQUIRES PYTHON AND SYMPY!!!
+    var process = System.Diagnostics.Process.Start("python3", 
+      arguments: $"function_sets/normalize_generated.py {srcFile} {targetFile}");
+    process.WaitForExit();
   }
 
   private void CompareFunctionSets(string[] esrFunctions, string[] generatedFunctions) {
-    System.Console.WriteLine("\nESR Functions that are not generated:");
-    foreach (var esrFunction in esrFunctions) {
-      if (!generatedFunctions.Contains(esrFunction)) {
-        System.Console.WriteLine(esrFunction);
+    System.Console.WriteLine("   ESR Functions that are not generated:");
+    int notGeneratedCount = 0;
+    foreach (var esrFunc in esrFunctions) {
+      if (!generatedFunctions.Contains(esrFunc)) {
+        System.Console.WriteLine(esrFunc);
+        notGeneratedCount++;
+      }
+    }
+
+    int notInEsrCount = 0;
+    System.Console.WriteLine("\n   Generated Function that are not in the ESR function set.");
+    foreach (var generatedFunc in generatedFunctions) {
+      if (!esrFunctions.Contains(generatedFunc)) {
+        System.Console.WriteLine(generatedFunc);
+        notInEsrCount++;
       }
     }
     
-    System.Console.WriteLine("\nGenerated Function that are not in the ESR function set.");
-    foreach (var generatedFunction in generatedFunctions) {
-      if (!esrFunctions.Contains(generatedFunction)) {
-        System.Console.WriteLine(generatedFunction);
-      }
-    }
+    System.Console.WriteLine($"   {notGeneratedCount} ESR functions found that are not generated ");
+    System.Console.WriteLine($"   {notInEsrCount} generated functions that are not in ESR");
   }
 
   private void SetCoefficientsToZero(Expression expr) {
-    foreach (var sym in expr) {
-      if (sym is Grammar.ParameterSymbol paramSym) {
-        paramSym.Value = 0.0;
-      }
+    foreach (var sym in expr.OfType<Grammar.ParameterSymbol>()) {
+      sym.Value = 0.0;
     }
   }
 
   private string[] ReadEsrFunctionSet(int complexity) {
     string file = $"function_sets/core_maths/unique_equations_{complexity}_normalized.txt";
-    
-    return File.ReadLines(file)
-      //.Select(line => string.Join(" + ", line.Split(" + ").OrderBy(t => t)))
-      .ToArray();
+    return File.ReadAllLines(file);
+  }
+
+  private string[] ReadGeneratedFunctions(string file) {
+    return File.ReadAllLines(file);
   }
 
   private int GetComplexity(Expression expr) {
