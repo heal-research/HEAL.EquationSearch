@@ -1,0 +1,8363 @@
+x
+p
+1/x
+p**x
+p*x
+p/x
+0
+x**p
+x*x
+x**x
+p + x
+1
+1/(p + x)
+1/(2*x)
+zoo
+p**(1/x)
+x + 1/x
+x**(1/x)
+p + 1/x
+p**(p + x)
+p**(p*x)
+x**(p*x)
+x + x**x
+p*x + p
+p**(x*x)
+x*x*x
+x/p**x
+p*(p + x)
+1/2
+p + x**p
+p**x/x
+p/p**x
+x**(x*x)
+(p*x)**p
+(p/x)**p
+x**p/x
+(p + x)**x
+p**(p**x)
+p/x**x
+p**(x**p)
+x + x*x
+p*x**p
+x**(p**x)
+x**(p/x)
+x**(x**p)
+p**x + x
+p/(p + x)
+(x/p)**p
+x**x/x
+x + x**p
+p + p**x
+p*x**x
+p**x*x
+x**(x**x)
+x*(p + x)
+0**p
+p*p**x
+p + p/x
+p*(x*x)
+1/(x + 1/x)
+p**(p/x)
+1/(p + 1/x)
+p + x*x
+(p/x)**x
+x**(p + x)
+p**(x**x)
+p + x**x
+(p + x)**p
+(p*x)**x
+(x/p)**x
+p*x + x
+x*x**x
+x/(p + x)
+p/x + x
+x/x**x
+x*x**p
+p*x + 1/x
+x*x + 1/x
+x**(p**(1/x))
+1/(p + p**x)
+1/(p + p/x)
+p + x + 1/x
+1/(p**x + x)
+1/(p*x + x)
+1/(x + x**p)
+(p + 1/x)**x
+oo
+p*x**(1/x)
+(x + 1/x)/x
+1/(p*x + p)
+x/x**(1/x)
+x**(p + 1/x)
+(x + 1/x)**x
+(x + 1/x)**p
+x + 1/(2*x)
+1/(3*x)
+p**(1/x)*x
+oo**p
+x/(p + 1/x)
+x/2
+1/(p + x**x)
+(1/(2*x))**x
+x**(x**(1/x))
+(x/p)**(1/x)
+x/p**(1/x)
+p**(p**(1/x))
+x**x + 1/x
+x**p + 1/x
+p + 1/(p + x)
+(p*x)**(1/x)
+1/(x + x**x)
+p*p**(1/x)
+(p/x)**(1/x)
+x + 1/(p + x)
+p + 1/(2*x)
+x**(1/x)/x
+p*(p + 1/x)
+x*x**(1/x)
+p**(x + 1/x)
+1/(p**x*x)
+x**(1/(p + x))
+nan
+(1/(p*x))**p
+p/x + 1/x
+p + x**(1/x)
+(1/(p*x))**x
+(p + 1/x)**p
+p**(x**(1/x))
+1/p
+p**(1/x)/x
+p*(x + 1/x)
+x/(x + 1/x)
+p/p**(1/x)
+(p + x)**(1/x)
+x*(x + 1/x)
+p**x + 1/x
+1 + 1/x
+p**(1/(p + x))
+1/(p + x**p)
+p**(1/(2*x))
+p + p**(1/x)
+(p + 1/x)/x
+1/(x*(p + x))
+0**(1/p)
+p/(p + 1/x)
+p/(x + 1/x)
+x + x**(1/x)
+p**(p + 1/x)
+(1/(2*x))**p
+1/(x*x**x)
+p/x**(1/x)
+x**(1/(2*x))
+x**(x + 1/x)
+1/(p/x + x)
+p**(1/x) + x
+p**(x**p)*x
+p + x**p/x
+x**x*(x*x)
+(p/x)**(x**x)
+(p + x**p)**x
+p/p**(x**x)
+(x/p**x)**p
+p/(p*x + x)
+(1/(2*x))**(1/x)
+p/x**p
+p + (p + x)**p
+(x*x)/2
+p**(p**(x*x))
+p*x**x/x
+p*p**(p + x)
+1/3
+x**(p + p/x)
+x + p**(x*x)
+(x + x*x)**x
+p/x**(p**x)
+p**x*x**p
+(x/p)**(x**x)
+1/(x**p + 1/x)
+p**(x**(x**p))
+(p**x*x)**x
+p*x*(p + x)
+p**(p + x)*x
+(x + x**p)**x
+p + p**(x**x)
+p*x**x + x
+p + (p/x)**x
+p**(p**x)*x
+p**x/x + x
+p + x**(p*x)
+p + p**(x**p)
+p*p**(x*x)
+x/x**(p**x)
+(p*x)**(p/x)
+x**(x**(p + x))
+p**(p**(p*x))
+((p + x)/x)**p
+p*x**(p/x)
+0**(p*x)
+(p + p/x)**p
+x + x**(x*x)
+p**(p*x)*x
+p**x + x**x
+x**(p**(p/x))
+p**(p**(x**p))
+p/x**(p*x)
+p**(p**x*x)
+p*x**p/p**p
+p/(p + x**x)
+x**p*(x*x)
+x*(p*x + p)
+p + (x/p)**x
+(x**x/p)**p
+x + 1/(p + 1/x)
+x*x**p + x
+p*(x + x**x)
+(p + x)**(x**p)
+(x/p)**x/x
+p**((p*x)**x)
+p**(x**x)*x
+x**p/p**x
+p**(p*p**x)
+p + x + x*x
+x**(p**x*x)
+p + x + x**x
+(x + x*x)**p
+x**(1/(x + 1/x))
+p**(p + p/x)
+(p**x/x)**p
+x*x**(p*x)
+x**(p + x**x)
+p**(p + p**x)
+p*(p*x)**p
+0**p/p
+x**(p + x*x)
+p*(p + x**p)
+(p/x)**p/x
+p**(p*x + x)
+x**(p**(p**x))
+p/(p*x + p)
+p + x**(x**x)
+x + (p + x)**p
+(x/(p + x))**x
+p**((p + x)**p)
+x*x**x + x
+x**(p/x)/x
+x**(p**x)/x
+1/(p/x + 1/x)
+p/(p**x + x)
+p**(x**(p/x))
+sqrt(x)
+(p*x**x)**p
+p**(p + x)/x
+p*p**x*x
+x/p**(x**p)
+x*(p + x**p)
+x + x**(x**x)
+p*x + x*x
+x**(p*x)/x
+(p/x)**(x*x)
+(p*x)**(p + x)
+p + x**(p + x)
+p/(p/x + x)
+(p/x)**(p/x)
+p**p
+x**(p**2)
+p + (p*x)**p
+x*x**(p/x)
+p**((p/x)**p)
+(p*x)**(p*x)
+x**((x/p)**p)
+p**(p + x*x)
+x + x*x*x
+(p + x)**(p**x)
+x**(p/(p + x))
+(p*x)**(x**x)
+x**(p**(x**p))
+x**p/(p + x)
+(p + x*x)**p
+(x**p/x)**x
+x**(p/x**x)
+x**((p*x)**p)
+1/(p*x + 1/x)
+p**(x*x)/x
+x + (x/p)**x
+p*(x/p)**p
+(p + p/x)**x
+p*x/x**x
+p**(p*x) + x
+(p*x + p)/x
+p*x**(p*x)
+p + x/x**x
+p**(p*x**p)
+p**x + x*x
+x**x + x*x
+x**(p*p**x)
+x/(p*x + p)
+1/(x + 1/(2*x))
+(p*p**x)**x
+(p*x + p)**p
+p/p**x + x
+1/(1 + 1/x)
+x**(p*x + p)
+x/(p + p**x)
+p**(p**(x**x))
+p*x + x**p
+(x*(p + x))**x
+p**((p + x)/x)
+(x*x**x)**x
+p**(p*x + p)
+1/(x*x**(1/x))
+(p + x**p)/x
+x**(p + x)/x
+x*(p + p/x)
+0**(p**x)
+1/(x**x + 1/x)
+x + x/p**x
+p + p/(p + x)
+x/x**(x**p)
+(x/p)**(x*x)
+p**(p**x) + x
+p*p**(p*x)
+p/p**(p**x)
+p*(p/x)**p
+(p**x/x)**x
+x**((p/x)**x)
+p**2*x
+p/p**p
+x/(p*x)**x
+(p + x)*(x*x)
+(p + x)**(p*x)
+p/p**(p*x)
+p/(p + x) + x
+x/(p/x + x)
+p/(p*x)**x
+0**p + p
+p**(x**p/x)
+p/(p + p**x)
+p**(p + x**p)
+p/x + p**x
+x**(x**x)/x
+(x**p/x)**p
+(p*x)**x/x
+p + p**x/x
+1/(p + p**(1/x))
+1/(p**x + 1/x)
+(p*x + x)**x
+p + (x/p)**p
+(p*x)**(x*x)
+x + (p + x)**x
+p + x/p**x
+(p/p**x)**p
+p + p/x + x
+x*x**(x**x)
+x**(x**p)/x
+x*(x + x**p)
+(p*x)**p/x
+(p*(p + x))**x
+p*x**(p + x)
+x + x**(p*x)
+p*(p/x + x)
+x*(p*x)**x
+p**(1/x) + 1/x
+p**(x/(p + x))
+(x/p**x)**x
+x**(x*x)/x
+p + x*x**p
+x + x/x**x
+(x**x/x)**p
+(oo*p)**x
+(p*(x*x))**p
+p*x + p**x
+p*x/(p + x)
+p + (p*x)**x
+(p/x)**(p**x)
+(p/x)**(x**p)
+(p**2*x)**x
+p**(p/x + x)
+x**(p**(p*x))
+p/(p + x**p)
+(x*x)/x**x
+p**(p/(p + x))
+p*(x + x**p)
+p**(x**(p*x))
+(x/p)**(p*x)
+((x*x)/p)**x
+p*(p*x)**x
+p**((p + x)**x)
+3/(2*x)
+x + x**p/x
+p**(x*x**p)
+(p + p/x)/x
+(p*x + x)**p
+p*x**(x*x)
+x*(p**x + x)
+p + x*(p + x)
+x*(p + x*x)
+(p**x*x)**p
+p*x + p/x
+p*x/p**x
+p*(p*x + p)
+p**(p**x + x)
+x**(x**(x*x))
+p*(x*x*x)
+(p + x)**(p/x)
+x/(p + p/x)
+(p/(p + x))**p
+x*x**(p**x)
+p**(x + x**x)
+p**(x**x) + x
+p/x**(x**p)
+(x + x**x)/x
+p*(p + p/x)
+x/(x + x**p)
+(p*(p + x))**p
+p**(0**p)
+(p*(x*x))**x
+p + x**x/x
+p + p**(p*x)
+p + p**x*x
+x + (p/x)**p
+0**(x/p)
+p**(p**(p**x))
+p**(x*(p + x))
+(p/x)**x/x
+p**(p*x)/x
+p**(x**p)/x
+p + p**p
+(p + x**p)**p
+x*(p + x**x)
+(x*x)/p**x
+x/(p + x**x)
+x**x/(2*x)
+p + 1/(x + 1/x)
+p + 1/(p + 1/x)
+p/(p + p/x)
+p/x**(x**x)
+p**(x**x)/x
+x**x*(p + x)
+(p + x*x)**x
+x*(p*x + x)
+p*(p**x + x)
+x*(p/x)**x
+x*(p + x)**p
+(p + p**x)/x
+(1/2)**x
+(p**x/p)**x
+p*x + x**x
+x*(p*x)**p
+x + x/(p + x)
+p*x**p + x
+p*x*x**p
+p + p**(x*x)
+(p*x)**(x**p)
+p/x + 1/2
+p**(p/x)/x
+x/p**(p*x)
+x**p*(p + x)
+(p + x**x)**x
+p + x**(x**p)
+(p/(p + x))**x
+2*p
+x + x**(p + x)
+(p**2*x)**p
+x + x**x/x
+p**((p*x)**p)
+p**2/x
+(p + p**x)**x
+x**(x**(p*x))
+x**(p**(x**x))
+p*x + x + x*x
+p*x + p**p
+p*x + p*(x*x)
+p**(p/x) + x
+p*x**p + p
+x**(p*x**x)
+x*(x/p)**x
+p/p**(x**p)
+p/x + x**x
+x**(p*x**p)
+(p + x**x)**p
+p**(x**(x*x))
+1 + x**p/x
+p*p**(x**x)
+(p*x**p)**p
+(x/(p + x))**p
+(x*(p + x))**p
+p**x*x**x
+x**(x*x*x)
+x**(p*(p + x))
+x/p**(x**x)
+p/(x*x**x)
+x**(x/p**x)
+(x/x**x)**p
+x**p + x*x
+x**((p*x)**x)
+(p*p**x)**p
+x/(p/x)**x
+1/(p**(1/x)*x)
+p**(x**(p + x))
+p + x + x**p
+x*p**(x*x)
+p*x**(p**x)
+x**((p/x)**p)
+x**(1/(p + 1/x))
+p/x**x + x
+(x/p)**(x**p)
+x + 1/2
+x**(x + x**p)
+p*x*x**x
+x/(p + x)**x
+p/(x + x**p)
+(x + x*x)/x
+x**(x**x/x)
+p**((x/p)**p)
+(x/p)**(p + x)
+x**(x**(p**x))
+p*x + p + x
+p**((p/x)**x)
+p*p**x/x
+x/x**(p*x)
+(p + x)**x/x
+(x*x**p)**p
+(p**x/p)**p
+p**p/p**x
+x**(x*x**p)
+p**(x + x**p)
+p/x + x**p
+x**(x + x*x)
+p + x**(p**x)
+x*(x + x**x)
+(x/p)**(p**x)
+p + p**(p + x)
+(x*x)**p
+x/p
+x + (p*x)**p
+p/(p + x)**x
+x**(p*(x*x))
+p + p*(x*x)
+x*x**(p + x)
+1/(x + 1/(p + x))
+p*(x*x) + x
+(p/x**x)**p
+1/(x + x**(1/x))
+x**((p + x)**p)
+(x*x**p)**x
+0**p*p
+p/(x + x**x)
+1/(p + x + 1/x)
+p**(p/x)*x
+(p/x + x)**p
+x + (p*x)**x
+p**x + x**p
+p*(p + x)**p
+x**p/x**x
+2*p*x
+0**(p/x)
+p**(p/p**x)
+p*(p*x + x)
+x**(p/p**x)
+(p/p**x)**x
+0**p*x
+p*(p + x) + x
+p**(x*x*x)
+(oo*p)**p
+(x + x**p)**p
+(p/x)**(p*x)
+x/(p*x + x)
+(p*x**p)**x
+1/(p + x**(1/x))
+(p + x*x)/x
+x*x**p/p**p
+x**(0**p)
+p**(p/x**x)
+(p + x)**(p + x)
+(x + x**x)**p
+(p + x)**(x**x)
+x/p**p
+p**(p + x**x)
+p + x*x**x
+(p + x)**p/x
+(x/x**x)**x
+p**(p*(x*x))
+x*(p + x) + x
+(x*x**x)**p
+x + x**(p/x)
+x*(p/x)**p
+p/x + x*x
+p**(p**(p/x))
+(x + 1/x)**(1/x)
+p + p**(p**x)
+x**x/(p + x)
+p + x**(x*x)
+x**((x/p)**x)
+x*(p + x)**x
+p**(p**(p + x))
+x**p/p**p
+p/(p/x)**x
+p*x**(x**x)
+x**(1/x) + 1/x
+x**(x**(p/x))
+p**p*x**p
+((x*x)/p)**p
+x**(x/x**x)
+p**(x**p) + x
+x**(x**(x**p))
+x*(x/p)**p
+(p/x**x)**x
+(x**p/p)**x
+p + x*x*x
+x + (x/p)**p
+p**(p*(p + x))
+(x**p/p)**p
+1/(p + x) + 1/x
+x*x**(x*x)
+x**(p**x/x)
+x**(p*x + x)
+(p*x**x)**x
+x**(x**p/x)
+p*(x/p)**x
+x**p + x**x
+(p + x)/p**x
+(p/x)**(p + x)
+p/(x/p)**x
+(1/2)**p
+x**(p/x + x)
+p + p/p**x
+(x + x**x)**x
+p*(x + x*x)
+p**((x/p)**x)
+(x/p)**p/x
+p**x/(p + x)
+p*p**x + x
+(p*x + p)**x
+1/(p + 1/(p + x))
+p**(1/(p + 1/x))
+p/(p**x*x)
+p + (p/x)**p
+p + p**(p/x)
+p*p**(p**x)
+p**x/x**x
+p*(p/x)**x
+x**(x*x**x)
+p/(2*x)
+p + p/x**x
+p*(p + x**x)
+p*x**p/x
+0**p/x
+p**x*x + x
+p*p**(p/x)
+x**(p + x**p)
+p*(p + x*x)
+x + 1/(x + 1/x)
+(p/(2*x))**x
+x/(x/p)**x
+p**(x/p**x)
+x*(p + p**x)
+p**x*(p + x)
+x**((p + x)**x)
+x/x**p
+x/(p + x**p)
+p**(x**(x**x))
+(p + x)/x**x
+p**(p*x**x)
+x/(x + x**x)
+x**x/p**x
+p**(x + x*x)
+p*(p + p**x)
+x**(p**(p + x))
+x**(p**x + x)
+p*(p + x)**x
+(p**x + x)**p
+1/(p + 1/(2*x))
+p**x*(x*x)
+p**(x*x**x)
+(x**x/p)**x
+(p + p**x)**p
+(p*x)**(p**x)
+p + 1/2
+(p + x)**(x*x)
+p*p**x + p
+(p/x + x)**x
+x**p/(2*x)
+1/(p**(1/x) + x)
+p**p*p**x
+p/(x*(p + x))
+x*x**(x**p)
+1/(p*x)
+x**(x**(x**x))
+x**(x/(p + x))
+p**(x/x**x)
+p**x/(2*x)
+p*(p + x) + p
+p**(x**(p**x))
+x + x**(p**x)
+((p + x)/x)**x
+p**(x**x/x)
+0**p + x
+x + (p/x)**x
+p*(p + x)/x
+p*x**(x**p)
+p**(p**x/x)
+x**((p + x)/x)
+(p/(2*x))**p
+1/(x*(x + 1/x))
+(x/p)**(p/x)
+x*(x + x*x)
+p**p/x**p
+p**(p + x) + x
+x**p*x**x
+1 + 1/p
+(x**x/x)**x
+p + p**x + x
+x/(p**x + x)
+p*p**(x**p)
+x/p**(p**x)
+p + x**(p/x)
+x + x**(x**p)
+(p + x**x)/x
+x*(p/x + x)
+p + x/(p + x)
+p**(p**x)/x
+x**(p**(x*x))
+p*x**x + p
+p + (p + x)**x
+(x*x)/(p + x)
+x/x**(x**x)
+(p + 1/x)**(1/x)
+p**(1/(x + 1/x))
+x**(x + x**x)
+p*p**p
+(p**x + x)**x
+x**(x*(p + x))
+x**(p + p**x)
+(1/(p*x))**(1/x)
+p*x + p + x*x
+x/(p/x)**p
+p/(p/x)**p
+p*(p + 1/x) + x
+1/(p*x + x**p)
+(p/p**(1/x))**p
+(p*x)**(p + 1/x)
+p**(x/2)
+p/(x**p + 1/x)
+1/(x*(x + x**x))
+p**((p*x)**(1/x))
+p**(p/(p + 1/x))
+1/(p**x*x**x)
+1/(p + (x/p)**x)
+p**(p**(p**(1/x)))
+(p/p**(1/x))**x
+p*(p + x) + 1/x
+x**(x**p + 1/x)
+p + p**(1/x) + x
+p**(x**(p**(1/x)))
+p*(1/(p*x))**p
+0**(1/p) + p
+(p + 1/(2*x))**p
+p*(p*x + 1/x)
+x**p/x**(1/x)
+p**(1/x)/p**x
+x**p*(p + 1/x)
+p/(1 + 1/x)
+p**(1/(x + x**x))
+(x**x + 1/x)/x
+1/(p + (x/p)**p)
+(x*(p + 1/x))**x
+x/(p + x**(1/x))
+(x + 1/x)**(p**x)
+p*x + p + 1/x
+p**(p**(1/x) + x)
+(p + 1/x)**(x**x)
+x + 1/p
+p**(p + x + 1/x)
+p**(x/p**(1/x))
+1/(p*x + p/x)
+1/(p*(p + x) + x)
+(oo*p)**(1/x)
+x**(1/x)/(2*x)
+1/(p + x*(p + x))
+1/(p/x + x**p)
+p**(x**(1/(p + x)))
+0**(p**(1/p))
+p*x*x**(1/x)
+(x/p)**x + 1/x
+x**(p + x + 1/x)
+1/(p*x + x**x)
+(p/p**x)**(1/x)
+p**((x + 1/x)**p)
+p*(p + p**(1/x))
+p**(x**x) + 1/x
+(1 + 1/p)**x
+p + x**p + 1/x
+x*(p*x)**(1/x)
+1/(x**(1/x) + 1/x)
+x**(1/x)*(x*x)
+p**(p + p**(1/x))
+1/(x + 1/x) + 1/x
+p + (1/(p*x))**x
+((p + x)/x)**(1/x)
+p**(1/(p + x**p))
+p*p**x + 1/x
+x**((p*x)**(1/x))
+(p**x + x)**(1/x)
+x + 1/(p/x + x)
+1/(p*(p + x) + p)
+1/(p**(p + x) + x)
+p*(x*x + 1/x)
+(p**x/x)**(1/x)
+p*(p + 1/x)**p
+p + 1/(p + p**x)
+p**x/p**(1/x)
+x**(1/(p*x + p))
+x/(x**p + 1/x)
+1/(p + p**(p/x))
+x + x/(p + 1/x)
+x + x/(x + 1/x)
+x/(p/x + 1/x)
+p/p**(x**(1/x))
+(1/(2*p*x))**x
+1/(x**x*(p + x))
+(x*x)/(x + 1/x)
+x/x**(p**(1/x))
+0**(1/p)/x
+1/x + x/p**x
+(x + 1/x)**x/x
+x*x**(1/(2*x))
+p*(p*x)**(1/x)
+1/(p + x**(p/x))
+x + (1/(2*x))**p
+(p*x + 1/x)/x
+x/x**x + 1/x
+p + (p*x)**(1/x)
+x**(1/(p + p**x))
+p + 1/(3*x)
+p + p**(x + 1/x)
+x**p/x + 1/x
+x*(x + x**(1/x))
+p*(p + x)**(1/x)
+p**(1/(p**x*x))
+p**(p*(x + 1/x))
+(p/x**(1/x))**x
+(p**(1/x) + x)**x
+p*(x + 1/(p + x))
+(x*x)/p**(1/x)
+p + x/2
+1/(p**p*x)
+x + 1/(x + x**x)
+x/(p + x) + 1/x
+(p + x)**(p + 1/x)
+p**(x**(1/(2*x)))
+x**(p*x) + 1/x
+p*x + x*x + 1/x
+x**(1 + 1/x)
+(p + x**p)**(1/x)
+(1/(p*p**x))**p
+1/(x + x**(p*x))
+p*x + p/x + p**p
+(p*x + p)**(1/x)
+p**(x*(x + 1/x))
+1/(x*x**x + x)
+x**p*x**(1/x)
+p**(x + x**(1/x))
+(p + 1/x)/(p + x)
+oo**(p**x)
+p*(x + 1/(2*x))
+p**x + 1/(p + x)
+x**(p*(p + 1/x))
+1/(p*x**x + x)
+p*x**(x + 1/x)
+1/(p*x + p**x)
+(p*x)**p + 1/x
+p**x/x + 1/x
+(p + x)/p**(1/x)
+(x**x/x)**(1/x)
+x**((1/(p*x))**x)
+(x/(x + 1/x))**x
+p**(0**(1/p))
+x**(x**(x**(1/x)))
+p**(1/x)/x**x
+x + (1/(2*x))**x
+(p/x + 1/x)/x
+x + (p/x)**(1/x)
+1/(p**(p**x) + x)
+p**(p**(1/x))/x
+p**(x**(x + 1/x))
+p + 1/(x + x**p)
+p*(x*x) + 1/x
+x**(x/x**(1/x))
+p**(x**(1/x)) + x
+(1/(p**x*x))**x
+(x + 1/x)/p**x
+(x/p**(1/x))**x
+x*(p*x + 1/x)
+1/(p + (p/x)**x)
+1/(x + x/p**x)
+p**(x*x + 1/x)
+x**(p**(x**(1/x)))
+x**((1/(2*x))**p)
+p + p**(p + 1/x)
+(p/(p + 1/x))**x
+(x/p)**(p**(1/x))
+x**((x + 1/x)**x)
+(p + x)**(1/x)/x
+(p*x**(1/x))**x
+x**(1/x)/x**x
+p**(1/x) + x**x
+1/(2*x*x**x)
+1/(p/x + p**x)
+x + 1/(x + x**p)
+0**(1/p)*0**p
+p**(1/x)*(p + x)
+(p/(2*x))**(1/x)
+p/(x/p)**(1/x)
+(p + p/x)**(1/x)
+x**(1/(p**x*x))
+1/(p + (p*x)**x)
+(1/(p*x**x))**p
+(x + 1/x)/x**x
+p*p**(1/x)*x
+x/(x + 1/(2*x))
+(p*x)**(1/(p + x))
+p/(1/(p*x))**x
+(1/(p*x))**(p*x)
+p/(p + 1/(2*x))
+1/(x*(p*x + p))
+(x + 1/x)**(p*x)
+x/p**(p**(1/x))
+((1/(p*x))**p)**x
+(x/(p + 1/x))**p
+p*p**(1/(2*x))
+1/(x*(p + x**p))
+p**x + x**(1/x)
+x*x**x + 1/x
+(x/p)**(x + 1/x)
+x**(x**x) + 1/x
+p**(p + x**(1/x))
+(x*x**p)**(1/x)
+p*x/x**(1/x)
+p + 1/(p + x**p)
+(x/p)**(p + 1/x)
+x + x/x**(1/x)
+x/(x + x**(1/x))
+p*x**(p + 1/x)
+p**(1/(x*(p + x)))
+x*(x**x + 1/x)
+1/(x*(p + x) + x)
+(x + x**(1/x))**x
+1/(p**(x**p)*x)
+(x*(p + 1/x))**p
+x/x**(1/(2*x))
+x + x**(p**(1/x))
+p + x**(x**(1/x))
+1/(p + x**(p + x))
+x**(1/(2*x))/x
+((p + 1/x)/x)**p
+p*x*(x + 1/x)
+(x/p)**p + 1/x
+p**(x*x) + 1/x
+p + p/x**(1/x)
+(x + x**p)**(1/x)
+p/(p + x)**(1/x)
+(p*x)**(1/(2*x))
+p/x**(x**(1/x))
+x + (p*x)**(1/x)
+(p/x)**(x**(1/x))
+p**(x**p + 1/x)
+p**(x/(p + 1/x))
+x**(x + 1/(p + x))
+1/(p**(p**x)*x)
+(p + x)**x + 1/x
+p**(1/(p*x + p))
+x**(1/x)/(p + x)
+p + x*x + 1/x
+p*p**(1/(p + x))
+(x**x + 1/x)**p
+x**(p + 1/(2*x))
+x**(x/(p + 1/x))
+x**p + x**(1/x)
+x**(x/(x + 1/x))
+x/(1 + 1/x)
+p**(1/(p + x)) + x
+p**(1/x)*x**x
+(p/x)**(1/(p + x))
+p*x**(1/(p + x))
+(p + x)**(p**(1/x))
+(p + x**(1/x))/x
+x**(p + 1/x)/x
+1/(x + x**(x**p))
+p**(1/(p**x + x))
+(x + x**(1/x))**p
+p*x + x**(1/x)
+(p + x)**(x + 1/x)
+(1 + 1/x)/p
+p**(1/(3*x))
+(p**(1/x)/x)**x
+p*(p/x + 1/x)
+x + x**(x + 1/x)
+p**(1/(x + x**p))
+p/x**(1/(2*x))
+p**x*(p + 1/x)
+x + x**(1/x)/x
+x**(p**(1/x) + x)
+p**(p*x + 1/x)
+(x/p)**(1/(p + x))
+x + 1/(p*x + p)
+x + (p + x)**(1/x)
+p*(p + x**(1/x))
+x**(p**(p + 1/x))
+x**(1/(p**x + x))
+(x + x**(1/x))/x
+p*x + p/x + x*x
+p**(p**x) + 1/x
+x/(p*x + 1/x)
+(1 + 1/p)**p
+(p**x + 1/x)**x
+p/(p*x)**(1/x)
+p**x*x**(p*x)
+(p + p**(1/x))**p
+x**x + 1/(2*x)
+x**x*(x + 1/x)
+1/(2*x**x)
+p**(1/(2*x))/x
+p**((p + 1/x)**x)
+x**(x**(1/x))/x
+(p*(x + 1/x))**x
+x*(x + 1/x) + x
+p**(p + 1/x)*x
+x*x**(x**(1/x))
+p*x**x + 1/x
+1/(p + x**p/x)
+1/(1/(p + x) + 1/x)
+(1/(3*x))**x
+p**(p + 1/(2*x))
+x**(1/(p + p/x))
+1/(x + (x/p)**x)
+p/(p + 1/x)**x
+p**x + 1/(2*x)
+(1/(p*x))**x/x
+p + x + 1/(2*x)
+1/(p + x*x**x)
+x/(p + x + 1/x)
+(p + 1/(p + x))/x
+p + 1/(p*x + p)
+x + 1/(p**x*x)
+x/(p*x)**(1/x)
+(p*x)**(x + 1/x)
+p*x**(1/x) + x
+p + 1/(p + x**x)
+p/(p*x + 1/x)
+p/(x + 1/(p + x))
+1/(p + p**(p + x))
+p**(1/x)*x**p
+(p + x**(1/x))**p
+1/(x*(p*x + x))
+(p/x + x)**(1/x)
+x*(x + 1/(2*x))
+1/(p*p**x + p)
+p + x**(p + 1/x)
+(x**(1/(p + x)))**x
+(p + x)**p + 1/x
+p + p/p**(1/x)
+1/(p + p**(x**x))
+1/(p**x + x**x)
+x + (x + 1/x)**x
+p**(1/x)/(2*x)
+1/(p**(x**x) + x)
+p**x*x**(1/x)
+(1/(2*x))**(p*x)
+1/(x + (p/x)**x)
+p**(1/(2*x)) + x
+1/(p**(p/x) + x)
+p + 1/(p**x + x)
+x/(p + 1/(2*x))
+x*x + 1/(p + x)
+1/(p + (p/x)**p)
+p + x/(x + 1/x)
+p/(p + p**(1/x))
+1/(x*(p + x**x))
+p + (x + 1/x)**x
+x**(p*p**(1/x))
+x*(p + 1/x)**x
+(x/x**(1/x))**x
+(p*x**p)**(1/x)
+p*x**(1/(2*x))
+x*(x + 1/x)**p
+(p + p**x)**(1/x)
+(1/2)**(1/x)
+(x*x**(1/x))**x
+x*(p + 1/(p + x))
+(p**(1/(p + x)))**x
+0**(1/p)*x
+(p**(1/x)*x)**x
+p**(p/p**(1/x))
+(p*x)**(1/x)/x
+x**x/(x + 1/x)
+oo**(p*x)
+(0**(1/p))**p
+p + (1/(p*x))**p
+(1/(2*x))**p/x
+p + (p + 1/x)**p
+p*x**(x**(1/x))
+(p*x**x)**(1/x)
+x**(1/x)/p**x
+x**(p**(p**(1/x)))
+p/(x + 1/(2*x))
+(1/(p**x*x))**p
+p**(p*x**(1/x))
+1/(p + (p + x)**p)
+1/(p + p**p)
+x**(1/x)*(p + x)
+x/(p/x)**(1/x)
+p**(1 + 1/x)
+0**(1/(p*x))
+p**(1/x) + p**x
+p**(p + 1/(p + x))
+p**(1/(x*x**x))
+1/(x + 1/(p + 1/x))
+p/x + p**p
+oo**p + p
+x**(p*x + 1/x)
+(p + 1/x)**(p**x)
+((p + 1/x)/x)**x
+1/(x + (x/p)**p)
+x + (p + 1/x)**x
+x**(1/(p + x**p))
+(x**p/x)**(1/x)
+(1/(x*(p + x)))**x
+x**(x*(p + 1/x))
+oo**p/x
+1/(x + x/(p + x))
+x**p*(x + 1/x)
+1/(p + 1/(x + 1/x))
+(x*x + 1/x)/x
+(1/(p*x))**(p**x)
+x*x**(1/(p + x))
+p**(1/(p + p/x))
+1/(p*x + p + x)
+1/2 + 1/x
+x**(1/x) + x**x
+1/(x + x/x**x)
+x**(x/p**(1/x))
+1/(p**(p*x)*x)
+1/(p + 1/2)
+p*(x**p + 1/x)
+1/(x + x**(p**x))
+p/(p**(1/x) + x)
+(p/x + 1/x)**p
+p + (p + 1/x)**x
+(x**x/p)**(1/x)
+(p**x + 1/x)/x
+1/(p + x**x/x)
+p**((x/p)**(1/x))
+(0**(1/p))**x
+(1 + 1/x)**p
+x*(p/x)**(1/x)
+x/(x**x + 1/x)
+1/(x + x**(p/x))
+x + x**x + 1/x
+p + 1/(x*x**x)
+p*(x + 1/x) + p
+x + x**(1/(2*x))
+p*x + 1/(p + x)
+p/(p + 1/x) + x
+x/(p**x + 1/x)
+p**(p**(1/(2*x)))
+p**(1/(p + x))*x
+(p + 1/x)**(p*x)
+x**((x + 1/x)**p)
+p + x + 1/(p + x)
+x/(p + p**(1/x))
+x**(1/(p*x + x))
+p**(1/x) + x*x
+1/(x + 1/2)
+x**(1/p)
+1/(p + x**(x**x))
+x/(1/(2*x))**x
+1/(p + x**(p**x))
+p**(x + 1/x)*x
+(x**(1/x)/x)**p
+x*x**(p**(1/x))
+(p*x**(1/x))**p
+(1 + 1/x)/x
+p**(1/(p*x + x))
+p*x + p**(1/x)
+1/(p + p**x/x)
+x**(p*x)/p**x
+p**(1/p)
+x**(1/(x + x**x))
+x + 1/(p**x + x)
+(x*x)/x**(1/x)
+3*x/2
+p**((x + 1/x)/x)
+(p + x**x)**(1/x)
+(p + 1/(2*x))/x
+x**(p*x)/x**x
+(p/x**(1/x))**p
+x*x**p + 1/x
+x**(1/x) + x*x
+(p**(1/x)/p)**x
+x + 1/(p + p/x)
+p**x/x**(1/x)
+p**((p + 1/x)**p)
+((1/(p*x))**x)**x
+x + 1/(p + x**p)
+0**(1/p)*p
+(x**p + 1/x)**p
+x**(x**(x + 1/x))
+(p + x + 1/x)**x
+(1/(p*x))**(p/x)
+p/(x + x**(1/x))
+(p + 1/x)**p/x
+(x + 1/x)*(x*x)
+x*(x + 1/(p + x))
+p*p**(x**(1/x))
+0**p + 1/x
+p**(p/(x + 1/x))
+p**x*x + 1/x
+p + x/(p + 1/x)
+p*(x + 1/x) + x
+((x/p)**p)**p
+p/(x + 1/x)**x
+x**x + 1/(p + x)
+p**((1/(p*x))**x)
+x*x + 1/(2*x)
+(x**(1/x)/x)**x
+p*p**(x + 1/x)
+(1/(x*x**x))**x
+(x/(p + 1/x))**x
+(1/(p*x**x))**x
+(1/(p*x))**(x**x)
+p**(p*p**(1/x))
+(p + p**(1/x))**x
+1/(x + (p + x)**p)
+(x*x**x)**(1/x)
+x + (1/(p*x))**x
+p*x**(1/x) + p
+0**(1/p) + x
+x**(x/2)
+p/x + p**(1/x)
+x**(x*(x + 1/x))
+1/(x + (p*x)**p)
+1/(p**(x**p) + x)
+(p + x*x)**(1/x)
+x**(x*x**(1/x))
+1/(x + (p/x)**p)
+1/(x + x**x/x)
+x/p**(1/(2*x))
+p**(x**x + 1/x)
+(p/x)**x + 1/x
+x + x**(1/(p + x))
+(p/x)**(p + 1/x)
+p**(p**(1/x))*x
+x**(1/x)*x**x
+x**(p + 1/(p + x))
+p**p*p**(1/x)
+(p + 1/x)**(p + x)
+(x/p)**(1/x)/x
+x**(x*x) + 1/x
+p*x + 1/(2*x)
+x**(oo**p)
+x + (p + 1/x)**p
+1/(p + 1/x) + 1/x
+(p/x)**(1/(2*x))
+p/(p**(1/x)*x)
+x/p**(x**(1/x))
+1/(2*x**p)
+(p + 1/x)**(x**p)
+p + x/x**(1/x)
+1/(p + (p + x)**x)
+x/(p + 1/(p + x))
+x + (x + 1/x)**p
+(x/2)**x
+p*(p/x)**(1/x)
+p + x**(1/(p + x))
+p*p**(1/x) + x
+p*x + x + 1/x
+1/(p**x*(p + x))
+p**((1/(2*x))**x)
+p + x**(p**(1/x))
+(p*p**(1/x))**x
+2*x/3
+x**(x**p) + 1/x
+p/(p/x)**(1/x)
+x**x/x**(1/x)
+p + (p/x)**(1/x)
+(p + 1/x)**(x*x)
+x**p/(x + 1/x)
+x**((x + 1/x)/x)
+1/(x*x**(x**p))
+(1/(p*x))**(p + x)
+x/(1/(p*x))**x
+oo*p
+p + p**(p**(1/x))
+p*(x + x**(1/x))
+p**(oo**p)
+1/(x*x**p + x)
+(p/x)**(x + 1/x)
+p + 1/(p*x + x)
+(x*x)/(p + 1/x)
+x**p/(p**p*x)
+p**(p**(1/x)*x)
+p/x**(1/(p + x))
+p + 1/(x + x**x)
+x + 1/(3*x)
+x**((p + 1/x)**x)
+p**(p**(1/x)) + x
+p + x + x**(1/x)
+p**(x/x**(1/x))
+0**(x**(1/p))
+p*x*(p + 1/x)
+p**oo
+p**(1/x)/(p + x)
+p*x/(x + 1/x)
+(p + x)/(p + 1/x)
+(x + x*x)**(1/x)
+p + x*x**(1/x)
+x + (p + 1/x)/x
+x**x/(p + 1/x)
+p + 1/(p + p/x)
+(x*(p + x))**(1/x)
+(x*x**(1/x))**p
+1/(x*(p + x)**x)
+1/sqrt(p)
+x**(1/(x*x**x))
+((x + 1/x)/p)**p
+1/(p**(x**x)*x)
+p**((1/(2*x))**p)
+p**(p/x)/p
+(p*p**(1/x))**p
+1/(x*x**(x**x))
+1 + 1/(2*x)
+p**((x + 1/x)**x)
+p**(1/x) + x**p
+(p + 1/x)**x/x
+p**(p**(1/(p + x)))
+((1/(p*x))**p)**p
+(p*p**x)**(1/x)
+x**(x + 1/x)/x
+(p/x + 1/x)**x
+p**(x + 1/(2*x))
+x**(p**x) + 1/x
+x*(1/(p*x))**x
+p + (x/p)**(1/x)
+x + 1/(p + p**x)
+1/(p + p**(x**p))
+(1/(p*p**x))**x
+p*(p + x + 1/x)
+x**(x**(p**(1/x)))
+1/(x + 1/(x + 1/x))
+p/(x + 1/x) + x
+1/(p**x/x + x)
+p**p/p**(1/x)
+(x + x**x)**(1/x)
+x*(p + p**(1/x))
+1/(x*(p/x + x))
+p**(p**(x**(1/x)))
+p**(x**(1/x))/x
+p*x/(p + 1/x)
+p*x/p**(1/x)
+(p*x)**x + 1/x
+x**(x**(1/(2*x)))
+x**p/(p + 1/x)
+p**((p + x)**(1/x))
+(x*x + 1/x)**x
+(x*(x + 1/x))**x
+x*(x + 1/x)**x
+1/(p + p/p**x)
+((x + 1/x)/x)**x
+x*x**(x + 1/x)
+1/(p + x**(x**p))
+1/(2*p)
+p**(p/x + 1/x)
+p + p**(1/(2*x))
+p*(x/p)**(1/x)
+1/(x*x**(p**x))
+x**(p/(p + 1/x))
+(1/(2*x))**(p**x)
+oo**(p/x)
+p**(x/(x + 1/x))
+(p + x**(1/x))**x
+p**(p/x**(1/x))
+(x + 1/(2*x))/x
+1/(x*(p + p**x))
+(x + 1/x)**(p + x)
+(p**(1/x) + x)**p
+(1/(2*x))**(x**x)
+x**(p + x**(1/x))
+x*(p**(1/x) + x)
+x + 1/(x*(p + x))
+x**x*x**(p*x)
+1/(p + (p*x)**p)
+p/p**(1/x) + x
+x**((x/p)**(1/x))
+1/(p/p**x + x)
+x**(p/p**(1/x))
+p*(p + 1/(2*x))
+(p**2*x)**(1/x)
+(p**x*x)**(1/x)
+1/(x + x**(x**x))
+p**x + x + 1/x
+x**((p/x)**(1/x))
+p*(1/(2*x))**x
+x**(x**(p + 1/x))
+(p*(x + 1/x))**p
+x*x**(p + 1/x)
+1/(2*p**x*x)
+(1/(p*x))**(x*x)
+1/(p*x**p + x)
+(x**p + 1/x)**x
+x**(x*x + 1/x)
+(1/(2*p*x))**p
+p*(x + 1/x)**p
+x**(p + p**(1/x))
+(p*x)**(x**(1/x))
+1/(p**x + x**p)
+(p + x)**(x**(1/x))
+p*x**(p**(1/x))
+(x + 1/x)**(p/x)
+x**(p/x**(1/x))
+x**(x + x**(1/x))
+x**(p*x + p/x)
+oo**p*x
+x*x**(1/x) + x
+p + p**(1/x)/x
+0**(1/p)/p
+p/x**(p/x)
+(p/x)**(1/x)/x
+1/(0**p + x)
+p + p**(1/(p + x))
+p*(1/(p*x))**x
+p**x/(x + 1/x)
+p**x/(p + 1/x)
+1/(x*(p*x)**x)
+p/p**(1/(2*x))
+(p + x)**(1/(p + x))
+p + (x + 1/x)**p
+1/(0**p + p)
+x/(2*p)
+1/(p + 1/(p + 1/x))
+x**(p/x + 1/x)
+(x**x + 1/x)**x
+x**(0**(1/p))
+(p + x)/x**(1/x)
+p**(1/(p + x**x))
+x*(x/p)**(1/x)
+1/(p**x*x + x)
+(x**p + 1/x)/x
+x**(p**(x + 1/x))
+x**(1/(p + x**x))
+1/(p + p**(p**x))
+p**(1/(p + x))/x
+1/sqrt(x)
+p/p**(p**(1/x))
+p + x**x + 1/x
+1/(p + p**x*x)
+p + p/x + 1/x
+1/(p + x*x**p)
+x**x*(p + 1/x)
+(1 + 1/x)**x
+(x/(p + x))**(1/x)
+(p**x + 1/x)**p
+p**(1/x)*p**x
+1/(p + p**(p*x))
+(p**(1/x)/x)**p
+x**p + 1/(p + x)
+p + (1/(2*x))**x
+p/x + x + 1/x
+p**(p**x + 1/x)
+(p + x)/(x + 1/x)
+p*(x + 1/x)/x
+p**(x*(p + 1/x))
+x**((1/(2*x))**x)
+p**(x + 1/(p + x))
+(1/(x*x**x))**p
+(p*(x*x))**(1/x)
+p/(p + x + 1/x)
+(x**p/p)**(1/x)
+(x**(1/(p + x)))**p
+x**(x**(1/x)/x)
+x/(x + 1/(p + x))
+x**(p*(x + 1/x))
+p**(x**p) + 1/x
+1/(x*(p + p/x))
+1/(2*p*x)
+1/(p/x**x + x)
+p**(p + 1/x) + x
+(x/x**x)**(1/x)
+1/(p**(p*x) + x)
+1/(p + p/x + x)
+(x + 1/x)**(x*x)
+x*(1 + 1/x)
+p*(p + 1/x)/x
+x + 1/(p*x + x)
+x*(p + x)**(1/x)
+p**(p*(p + 1/x))
+p/(1/(2*x))**x
+1/(x + (p*x)**x)
+p*x**p + 1/x
+(p + x)**(1/(2*x))
+p**(p*x)*p**(x*x)
+1/(x*(x/p)**x)
+(x/p**(1/x))**p
+x/p**(1/(p + x))
+x*(p + x) + 1/x
+1/(p*p**x + x)
+(p*x + 1/x)**p
+(x**(1/x)/p)**x
+(p*(p + 1/x))**p
+x**(p**(1/(p + x)))
+(p**(1/(p + x)))**p
+p**(p + 1/x)/x
+x**x/p**(1/x)
+x + x**(p + 1/x)
+1/(p + x/p**x)
+x*(1/(2*x))**x
+p**(p**(1/x)/x)
+x**p + 1/(2*x)
+x/x**(x**(1/x))
+x**p/p**(1/x)
+p*(p**x + 1/x)
+(p + 1/x)/p**x
+(p*x + 1/x)**x
+p*p**(p**(1/x))
+1/(p + x + x**x)
+1/(4*x)
+1/(p/(p + x) + x)
+x**(1/(x + x**p))
+p**((p/x)**(1/x))
+p/x + x**(1/x)
+p/p**(1/(p + x))
+p**(x + 1/x)/x
+(p*x)**(p**(1/x))
+0**(1/(p + x))
+((1/(p*x))**x)**p
+(p*x + x)**(1/x)
+x**(p**(1/(2*x)))
+1/(p*x**x + p)
+x**((1/(p*x))**p)
+p**(1/x)*(x*x)
+(x + 1/x)**p/x
+p/(p + 1/(p + x))
+(p**x/p)**(1/x)
+(x/p)**(1/(2*x))
+p**(p*x) + 1/x
+0**(p**(1/x))
+(x + 1/(2*x))**p
+p*p**(p + 1/x)
+(oo/p)**x
+x**(p**(1/x)*x)
+1/(x*(x + x**p))
+(1/(p*x))**(x**p)
+x/(p + x)**(1/x)
+p + 1/(p/x + x)
+p*(p + 1/(p + x))
+x/x**(p/x)
+(x/p)**(x**(1/x))
+(p + 1/x)**(p/x)
+p*p**(1/x)/x
+p + (p + x)**(1/x)
+1/(p**p*x**p)
+(p/x)**(p**(1/x))
+0**p + 1/p
+x**(p**(1/x))/x
+(1/(p*x))**p/x
+(p*(p + x))**(1/x)
+(p + 1/(p + x))**p
+1/(x + (p + x)**x)
+x*x*x + 1/x
+(x + 1/x)**(x**x)
+p**(x**(1/x)/x)
+x**(1/(p + x))/x
+p**((p + 1/x)/x)
+p + x/p**(1/x)
+1/(p + x/(p + x))
+x**(p*x**(1/x))
+p**(x**(p + 1/x))
+x + (x/p)**(1/x)
+p + (1/(2*x))**p
+p + p**(1/x)*x
+p + 1/p
+p*(p**(1/x) + x)
+(x*x + 1/x)**p
+x**(p/x) + 1/x
+p/p**x + 1/x
+p**(x**(1/x))*x
+(1/(3*x))**p
+(1/(2*x))**x/x
+p/(p + x**(1/x))
+p*(1/(2*x))**p
+(p/x)**p + 1/x
+x + x*x + 1/x
+p + p/(p + 1/x)
+(x + 1/x)/(2*x)
+x**(x**x + 1/x)
+(1/(x*(p + x)))**p
+p/x**(1/x) + x
+x*(1/(2*x))**p
+1/(x + x**(p + x))
+p**(1/(p + p**x))
+x + x/p**(1/x)
+p**(p + x) + 1/x
+(p*(p + 1/x))**x
+p/(p**x + 1/x)
+(x + 1/(2*x))**x
+p + p**(x**(1/x))
+x + (x + 1/x)/x
+x/(x + 1/x)**x
+1/(p**(1/x) + 1/x)
+1/(p + p**x + x)
+(x + 1/(p + x))**x
+(p + p**(1/x))/x
+1/(p*x**p + p)
+p**x*(x + 1/x)
+p**(x*x**(1/x))
+x**((p + 1/x)**p)
+x**x/x + 1/x
+(p + 1/(2*x))**x
+x/(p**(1/x) + x)
+(x/x**(1/x))**p
+x*(x*x + 1/x)
+(x + 1/x)/(p + x)
+(x/2)**p
+x/(x/p)**(1/x)
+(p**(1/x)*x)**p
+(1/(2*x))**(x*x)
+1/(2*p**x)
+x*(1/(p*x))**p
+x**oo
+p + x**(1/x)/x
+1/(x*(p/x)**x)
+p/x**(p**(1/x))
+x/(p + 1/x)**x
+(p + 1/x)/x**x
+(p/x**x)**(1/x)
+p/x + 1/(p + x)
+x + x**(x**(1/x))
+1/(x + x**p/x)
+p*(1 + 1/x)
+(x + 1/(p + x))**p
+x*(p + x**(1/x))
+x**(p + x) + 1/x
+1/(x*(p**x + x))
+p*(p + 1/x)**x
+p**(1/(p/x + x))
+(p + 1/(p + x))**x
+p + 1/(p**x*x)
+1/(p + x**(p*x))
+(x/p**x)**(1/x)
+x**(p**x + 1/x)
+p + x**(x + 1/x)
+((x + 1/x)/p)**x
+1/(p/x + x**x)
+p + x**(1/(2*x))
+x**((p + 1/x)/x)
+((x*x)/p)**(1/x)
+x + (1/(p*x))**p
+x**(x + 1/(2*x))
+p/x + 1/(2*x)
+x/x**(1/(p + x))
+1/(p + p/(p + x))
+oo**p*p
+(1/(2*x))**(p + x)
+1/(p + x/x**x)
+(p + 1/x)*(x*x)
+(p/(p + x))**(1/x)
+(x + 1/x)**(x**p)
+p*(p + 1/x) + p
+p/(p/x + 1/x)
+p + p/(x + 1/x)
+p + (p + 1/x)/x
+x + x**p + 1/x
+(p/(x + 1/x))**x
+x**((p + x)**(1/x))
+1/(x**p + x**x)
+(oo/p)**p
+p/x**x + 1/x
+1/(x*x**p)
+p**(1/x)/x + x
+(p**(1/x)/p)**p
+x*(p + 1/x)**p
+(p + x + 1/x)**p
+1 + 1/(p**x*x)
+(1/(2*x))**(x**p)
+x**(p*x)*x**(x*x)
+p*p**(1/x) + p
+((x/p)**p)**x
+1/(x*x**(p*x))
+p/(p + x) + 1/x
+p + 1/(x*(p + x))
+x*(p + 1/(2*x))
+x**(1/(p/x + x))
+x**(1/(3*x))
+p**(1/(2*x))*x
+p**(p**(p + 1/x))
+p**((1/(p*x))**p)
+(x**(1/x)/p)**p
+oo**(p + x)
+x**(1/(x*(p + x)))
+x + 1/(p + x**x)
+p/(x*x**(1/x))
+p**(x + 1/x) + x
+p/(x**x + 1/x)
+x**(x**(1/(p + x)))
+p + p**x + 1/x
+p**(x**(x**(1/x)))
+x + 1/(x*x**x)
+p*x**(1/x)/x
+p**(p/x) + 1/x
+x**(p**(1/x)/x)
+1/(p + x + x**p)
+1/(p + p/x**x)
+p**(p**(x + 1/x))
+p*(x**x + 1/x)
+p*(x + 1/x)**x
+x**(p/(x + 1/x))
+(1/(2*x))**(p/x)
+(p/(p + 1/x))**p
+oo**p + x
+p**(1/x)*x + x
+1/(x*(p/x)**p)
+1/(p*(p/x)**p)
+p**(1 + 1/p)
+x/(p/x)**(1/p)
+p/(p/x)**(1/p)
+x/(x + 1/x)**p
+p/(x + 1/x)**p
+(p*p**x)**(1/p)
+(p**x/p)**(1/p)
+(x*(p + x))**(p**x)
+p**(p**x)/(p + x)
+p**(p/x + p**x)
+p/(x + (p*x)**p)
+p + ((x*x)/p)**p
+p + x**(p**(p + x))
+(x/p)**(p*x)/x
+p**x/(p + x)**x
+x**(p**2 + p*x)
+x/(x/p)**(p*x)
+(p*(p*x)**p)**x
+p**x + x/(p + x)
+x/x**(p*p**x)
+p**(p**(x/p**x))
+(x + x**x)**(x**x)
+(x/p)**(x + x**x)
+p/p**(p/x)
+(p + x)**(x**x)/x
+x**(x**p/p**p)
+x**((p*x)**(x*x))
+p*(p/x)**x + p
+p**(p/x**p)
+(p*x**p)**(p + x)
+x**((p + p**x)/x)
+x/p**(p**(p**x))
+p**((p*(x*x))**x)
+x/p**(x**(p*x))
+x**p*x**(p/x)
+1/(p + p**(1/x) + x)
+p + p**(p*x + p)
+p*(p*x**p + p)
+(x*(p**x + x))**p
+x**(p**(x**x))/x
+0**(p*x)/x
+p*x + x**(p*x)
+x + (x/p)**(p*x)
+p**(x/p)
+x/(p/x)**(p*x)
+x**(x + 1/(p + 1/x))
+(x + x**(x*x))**p
+x**(x**(x + x*x))
+p/x + x + x*x
+x/(p + x**(p*x))
+(p*(x*x))**(x**p)
+(x/x**x)**(p*x)
+p*p**(x**x) + x
+p**((p*x)**(p + x))
+(p + x + x**x)**x
+x**(p + x)/x**x
+p**((p**x + x)**p)
+p/x + (p*x)**x
+p**((x/p)**(x*x))
+x**(1/(p/x + 1/x))
+x/(x*(p + x))**x
+(p*p**(p*x))**p
+p**(p + p**(p**x))
+p*p**(p*x + p)
+p**(x + 1/(p + 1/x))
+(p*(p*x + x))**p
+p**((p*p**x)**p)
+p/(p*x)**(x**x)
+x**(p**p)/x**(p*x)
+(x*(p + p**x))**x
+p/(p + p/x) + x
+p**((x/p)**(p/x))
+x**x*(p/x + x)
+(p*x**x + x)**x
+(p + (p*x)**p)**x
+p + x + x**(x**p)
+p*x/x**p
+x**(x**(p*x**p))
+x/(x + x**p)**x
+x**(p**p)*x**(p*x)
+x*(x**p/p)**p
+p**(p*(p*x)**p)
+x + (p/(p + x))**x
+p**(p**(p/(p + x)))
+p**(p**(p/x))/x
+1/(p*p**x + 1/x)
+p*p**p/p**x
+(x**x/x)**(p*x)
+0**(p/x)*p
+(p*x/(p + x))**x
+(p + x)**(p*x)/x
+p*x**(p*p**x)
+x**p*(p*x + p)
+1/(p*x + 1/(p + x))
+(x + x**(x**p))**p
+p*(x*x) + p*(x*x*x)
+p**(p*x*x**x)
+p*x**(p/x + x)
+p + p**x/p**p
+p + x + (x/p)**p
+(p*x + x**x)**x
+(p + (p*x)**p)**p
+(x + (p/x)**x)**p
+x**p*x**(x**p)
+x*(p + x) + x**p
+p*(x*x**p)**p
+p**(p*x)*x**x
+(p**x/p)**(p + x)
+p + (p*x)**(p + x)
+x*x**(x/p**x)
+(p + p**(p*x))**p
+x*(x*x**x + x)
+(1/3)**p
+x**(p*x + x)/x
+x + 1/(x + 1/(p + x))
+x**(p + p**x + x)
+p**(p/p**x) + x
+p**(x**x) + x**x
+(p + 1/2)/x
+p**p*p**x/x
+p*(x/p)**p + p
+(p + x**(p + x))/x
+p**(p + (p/x)**p)
+p*(x*x) + p**p
+1/(p/x + 1/(2*x))
+p/(p + x**x) + x
+p + x**(x**x)/x
+(p*(p + x)**x)**p
+p*x + p + p**p
+x + x**(p*x + p)
+x**(1/(p**(1/x) + x))
+x**(p + x**(p*x))
+(x**p + x*x)**p
+p*x**(1/x) + 1/x
+x*x**(p + x**x)
+p**(p/(p/x)**x)
+p/x**x + x + x/x**x
+p/x + x/(p + x)
+x + (p + x)**p/x
+p**(1/x) + 1/(2*x)
+x + (p*x)**(x**p)
+(x*(x/p)**x)**p
+(x + (p*x)**x)**x
+x/(p*x + x)**x
+(p*x**x)**p/x
+x + x**(p*p**x)
+p**(x**x)/x**x
+((x/p)**p/x)**x
+p/(p + p**(x**p))
+x**(p**x)*x**x
+x**p*(p + p**x)
+(p**(x**p) + x)**p
+p/(p + x)**(p*x)
+p*x/(p*x + p)
+p + p**p/x
+(x/p)**(x**(x*x))
+p**(p*(p + x)**x)
+x**(p**p*p**x)
+(p + p**x)**(p*x)
+x/(x + (x/p)**p)
+x**(x*(x/p)**p)
+p + x**(p**(x*x))
+x*(p*x)**(x**p)
+p/(x + x/x**x)
+p*x*(p/x + x)
+x/(p + x*x**p)
+1/(p*x + p/x + p**p)
+x/(p + x)**(p*x)
+p**(p*re(p**p/p**x))
+p + p/x + x**p
+1/(p + x**x) + 1/x
+(p*(p/x)**x)**x
+p**(p*x/p**x)
+p**(x/p**(p*x))
+p*x**p + x*x**p + x
+p/x + p**(x**p)
+p**x*(x/p)**x
+p*(p + (p*x)**x)
+p/(p*x**x + p)
+(x/(p + p/x))**x
+(p + (x/p)**p)/x
+p + (p + x**p)**x
+x + p**(x*x)/x
+p/x**(x/p**x)
+p/p**(x**(p**x))
+(x + x/(p + x))**x
+x/x**(p**x/x)
+p*x**p/p**x
+p/p**x + x/p**x
+x**(0**(p/x))
+p*x*x**x + x
+(x + x/(p + x))**p
+p*p**(x**(p + x))
+p**((1/(2*x))**(1/x))
+x*(p + x)**(p + x)
+(p*x)**(p**x*x)
+(p + p**(p*x))**x
+p + (x*x)/2
+(x/p)**((x/p)**p)
+1/(x + (p + 1/x)**x)
+(x + x**x/x)/x
+x**(p + x**(x**x))
+(1/(p*(x + 1/x)))**x
+(p + p**x)/x**x
+(p + x)/(p + p/x)
+p*p**x*p**(p/x)
+p**p*p**(p/x)
+x**(p*x + p**x)
+p + p/x + 1/2
+x + (p/x + x)**p
+x*(x + x**p) + x
+(p + p**(p**x))**p
+(p + 1/(p + x))**(1/x)
+p**x/p**(x**p)
+p**p/(p + x)**p
+(x*x**x/p)**x
+(p*(p*x)**p)**p
+p*p**(p*x)*x
+p**((p + x)**x)/x
+(p*x)**(p**(p + x))
+(p/x + x)**x/x
+x*(p + (p*x)**p)
+x*x**(p*x + x)
+(x/p**x)**(p*x)
+x/(x + (p*x)**x)
+x*(p + p**(x**x))
+p**(x + x**(x**p))
+(1/(2*p))**p
+(x + x*x)**(p/x)
+x*(x*x**p + x)
+p + (p + x)**p/x
+p + x + (p*x)**p
+x/(p**x*(p + x))
+(x/(p + x)**x)**x
+(p*x)**(p*x**x)
+(p/(x/p)**x)**x
+x**(p/(p*x + p))
+p*x**x/x + x
+(p + x**(p**x))**p
+(x**(p/(p + x)))**p
+(p*x)**(p**(p*x))
+x**(p/x)/(p + x)
+p + p**(p/p**x)
+1/(1/(x + 1/x) + 1/x)
+p*p**x/x + x
+p**(p**x*(x*x))
+(p + x)**(x*x*x)
+p*x/x**x + p
+p/p**x + x*x
+1/((p + x)**x + 1/x)
+p*x + p**(p*x)
+(p/(2*x))**(x**x)
+((p*x)**p/p)**p
+p + 1/(p + p**(1/x))
+(p*x)**(x**p)/x
+(p**x*x**x)**x
+x**((p + x)**(x*x))
+x/p**(p**(p*x))
+x*(p/x)**(p + x)
+p/(p + x + x**x)
+(p**(p**x)*x)**p
+(p + p**x)**(p + x)
+x*x**(p*p**x)
+(p + x)/(p + x**p)
+(x/(p*p**x))**x
+p/(p/x)**(x**x)
+(p**x*x**p)**x
+p**(p**(p/x)/x)
+x*(p + x**(x**x))
+x**((p + x)**x/x)
+x**(p*x**x/x)
+p + p/(p + p**x)
+(p*x + x)/p**x
+p + x/(p*x)**x
+p*p**(p + p/x)
+p + x*(x/p)**p
+(p/p**p)**x
+(p/(x + x**x))**p
+(x/p)**(x**x)/x
+(p + x)**(p + x)/x
+p*(x/p)**p/x
+x*x**(p + x) + x
+(0**p + p)**x
+p**(p**(p**(x**x)))
+(p + x)*(p + x**p)
+x**(p**x + x)/x
+(p + x/p**x)**p
+p*x*(p*x)**x
+(p/(p + x) + x)**x
+p*x + x + x**x
+p + p**((p + x)**p)
+p + (x/p)**(x**p)
+x/(p + p**(x**x))
+p + x + (p/x)**p
+1/(p*x + p**(1/x))
+(x*x**(x**x))**x
+x**((x*x**p)**p)
+(p/(p + x))**(p*x)
+p**(x**(p*x))/x
+(p + (p*x)**p)/x
+x*x**(x**(p*x))
+(p + x*x**x)/x
+x*(p + 1/(x + 1/x))
+x**((x**p/p)**x)
+p*(p + p*(x*x))
+(x*(p + x**x))**p
+(p*(p*x + p))**x
+(p/x)**(x**x)/x
+x + (p + x)**x/x
+zoo*x
+x/(x/p**x)**x
+(p/(p + x) + x)**p
+p**(0**p)*p**p
+(p*x)**(p*x)/x
+x*(p*x**p + p)
+(oo*(p + x))**x
+x**(p/x)/(2*x)
+p*p**p*p**x
+p/(p*(p + x) + p)
+x**(p**p)/x**p
+p + (p + x)**(x**x)
+p**(p**x)*x + x
+p*x + p**p*x
+(x/(p + x))**x/x
+x/x**((p*x)**x)
+p + (p + x*x)**p
+x**(1/(p + x)) + 1/x
+x**x + (p*x)**x
+x/((p + x)/x)**x
+p*(p*x + p) + p
+p**(x*(p + x**p))
+p + x**(p + p**x)
+(p*x)**(x/p**x)
+(p + x)**(x**(p + x))
+p*x*(p*x)**p
+p**x + x/x**x
+p/x**((p*x)**x)
+p*x + p/x + x
+x**(p*p**x + p)
+p + p**p/p**x
+p**(1/x)/x**(1/x)
+(x + x**p)**(p + x)
+p/(x*(p + p/x))
+x/(x + x**x/x)
+p*x/(p/x + x)
+(p**(x/(p + x)))**p
+(p*p**x)**p/x
+p**x + (x/p)**x
+p**(x**(p*x)) + x
+p + x + x/(p + x)
+0**p*p + p**p
+p/(x/p)**p
+(p**(x**x) + x)**x
+(x/p)**(1/x) + 1/x
+x*(p*(x*x) + x)
+(p*p**x)**(x**p)
+p/(p*(p + x) + x)
+p*x + p**(p + x)
+p/(x*(p + x**x))
+x**(p**((p + x)**x))
+(p + x)/x**(x**p)
+1 + p**x/p
+x**(p**p)
+p**(x**(p/(p + x)))
+p**(x**p)*x**x
+(p*x**(p + x))**p
+p + x/(p + x)**x
+x/(x/x**x)**x
+(x/p)**(p/x + x)
+1/(p + x/(x + 1/x))
+p*p**p*x**p
+p + p/(p**x*x)
+(x/p)**(p**(p + x))
+p/(x + (x/p)**x)
+p + p**(p/x**x)
+x**(p/x)/p**(p/x)
+p/x + x**(p**x)
+x*(p*x)**(x*x)
+p**(p*x + p + x)
+p*(x/p)**x/x
+p**((p*x + p)**x)
+x**(p**2)/x
+(x**(x**p)/x)**x
+(x**p*x**x)**x
+(p**2*x)**(p*x)
+(p*(p + x*x))**p
+p**(x/(p**x + x))
+(x**p/x**x)**x
+(p/(x + 1/x))**(1/x)
+p*x**p + p**p
+p**(p*(x*x))/x
+p**(p**(p + x)*x)
+x**(x**(x**x))/x
+((p + x**p)/x)**x
+p + x + 1/(p + 1/x)
+p/x**(x**p) + x
+p*x*(p*x + p)
+p**(1/(x**p + 1/x))
+x + x**p/(2*x)
+p**(p/x**x)*x
+p/(p**p*x**p)
+p*x + p + x*x**p
+x + x/(p**x + x)
+((p + x**x)/x)**p
+x**(p + p*(x*x))
+p*x**((p + x)/x)
+p/(p + x) + x/(p + x)
+((p + x)/x)**(x*x)
+x**x/x**p
+(p + p**(p/x))/x
+p**(1/(p**(1/x) + x))
+(p*(x*x))**x/x
+p**x + (p*x)**x
+(p + x*x)**(p/x)
+p**p*(p + x)**p
+x**(x + (p*x)**x)
+(1/x)**p
+p*(x + (p/x)**x)
+(p + x**x)**(x**p)
+p**(p**x) + x**p
+p/(p + x/p**x)
+p*(x/p)**(p + x)
+p + 1/(p**(1/x) + x)
+(p**x + x)**(p + x)
+p**((p*x)**x) + x
+p/(p + p**x*x)
+p**(p*x)/p**(p**p)
+p + (x/p)**(p**x)
+p**((p/x)**p/x)
+(x**(p*x)/p)**x
+((p*x + x)/x)**p
+p + p**x*x**x
+(x*x**x)**(x*x)
+p*p**(p + x)/x
+x**((p/(p + x))**p)
+(p/p**x)**(x*x)
+(x/p)**(x*x**x)
+(x + x/p**x)**p
+x**(p*x)*(x*x)
+(x/p**x)**x/x
+(x/p)**((p/x)**x)
+(p/x**(p*x))**x
+(p**x + x**p)**x
+(p + p**(x*x))**p
+p/x + (x/p)**p
+x**((p**x + x)**p)
+x*x**(p**(p*x))
+x**p/x**(p**p)
+p**(p**(p + x**x))
+x**(p**x*x**x)
+p*x*(p + x**x)
+p/p**((p*x)**x)
+(p**(1/x) + 1/x)/x
+p*p**x*x**x
+((p + x)**p)**x
+(x/p**(1/x))**(1/x)
+p*p**(1/(p + 1/x))
+x*(p*x + x**p)
+x**(p/(p + p/x))
+0**p/x**x
+p*(p + p**x*x)
+(p/x)**(x**(x**p))
+(p + x**(x*x))**p
+(x*(p**x + x))**x
+p**((p*x)**(x**x))
+x/(p + x/p**x)
+p**(x**(p*x**p))
+p**(p + p**x/x)
+p*(1/(2*x))**(1/x)
+x**(x**x)/x**x
+p/(x*(x + x**x))
+p + (p*x + p)**p
+p**(x*x*x)*p**(p*(x*x))
+x**(p*x*x**p)
+0**(p*x)/x**x
+p*(p*x + x**p)
+x**(p*p**(p + x))
+p*p**(x**p/x)
+(x**p/p)**(p*x)
+x**(x + 1/2)
+(p + x**x/x)**p
+x*(p/x + x**x)
+x*(p + p**x/x)
+(p*(x*x))**(x**x)
+(p/x + x**x)**p
+x**(p**2)/p**p
+1/(p + x**p + 1/x)
+p/p**(p**(p*x))
+p*x**(x/p**x)
+(x/(x + x**x))**p
+x + x**(x**(p*x))
+x**((p + x)**(x**p))
+(p/x)**(p**(p*x))
+oo**p*p**p
+p + (x**p/p)**x
+x*(p + x)**(p**x)
+x**(p*x + x*x)
+x + (p/x**x)**p
+(p*x)**((p + x)/x)
+x**(p*(p + x) + x)
+p*x + x**p/x
+1/(p*(p + 1/x) + x)
+x*(x/p)**(p/x)
+p + x*(x + x*x)
+p**((p/x)**(x**x))
+p + x/p**(p**x)
+x*x**((p + x)**x)
+(1/(x*(p + x)))**(1/x)
+p**(p + (p*x)**p)
+p**(p*(p*x + x))
+p*x + p*(p + x)
+p*(x + x**x)**p
+p**(p + 1/2)
+x**(x**((p*x)**x))
+(p + x)**(p**x*x)
+p/(p + x) + p**x
+(x/(x + x**p))**p
+(p/x + x**p)/x
+x/x**(x**(p/x))
+0**(p**x/p)
+x**(p + (p*x)**x)
+(p + p/x)**(p*x)
+p**(p + (p*x)**x)
+p**((p*x + p)**p)
+(p*(x*x))**(p**x)
+p*(p/x)**(x**p)
+1/(p + (x + 1/x)**x)
+(p + x + x*x)**x
+x**(1/(x + 1/(p + x)))
+((p + x**x)/x)**x
+(p**x*x)**(p/x)
+(p/(2*x))**(p/x)
+(p*(x*x*x))**x
+(p*(p**x + x))**x
+(p/(p/x)**x)**p
+p**(p*p**x)*x
+(p**(1/x)*x)**(1/x)
+x*x**(x/x**x)
+p*x**((p/x)**x)
+x*(p*x + x*x)
+x + x/x**(x**p)
+x/(p/p**x + x)
+p*(p + x**x)**x
+p**((p + x**x)/x)
+x*(p + x + x*x)
+1/(p + (p + 1/x)**x)
+(x + x**p)**(p**x)
+p*x + x**x/x
+x**((x*x)/x**x)
+p**x + x**(x**p)
+p**x/(x*x**x)
+x**(p/(p/x)**x)
+p*(p/x + x**x)
+1/(x + 1/(p + p**x))
+((p + x)*(x*x))**p
+p*x*(x/p)**p
+p*x/(p**x + x)
+p**((p/x)**p) + x
+p**(p*(p + p/x))
+p*(p + x**(p/x))
+x*(p*x + p + x)
+p*p**(x**x)*x
+p*(p*x)**x + p
+p + x/p**(x**x)
+p**(p**(p/p**x))
+(p + x)**(p**(p + x))
+p*(p + x)**x/x
+(p*(p*x)**x)**p
+x**(x + x**(p/x))
+(p/x)**(x**x/x)
+p + x*(p*x)**p
+p**x/(p*x + x)
+x**(p**x + x**x)
+((p/x)**p/x)**x
+x**((p*x)**(p**x))
+p + p**(p*x) + x
+x + x**(x**(p**x))
+(x**(p**x)/x)**p
+p/x + x*x**x
+x + x**(x**p)/x
+(p*(p + x))**(x**x)
+x**(p/(p*x)**x)
+x*(p*x)**p + x
+x/p**(x**(x**p))
+(p**(p**x)/x)**x
+x**(x**(p*x + x))
+p*x + x*x*x
+(p*x + x*x)**p
+1/(p**x + x) + 1/x
+(x + x**x)**(x**p)
+p**(p**(x**x)*x)
+(p*p**x*x)**p
+(p**x*x**x)**p
+(p + p/(p + x))**x
+x**p*(p + x)/p**p
+p + x**(x**(p**x))
+(p*x**p/x)**p
+p**(p**x)/x + x
+0**p + x/p
+p + x**(p**(x**x))
+(x*x**x)**(x**p)
+x**((p*x)**(p*x))
+(x*x**p + x)**x
+p**(x*(p + p/x))
+x**(p**(x**p/x))
+p*x/(p*x + x)
+x*(x + (p*x)**x)
+p*(p + (p + x)**x)
+x/p**((x/p)**p)
+(p + x*x)**p/x
+x**(x*x**x + x)
+x*x + x**x/x
+p + (p + x)**(x*x)
+1/(p/x**(1/x) + x)
+1/(p + p/x + 1/x)
+p*(x*x*x) + x
+p + p/p**(x**p)
+(x*x**x + x)/x
+(x*x + 1/x)**(1/x)
+x**(p*x*x**x)
+p**((x + x**x)/x)
+p**(1/x)*p**(p/x)
+x**((p/x)**(p*x))
+x**(p**(x**(p/x)))
+(p*x + p/x)**p
+(p*x/(p + x))**p
+p + p**p/x**p
+(x + x**p)*(x*x)
+(p*x + p)/x**x
+p + (p + x*x)/x
+1/x + 1/(p*x)
+1/(x*(p + x)**(1/x))
+p**(p/p**(p*x))
+p*p**(x/p**x)
+p**x + x*x*x
+x/(x**(1/x) + 1/x)
+(p**(p**x)/p)**p
+p**2*x + p
+p**(1/x)*(p + 1/x)
+p**(p*x)*(x*x)
+x**(p**(x + x**x))
+(p**x*x + x)**x
+p**((p + x)**(p**x))
+(p*x**(p + x))**x
+x*(x + 1/(p + 1/x))
+p/(p/x + x)**x
+x/x**(p**(p/x))
+x**(p*x) + x*x
+0**p + p*x
+x*x**p*x**(p**p)
+x*(x**x/p)**x
+p**(p**(p**x + x))
+(x + x**p/x)**x
+x*(p**x + x*x)
+1/(p*x + p) + 1/x
+p + sqrt(x)
+p*p**(p + x*x)
+(p/(x + x**p))**x
+(p + p/x)/(p + x)
+1/(p + 1/(p*x + x))
+(x**(x**x)/p)**p
+p**(x**(p**2))
+(1/(p*x))**(1/(p + x))
+x**(x + x/p**x)
+1/(x**p + 1/(2*x))
+(p + x**(p/x))**x
+x**(p/(x/p)**x)
+p*(p + x)**x + p
+p*p**x*x + p
+1/(p + p/(x + 1/x))
+p*(p*x)**(x**p)
+(p**2/x)**x
+x**x/(p + p**x)
+p + (1/2)**p
+p*(p*x)**(p/x)
+p**((p + x)**(x**x))
+p/(x*(p + x)**x)
+x**p/p
+x**p + 1/(x + 1/x)
+p/x**((p*x)**p)
+1/(p/x + x) + 1/x
+p/p**p + x
+(p/x + x)**(p + x)
+p + x**x + x*x
+p*(p**(p**x) + x)
+x**(p/x)/x**x
+p*x + p**(x**x)
+x**(p*p**(p*x))
+p*p**x/(p + x)
+p + p*x/p**x
+1/(x + (1/(2*x))**x)
+x*(oo*p)**p
+(x*(p + x**p))**p
+p + x**p + x**x
+x*(p + x**x)**p
+p**(1/(p/x + 1/x))
+p**x*p**(p/x)
+1/x + 1/(x*(p + x))
+x**(x**(p*x**x))
+(1/2)**(x**p)
+p/(p*x**p + p)
+x**p/x**(p**x)
+x**((x + x*x)**x)
+p/x**(1/x) + 1/x
+(x + 1/x)**p + 1/x
+x*(x + x**(x**p))
+p*x/x**(x**x)
+x**p + x*x*x
+p + (x/p)**(p + x)
+x**((p + 1/x)**(1/x))
+(x*(p*x)**p)**p
+(x**p/x)**(x*x)
+(p*x**p + p)/x
+p**(1/(x + 1/x))*x
+(p + x)/(p/x)**x
+p*(p**x/p)**x
+p + (p*(p + x))**p
+(x/(p*x)**x)**x
+x/p**((p + x)**x)
+1/(2*p**(1/x)*x)
+x/(x*x**x)**x
+(p*x + p)**x/x
+(p + p*(x*x))**x
+p*x/x**(x**p)
+x**((p/x + x)**p)
+(p/(2*x))**(p*x)
+p**((p*x)**(p*x))
+1/(x + 1/(p*x + p))
+p**(p**(x**p)) + x
+p*(p*x + p) + x
+p**x/2
+p**(p**x*x)/x
+p + p**(x**p/x)
+p**((x/p)**(p + x))
+(p*(x/p)**x)**p
+p**x*x**(x**x)
+p*x + x**x + x*x
+p*(p + p**x)**x
+x**((x**p/p)**p)
+p*x**(p/x)/p**(p/x)
+(p + p/x)*(x*x)
+p**(p + x)/p**x
+x*(p*(x*x))**p
+x*(p/(2*x))**x
+p**(p**x)*(p + x)
+x**(p*re(p**(p**2)))
+(p + x)**(x**(p**x))
+p/(p + x**(p + x))
+p**(x**(x**p))*x
+x*(p*x + p)**p
+0**(x/p)*x
+p**((p*x)**(p/x))
+p**p*p**x/(x**p*x**x)
+(p/x)**((p/x)**x)
+x**(p*x/p**x)
+p*(x + (p + x)**p)
+(1 + 1/p)**(1/p)
+x + (x/(p + x))**p
+p*(x*x) + p**x
+x*x**p/2
+x*(x + 1/(x + 1/x))
+0**(p*x) + p
+(x**p/p**x)**x
+p*x**(x/(p + x))
+p*p**p + x
+x**(x/x**(p**x))
+p/(1/(2*x))**(1/x)
+x**p*(p*x)**x
+p**(x**((p/x)**x))
+(p + (p*x)**x)/x
+p**(x*(p*x)**x)
+(p/x**(x**x))**p
+p**(p**(p*x)/x)
+x*(p*x)**x + x
+(p*x)**(p*(p + x))
+x**(x**(0**p))
+p/(x*(x/p)**x)
+p**(p*x)*(p + x)
+p**(1/x)*x + 1/x
+1/(x + (x + 1/x)/x)
+p**(p**(x**p)/x)
+p + p*(p + x)/x
+p**(p*x**(x*x))
+x/(p/x + x)**x
+p**(p + x**x)*x
+(1/2)**(p**x)
+2*p*x + x*x
+p**((x/p)**x)*x
+x*(p/x + x)**x
+(x + x**(p*x))**x
+x*x**(x**(p/x))
+p/(x*(p**x + x))
+x + (x**x/p)**p
+x**(p + (p + x)**x)
+p*(p/x + x)**p
+x*(x/p)**p + x
+x**(p*(x + x*x))
+x**((x*x)/p**x)
+p*p**((p/x)**x)
+p/(p**x*(p + x))
+p**((x/p)**p)*x
+x**(x*x**(p**x))
+x**(x**(x**p))/x
+(p/x)**(x**(p + x))
+p*(p + p**(x*x))
+p/(x/p)**x + x
+p + p**(p + x**x)
+(x/p)**(x + x**p)
+(p/x)**(p*x + p)
+p*x + p + p**x
+(x/p)**(x/p**x)
+(p/(p*x + p))**p
+x/p**((p*x)**x)
+p + p**(p*x**x)
+x*x**(p*x + p)
+(x**(p**x)/p)**p
+p/(p**x*x**x)
+x/(p*x)**(x**p)
+(x*x**p)**x/x
+x**x*(p*x)**p
+p**(p*x**(p*x))
+x + (oo*p)**x
+(x/(p*(p + x)))**p
+p**x*(x + x**p)
+(p + x)**((p/x)**x)
+x/(p + p/(p + x))
+x**(p**(p**x)*x)
+p*x + (x/p)**p
+1 + (p + x)**p/x
+(x/x**(p**x))**x
+(p**2/x)**p
+x**p*(p + x)**p
+p*(x + x*x)**x
+(p + x/p**x)**x
+p**(x**((p*x)**p))
+x**p + (x/p)**x
+p + p**(p + x) + x
+x**(p*p**x*x)
+x**(1/(2*x)) + 1/x
+(p + x**(x**x))**p
+(x + (p/x)**p)**x
+p**(p*x)/p**x
+((p + x)/x**x)**p
+p**(x + (p/x)**p)
+(p*x)**(1/(x + 1/x))
+p*(x/p**x)**x
+(p*x + x*x)**x
+x/p**(x/x**x)
+p/(p + x)**(x**x)
+1/(p*x + 1/(2*x))
+x**(x/(p/x)**x)
+((x + x*x)/x)**x
+p/p**((p + x)**x)
+p*(p + x**p) + x
+((p*x)**p/x)**p
+p + x**p*x**x
+p**((p + x**p)**x)
+x**(p*x + p*x**x)
+x**((p + p/x)**p)
+1/(p + x**p) + 1/x
+p*x + p**x*x + x
+(p*x + x)**(x*x)
+p**(p**(p**x)/x)
+(x*x**x)**(p**x)
+x**(x/(p + x**x))
+x + x**(p**(p*x))
+x**(x**(1/(x + 1/x)))
+x + x**(p*x)/x
+(p + x)/x**(x**x)
+p**((p*x)**p)*x
+p**((p/p**x)**x)
+p**x*x**(p/x)
+p/x**((p/x)**p)
+p*(p + x) + p/x
+1 + x/p + 1/p
+x**(x + 1/(x + 1/x))
+x**((x + x*x)/x)
+(p + x)**p/x**p
+p + 1/(p*x)
+x/(x + x/(p + x))
+p**(x**p/x)*x
+(p + x*x**x)**x
+x*x**(x*x**p)
+(x/p**x)**(p**x)
+x + x**(x/x**x)
+(x/p)**(x**(x**p))
+p**(p + x**(p*x))
+(p + (x/p)**p)**x
+p**(p*(x + x**p))
+(p/x)**((p*x)**x)
+1 + 1/(x + 1/x)
+p**(p**p)/p**(p*x)
+x**(p + x**(x**p))
+2*p/x
+(p*x)**(x*x**p)
+(p**x + x)**p/x
+x + (p*x)**x/x
+p + x**(p**(p**x))
+x**(p**(x**p))/x
+x*(p + x**(x**p))
+p + (p*x)**(x**p)
+(x*x**p)**p/x
+(p*x**x)**(p + x)
+(x*(p*x + p))**x
+p + p**(x**p)/x
+(x/p)**x/(p + x)
+x**p/p**(p*x)
+p*x**x*x**(p*x)
+x + ((x*x)/p)**p
+p**(p*x) + x**p
+(x + 1/(x + 1/x))**x
+p**(x*(x + x**p))
+p*x**(p**(p + x))
+x**(p*re(p**(p/x)))
+x/(p*p**x + p)
+p**(x**(p*(x*x)))
+(p + p**(1/x))**(1/x)
+x + (p*x)**(p + x)
+p**(p**(x*x*x))
+(p + 1/x)/x**(1/x)
+p/(x + (p*x)**x)
+x**(x**(p + x**p))
+(x/(p + p**x))**p
+(p*x**p)**(p*x)
+p**p*p**(p**x)
+p**(0**p)*p**x
+(p*x)**(x*x**x)
+p*p**(p**x) + p
+p*(x + (p*x)**x)
+(p + p**x*x)**x
+p*x + (p/x)**p
+p**((x*x**p)**x)
+(1 + 1/x)**(1/p)
+p/(p*x + p) + x
+(x**x/x)**(x*x)
+x*(x/p)**(p*x)
+p*x**(x**p)/x
+p + p**(x**p) + x
+x**p/x**(x**p)
+p + p**((p + x)**x)
+p + p**(x**(x**x))
+(p/(p**x + x))**x
+x*(p + x)**p + x
+x**(p/(p + x))/x
+1/(p**(x**(1/x)) + x)
+1/(p**(p + 1/x) + x)
+p**((x/(p + x))**x)
+x**(p*x**x)/x
+p**(p*x**(p + x))
+p + p**((p/x)**p)
+x + (x/p)**(p + x)
+p**((p**x + x)/x)
+x**(p**x*x)/x
+(p + x)**x*(x*x)
+p/p**(x**(x**p))
+(x**(p*x)/x)**x
+(p*x + p)**(p/x)
+p**(x*(x/p)**x)
+x*(p + 1/(p + 1/x))
+(p + x)**(p*x + x)
+x + x/(p/x + x)
+p + p*(x*x) + x*x
+p*x**(p**x + x)
+x**p/(p*x + p)
+x/(p/x)**(x**x)
+x**(p + p/x**x)
+p + p**(p**(p*x))
+(p + x)**(x**(p*x))
+(p**x*x)**(p**x)
+(p**x + x)**(p/x)
+x**p + x**(x*x)
+p + p**(x**(p*x))
+x*(p + x)**(x**x)
+p*p**((x/p)**x)
+p*x**(p**x) + p
+p/x**(x**(p + x))
+p*p**(p/x + x)
+(x + x**(x**p))**x
+x*(x + p**(x*x))
+p**x*x + x**x
+(p + p**(p*x))/x
+p**(x + (p*x)**p)
+p*x**p*(x*x)
+p*x**(p + x*x)
+p + p**(p**(p/x))
+p**x*x*(p + x)
+x + x**p/x**x
+(x/(x/p)**x)**x
+p**(p**(p**(p + x)))
+p**(p/x)*x**(p/x)
+p*(x/p)**(x*x)
+x + x*x**p/p**p
+p**p/x**(p**2)
+x*(p*x + p)**x
+p*x**(x**(x*x))
+p**(p*(p/x)**p)
+p/x + x**x/x
+(p**x + x)/(p + x)
+1/(x + 1/p)
+x**(x**(p + x**x))
+x**(x/p**(x**x))
+x + 1/(x*x**(1/x))
+p*(p + 1/(p + 1/x))
+p**(p/p**(x**p))
+x**x*x**(p*x)*x**(x*x)
+x**(x*(p*x + p))
+x**(x**(x**x)/x)
+x**(x + x**(p*x))
+x**((p/x)**x)/x
+(p/x**x)**(x*x)
+(p + x)**p/(p + x)**x
+p**x/(p*x + p)
+x*x**((p*x)**x)
+p**((x/p)**p)/x
+p*p**(p*x) + p
+p + p**((x/p)**x)
+p + p/p**(x**x)
+(1/(p*x**x))**(1/x)
+(p/x)**(x/x**x)
+x**((oo*p)**p)
+(x**p + 1/x)**(1/x)
+x*(p*x**p + x)
+x/(x**p + x**x)
+(x/p)**(p + x*x)
+(x*(p/x + x))**x
+x + (p*x)**(p*x)
+x + x/p**(p*x)
+x**(x*(p + x))/x
+x**p/(3*x)
+x*x*x*x*x
+p*(p**x*x)**x
+(p*x)**(p/x)/x
+(p/(x*x**x))**x
+x + p**(p + x*x)
+x**(p**x*(x*x))
+p*x*x**(x**p)
+(p*x)**((p*x)**p)
+p*x + p**(p**x)
+(p + 1/(x + 1/x))**p
+p**(x + x**(x**x))
+p**p/p**(0**p)
+x + (x**p/p)**p
+p + x/(p + p/x)
+x**(p**(p + x)*x)
+(x/p)**((p*x)**x)
+(p + x*x)**(p*x)
+p**((p/x**x)**x)
+p**((p/x)**(x**p))
+0**p + p + x
+x**(1/(p + 1/(p + x)))
+p*(p + (p*x)**p)
+x**(x**(p*(x*x)))
+p**(x*x**(p*x))
+p**(p*x)/(p + x)
+p/(p + p/x + x)
+x**p + x**(p + x)
+x + 1/(p*x + 1/x)
+p**(p**x + x**x)
+p*p**(x**p)*x
+(p + x**x)**(p**x)
+p**((x*x**x)**p)
+(x/p)**p + x*x
+x**(p**(p*x**x))
+p + x**(p**x/x)
+p/p**(1/(p + 1/x))
+p/(x + 1/(x + 1/x))
+x*(x*x**x)**x
+p/(x/p)**(p**x)
+x**((x*(p + x))**p)
+x**(x**x)*(p + x)
+p**(p**(x**x) + x)
+p**(x + x**(x*x))
+(p**2*x)**(x**p)
+p**x*p**(x**p)
+p + 1/(p + x + 1/x)
+((p/x + x)/x)**x
+x**(x*x**p/p**p)
+p**(p**(p**x*x))
+p + p**(p**(p**x))
+1/(p*x + x**(1/x))
+(p*x)**(x*x*x)
+p*(x*x) + x + x*x
+x**((p**x + x)**x)
+(p*x)**(p/(p + x))
+p*p**p/x
+p*(p + x)**x + x
+(p*x + p)**(x**p)
+x**(p/x) + x*x
+p**p*x**x/(p**x*x**p)
+(x/p)**(p + x)/x
+(p*x)**(p/x**x)
+(x + x**x)**(p*x)
+p*x + x**(p/x)
+x**p + (p*x)**x
+x*((p + x)/x)**p
+p**x + p**(x**p)
+0**p*x + x*x
+(x/p**(x**x))**p
+p*x**(x/x**x)
+x**(p**x/x + x)
+p*x*x**(p*x)
+(p*(x*x))**(p/x)
+(p/(p + x))**(x**x)
+(p*x*(p + x))**x
+1/(p + p/x) + 1/x
+(p/x)**p/(p + x)
+x**(x*x)/x**x
+x*x**(p*x)/p**(p*x)
+x + (p/x**x)**x
+x**p/2
+x/3
+p/(p + x)**p
+(p**(x**p)/x)**p
+p*x*(x + x*x)
+p**(x**((p*x)**x))
+p/(p + p**(p/x))
+p**(p**(p*x) + x)
+(x**p/x)**x/x
+(x + 1/x)**(p + 1/x)
+x**(p*(p + p/x))
+p*x*x**(p**x)
+p*(x/x**x)**x
+(p + x)**(p**(p/x))
+p*x/(p + x) + p
+x**(x**((p/x)**p))
+x + x**(p**x + x)
+p*x/(p + x) + x
+x**((p + x**x)/x)
+x*(x + x**x/x)
+p*p**(p*x) + x
+p*(p + p**x/x)
+x*(x/p)**(x**x)
+x**(p*x**(x**p))
+p + (p/x)**(x**x)
+(p/x**x)**(x**x)
+(p*x)**((x/p)**p)
+1/(p + x**(x**(1/x)))
+(x + x**x)/(2*x)
+p**((p**x/p)**x)
+1 + x**x/(p**x*x)
+x**(p*re((p + x)**p))
+p*(p + x)**p/x
+1/(p + p**(p**(1/x)))
+x**(p*x**x + p)
+p*(x*x) + x*x
+x**p*(x/p)**p
+x**((p*x)**(x**p))
+x*(p/(p + x))**x
+(x**p)**x
+p*x + p*x**p
+p/x**(x/(p + x))
+x**p/(p + p**x)
+x*x**(p**2)
+(x + x**(x**x))**p
+p + (x*x**p)**p
+p/p**x + x + x/p**x
+p**(p/(p*x + p))
+p*((x*x)/p)**x
+p/(p*p**x + x)
+(1/(p + x) + 1/x)/x
+x**(p + x**(p/x))
+(p*x + p**p)**p
+p**x/x + x**x
+x/(p + x)**p
+x**(1/x)*(p + 1/x)
+p**((x/p)**x) + x
+(x/p)**(x/(p + x))
+(p**x*(x*x))**x
+p + (x/p**x)**p
+p + p/(2*x)
+p*(p/x)**x + x
+(x/p)**(p + x**x)
+x**(p**(x/x**x))
+(p*x + p)**(x*x)
+x**x + (p/x)**x
+(x**p/p**x)**p
+(p*x + x**x)**p
+x/(p + 1/x)**(1/x)
+p/(x/(p + x))**x
+(p + x)**p/(2*x)
+x**(p**x*x*re(p**p))
+p*x + 1/(x + 1/x)
+((p + x)**p/x)**p
+1/(p**x*(x + 1/x))
+p + x**(p**x + x)
+x**(p + 1/2)
+(x/p)**(p/p**x)
+p + x + x**(x**x)
+p*(p + x**p/x)
+x**((p + x)*(x*x))
+p + p**p*x**p
+x**(p**((p*x)**x))
+p**p*x/x**p
+p*(p**x + x**x)
+p*(p/x + x) + x
+x + (x*x**p)**x
+(p + p**x/x)**x
+(p + x/(p + x))/x
+p*(p + x**p)**x
+(x**(p + x)/x)**p
+(p*x + p)**(p*x)
+1/(x + x**(1/(2*x)))
+p**(x*x**x)*x
+p + x*x**p + x
+(x**p/p)**x/x
+1/(x**(p*x) + 1/x)
+p**(x**x)/(p + x)
+(p*(p + p/x))**x
+p**(x**x*(p + x))
+p**(p*x**x)/x
+(x*x*x)/2
+p + (x**p/x)**p
+p + x + p**(x*x)
+x*p**(x*x*x)
+x**((x**x/p)**x)
+p*x + (p*x)**x
+p + (x*(p + x))**x
+p*(x**x/p)**x
+p**p*x + p**p
+p/x + (p*x)**p
+p*x**p/x**x
+p + x**(p**(p*x))
+p**(((x*x)/p)**p)
+(p + x)/p
+x**(p**(p/x)*x)
+x**p + x/p**x
+(p + x)**(p*(p + x))
+(p*x)**(p*p**x)
+p + x*(x/p)**x
+p**x*x**(x*x)
+p**(p*p**x*re(p**p))
+(p/2)**x
+x**(p**(p*x))/x
+p*(x**p/p)**p
+(x*x**p + x)**p
+p**(p*x/x**x)
+x*(p + (p + x)**x)
+x + (p + 1/x)**(1/x)
+x + x**(p**(x**x))
+x**(x**p*(p + x))
+(p + x)**(x**x/x)
+p**(x**(p*x))*x
+x + (x/p)**(x*x)
+p + 1/(x + x**(1/x))
+x/(p/(p + x))**x
+p + x**(p/x)/x
+p*(x/p)**(x**x)
+p**(x**(x + x*x))
+p + x*p**(x*x)
+x**((p/x + x)/x)
+x**(p/(p + p**x))
+(x + (p*x)**x)**p
+p*x**(p*x**p)
+(p + x*x)/(p + x)
+p*(p*(x*x) + x)
+p/x + (x/p)**x
+x + (p**x/x)**p
+p*(p + x + x*x)
+((p + x*x)/x)**x
+p**(1/(p + 1/x))*x
+x**(p*p**(p/x))
+x*(p + p*(x*x))
+x*(p*x**p)**p
+1/(p**(1/x)*x + x)
+x/x**(x/x**x)
+x**(x**((p + x)/x))
+p + x**(1/(x + 1/x))
+x*(p/x)**(x*x)
+x*x**(p**(x*x))
+(p + x)**(1/(p + 1/x))
+((p/p**x)**p)**x
+x + (p**x/x)**x
+0**(p*x)*x**x
+(x/p**x)**(x**x)
+x**(p**(x**x)/x)
+(p + p**x/x)/x
+x**(x**x)*(x*x)
+p/x + x**p/(2*x)
+0**x
+p**x + 1/(p + 1/x)
+p**(p/x**x)/x
+p*p**p*p**(p/x)
+p**(p/x**(p*x))
+x*(p**x*x)**p
+p/(1/(p*x))**(1/x)
+(p*x + p)**p/x
+p + (p**x/x)**x
+x/p**(p/x)
+p/(3*x)
+(p/x)**(x*x*x)
+(x**(p/x)/x)**x
+x/p**(x/(p + x))
+(x**x*(p + x))**p
+p**(p*re(p**(p**2)))
+x + x**(p**x*x)
+p**(p**(x*x**p))
+p*p**(p**x)*x
+(x*x**p/p)**p
+p*(p*x + x**x)
+p + 1/(x**p + 1/x)
+p*x**(p*(p + x))
+x*x + 1/(p + 1/x)
+(x + x**(p**x))**x
+(p*x)**(p*x + p)
+p*x/(p*x)**x
+x**p*(p*x)**p
+x + (p + x*x)**x
+(p*x)**p/p**x
+(x + x**p)**(x*x)
+p + (x/(p + x))**x
+p*x**(p + x**x)
+(p/x + x)**p/x
+x**p*x**(x*x)
+x**(p + x*x*x)
+x**p + 1/(p + 1/x)
+p/(p + (x/p)**x)
+p**(p + p**(x**p))
+p + x*x**x + x
+x**(p**(p/p**x))
+p*x + p**p/x
+x**(p**(p*(x*x)))
+x**x*(p*x + p)
+x**((p*(x*x))**p)
+p + p/p**p
+p*p**x + p/x
+x**((p + x*x)**x)
+x/x**(x*x**x)
+1/(p + p**(1/(p + x)))
+((x/p)**p/x)**p
+p/(x*(p*x)**x)
+(x/(p**x + x))**x
+(p*x)**(p*x + x)
+x**p/(p + x**x)
+(p*x)**(p**(x**x))
+(p*x + p**p)**x
+p*x**p*x**x
+p/(x*(p + p**x))
+p*x/(p + x**x)
+(x/x**x)**p/x
+p*x*x**(x**x)
+p**(p**p)
+p**(x*x**x + x)
+p/(x + x**(x**p))
+x**(p**2/x)
+x + x**(x**(x*x))
+x**(x*re((p + x)**p))
+x*(p/x)**(p*x)
+1/(p + 1/(p**x*x))
+(x*(p + x)**p)**p
+x**(p**(p**x*x))
+(p**x + x)/p**x
+(p*x*(p + x))**p
+x + (x/p)**x/x
+p + (p**x/p)**x
+x**x + x/p**x
+0**p + p**x
+p**x/(p + x**p)
+x**(p + p/p**x)
+(x**p + x*x)/x
+p**(1/x)/(p + 1/x)
+p/p**(x/(p + x))
+p + p**p*p**x
+x*x**p*(p + x)
+p + x**p/(2*x)
+p**(x*(p + x) + x)
+(1 + 1/p)**(1/x)
+p**(p*p**x + x)
+x**(p**(p**(p*x)))
+x**(x**(x**p/x))
+x*((x*x)/p)**p
+p/x + x**p/x
+x + (p + x**x)/x
+p/(x*(p*x + p))
+p + x/(p*x + x)
+(x/p)**(p + p/x)
+p*(x + x**x)/x
+(p*x + p)/(p + x)
+x**p + (x/p)**p
+x**(x*(p*x + x))
+(x*x)/p**(p*x)
+p*x*(p/x)**p
+x**(x/p**x)/x
+p + p*x**p/x
+p**(x**(p**x)) + x
+(p + x**p)**(x*x)
+(p/(p*x + x))**x
+(x + (p + x)**p)**x
+(x + x*x*x)/x
+p + (x*x**x)**x
+x*(p*(x*x))**x
+x**(p**p*x**p)
+p*x**p*(p + x)
+1 + x**x/p
+p**(p + x**(x*x))
+x + (x + x**p)**x
+x + x/p**(x**x)
+x**(p**(x*x*x))
+x**(p*(x/p)**p)
+1/(x**x + 1/(2*x))
+(x*x**(x**p))**x
+p**x/p
+p*x**(x*x**x)
+(p/x)**(p**x/x)
+(p/x)**(p**x + x)
+p + (p*x)**(x*x)
+x**(((p + x)/x)**p)
+x**(p*x**p/p**p)
+p**(x**x) + x**p
+p*(p + x**x/x)
+p + x*x**(p/x)
+(p*(x*x) + x)**p
+x**(x**(p/x)/x)
+(p + x**p)**(p*x)
+x**x/p**(p*x)
+x/(p*x)**(p**x)
+(x/x**p)**x
+x**((p*x**p)**x)
+x**(p*x + p + x)
+p + 1/(p + x) + 1/x
+p/(p*x + p/x)
+p**x + x**(x*x)
+(p*x)**(x + x**p)
+p*x**(p + x)/x
+p**((p + x)**(p/x))
+p**(p**(p/x**x))
+1/(p/p**(1/x) + x)
+p/(p + (p*x)**x)
+x**(x*x**(x**x))
+p + p/x + p**x
+1/(p + (p*x)**(1/x))
+(x + x*x)/x**x
+x**(x**(p/p**x))
+p/(p**(p**x) + x)
+p*x*(x/p)**x
+(p + x + x**x)**p
+p*(p*x)**p + p
+p**p*p**(p*x)*p**(x*x)
+(oo*p)**(p*x)
+p**(p + (x/p)**x)
+(p + x**(x**p))**p
+p**((p + x*x)**x)
+p**x*(p/x)**p
+(x/p)**p/p**x
+p + (x + x**x)**x
+p*(p + (p + x)/x)
+x**(p**(x**x)*x)
+p*x**p/x**(p*x)
+x*x**(p*x)/p**x
+p + x*(p*x + p)
+p**(x**(p**(p/x)))
+(x*(p + x))**(p*x)
+(p/x**x)**(x**p)
+1/(p + (1/(2*x))**p)
+(p*x)**((p*x)**x)
+(x + (p + x)**x)**x
+1/(p + p/p**(1/x))
+p**(x**(x*x)/x)
+p + (p**2*x)**x
+x*(p*x)**(p*x)
+p*p**(p*x)/x
+x/(x + 1/x) + 1/x
+p + (p/p**x)**x
+p**(p**((p/x)**x))
+p + p/x + p**x/x
+p/(p/x + p**x)
+x**(p + p**(x**p))
+x**(x + x**(x*x))
+x**(1/(x*(x + 1/x)))
+(p**x/(p*x))**p
+(p + p**p*x**p)**x
+(p + x)**(p*x**x)
+p + (p*p**x)**x
+p**(x**(x/x**x))
+p + p**(x*(p + x))
+x**x/p
+(p + p/x**x)**p
+x*x**(p*x**x)
+p*x + p**x*x
+x*(p + (x/p)**p)
+p**(p**(p*x**p))
+x/x**(p**(p*x))
+p*p**(p/x)*x
+p*x + x*x**x + x
+(p/(p**x*x))**x
+(p*x + x)**(p*x)
+p*x*(p + x)**p
+0**(p**x/x)
+x**((p*(p + x))**p)
+(x/(p + x**p))**p
+p**(p**x) + x**x
+x**x/x**(x**x)
+x*(p + x)**(p/x)
+(x/(p + p/x))**p
+p**x*(x*x) + x
+x/x**(p*x**p)
+p**x*(p/x + x)
+p + x**(p*x**x)
+oo**(p**(1/x))
+p/x**x + x**p
+x*(p*x)**(p/x)
+x**((p + x)**p)/x
+p**(p**(x**p))/x
+(p + x)**(x + x**x)
+x/p**(p**x/x)
+p**(x*re(p**p/p**x))
+1/(p + p**x + 1/x)
+x**p*(x + x*x)
+(p + x)**(x**p)/x
+(p*x)**(x**p/x)
+p*x**(x*x**p)
+p**((p*x)**x/x)
+(p/x)**(p*(x*x))
+p/(p + p**(p**x))
+(x**p/x)**(x**p)
+(x + x**p)/p**x
+p*x + x*x**x
+(p*(p*x + p))**p
+x + (p*x + p)**p
+(1/(3*x))**(1/x)
+x**x/(p + x)**x
+x**(3/2)
+p + (x + 1/x)**(1/x)
+p + p**p + p**p/x
+x**(p*(p + x)**p)
+x + p**(p*(x*x))
+p**(p*p**x/x)
+x/x**(x**(x**x))
+p**p*x**p/x
+x**(p**2*x)
+(p*x + x + x*x)**x
+p**(p + x + x*x)
+(x*x)/(p + x)**x
+(p*(x + 1/x))**(1/x)
+p**(x**x)*(p + x)
+p*(p + x)*(x*x)
+(p*x + p/x)**x
+(p*x)**(p**x)/x
+p*x**(p**2)
+p**(p**(p*x + x))
+p**(x + (p + x)**x)
+p + p*p**(x*x)
+(x*(x + x**x))**p
+(p**(x**x)/x)**x
+(p/x**x)**(p*x)
+p + p*(x*x) + x*x*x
+x + (p*x)**(p**x)
+p**((p*x)**(x*x))
+p*(x + x*x*x)
+p/x + p**(p*x)
+0**p*x + x
+1/(x*(1/(2*x))**x)
+p*(p/p**x + x)
+p**(p*x)/x**x
+x*(p**(p/x) + x)
+x**x*x**(x*x)
+p/x + (p + x)**p
+0**(p*x**x)
+(oo*(p + x))**p
+x**((p + x)**(x**x))
+x**(p + x**p)/x
+x*(p + x/p**x)
+(x/x**(x**x))**p
+x + (p*x + x)**p
+p*(p + p/x)/x
+(p*p**x*x)**x
+p*x/(x + x**p)
+(0**p + x)**p
+p**(p**(p/x))*x
+(1/(2*x))**(p**(1/x))
+p**(p*(x/p)**x)
+(x + 1/(p + x))**(1/x)
+((p*x)**p/p)**x
+x**p/(x/p)**x
+p*p**(x**(x*x))
+0**p*p/x
+x*(p**(x**x) + x)
+p**((x**x/p)**x)
+(x*p**(x*x))**p
+x**(p + x) + x*x
+sqrt(p)*sqrt(x)
+p**(x**p)/x**x
+x**(x*(p/x)**x)
+(x/p)**(p**(p/x))
+(p + p**(x**p))**p
+x**(p*(p + x))/x
+p + p**(p*x)/x
+(x/p)**((p + x)**x)
+x**x*(x + x**p)
+p + x**(p*p**x)
+p + x**((p + x)**x)
+x/(p**x*x)**x
+p*(p*x + p**x)
+(p*x**x + x)**p
+(p*x**(p/x))**x
+(x/(p + x))**(x**p)
+p*p**x/p**p
+x*(p**x/p)**p
+x**x/p**p
+(p + p*(x*x))**p
+p**(x*(x/p)**p)
+(x*(x + x**x))**x
+(p*x)**p/(2*x)
+p*(x + x**p) + p
+p + x/(x/p)**x
+p/(x*(p + x))**x
+x**(p**(x**(p**x)))
+((x*x)/p)**(p/x)
+x*x**p/(p + x)**p
+1/(x*(x**x + 1/x))
+x*(p + x**(p**x))
+p**((p + x)/x) + x
+x*x**(p**(p**x))
+p + (oo*p)**x
+(p**(p/x) + x)**x
+x/(p + x*(p + x))
+p**(p*x**p/x)
+(p + x/(p + x))**x
+1/(p + 1/(x + x**x))
+(p*(p + x))**x/x
+p**((p + x)**(x*x))
+((x*x)/p**x)**x
+x**(p/p**p)
+(x/x**x)**(x**x)
+p**(p*p**(p*x))
+p/(p*x**x + x)
+(p/p**(p**x))**p
+p + p*(x*x*x)
+x**p/(p/x + x)
+p*(x/p)**(p*x)
+p*(p + x**(p*x))
+(x + 1/x)/x**(1/x)
+(p*x + p**x)**x
+(p*(p + x) + p)/x
+((x*x)/p)**(x*x)
+p**(p + p*(x*x))
+p**(x**((p + x)/x))
+p**x + (p + x)**x
+p**(0**p)*x
+x**(p**(x*x**x))
+p + ((x*x)/p)**x
+p**(p**x)/p**x
+(p*x)**(p**(x*x))
+(p/x)**((p + x)**x)
+p + p**(x + x**p)
+x*(p/(p + x))**p
+p + (x/p)**x/x
+p**(p**x)/(2*x)
+p/(p + p/p**x)
+x**(p*(p/x + x))
+(x/p**(p**x))**x
+p**(x/(p*x + x))
+p**((p + p/x)**p)
+p*x + p/(p + x)
+(x/(p*x + p))**x
+x*x**x*x**(p*x)
+p + x + (p*x)**x
+p**((x**p/x)**x)
+p*x**(p*x) + p
+(1/(2*x))**(1/(2*x))
+1/(p + p/(p + 1/x))
+(p**x*x**p)**p
+x*(p/(2*x))**p
+p**(p + p**(x*x))
+(x**x/x)**(x**x)
+(p + x)*(p + p/x)
+(p + x)/x
+p*x**x/p**x
+0**p*p*x
+p*x + (p + x)**p
+1/(x**x*(p + 1/x))
+1/(x + 1/(p/x + x))
+(p*(p + x))**(x**p)
+(p*x)**(p*x**p)
+p + p**x*(p + x)
+x**(p*x**(p*x))
+(p*x*x**p)**p
+0**p*p + p
+p*(x + x**p)**p
+x/(p/x + x**x)
+(p*x**x)**(x**x)
+p*x*x**(p/x)
+x*(p + x**x) + x
+(x + x**p/x)**p
+(x/p)**(x*x**p)
+p/(p/x)**x + x
+x**x/p**(x**x)
+(p/x + p**x)/x
+p**(p**(p + x**p))
+p*(p + x/(p + x))
+1/(x*(p*x)**(1/x))
+x*x**(0**p)
+p**x*(p + x**p)
+p*x + x**(p + x)
+(x + x*x)**(p**x)
+(x/p)**((p + x)/x)
+x + (p + x**p)**p
+(p + x)/(x/p)**x
+p**x + (p*x)**p
+x**(p*x**p/x)
+p**x*(p*x)**p
+p*p**((p*x)**p)
+p**(p*(x*x*x))
+(p/(p + x))**x/x
+x + x**(x**(p + x))
+0**(p**(p/x))
+(p*x)**(p**x + x)
+x/(p + x) + x*x
+p*(p*x + x*x)
+x + (p + p**x)**p
+(x + x/p**x)**x
+(p + 1/x)**(1/(p + x))
+p**((p/x)**x) + x
+x*(p + p**x)**x
+p*(x + (p/x)**p)
+x*x**(p**p)/p**p
+(x + x*x)**(x*x)
+p/x + x**x/(2*x)
+(x**(p + x)/p)**x
+x*(x/p)**(p + x)
+p**((p + x**x)**p)
+p*x + p/x**x
+0**p + x**x
+(p*x)**(p/p**x)
+x**(p + (p*x)**p)
+x*x**(1/(p + 1/x))
+1/(p**(1/x) + x**p)
+p**2*x + p**p + x*x
+((x/p)**x/x)**x
+0**p/x + p/x
+(p*(x*x*x))**p
+(p + p/x)**(x*x)
+((p/p**x)**p)**p
+p + p**(0**p)
+(p*x)**((p + x)**p)
+(x**(x**x)/x)**x
+x/(p + p**(p*x))
+x**(p*x + p*x**p)
+(p**x/x)**(p*x)
+p + p**(x**x)*x
+p**(x**p)/x + x
+p + x/x**(p**x)
+((x*x)/p)**(p*x)
+p**(p*x)*x + x
+x*x**(p/x) + x
+(0**p + p)**p
+p + x + 1/(x + 1/x)
+x + x/(x + x**x)
+x + (x**p/x)**p
+p**(x**(x*x**p))
+p + x**(x*(p + x))
+(x/x**(p*x))**p
+p + (x**x/p)**x
+x**(x + (p*x)**p)
+p**(p**(p/x)*x)
+(x*(p + x))**(x**x)
+x**(p*(x*x*x))
+p**(x*(p*x + x))
+p/(p + (p*x)**p)
+x**p/p**(x**p)
+p + (p*x)**p/x
+(x/p**(p*x))**p
+p*(p + x) + x*x
+(1/(p*x))**p + 1/x
+(p**(p + x)/p)**p
+p + x**(p/(p + x))
+x**x*(p*x + x)
+p/(p*x**p + x)
+p + x**(x/(p + x))
+x**(p + x + x**x)
+(p + x*(p + x))**x
+p + (p + x)**(x**p)
+x + x**((p*x)**p)
+(p + (p*x)**x)**p
+(p**(p*x))**x
+x*(p/x)**p + x
+1/(x*x**(1/(p + x)))
+(p + x**x/x)/x
+p + (p**x/p)**p
+p**(x**(p/x + x))
+((p*x + x)/x)**x
+1/(x + x/(p + 1/x))
+p**x/(p + p/x)
+(p/x + 1/x)**(1/x)
+p**(p*x + x**x)
+p**(p**x/(2*x))
+1/(p*(1 + 1/x))
+x**(p*x**p + p)
+x*(p*x + p**x)
+p**((p*x + x)**p)
+x**(p*(p*x + x))
+p**(p + p**(p*x))
+x/(p + 1/2)
+p*x/x**x + x
+x + (x**p/x)**x
+(p**x*x)**(p*x)
+p*x*x**p/p**p
+p**(p**x*x)*x
+p + p/(x/p)**x
+p**(x*(p/x)**p)
+p/(p**(x**x)*x)
+x**(p*x + p)/x
+p + x + x/x**x
+((p*x + p)/x)**x
+(x**p/p)**(x**x)
+(x*(x/p)**p)**x
+x*x**(x + x**x)
+(x**x/x)**(x**p)
+1 + x**(x**p)/x
+p*x/(p + x**p)
+(p*(p + p**x))**x
+x**p + x**(p**x)
+x**(0**p)/x**p
+(x**x/x)**x/x
+1/(p**(x**x) + 1/x)
+x + x**p*(p + x)
+p/(p + x + x**p)
+p/(p + p**x/x)
+x**(p**(p*p**x))
+p*(p**x*x + x)
+x*x**(p*x)*x**(x*x)
+x/x**(x**(x**p))
+(p + x**(x**x))/x
+p**p/(x*x**p)
+p**(x**(p*x + p))
+x*(x + x/(p + x))
+(x/(p*x + p))**p
+(p + x)*(p + x*x)
+p**(p**((x/p)**x))
+p*(p + p**(x**x))
+(x*x**x + x)**p
+p/p**(p**x/x)
+p + p**(p*(x*x))
+(p*x + p)**(x**x)
+(x*x)/(p*x + p)
+p + p/(p*x)**x
+1/(x*(1 + 1/x))
+p**(x**(p**x + x))
+(x/p)**p*(p + x)
+x**(p/(p + x**x))
+p*(x + 1/(x + 1/x))
+x**(x**x) + x*x
+(p + x**(p + x))**p
+x**((x*(p + x))**x)
+p/x + x**(x*x)
+x**p*x**(p*x)
+0**(p/x) + x
+p/(p + x**(x**x))
+p*p**(p**x) + x
+(p + p**(p + x))**x
+x/(x + (p/x)**p)
+x**(p/x + p**x)
+p*p**x + x**x
+1/(1/(p + 1/x) + 1/x)
+p**(x**(p/x)/x)
+p**((p + p/x)/x)
+(x/x**(x**p))**p
+p**((p + p**x)**x)
+p**(p/x)/x + x
+1/(p + 1/p)
+x**x/(p*x)**x
+x*(p*(p + x))**x
+p*p**((p*x)**x)
+p*(p + x + x**p)
+x*(p**x + x**p)
+p**p*p**(x*x)
+x**(0**p)*x**p
+(p + x)**x/x**x
+(p*x + p + x*x)**x
+(p + x**(p**x))/x
+(p + p**p*x**p)**p
+x/(p + (p + x)**p)
+x**(p**(p*x) + x)
+p/(x + 1/(p + 1/x))
+x + (x + 1/x)**(1/x)
+p*x**((p*x)**x)
+1/(x*(x + 1/(p + x)))
+p**(p**(x**(p/x)))
+(x/p)**(p*p**x)
+(p**(p + x)*x)**x
+(x + 1/x)**(x + 1/x)
+p/(p + (p/x)**x)
+x**(p/x**x)/x
+p*(x/(p + x))**p
+p**(1/(x**x + 1/x))
+p**(p*x)*x**p
+p**(x*x)*(x*x)
+x**(x/(p/x + x))
+p**(p + x/p**x)
+p/x**(p*x) + x
+x + x**(p**2)
+x**((x/p)**(p**x))
+x*x**(x**(p + x))
+(x/(p + x**x))**x
+p/p**(x**(p + x))
+p**(x/x**(p**x))
+x/(x + x**x)**x
+p*p**((x/p)**p)
+(x/p)**(x**(p*x))
+p**x + x**(p/x)
+p/(x**x/p)**x
+x**(x/p)
+p*(p*x)**x + x
+(p + x**p)**(p + x)
+x + (x/p)**(x**p)
+x**(p + (x/p)**x)
+p + x**(x**x/x)
+x/(p**x + x**x)
+p*p**x + p*x
+0**(p**(x*x))
+p**(1/(p + x**(1/x)))
+x/(x + x**(p/x))
+1/((x/p)**p + 1/x)
+p**(x/(p*x)**x)
+p + (x/p)**(x**x)
+p**(p*(p/x)**x)
+x**(x/p**(x**p))
+p**(p/x)*x + x
+p + (p/x)**(p**x)
+(p/(p + p**x))**p
+p**(p**(p*(p + x)))
+(p + x + 1/x)**(1/x)
+x*(x + x**(x**x))
+(x**(p/x)/p)**p
+(p + p*(x*x))/x
+1/(0**(1/p) + x)
+x*x + x**p/x
+(x/p)**p/(p + x)
+p/(p + p/x)**x
+x**(x**(p*p**x))
+1/(p + x**(x + 1/x))
+1/(p + 1/(p**x + x))
+p*x + x*x**p + x
+(x/p)**((x/p)**x)
+(p + p**(p**x))**x
+p**(x**(x*x*x))
+(1/(p + x) + 1/x)**p
+p*(p + (x/p)**p)
+x**(x**x/x)/x
+1/(p**x + x + 1/x)
+p*(p + p/x**x)
+1/(p + 1/(p + p/x))
+x**(p**(x**(x**p)))
+p*(p + p**x)**p
+0**(p/x) + p
+p*x*(p + x)**x
+(x/p)**(p/(p + x))
+(x**(x**p)/x)**p
+1/(x**p/x + 1/x)
+p*x*x**p + p
+x**(x/(p + x)**x)
+p*x**x + p + x
+p + p**(p/(p + x))
+p**(x*re(0**p))
+1/(p**x + x**(1/x))
+p**x/x**(p**x)
+(p + x*(p + x))/x
+p/(p + (p/x)**p)
+p + (p*x**x)**p
+p + (p*x + x)**x
+1/(p + 1/(p + x**x))
+x*(p*x)**(p**x)
+1/(p + x/(p + 1/x))
+p + x**p/x**x
+x**p/(x + x**p)
+p**(p**x*x) + x
+p**((x*x)/p**x)
+x**(x**(x**(x*x)))
+x + (p + x**x)**x
+x/p**(p**(x**x))
+(p + x**(x**p))/x
+p**(p*x + x) + x
+x**(1/(x + 1/x))/x
+p**(p + x*(p + x))
+p*(x/p)**(x**p)
+(p + x**x)*(x*x)
+p**(x*x**(p + x))
+x + (p + x)**(x*x)
+p + (p*(x*x))**x
+(p/x**x)**p/x
+p**(p*x**(p**x))
+x**(x**(x**(p/x)))
+(x/(p*(p + x)))**x
+(p*x**p + p)**p
+0**p*(x*x)
+(p + p**x)**x/x
+p*(p + x**(p + x))
+(p + 1/x)**(p + 1/x)
+p*(x + 1/(p + 1/x))
+p**((p*x)**p)/x
+(p*x + p)*(x*x)
+(x**(p**2))**x
+x*x**x*(p + x)
+(p + x)/p**p
+x*(p*x + p) + x
+x/(p + (p*x)**x)
+p**(p**(p**(p/x)))
+(x + 1/x)**(1/(2*x))
+p*x**(p*x)/p**(p*x)
+p**(x**p)/p**x
+p**(p/x)*x**p
+p + x**p + x*x
+p**x + x**p/x
+x*(p + p**(p + x))
+(p + p**(p**x))/x
+x**x/(p + x**x)
+x**p*x**(p**p)
+p + x + (p + x)**x
+x/(p**(1/x) + 1/x)
+p*(oo*p)**p
+(x/(p*x)**x)**p
+x**(x**(p**x*x))
+x**(p*re(0**p))
+p + x*(p*x + x)
+p**(p**x + x)*x
+(p/x)**(x/(p + x))
+p**2 + p*x
+x**(p*x)/(p + x)
+p**((p*x**p)**x)
+x/p**((p/x)**x)
+p/(p/(p + x) + x)
+p**p/p**(x**x)
+x**((1/(p*x))**(1/x))
+x**(x**(x*x**x))
+1 + 1/(p + x)
+x/x**((p*x)**p)
+p*x**(p**(p/x))
+p**(x**((p + x)**p))
+(1/(p*p**(1/x)))**x
+p**(p*x + x**p)
+p**(p**(p + x*x))
+p**(p**(x*x**x))
+p**x + x*x**p
+((x + x**p)/p)**p
+p + x**(x + x*x)
+x + x**(p + x**p)
+p**(p**x/x)/x
+p*p**x + p**p
+(p/x**(p**x))**x
+p**(x**(p/x)) + x
+p*(p + x)**(p/x)
+x**p + (p*x)**p
+p**((p/x)**(p**x))
+1/(p + x/2)
+p*(p/x)**(p*x)
+x + x**(p + p**x)
+p*(p**x + x*x)
+(x*(p + p**x))**p
+p**(1/x)*x**(1/x)
+p**(p**(0**p))
+p**(p**(p + p/x))
+(p*x**p/p**p)**p
+0**(x/(p + x))
+p*x + (x*x)/2
+x**(x*(p + x**p))
+x**(p**(x**p)*x)
+(x/p)**(x**(p + x))
+p*(p*x**p)**p
+(x**(p/(p + x)))**x
+(p + (p/x)**x)/x
+p/x**(1/(p + 1/x))
+x/(x + x/p**x)
+(p**x + x)**(x**p)
+p**(p + x/(p + x))
+x/(2*x**x)
+p**(x**(x + x**x))
+p**x + p**(p/x)
+p + (p*(x*x))**p
+p*(x**p + x**x)
+(p/p**x)**(p + x)
+(p + x*x)/p**x
+x**((p*x)**p/x)
+p/(p + (x/p)**p)
+x + (x/p)**(p/x)
+(p*x**(p*x))**x
+p**(x**x/(2*x))
+p/x**(0**p)
+x*(x + x**(p*x))
+(p*x**p + x)**p
+(p + (x/p)**x)**p
+p*(x/p)**(p**x)
+p*(p*x)**(p*x)
+p/(p + x**p/x)
+(x + x**p)/(2*x)
+(p*(x/p)**x)**x
+x*(x**(1/x) + 1/x)
+p*p**(x**(p**x))
+p + p**p + x
+x**(p*x**(p/x))
+(p*x**p)**(p/x)
+(x*x)/(p + x**x)
+(x*x**p/p)**x
+(p*x + x + x*x)**p
+x**((p*x)**(x**x))
+x/(p*p**x)**x
+(p + x)**(p**x)/x
+p*x**(p/p**x)
+p*p**(p + x**x)
+p**(p**2/x)
+p/x**(x**(p*x))
+(p + 1/(p + 1/x))**p
+x/(p*x + p**x)
+x*(x/(p + x))**p
+1/(x*(x/p)**(1/x))
+(p*x)**x*(x*x)
+x/x**(p**(p + x))
+(p + x)**((p*x)**x)
+p + x*x**(x*x)
+p/(p*x)**(p*x)
+x**(x**(p**2))
+x*(x + (x/p)**x)
+(p/x)**((p*x)**p)
+p*(p + x**x)**p
+p**(x**p)/(2*x)
+((x + x**p)/p)**x
+p*x**(p*x + p)
+p/(x + x**(x**x))
+(x**(x**x)/x)**p
+(p + x**x)**x/x
+p**(p/(p**x + x))
+x**(1/(p**(1/x)*x))
+x**(p + x*x**x)
+x**(x*(p + x)**p)
+2*p*x**2
+p*x**(x**(p*x))
+x*(p/x + x**p)
+p**(0**(p/x))
+(p/x)**x/p**x
+p/x + x/p**x
+x/(p**x/x)**x
+p**(p/x)/p**x
+x**p*(x/p)**x
+p**(x/(p/x)**x)
+p*sqrt(x)
+p**x*x*x**x
+x**(0**p*x)
+(x*x**p)**(p + x)
+p**((p + x)/x**x)
+(p/x)**x*(x*x)
+p + (x + x**x)**p
+p**((x/p)**(p*x))
+p**(x**(p**(p + x)))
+(p + 1/x)/p**(1/x)
+x**x + x**(p*x)
+p**(p**(p**x/x))
+(x + (x/p)**x)**x
+p**p/p**(p**p)
+x**(x*x**(p*x))
+x**(p**(x*(p + x)))
+x + x**(p*x**p)
+p**((p + p/x)**x)
+p**(p**(p + x))*x
+p**(p + p**x*x)
+x**(x + (x/p)**p)
+p**((x*x)/x**x)
+p + x/(p + x**p)
+p**p*p**(p/x)/p
+x*(x**x/x)**x
+(x + 1/x)**(1/(p + x))
+x*(p + p/x)**x
+p + p/(x*x**x)
+x**(p**(p + x)/x)
+(x + x/x**x)**x
+0**(p**(p*x))
+((x/p**x)**x)**p
+x**(p**p)/p**p
+(p**(p*x)*x)**x
+x + x**(p*(x*x))
+(p + p**(x**p))**x
+x*(x*(p + x) + x)
+p*(p + p/x) + p
+(p/x)**(p**(x**p))
+p**(p*(p + p**x))
+(p*p**(p + x))**x
+p*(p*(x*x))**x
+(p + (p + x)**x)/x
+p*(x + x*x) + x
+p + (p*x)**(p/x)
+(p**(p + x)/x)**p
+(x/p**x)**p/x
+(p/(p + x)**x)**x
+p*p**p + p
+x + x**p/p**p
+x**(p/(p**x + x))
+x**(p**(x**(p*x)))
+(x*x)/(x + x**p)
+(x*x**p/p**p)**x
+0**p/(p + x)
+(p*x)**(p*(x*x))
+p**(p + p/x) + x
+x*(p + (x/p)**x)
+p*(p*x)**(x*x)
+(p*x)**(x**(p + x))
+p**(p*p**(x*x))
+p*(p*x**p)**x
+x + 1/(p + x + 1/x)
+x/(p + (x/p)**p)
+(p + x)**(x**(x**x))
+p/(p**x*x + x)
+p*(p**x/x)**p
+p**p/(p**x*x)
+x + x**(x/(p + x))
+x**(x**(p**(p*x)))
+p**p*x
+x**(x**p*(x*x))
+p*(p**x/p)**p
+p**(1/(1 + 1/p))
+(p*x + x*x)/x
+x**x + x**(x**x)
+p**((x/p)**x)/x
+x**x*(x + x**x)
+x**x*(x/p)**p
+p**(p**(x**(p*x)))
+p*(p*x + x)/x
+p + p**(p**x)/x
+p + 1/(x + 1/(p + x))
+p + x**(1/x) + 1/x
+p/(p**x + x) + x
+x**(p*(p*x)**p)
+(p**2*x)**x/x
+p*(p*x)**(p + x)
+(p + x)**((p*x)**p)
+p*p**(p*(x*x))
+p**(p*x**p + p)
+((p*x)**x/x)**p
+p**(p*re(p**p)/x**p)
+p*(p + 1/2)
+p + x**p/p**p
+p + p**(p**(x**x))
+p*(p*p**x)**x
+p*p**(x*x**x)
+p + (p + x)**(p**x)
+(x/x**(p**x))**p
+p/(p*x + p**x)
+x**(p*x)/p**p
+x*(p**x + x**x)
+p/(p/(2*x))**x
+x**((x*x)**p)
+x*x**(1/p)
+x + x**(x**p/x)
+p + x/p**(x**p)
+p/x + x**(p/x)
+x**x*x**(p/x)/x
+p/(x**(1/x) + 1/x)
+x**p*(x*x*x)
+(x**x*(x*x))**p
+p + p/x + x**p/x
+x**((p*x + p)**p)
+x**(1/x) + 1/(p + x)
+p*p**(x*(p + x))
+x/(p + 1/x) + 1/x
+p*(p*x + p)**x
+x**(x**p)/x**x
+(p*x)**(x/x**x)
+p**((p*x)**p/x)
+x**x*(p + x*x)
+p**x*x/(p + x)
+p*x**((p + x)**p)
+p*p**(x**p) + x
+p**(x**p/(2*x))
+((x/p)**x/x)**p
+p*x/p**(p**x)
+x/x**(x**(p*x))
+p**x*(p + x)**p
+(p*x)**x + x*x
+(x*x**(x*x))**p
+p/2
+p**(1/(p + x) + 1/x)
+x*(p + p**x*x)
+p*p**x + x**p
+(p/p**x)**(p*x)
+p/x**(p**(p + x))
+p*(p/p**x)**x
+x*x**p/p**(p*x)
+(x/x**x)**(x**p)
+(x/p)**p/x**x
+1 + x**(p/x)/x
+x/x**(p*x**x)
+x*x**(x**p) + x
+p*(x**x/x)**p
+(1 + 1/x)**(1/x)
+x**x + (p + x)**p
+p**((p*x**x)**p)
+x**((p/x)**(x**p))
+p + (p**x*x)**x
+p + p**(x*x*x)
+(x**x/p)**(p + x)
+p**(x*p**(x*x))
+p*p**(x**p) + p
+p*x*(x + x**p)
+(p/p**x)**(p/x)
+x**(x*re(p**(p**2)))
+p*p**(x**(p*x))
+(p + x**(p/x))/x
+p + (x/x**x)**x
+x**(x/(x + x**x))
+p*(p + (x/p)**x)
+x**(0**p*p)
+(x**x)**p
+x**(1/x)/(p + 1/x)
+x**(1/(p*x + 1/x))
+(x/p)**(p*x + x)
+x*(p + x/x**x)
+x**p/(p + x)**p
+(p*x)**x/(p + x)
+x*(p/x)**(p**x)
+x**(x**(x*(p + x)))
+p**x + x**(p**x)
+p*x + p/p**x
+p**(p + x**p)/x
+p**(x**(p**(p*x)))
+x*x**(x**(x*x))
+p*x + x/x**x
+x**(x/(p + x))/x
+x + (p + x**p)**x
+p + x**(p**2)
+(x*(p/x + x))**p
+x/(x + x/x**x)
+x/x**(x/p**x)
+x**((p + x**x)**x)
+(p*x)**(p**(p**x))
+p*(p*x + p/x)
+(x*x**p)**(x*x)
+p**(x**(p/x))/x
+p/p**((p + x)**p)
+(p/(p + x**x))**x
+x**(x**p)*(x*x)
+0**(p**(p**x))
+(p**x + x*x)**x
+p**x/(x*(p + x))
+(p/(p + 1/x))**(1/x)
+p/x**(p**(x**x))
+x**(p/(x + x**p))
+x/(x + (x/p)**x)
+x/(x + x**(x**p))
+p/(x + x**(p/x))
+p + p/x + x**x/x
+(p/x)**(p + x**x)
+(p*p**(x**p))**p
+((p/x)**x/p)**p
+x*(p + p**(p*x))
+(1/(p**(1/x)*x))**x
+p + (p*x + p)**x
+p**(p**x*x**p)
+p**x/(x + x**x)
+((p*x)**p/x)**x
+p/(p + 1/x) + 1/(p*x)
+1/(oo**p + x)
+x**x/(p + x**p)
+x**p/(p + p/x)
+(p**(x**p)*x)**p
+(3/(2*x))**x
+p*x/p**(x**p)
+((x/p**x)**x)**x
+p/x**((p/x)**x)
+p**p/p**(x**p)
+x**(p*re(p**(p*x)))
+(p + x*(p + x))**p
+p**(p**(p*x)) + x
+p/(p**x + x**p)
+0**(p**x)*p
+p/(p**(p*x) + x)
+x**(x*(x + x*x))
+p**(p*(x/p)**p)
+p/p**((p/x)**p)
+p + p**(x**(p/x))
+0**(p**p/p**x)
+p + p*(p + x*x)
+0**((x*x)/p)
+(x/(p*x**x))**x
+(p + x)*(p/x + x)
+0**(p*x)*p
+x**(x**(p*x))/x
+(p + x)**(x*x)/x
+x**(p + x)*(x*x)
+(p*x*x**p)**x
+x + x/(p + x)**x
+p/(p + p/(p + x))
+(p + x)**x/(2*x)
+((p + x)/p**x)**x
+(x/(p*x**x))**p
+(x/p)**(x*x)/x
+(x + x**(p**x))**p
+0**(p**x/p**p)
+(p/x**x)**x/x
+((p*x)**x/p)**x
+p + (x*x**x)**p
+p**((p*x)**x)/x
+p*(p + p**(p + x))
+p**(p + x**p)*x
+0**(p**p)*p**p
+p + x/p + 1/p
+x*(p + (p/x)**x)
+(p/(x*(p + x)))**p
+(x*x)/(p/x)**x
+p**p/p
+p*(x + x**p)/x
+x/(x + (p + x)**p)
+x**((p*(x*x))**x)
+x/(p + x**x)**x
+p**(p*p**(x**p))
+(x/p)**p/(2*x)
+(1/(p*x))**x + 1/x
+((p + x)/x)**(x**x)
+p/p**(x**(p*x))
+p*x**(p*x**x)
+(p*(p + x)**p)**p
+x**((p*x + x)**p)
+p**((p*(x*x))**p)
+x*(x/(p + x))**x
+p/p**((p*x)**p)
+x**x/(x*(p + x))
+p + p**x/x + x
+p + p*(x*x) + x
+p + (p**2*x)**p
+p + (p*x)**(x**x)
+p + x/p**(p*x)
+x + (p*x)**(x**x)
+(x/(x + 1/x))**(1/x)
+x**(p*(p*x)**x)
+x*(p + x)**(x*x)
+x*(x + x**(p/x))
+(p*x**x + p)**x
+p/x + p**x/x
+p/(p*x + p)**x
+x**(x**((p/x)**x))
+p**((p + x)**p)/x
+x/(p + p/x**x)
+p*(x**p/p)**x
+p*x + p + x*x**x
+x**(x**(x**(x**p)))
+x**(x**(p*(p + x)))
+x + x/(p*x + p)
+x/(p*x)**p
+p**x + x**(p*x)
+((p + x)**p/p)**p
+x + x/(p*x + x)
+(p*(p + p**x))**p
+(x + x**p)**(p/x)
+p**(x**(p + x**x))
+(p + p/x)**(x**x)
+(p + x)*(p**x + x)
+(p/(p + x))**p/x
+p**(p*p**x*x)
+x/(x + 1/x)**(1/x)
+2/(3*x)
+p**((p + x)**(p*x))
+p*x**(p*x)/x
+p/p**(p**(p**x))
+(0**p + x)**x
+(p/x)**(p**(x**x))
+x**((p + x)**(p*x))
+(x + 1/x)**(p**(1/x))
+p*x**p + p + x*x**p
+((p/x)**p/p)**x
+x**(x*re(p**p)/x**p)
+p**(p**(1/(p + 1/x)))
+p + p**(p*x)*x
+(x/(p + x**p))**x
+p*(p*x + x) + p
+p/(p*x + x**x)
+p**(x**x)/(2*x)
+(p/x)**(p/x)/x
+sqrt(x)*x**(p/x)
+1/(p**(1/x) + x**x)
+p*x/(p + x)**x
+(x**(p + x)/x)**x
+p**x*(p*x + p)
+p + x/(p/x + x)
+x/(p*x + p)**x
+x/(p + p**x)**x
+p**((p*x)**(p**x))
+p/(x*(p*x + x))
+1/(p + p**(x + 1/x))
+0**(p/x)/x
+p**(x**(p**(p**x)))
+(p + x)*(x + x**x)
+x**x*x**(p/x)
+p*x**x + p/x
+(p**(p/(p + x)))**x
+(p/(p + x)**x)**p
+x**(p*x**(p**x))
+p**(p**(1/(x + 1/x)))
+p/(p + x/(p + x))
+p**(p/x + x)*x
+x*(p/x + x) + x
+p*x + x**(x**x)
+(p/p**(x**p))**p
+x**p*(x + x**x)
+(p/x + p**x)**p
+(x*x)/x**(p*x)
+p**(p**(p*x))*x
+p**(x**p)/x**(x**p)
+x**(p**(p/x) + x)
+(x**p/x)**(p*x)
+(x + x/x**x)**p
+(x*x**(p*x))**p
+(x*x)/(p*x)**x
+p*x**x*(x*x)
+(p/x)**(x**(p*x))
+x**(x**(x*x))/x
+(p/x + x**x)**x
+p*x**(x**(x**p))
+x*(p/x**x)**p
+p**((p + x)**(p + x))
+p*x + p + x**p
+(p**x/p)**x/x
+(x/p)**(p*x + p)
+p**(p*x*x**p)
+p*p**(x + x**x)
+(p + x**(p*x))**p
+(p + x)/p**(p*x)
+p*x**(x**x) + x
+x**(p**(p**(p/x)))
+(p/x)**x*(p + x)
+p**(p*x + p)/x
+x**x*p**(x*x)
+x/(x*x**p + x)
+p**(p/(x/p)**x)
+p + x**(p*x)/x
+(x + (x/p)**x)**p
+x**((x**x/p)**p)
+p**(p*(p + x**p))
+(p/x)**(x**(p/x))
+(p + 1/x)**(x**(1/x))
+x*(p**x/p)**x
+p**(p**2*x)
+p + x/x**p
+p**((p/x)**(x*x))
+(x/x**x)**(p/x)
+(x/x**(x**p))**x
+p + p**(p*p**x)
+1/(x + x/p**(1/x))
+x + x/x**(x**x)
+(x + x*x)**(p*x)
+(p*x + p**x)**p
+1/(2*x*x**(1/x))
+(p**x*(p + x))**x
+x/p**(p**(p + x))
+x**(x**(x/x**x))
+(p + x)*(x + x**p)
+(x/p)**(x**x/x)
+(p/x + x)**(p**x)
+p*x**x + p**p
+p**(1/(x + 1/x)) + x
+(p*(x/p)**p)**x
+(p*x/x**x)**x
+x**(x**x)/(p + x)
+p**p/p**(p*x)
+p + x*(p + x*x)
+(p**(x**x)/p)**x
+x*(p + 1/2)
+x**(p/p**(p*x))
+(p*x + x**p)**p
+(p + p**x/x)**p
+x/(x + (p*x)**p)
+p**((x/p**x)**x)
+(p + x)**(x/p**x)
+(p*(p + x))**(x*x)
+((x + x*x)/p)**x
+p**(x + (p/x)**x)
+(p*x**(x**p))**x
+(p*x**(p*x))**p
+(p + p/x)**(x**p)
+(p/(p*x + x))**p
+p**(x**(1/(p + 1/x)))
+x**(p/x**(p*x))
+p**(p**(p*x + p))
+x**((p**x*x)**p)
+x*(x**p/x)**x
+p**((x**p/p)**x)
+p**(x**(p*x + x))
+p**(p**(p/x) + x)
+(x/p**(x**p))**p
+(oo*p**x)**p
+p**x*x**p/p**p
+x**(p/x)/sqrt(x)
+(x/p)**(p/x)/x
+p**(p/p**(p**x))
+p/(p + x**x/x)
+0**p*0**(p**x)
+p/x + x + x**x/x
+(p*(x*x))**(p*x)
+(p*p**(x**p))**x
+x**(p/p**(p**x))
+(x/p)**(p**(p**x))
+x*(x*x**x)**p
+0**p*x/p
+((p + x)/x)**(p*x)
+(p*x/p**x)**x
+x + x/p**p
+p**2*x + p**p
+(p/x + x)**(x**p)
+p**x*p**(p*x)*p**(x*x)
+(x*(p*x + p))**p
+(x**x/p)**(x**x)
+p + p/x**p
+p/(x/p)**(p*x)
+p**((1/2)**p)
+x**(p/(x*(p + x)))
+p*x + x/p**x
+(p/x)**(x**(x*x))
+1/(p**(x**(1/x))*x)
+p/(p**(p**x)*x)
+x*(p*(p + x) + p)
+(p + x*x)**(p + x)
+p + (p**x + x)**p
+x**(p*x)/p**(p*x)
+(x*(x + x**p))**x
+p**(x/(p + p/x))
+(p*(p + x) + x)**p
+x*(p/(p + x) + x)
+x*x**((p + x)**p)
+((x/p**x)**p)**p
+(p + p/x**x)**x
+p*x**(p**(x**p))
+p**x*x**p + x
+p*(x*x) + p**p*x
+p**(x*(p + x**x))
+(x + 1/x)/p**(1/x)
+p/(p + 1/(p + 1/x))
+x*(p + p/p**x)
+x**(p/(p*x + x))
+((x*x)/p)**(p**x)
+x**(p*p**x/x)
+p**(p + x**(x**x))
+x*(x + x**p/x)
+(x + x**x)**(x*x)
+p*x + p + x + x*x
+x/(p + x**p)**x
+(p + x)/(p*x)**x
+x**(p**(p + x))/x
+p*(x*x) + x**x
+p*x + (x/p)**x
+p**(x/x**x)/x
+x + (p*x**p)**p
+p + (p + p/x)**p
+p*x**(x*x)/x
+p/(p + (p + x)**x)
+x*(p + x**(x*x))
+(p/x)**(p*x**x)
+(x**(1/x) + 1/x)/x
+(p**(p/x)/x)**p
+p/x + p/p**x
+p*x**(x + x*x)
+p**((x**p/x)**p)
+p*x/(p + p**x)
+(p + x)**(p/x + x)
+p*(x + x**p)**x
+(p**x*x)**(x**x)
+0**p + x*x
+x**(p*(x*x))/x
+p + x**(x*x*x)
+p**(p*re(0**p))
+(x**p*(x*x))**x
+x**((x/p)**p/x)
+x*(x + x**x)**p
+x + (p*x**x)**x
+x*(p/x)**(p/x)
+(p*x)**(x**(x**p))
+x + x**(1/(p + 1/x))
+(p/x)**(p*x)/x
+(x/p)**x + x*x
+(p*x)**((x/p)**x)
+x*x**(p/p**x)
+p*x + p + p*(x*x)
+p**(x/(x + x**p))
+p*(p**x/x + x)
+p*p**(1/(x + 1/x))
+(p/(3*x))**p
+x + (p/x + x)**x
+p + p**((x/p)**p)
+(p*x)**(p**x/x)
+p*(x + 1/2)
+p + 1/(x + 1/(2*x))
+x**(p*x + x**p)
+(p + x)/p**(p**x)
+p**(p**x + x)/x
+p/(x + x/(p + x))
+p*x**p + x**x
+(p**(x**p)/p)**x
+(p/x)**(x**(p**x))
+x/(0**p + x)
+p**((p + x)**(x**p))
+p + x*x**(p + x)
+x**(x/x**p)
+(p + (p + x)**x)**x
+p*(p + p**(x**p))
+1 + p**x/p**p
+p/(p*(p + x))**x
+x*(p*x**x)**x
+x**p + x**(p/x)
+(x + x*x)**(x**p)
+p**(p*p**x)/x
+p*x + p**(p/x)
+x**((p**x*x)**x)
+1/(x + (1/(p*x))**x)
+x + (oo*p)**p
+p**((p/x)**(p*x))
+p*(x + (x/p)**p)
+p**(x**x/x)*x
+x + x**(1/x) + 1/x
+1/(x*(p + 1/x)**x)
+x**p*(p/x + x)
+(p*x + x)**(x**x)
+x + x**(p*x**x)
+x*(p + p**x + x)
+(p/(x/p)**x)**p
+x**(x**(p/x + x))
+x**(p*p**(x**x))
+p*(p*(x*x))**p
+p*p**(p + x) + x
+p + (p + p**x)/x
+p/p**(p**x*x)
+x/(p + 1/(p + 1/x))
+1/(x + 1/(p + p/x))
+p + x*(p**x + x)
+p/x + 1/3
+x/(p + x)**(p**x)
+(x**p/p)**(x**p)
+0**(p**x) + p
+(x + (p/x)**p)**p
+x**(x**x + x*x)
+p/(x + (p/x)**p)
+p**(p*x**p + x)
+(p + x*x*x)/x
+p**(p**x/x)*x
+(p + p/p**x)**p
+(p + x)**(0**p)
+p/(p**(p*x)*x)
+p*x + p*(x*x*x)
+p*(x**x/p)**p
+1/(p*(x + 1/x) + x)
+x + (p*p**x)**p
+(p**x + 1/x)**(1/x)
+(x**(p*x)/p)**p
+p**x*(p + x) + x
+(x*x**(p**x))**p
+p + p**((p*x)**p)
+(x + x**x)**(p + x)
+p**(x*x**x)/x
+p**p*x**p + x
+x + (p*x**x)**p
+(p**(p*x)/p)**p
+x**(p/x**(x**x))
+((p/x)**x/p)**x
+(x**p/x)**p/x
+p**(p/(p + x**p))
+p + 1/(p*x + 1/x)
+p + p**x + x**x
+(p*x + p + x*x)**p
+p**(x**(p**x))*x
+x**(p*(p + x)/x)
+(p + x**x)**(x*x)
+p**(p/x + x)/x
+(x/p)**(x**(p/x))
+x**((x + 1/x)**(1/x))
+(p*(p + x)**x)**x
+p**(0**p)/x**(0**p)
+x/(p + p/x)**x
+x*(x/p)**x + x
+(p**(p + x)/x)**x
+(x*x**(x*x))**x
+x*(x + x*x)**p
+(x**p*(p + x))**p
+x/(x/p)**p
+(p*x + x**p)/x
+2*p + p/x
+(x*x**(p + x))**x
+(p**(p*x)/p)**x
+(p + x)**x/(p + x)
+p**p*x**(p**p)
+(p*x**(x**x))**p
+p + (p*x)**(p*x)
+(p/(p + x))**(x**p)
+p**(x**x) + x*x
+((p + x)/x)**(p**x)
+x**(x*(p/x + x))
+p**(p/(p + x**x))
+(p + x**(x*x))/x
+p + x**(p/x + x)
+x**((p/p**x)**x)
+x**(p*(p + x**p))
+p**(x**(x**(p/x)))
+x**(1/(x*x**(1/x)))
+(x/p)**(x**(p**x))
+x + (x*x)/(p + x)
+x**(p + (p/x)**x)
+p*p**(p/x) + x
+p**(p*x) + x*x
+p*(p + x + x**x)
+p + x**(p**(x**p))
+p + (p + p**x)**x
+(p*x)**(p/x + x)
+(x*x)/(p + p**x)
+(x**x + 1/x)**(1/x)
+p/(p**x/p)**x
+(p + x)/x**(p**x)
+p*x/x**(p*x)
+x*(p*p**x)**x
+p**(x*re(p**(p*x)))
+x**(x**(x**(p**x)))
+p/(x + (x/p)**p)
+p**p*p**(x**p)
+p + (p + x)/x**x
+(p*(p + x))**(p*x)
+x**((p*x)**x)/x
+p*x/(x + x**x)
+p*(x + x**(x**x))
+(p + x)**(x + x**p)
+x*(p + x*x**x)
+p**x/(2*x) + x
+(p*x)**(x**x)/x
+x + (x*x)/2
+p**(p/(p*x + x))
+0**(p**p)*x**p
+(p + x**p)**(p/x)
+p/x + x*x*x
+p*p**x + p**x*x
+(p**x/x**x)**p
+p**(sqrt(x))
+(3/(2*x))**p
+(p + 1/x)**(1/(2*x))
+p**(p**(x**p/x))
+x**(p**x) + x*x
+p*p**(p + x**p)
+p*x**p/p**(p*x)
+p*(p/(p + x))**x
+x**p*p**(x*x)
+1/(x*(p**(1/x) + x))
+p*x*(p + x) + x
+(1/(p*x))**(p + 1/x)
+(x/p)**(x**(x**x))
+p**(p*(p*x + p))
+p**(p + x + x**x)
+p*(p + x**x) + x
+1/(x*(x + 1/x) + x)
+p**p + p**p/x
+p*(x + x**(p + x))
+p/(p**p*x)
+p**(p**((x/p)**p))
+x**((p/x)**(p/x))
+(p**(x/(p + x)))**x
+x**(p/(p + x)**x)
+x/(p*x**p + x)
+p**(x**(x**x))*x
+(1/(x*(p + 1/x)))**p
+p**((x*x**x)**x)
+x**(x + (p + x)**x)
+x + (p*x + p)**x
+p**((p + x)**p/x)
+(x + x**x)**(p/x)
+x/2 + 1/x
+x + x**((p + x)**x)
+x**x + (p/x)**p
+(x/p)**(x*x*x)
+p*(p/x**x + x)
+(p + x)/p**(x**p)
+p/(p + x) + x**p
+p*p**(x**p)/x
+x**(p*p**(p**x))
+(x + (p*x)**p)**p
+p**(((p + x)/x)**p)
+(x*x)*(p + x*x)
+p*x + p*(x*x) + x*x*x
+x**(p**(x**(p + x)))
+(x*x**p/p**p)**p
+p**((x*(p + x))**x)
+(p/x)**(x**p/x)
+x**(p*(p + x**x))
+p*x + (p*x)**p
+x**(x + (p/x)**x)
+(x**p)**p
+(p**x + x)/x**x
+p + x**x/(2*x)
+x**((x**x/x)**p)
+(p/(p + x**p))**p
+(x**x/(2*x))**p
+0**(p/x)*x
+(p*(p/x + x))**x
+x**(p**(0**p))
+x**p*x**x/(p**p*p**x)
+p/(p*x + p + x)
+x/(p + x*x**x)
+p*x + x*(p + x)
+1/(p*x + x) + 1/x
+(p*x + x)**(x**p)
+p*x**(x**(p/x))
+(p*x + p)/p**x
+x/(p + x/x**x)
+(p*(p + x) + p)**p
+x**(x + x**p/x)
+x/(p + p**x/x)
+p + p*x**x/x
+(x*x**x)**(x**x)
+x**(p*x/(p + x))
+p + p**(p**x/x)
+(p*p**(x**x))**x
+(p/x)**(p*(p + x))
+p*x**(p + x**p)
+x/p**(p**x*x)
+p + (p/(2*x))**x
+(x + x**x)/(p + x)
+p*x**(p/(p + x))
+p**(((x*x)/p)**x)
+x + x**(p**(x*x))
+x**(p + x/x**x)
+1/(x + (p/x)**(1/x))
+p/(p*x)**p
+p*x*x**(x*x)
+x + x**(x*x)/x
+p + (p**x + x)**x
+p + x**(p*(x*x))
+p + (x/p**x)**x
+(x + x**x)/x**x
+p**((p*x + p)/x)
+p**(x**x/(p + x))
+p*(p + x)**(x*x)
+p + x + x**(p/x)
+x**p/(p + x**p)
+p**(1/x)/(x + 1/x)
+(p*x**p)**(x*x)
+x**(x**(x + x**p))
+p**(x**(p**x/x))
+x**(1/(p*x))
+p**((x + x*x)/x)
+p**p/x
+x/(x/p)**(x**x)
+p**((p + x)**p) + x
+p/x**(x/x**x)
+(1/(x*x**(1/x)))**p
+p + x**x*(p + x)
+p**(p*x/(p + x))
+p**(p*(x*x) + x)
+p/sqrt(x)
+p**(p + p/x)/x
+x**(1/(x + x**(1/x)))
+x**(p**(p/x)/x)
+p*(p + p**x) + x
+p*p**(p + x)*x
+x**(x**(x**p)/x)
+x/(x + x**(x**x))
+p**(p + x/x**x)
+(p*(p + x))**(p**x)
+p**(x**(p**(x**x)))
+p + x + x**x/x
+x*(p/p**x)**p
+(p/x)**(p/x**x)
+(p**(x**x) + x)**p
+p**(p*x + p/x)
+(p*x/x**x)**p
+x*x**(x + x*x)
+p*p**(p/x) + p
+p*(p + (p/x)**x)
+x*x**(x + x**p)
+p**((p/x + x)/x)
+p + p**(x/p**x)
+x**p + p**(x*x)
+p**x*x**(p**x)
+x**((p*x)**x/x)
+p/(x + 1/x) + 1/x
+x/(x/(p + x))**x
+p*p**(p**x*x)
+p**2*(x*x)
+(p/(p + p/x))**p
+p + (x*x)/p**x
+x*(p + x*(p + x))
+p**(x + x**p) + x
+0**p/x + x
+x**(p/p**(x**p))
+x/(p*(p + x) + x)
+x*(x + x/x**x)
+p*x + p**x + x*x
+p**(p*(p + x)) + x
+x + (p + p/x)**x
+p**(x**p) + x**p
+x + x**(x + x**p)
+(p + x)**(p + x*x)
+p**((p*x + x)/x)
+p**(p*x**p/p**p)
+1/(x**p + 1/(p + x))
+p*x**(p**p)/x**p
+p + (p*x**p)**x
+p*(x*x**x)**x
+x**(x*(p + p**x))
+p*x**(p**(x*x))
+x*(x + (p + x)/x)
+p**((p*x + x)**x)
+p + x/(x + x**p)
+1/(p + x*x**(1/x))
+x*(p + x**p/x)
+p + p**(p**x*x)
+p**(p + x*x**x)
+p + (p + p**x)**p
+(p**(p**x)*x)**x
+p**(p**(x**p)*x)
+p**(x*(x + x**x))
+(p + x)**(x*(p + x))
+p**2/x + 1/x
+p/(p**2*x)**x
+x*(p/p**x)**x
+p + p/x**(x**x)
+(p + x/x**x)/x
+(x*x**p)**(x**p)
+p**(x + (p*x)**x)
+x**((x/p)**(p*x))
+p**(2*p*x)
+x + (x**x/p)**x
+1/(p**(p*x) + 1/x)
+((1/(p*x))**(1/x))**p
+x**((p + p**x)**p)
+p/p**x + x**x
+x**(x*(p + x*x))
+p**(x/x**(x**x))
+(x**(x*x)/x)**p
+x/(p*x)**(x**x)
+p + p/(p*x + p)
+p**(1/x)*x**(p/x)
+x**x/(p*x + p)
+x + (x/x**x)**x
+p/(p + x) + x**x
+x*x**(p + p/x)
+x*p**(p*(x*x))
+(1 + x/p)**p
+p + x**((p*x)**x)
+(p + (x/p)**x)**x
+(p*x + x**x)/x
+p**(p + p/(p + x))
+(p**(x**x)/x)**p
+1/(p/(p + x) + 1/x)
+p*x**(p/x)/x
+1/(p + 1/(p*x + p))
+p**(0**p/p)
+p**(p**x*(p + x))
+p**((p + p**x)/x)
+x*(p + x**(p/x))
+p + x*(p + x**p)
+p*(p**(p/x) + x)
+x*x**p + x*x
+(oo*p**x)**x
+(p*x)**(x + x**x)
+x**(p**x*x**p)
+(p/2)**p
+x*(x/p)**(p**x)
+x**(p*x + x**x)
+1/(x + 1/(x*(p + x)))
+(p*(x*x) + x)/x
+x*(p*p**x)**p
+(x*x)/p
+(p + x**p)/x**x
+(x + x*x)/p**x
+(p**(x**x)*x)**x
+(x + 1/2)**x
+1/(x**x*(x + 1/x))
+(1 + x**p/x)**x
+(p*x)**p*(p + x)
+x**(x/(p + p/x))
+((p + x)**p/p)**x
+x**(1/(x**p + 1/x))
+(p + (p/x)**x)**x
+p*(oo*p)**x
+(x*(p + x))**(x**p)
+(p**2*x)**p/x
+p*(x/p)**x + x
+(p + 1/x)/x + 1/x
+p + x**p*(p + x)
+p*(x/p)**(p/x)
+p + x/p
+(p + x)**(p + x**x)
+p + p/x**x + x
+x**((1/2)**p)
+1/(x + (p*x)**(1/x))
+(x**(1/(p + 1/x)))**x
+x**(p**(p**(p**x)))
+(x/p)**(p*(x*x))
+p*x**x + x*x**x + x
+x**((p*x**x)**p)
+p**2*x + p**p + x + x*x
+p*x + p**p + x
+x/(p + p**(p/x))
+p**(p*x**x)*x
+x*x + x/p**x
+(p/p**(x**x))**x
+x/(p + x**(x**p))
+p**(p**(p + p**x))
+(x*(p + x))**(p/x)
+(p*x + p**p + x)**x
+p**x*x + x**p
+(p**(p/x)/p)**x
+(p/x)**(p*p**x)
+(1/2)**(x*x)
+p*x**(x**x)/x
+(p + p**(x**x))/x
+p**(p**(p + x)) + x
+x + x**(p/(p + x))
+0**(p + x) + x
+p*x + p**x/x
+x + (x**x/x)**x
+p*p**x + p**x*x + x
+sqrt(x) + x
+p**(p**x)/x**(p**x)
+1/(x + x**(p**(1/x)))
+(x/p)**(p*(p + x))
+1/(p/(x + 1/x) + x)
+x**(p**((x/p)**x))
+x/p**(p**(p/x))
+x + (x*x**x)**p
+p*p**(p/p**x)
+(p + x)**((p + x)**p)
+p*x + p**(x*x)
+(p*x)**(x**(p**x))
+x + x**p/(p + x)
+p*x + p + p/x
+p**((x/p)**(p**x))
+p*(p**x + x)**p
+x**(p*x**(p + x))
+(p**(1/(p + 1/x)))**p
+((x/p)**p/p)**x
+p**(x**x/x) + x
+x**(p**p)/p**(p**p)
+(p*(p + x**p))**x
+x**x*(p + p/x)
+p*x**(p**(p*x))
+p*x*(x + x**x)
+(p + x*x)**(p**x)
+p/(x + 1/2)
+p*(x*x)/p**x
+x + (p/x)**(p/x)
+(p**x/p)**p/x
+p*x + x**(x**p)
+1/(p**(1/(2*x))*x)
+x**(p/x)/x**(1/x)
+x**((p + x)**p/x)
+(p + x)**(p*(x*x))
+p**(p**x)/x**x
+p**(0**p) + x
+p*x + p + p**p/x
+(p/(p + x))**(p**x)
+p/(p/x)**(p*x)
+x + (p*x)**p/x
+x + x**(x*x**p)
+p/(p*x + x**p)
+(x*x**x)**(p/x)
+(x/p)**(x + x*x)
+p**x + (x/p)**p
+p**(p + p**x)*x
+x/x**((x/p)**p)
+p**((p*x)**x)*x
+p*x/x**(p**x)
+x*(p/x**x + x)
+1/(p**(p + x) + 1/x)
+x**(p*(p + p**x))
+x/x**(p**2)
+p/x**x + p**x
+(p*x)**(p + x)/x
+(p/p**(p*x))**x
+((p/p**x)**x)**x
+p + x/(p*x + p)
+(p*x + 1/x)**(1/x)
+p**(x**(p*x)/x)
+p**(p/(x*(p + x)))
+x + (1/(p*x))**(1/x)
+x + (x*(p + x))**p
+x*(p*x)**(p + x)
+x**(p + x*x**p)
+p + p**(p + p/x)
+1/(x + 1/(p**x*x))
+(p*x + x)**x/x
+(p + x)**(1/(x + 1/x))
+(p + x + x*x)**p
+x**(x*x**(x*x))
+p*(x/x**x)**p
+p*(x**p/x)**x
+(p + x*x)**(x**x)
+p**x + x**(p + x)
+p/(p*x + x) + x
+x/(p + (p*x)**p)
+((x/p**x)**p)**x
+1/((p*x)**x + 1/x)
+x**(p**(x/(p + x)))
+p*x**(p**2)/p**p
+x*(p/x + p**x)
+p*(x + x**(p/x))
+x**(p**((p*x)**p))
+p**(p*p**(p + x))
+p**(x**(p + p/x))
+p*(p*x**x + p)
+p**(((p + x)/x)**x)
+(p**2)**x
+p**(p/x**(x**p))
+p*p**(p + p**x)
+p/(p**x/x)**x
+x**p/p**(x**x)
+p*x*(p + x) + p
+x**x/(3*x)
+p**(p*p**(x**x))
+p**(p**x + x) + x
+0**p*0**(x/p)
+p**(0**(p + x))
+p**(p*p**(p**x))
+p*x**(p*x)/x**x
+p*(p/(p + x) + x)
+p*p**(p**(p + x))
+p**(p**(p*x)*x)
+x**x/(p/x + x)
+(p*x**(x*x))**x
+x**(p**(p + x) + x)
+p*x**(x + x**p)
+((p + x)/x)**(p + x)
+p**(x**(p/x**x))
+p**x*(p*x + x)
+(p/(x*(p + x)))**x
+p + p/(x + x**x)
+0**(p*x)*x
+p**(p**(p**x) + x)
+p**(p**p)*p**(p*x)
+p*(p*x)**p/x
+p + x/p**p
+p*(p/x)**x/x
+(p*(p/x)**x)**p
+p + (p*x)**x/x
+x*(x + 1/x) + 1/x
+x/(1/(p*x))**(1/x)
+(oo*p)**p/x
+x*(oo*p)**x
+(p + x/x**x)**p
+(x + x**p)**x/x
+p**p*p**(p*x)
+x**((p**x/x)**p)
+p**(p*x) + x**x
+p**(p*p**(p/x))
+(1/(p*x))**(p**(1/x))
+x + x**(p**(p + x))
+x + x**x*(x*x)
+x*(x + x**p)**x
+p + x**(p*x**p)
+(p/p**(x**p))**x
+(p*p**x + x)**x
+(p/x)**(p + p/x)
+x**((x/(p + x))**p)
+(p/(2*x))**x/x
+1/(p + 1/(x + x**p))
+x + (x + x*x)/x
+p*(p/x + x)**x
+x + x**x/(p + x)
+x*(p/x + x*x)
+x**(p*p**(x*x))
+(x**(p*x)/x)**p
+p*(x/(p + x))**x
+p*x + p + p**x*x
+(p + x)/x**(p*x)
+p/x**(x**(x**p))
+x**(p**(p**(x*x)))
+p*(p*p**x)**p
+x**(p*(p**x + x))
+(p/x**x + x)**x
+(p*x)**(x**x/x)
+0**p/p + x/p
+(p*(x + x*x))**p
+p*(x*x**x)**p
+p*x/p**p
+x + x**p/p**x
+x*(p/x)**(x**x)
+(x/p)**x/x**x
+p*x + x**(x*x)
+(p/x)**(1/x) + 1/x
+(p*x)**(p**(x**p))
+p/(x + 1/x)**(1/x)
+p**(x**(p + x)/x)
+p + 3/(2*x)
+x**(x/(p + x**p))
+p*p**x*x + x
+x/(p + x) + x**p
+((p + x)/p**x)**p
+p*(x*x) + p/x
+(p*(x/p)**p)**p
+p*(p + x)**(x**p)
+x**(x*(x + x**x))
+(p + x)/(2*x)
+p + p**(x*x)/x
+x + (x/p)**p/x
+x/(x**x*(p + x))
+p + (x**p/x)**x
+x**(x**(p**x + x))
+(x**p/(p + x))**p
+(0**(x/p))**x
+p + p*x**p/p**p
+0**(p*x) + x
+x + (p/(2*x))**p
+(p/x + x)*(x*x)
+x*x**(p + x*x)
+p/x**x + x**x
+1/(p/x + x**(1/x))
+p**((p*(p + x))**p)
+p*(x + (p + x)**x)
+p**(p + x)*x + x
+p**x + p**(x*x)
+x**((x/p)**(x**p))
+x**p/x**(0**p)
+x*(p + x**p) + x
+zoo*p
+(p/x)**x + x*x
+1/(p + (x/p)**(1/x))
+x + x**p + x**x
+p/(x/p**x)**x
+x**(x**(x*x)/x)
+x + x**x + x*x
+x**(p**(p*x)*x)
+x**(x*x*x)*x**(p*(x*x))
+x/(p*x + x**p)
+p**(p*re(p**(p/x)))
+(1/(2*x))**(1/(p + x))
+x**(0**(p*x))
+x*x**(x**(x**x))
+p + x**(x**(x**x))
+x/(p/(2*x))**x
+x/(x + 1/(x + 1/x))
+x + (p*(x*x))**x
+(p + x**(p + x))**x
+(x/p)**(p**(x**x))
+x**((p*x)**(p + x))
+p/(x**x/x)**x
+(1/(p*x))**(1/(2*x))
+p + (x*(p + x))**p
+p**(p + x**(x**p))
+x**p*(p/x)**x
+p/x + (p/x)**p
+(p**(x*x)/p)**p
+x*(p + x**p)**p
+x*(p + x)**(p*x)
+x**((x + x*x)**p)
+x**p + x**x/x
+(p*x*x**x)**p
+p**(x + x**p)/x
+p**x/x**(x**x)
+p**(p*(p + x) + x)
+p + 1/(p + x**(1/x))
+x + (p + p/x)**p
+p**(x*re(p**(p/x)))
+x**(p/x + x)/x
+p**(x + x**(p/x))
+p*(x*x)**p
+x**x/(p**x + x)
+1/(x**(p/x) + 1/x)
+(p + x*x**p)**p
+x**(p + p/x)/x
+x**((p + x**p)**p)
+(x**x/p)**(p/x)
+(x**p/x)**(p + x)
+(x*(p/x)**x)**x
+(x*(p/x)**p)**x
+(p*x)**((p/x)**x)
+x**(x**(p + x*x))
+p**x*x + x*x
+(x*x**(p + x))**p
+p + (p + p/x)**x
+p**(x + x**(p*x))
+(1/(p**(1/x)*x))**p
+x**(p*(p*x + p))
+p/(p*x)**x + x
+((x/p)**x/p)**x
+p*(x + (p*x)**p)
+x**(p**x)/p**(p**x)
+x + (p + x**x)**p
+x + (p + x)**(p**x)
+x**(p**(p**(x**x)))
+p*(p*x + x)**p
+(p/x)**((p + x)**p)
+x**(p + p/x + x)
+(p/p**(1/x))**(1/x)
+x**(p**(p/x))/x
+x**(p**(x**(x**x)))
+1/(x**(1/x)*x**x)
+p**(x/p**(p**x))
+p**(p/x)*(x*x)
+x + (p + x*x)/x
+p**x + x*x**x
+p*(p + x*x**x)
+p**(p/(2*x))
+p*x*(p*x + x)
+x**(x**(p**x))/x
+p + x**((p*x)**p)
+(p**x)**x
+p*(p + x)/x + x
+p*(p/x)**(p/x)
+p/x**(x*x**x)
+x*(p*p**x + x)
+x*(p + x**(p*x))
+(p + x**p/x)/x
+x*(p**(x**p) + x)
+(p + x**p)**(p**x)
+p + x**(p + x**p)
+x/p**((x/p)**x)
+0**p/p**p
+p*x**((x/p)**p)
+p**(x*(p + p**x))
+1/(p**(1/(p + x))*x)
+(p/x)**(x**(x**x))
+p*p**(p*x**x)
+x*x**(p/(p + x))
+x*x**(x**p/x)
+x/(x + (p/x)**x)
+x**(x/x**(x**x))
+p*(p + p/x)**p
+p**(p**(x**(x**p)))
+1/(x + x**p) + 1/x
+p**x/(p/x + x)
+p/p**(x**p) + x
+p*x + x**p + x*x
+x**((p**2*x)**x)
+x**(p**(1/x) + 1/x)
+(p + x**x)**(p + x)
+x**x*(p/x)**x
+p**2 + p**p
+p + p**x*x**p
+(p*p**x)**(p*x)
+(p/x)**((x/p)**x)
+p + (p + x)**(p*x)
+(2*p)**p
+p*(x + x**(x*x))
+(p/(p*x)**x)**x
+p/x**(p*x**p)
+x/(p + x**(p + x))
+x*(p**2*x)**p
+x*x**x/2
+(p + x**(p*x))/x
+x**p*(x + x**p)
+(p + x)/(p**x + x)
+(x*(p + x))**(x*x)
+((p + x)/x**x)**x
+(p/(p**x*x))**p
+(p/p**x)**(x**x)
+(p + x**p)/(p + x)
+p + p**(p + x**p)
+x + (1/2)**x
+p**(x + x**p)*x
+(p + x)**(p + p/x)
+p*x + x + x*x*x
+0**(0**p)
+p**(p*x + x)*x
+p**((p/x)**p)/x
+p**(x**(x + x**p))
+p*x/(p/x)**x
+1/(p/x + p**(1/x))
+x**(x**p + x**x)
+(p/x)**(p**(p + x))
+p*(p/x**x)**x
+p*(x*x) + p**p*x + p**p
+p/x**((x/p)**p)
+(p*x)**(1/x) + 1/x
+p*(x + 1/x) + 1/x
+(p*(p/x)**p)**x
+1/(p**x*x + 1/x)
+p**(p**(x + x*x))
+(p + (x/p)**x)/x
+1/(p*x + p + 1/x)
+p**p*p**(x**x)
+p*(p/x)**(x**x)
+p**(x + x**x)/x
+x*(x**x/p)**p
+p*(x**x + x*x)
+p + p**(x + x**x)
+x**(1/(1 + 1/p))
+x*(x*x**p)**x
+x*x**x + x**x
+p**(p + x)/(p + x)
+p**(p**x + x**p)
+p**(x**x)*x + x
+(p*x)**x*(p + x)
+x + 1/(x + 1/(2*x))
+(p*x**p + p)**x
+x + (p/x)**(p*x)
+x + x**((x/p)**p)
+x*x**(p**(p + x))
+((x + x**x)/p)**p
+p**(p**(x**x))/x
+x/(p*x + p/x)
+x**(p**(p + x*x))
+x**((p*(p + x))**x)
+p**(p + x)*(x*x)
+(p + x)**p/x**x
+(p/x)**(p**x)/x
+x + (x*x)/p**x
+((p + x)/x)**(x**p)
+(x + x**(p*x))/x
+(p*(p + x**p))**p
+x/x**x + x*x
+(x**(p + x)/p)**p
+x**p/(p*x + x)
+x**(p*p**x*re(p**p))
+(p*(x*x))**(p + x)
+(x**(p**x)/p)**x
+(p**(p + x)*x)**p
+p + x*x**(p*x)
+(p**2*x)**(x*x)
+p/(p + p/x**x)
+p**(x*x**p)*x
+x + (p + x)/x**x
+x/(p + p**(p**x))
+p + x/(p + p**x)
+x**(x**(p + x)/x)
+x*(p*(p + x))**p
+p*(p/x + x) + p
+x**((x/p**x)**x)
+p*x + x*x**p
+p*x + x/(p + x)
+p**((x/p)**(x**x))
+p*p**x + p**x
+p*p**(p/x**x)
+(p**x*x + x)**p
+(p**x/(2*x))**p
+(x + (p*x)**p)**x
+p**(x**(x**(p**x)))
+(x**(x*x)/p)**x
+p**((p*(p + x))**x)
+p*x + p + p**p + x
+(p/(p + x))**(p/x)
+p + x*x**(p**x)
+p**x/p**p
+p*(x*x**x + x)
+p/(x**x*(p + x))
+(x/x**(x**x))**x
+(x**(x**p)/p)**x
+x**(1/(p + x) + 1/x)
+p*(p/(p + x))**p
+p*x/(x/p)**x
+0**p*x + p
+p + p**(p**(x**p))
+(x/(p + x))**(p*x)
+x/(1/(p + x) + 1/x)
+1/(x*(p + p**(1/x)))
+x**(p + (x/p)**p)
+p**(p*x)/p**p
+(p*x)**(x**(p*x))
+p*x/p**x + x
+p*(p + (p/x)**p)
+x*x**(p*x)/p**p
+p*(p + x)**(p*x)
+p + x*x**p/p**p
+x + x**(x*(p + x))
+(p + x + x**p)**x
+x**(0**(x/p))
+(x/x**x)**(p + x)
+x/x**(x**p/x)
+p**x + x + x**x
+p + x**(p/p**x)
+p**p/x**p + x
+p**p/x**(p*x)
+p*(x/p)**p + x
+(p + x/(p + x))**p
+(x*(x + x*x))**p
+p**((p*p**x)**x)
+(p + x)**(p*x**p)
+p**x*(x/p)**p
+p*x + (p + x)**x
+x**(x**(p*x + p))
+x + (p*p**x)**x
+p + x**x/p**x
+p**(p**x) + p**x
+p**(x**p)*(x*x)
+x + x**(0**p)
+x**p/(x*(p + x))
+(p**x + x)**x/x
+p**(p**(p**x))*x
+(p + (p + x)/x)/x
+x**(p**(1/(p + 1/x)))
+(p**x*x)**x/x
+p + (p/x)**(p/x)
+(1/2)**(p*x)
+x**((p/(2*x))**p)
+x**p*(p + x)**x
+(x/(p/x)**x)**p
+(p**x/x)**(p/x)
+x/(p*(p + x) + p)
+x*(x + 1/2)
+x**(p + p**(p + x))
+x*(p**(p*x) + x)
+p**(p/(p + x)**x)
+p**(x**(p/x))*x
+p + ((p + x)/x)**p
+p**((p**x/x)**x)
+p**(p*(x + x**x))
+p + p/(p + p/x)
+x/(p + (x/p)**x)
+x/(p*x)**(p*x)
+x*(p**(p + x) + x)
+p*(p*x)**x/x
+x**((p + x**p)**x)
+p**((p + x)**x) + x
+(p/x)**(x + x*x)
+x**p/(p/x)**x
+p**(p + p/x)*x
+x**(x**p) + x*x
+p*p**(p*x**p)
+x**p/(p + x)**x
+p**x*x/2
+(x/(p + 1/x))**(1/x)
+p*x**(p + p/x)
+p/(x + x**(p*x))
+p*x**p/(p**p*x)
+x**((p*x + p)**x)
+x/(p*x**x + x)
+p*x**p + p + x
+0**p*p + p*x
+p*(p + x)**p + p
+1/(p**(1/x)*x**x)
+x + 1/(p + 1/(2*x))
+p*(x + x/p**x)
+(x*(p*x)**x)**x
+x**x*(x*x*x)
+(p**x/(p*x))**x
+x + x/(p + x**p)
+(p + x**(x*x))**x
+(x/p)**(x**p/x)
+x + (p*x)**(p/x)
+x + x**p*(x*x)
+(p/x**p)**x
+p*(p + x*x) + x
+p + x + x**(p*x)
+p**(x/x**(p*x))
+(x + 1/x)**x + 1/x
+1/((p*x)**p + 1/x)
+(p*x)**p + x*x
+(p/x**(p**x))**p
+p*(1/(p + x) + 1/x)
+x*x**((p + x)/x)
+x**(x*(p/x)**p)
+p**(x**(x**(x*x)))
+x*(x + x*x*x)
+p**(x**x)*(x*x)
+(p + x)**(p + x**p)
+p/p**(1/(x + 1/x))
+(x + x*x)**(x**x)
+p/p**x + x**p
+p*x**(p*x + x)
+x*(p/x)**x + x
+x**(p*x**(x**x))
+p**((p + x*x)**p)
+x**(x + (p/x)**p)
+(p + x)**(p/(p + x))
+p*p**p/x**p
+p**(p*x**x + p)
+x**(1/(p + x + 1/x))
+p + p**(x**x)/x
+((p + x)**p)**p
+x + (x*x**x)**x
+p*(p + x)**(p**x)
+(p*x + x**p)**x
+(p*x**x + p)**p
+(p + x)/(x + x**x)
+x*x**(x*x**x)
+x**(p*p**x + p*x)
+x**((p + x**x)**p)
+x*(p*x + p/x)
+x**(p**(p**x/x))
+x**(x**(p/x))/x
+p + p/x**x + x/x**x
+p*x + p*(x*x) + p**p*x
+((x*x)/p)**(x**p)
+p**(x/(p + x**p))
+1/(x/(p + x) + 1/x)
+x + x/(x/p)**x
+(p/(p/x + x))**p
+x**(p + p**x)/x
+1/(p**x/x + 1/x)
+x + x/(p/x)**x
+(p*p**x + p)**x
+1/(p + x**(1/(2*x)))
+(p + p**x)**(x**x)
+(p/x)**(p**(x*x))
+p**p*p**x + x
+x/p**(x**x/x)
+1/(p/p**x + 1/x)
+p/p**(x*x**p)
+p*x**(p + x) + x
+0**(p**x/x**x)
+p + p**(p/x)/x
+x**x + x**x/x
+p**(p/x) + x**x
+p**(p**(x**(x**x)))
+p/x**((p + x)**x)
+p**x/p**(0**p)
+p + (p/x)**p/x
+x/x**((p/x)**p)
+p**(p*x + p**x)
+p*(p*p**x + x)
+x*(x**p + x**x)
+x**((p*x)**p)/x
+1/(p**x*x**(1/x))
+p*p**x/x + p
+x**(p/(p/x + x))
+x*x**((p/x)**p)
+x**(x**(p*x)/x)
+p*(x + x/(p + x))
+x*x**(p**2)/p**p
+p**(p**(x + x**x))
+p*(p + p**x)/x
+x/(p**x/p)**x
+x**(p*x**(x*x))
+x**(x**(p**(p/x)))
+p**(x/x**x) + x
+p/(p + x) + p/x
+x**(x**x)/(2*x)
+(x*x)/(p*x + x)
+p**x*(p + x)**x
+p**((p/(2*x))**x)
+(p*p**x)**(p/x)
+p*(p**2*x)**x
+0**(p/(p + x))
+(x**p*x**x)**p
+(p + x**p)**(x**p)
+(p + p**(x**x))**x
+x**x*x**(x**x)
+p*(p*x)**(x**x)
+x**(x*x**(p + x))
+x*x**x/(p + x)
+(p/x)**(p/p**x)
+p**(p*(p + x))/x
+p**((p/x)**x)/x
+(p*x)**(1/(p + 1/x))
+((x*x)/2)**p
+1/(p**(x + 1/x) + x)
+(x**p/x)**(x**x)
+x**(p/x**x + x)
+x**(x + x**x)/x
+p + p/x**(p*x)
+(p + x**p/x)**x
+x + (p*x**p)**x
+x + x**(p*(p + x))
+p**(0**(p**x))
+p**(p*x**x) + x
+p/x + x**(x**x)
+sqrt(p)
+(p*(x*x))**p/x
+x/(p*x**x + p)
+(x + x*x)**p/x
+(x + x**x/x)**p
+x**(x**(p**(x**p)))
+x + x/(p*x)**x
+p + p**(x + x*x)
+0**(p**x)/x
+1/(p*x + x + 1/x)
+(x + x**x/x)**x
+((x/p)**p/p)**p
+x**x + x*x*x
+x**p*x**(p + x)
+p**(1/(p**(1/x)*x))
+p**(x + 1/x) + 1/x
+(1/(x + 1/(p + x)))**p
+p*(x*(p + x))**p
+p + x**(x**(x*x))
+p**(p/x)/x**x
+(x*x**p)**(p*x)
+p**(p + p**(p + x))
+p*p**(p**(p*x))
+p**x*p**(p*x)
+1/(x + x**p + 1/x)
+1/(0**(1/p) + p)
+p*x**p + x**p
+1/(x**(p + x) + 1/x)
+p**2*x + x
+p + p/x**(x**p)
+(x*x)/(p/x + x)
+x**(x*x)/(2*x)
+(p*x**x/x)**x
+x**(1/(1 + 1/x))
+(x*(p + x**p))**x
+(p + (p*x)**x)**x
+(p**(p/(p + x)))**p
+(p**x + x)*(x*x)
+x/p**(x**p/x)
+(x + x**x)**x/x
+x*x**(p*x) + x
+x**((p/x)**p/x)
+(p**2*(x*x))**x
+p**((p**x*x)**p)
+p**(p**(p + x) + x)
+1/(p**(1/(2*x)) + x)
+(p/(p/x)**x)**x
+(p*x)**(p + x**p)
+x**(x/(p*x + p))
+p**x*p**(x*x)
+p*p**(x**(x**x))
+(p/(2*x))**(x*x)
+(x/p**(p*x))**x
+p**(p/p**x)/x
+(x*x)/(2*p)
+(x*x)/p**(p**x)
+p + x**((x/p)**p)
+p**(x + 1/(x + 1/x))
+((p + x)/(2*x))**p
+p*(p/x)**(p**x)
+(x/p)**(x*(p + x))
+p**(p*x**x + x)
+x + (x**x/x)**p
+p + p/x + x*x
+(p/x + x*x)/x
+(p/x + x)**(p/x)
+p**(p + x*x*x)
+p**(0**p*p)
+p*(p + p/p**x)
+p**x*(p + x**x)
+p/(x*x**p)
+(x**(x**x)/p)**x
+p**((x/p)**p) + x
+(p + 1/x)**(p**(1/x))
+p**(x/(p + x**x))
+2*p*(x*x)
+(x**(p/x)/p)**x
+x**((1/2)**x)
+(p + p**(p/x))**p
+x*(p + x/(p + x))
+p*x*(p/x)**x
+x/(x + x**(p**x))
+x*(p + x) + x**x
+x**p/p**(p**x)
+x/(p + x**p/x)
+p*p**(x/(p + x))
+p**((p + p**x)**p)
+p**(x**(x*(p + x)))
+p/x**p + x
+p/p**((p/x)**x)
+(x*x**x + x)**x
+(p*(p + x**x))**x
+p*x**(p + p**x)
+(x + x**(p/x))**x
+x**(p/(p + x) + x)
+x/p**(1/(x + 1/x))
+(x**p/p)**(p/x)
+p**(p*x + p)*x
+x/(x + x**(p + x))
+x**(p*x/x**x)
+x*(p*x**x)**p
+x/p**(x**(p**x))
+(p + x)**(p**(x**x))
+p + p**(x**p)*x
+(p**(p*x))**p
+(p**x/p)**(p/x)
+p**(p/p**x)*x
+x**(1/x)*x**(p/x)
+p + (p/x**x)**p
+(p/x)**p + x*x
+0**(1/(p + 1/p))
+x + ((p + x)/x)**p
+x**(x**((p + x)**p))
+x/(p + p/x + x)
+p**x + x + x**p
+(1 + x**p/x)**p
+p + p**(p + x)*x
+p**(p + x**x/x)
+(p*x)**p*(x*x)
+(oo*p)**x/x
+x**p + 1/2
+p + x**x/x**p
+(p + p**x)**(p/x)
+p*x**((p*x)**p)
+(p + x**x)**(p*x)
+p*(x + x/x**x)
+p + (p + x)**(p/x)
+(p + x**x)/(p + x)
+(x*x)/x**(x**x)
+x**(p**x)/x**x
+(x**x/x)**(p**x)
+p/(x**p + x**x)
+1 + x**(p**x)/x
+x**((x*x**x)**p)
+(1/(p + 1/(p + x)))**p
+p/(x + x**p) + x
+p**(p + x**(p**x))
+((p + x)/(2*x))**x
+p + x**(x**p)/x
+(x/(p + p**x))**x
+p*x**(x**(p**x))
+(0**p/p)**p
+(x + x**(p*x))**p
+p*p**(p**(p**x))
+1 + 1/(p*x)
+p**(x/(p*x + p))
+p**(p**(x + x**p))
+x**(x/p**p)
+p**((p + x**p)/x)
+p**x/(x + x**p)
+(p + (p + x)**p)/x
+x**(p**p/p**x)
+(p + x/p**x)/x
+(1/(p*x))**(x + 1/x)
+p*x*x**p + x
+p**x*x**p/(p**p*x**x)
+x**(x**(p/(p + x)))
+p**x/x + x**p
+p + (p/x + x)**p
+(p + p/x)**(p/x)
+x**x/(p**x*x)
+(x*x)*x**(x*x)
+x**(x*x) + x*x
+(p + x)**x + x*x
+(p + x*x*x)**p
+(x*(p + p/x))**x
+x**(p**p/x**p)
+p**(x*(p*x + p))
+x/(x/p)**(x**p)
+p*x**p + x*x**p
+(x + 1/2)**p
+p**(p**p*x**p)
+p**2*x**p
+(p/(2*x))**(p**x)
+(p**(p*x) + x)**p
+0**p/p + p
+0**p*0**(p*x)
+0**(p**p)/x**p
+p**x*(x + x**x)
+x + x**(x*x**x)
+p**x*(p/x)**x
+2/3
+(p*(p/x + x))**p
+x*x**(x/(p + x))
+x**((p/p**x)**p)
+(p/x)**p*(p + x)
+p**(1/(p + x + 1/x))
+(p + x**p)**x/x
+x**(p/(p**x*x))
+p + x/x**(x**x)
+(x/p)**(x**p)/x
+x*(p/p**x + x)
+p*(p + p**x) + p
+(p**2*(x*x))**p
+x**((p**x + x)/x)
+p + p/(p + x) + x/(p + x)
+(p + p**x)**(x*x)
+0**p/p**x
+1/(p + 1/(x*(p + x)))
+(p**(p**x) + x)**x
+p*(p**(p + x) + x)
+x**(x**(x*x*x))
+p + p/(p**x + x)
+(x + 1/(p + 1/x))**x
+(x/(p + x)**x)**p
+x**(p**(x**p) + x)
+1/(x*(p + 1/(2*x)))
+p + (p/x**x)**x
+p**(x/x**x)*x
+(p*p**x)**(p**x)
+x**(x**((p + x)**x))
+x**((p*x)**(p/x))
+(p + x**x/x)**x
+p**(x**p)*x + x
+p + (x/p)**p/x
+p*(x*x)/x**x
+p**(p**(x**p) + x)
+p/(p + p**(p*x))
+(x**(p**x)/x)**x
+p**(p*p**x) + x
+1/(p + p**x) + 1/x
+x**((x*x)/(p + x))
+(p*x)**((p + x)**x)
+(p + x**p)*(x*x)
+p**(1/(x + x**(1/x)))
+p**(p**(x**p))*x
+x**(p/x)*(p + x)
+x**(0**p)/x
+(x/p**x)**(x**p)
+x/x**x + x**x
+(oo*p)**(p**x)
+p/(x + x**x/x)
+(p*x)**(x**(x*x))
+(p**(x*x)/x)**x
+p/x + x*x**p
+(x*x**(x**x))**p
+x**(p*(x/p)**x)
+p*x + p + x**x
+x**(p**x + x**p)
+(p/x)**(x + x**p)
+x + (p + x)/p**x
+x**((p/x)**p)/x
+p**((x**x/x)**x)
+x + (p*x + x)**x
+x**(p + p**(p*x))
+(p + 1/2)**p
+x + 1/(p**x + 1/x)
+x*(p + x**x/x)
+p**(1/(p + 1/x))/x
+x/p**(x*x**p)
+x*(p + x)**x + x
+p/(x*(p/x + x))
+p/x + x/2
+(p/x + x)**(p*x)
+1/(p + x**(p**(1/x)))
+x**((p + x)/x**x)
+x**(p*x*(p + x))
+(p/x)**p/(2*x)
+(x + x**x)**p/x
+p/p**(x**(p/x))
+p**(x/x**(x**p))
+p**(x*(x + x*x))
+p + (p + x**x)**x
+x**(p*(x + x**p))
+p/x**(x**(p/x))
+p*(p**(1/x) + 1/x)
+0**(p**x)*x
+p*(x/p**x)**p
+p*(p + 1/x) + 1/x
+p**((x/p)**p/x)
+p**(x**(x/(p + x)))
+p**(x**(p*p**x))
+p/x**(x**p/x)
+(p*x)**x/(2*x)
+p*(p*x + x) + x
+(p**x + x)**(p**x)
+x**(x*x**p)/x
+p**x*(x*x*x)
+(p**(p + x)/p)**x
+x**p + x**(x**p)
+0**(p/x)/p
+x**(p*p**x)/x
+p/p**(x*x**x)
+p/x**(x*x**p)
+p**(p + (p + x)/x)
+(p/x + x)**(x*x)
+x*x**(x*x*x)
+(x*(p + x)**x)**p
+p*x**(p/x) + p
+p*x/(p + p/x)
+(p**(p/x) + x)**p
+p*(p*(p + x))**x
+p*x**(x**x) + p
+x*(p + x**x)**x
+x/(p + x**(x**x))
+(p + p**x)*(x*x)
+p*x**(x**p) + x
+(p/x)**((p + x)/x)
+(p + x)**(p*x + p)
+(p*(x + x**x))**p
+x*(x + (p + x)**p)
+(x*x*x)/(p + x)
+x + x**(x**(x**p))
+(p + x*x**p)**x
+(p*x + x)**p/x
+p**((x/p)**(x**p))
+p + (x/p)**(x*x)
+(p*x)**(p**(p/x))
+1/((p/x)**x + 1/x)
+(p**x/(p + x))**x
+p/(x + (p/x)**x)
+(p/x**(x**p))**x
+x + x*(p + x*x)
+x/(p**(x**x) + x)
+(x**x/p)**x/x
+p/x**(p*x**x)
+p*x + p*x**x
+x**(p*re(p**p/p**x))
+x + (p*x)**(x*x)
+(p*x + p)**(p**x)
+x*x**(p**(x**x))
+p**(x/(p + x)**x)
+0**p*0**(p/x)
+p**x*x**(p + x)
+x**(x**(1/x) + 1/x)
+x/(p + x)**(x**p)
+1/(p**(x**p) + 1/x)
+p**(p*x)/(2*x)
+p**(p*x)/x**p
+p**(p + p**(x**x))
+p*(p + x)/x**x
+p**x*p**(x**x)
+1 + x**(p*x)/x
+p + p**(1/(p + 1/x))
+x*x**x*x**(p/x)
+p*(p*x)**p/p**p
+(p + x**x)/p**x
+p + p**(1/(x + 1/x))
+((x*x)/p**x)**p
+p**((x*x)**p)
+p + (p + p/x)/x
+x/x**(0**p)
+x**(x**p/(p + x))
+p**(x**(p + p**x))
+p*(p + p/x) + x
+(p**x/p)**(p*x)
+p**(p*(p + x) + p)
+p/(p + 1/x) + 1/x
+(p*(p + x) + p)**x
+p*(p*x + p)/x
+x/p + 1/p
+p/x + x/x**x
+p**(x/(p/x + x))
+x + (1/(2*x))**(1/x)
+(p + x**p/x)**p
+x*(x/p**x)**x
+x*(p*(p + x) + x)
+1/(x*x**(p/x))
+p**(p**(p**x))/x
+x**((x/p)**x/x)
+(x/p)**x*(p + x)
+1/(x*(1/(p*x))**x)
+(x + x/x**x)/x
+x**(p + p**x*x)
+x/p**(x*x**x)
+0**(x**x/p)
+p*(p*x)**p + x
+(x**x/p)**(p*x)
+p/(x + x**x)**x
+(p*x + p/x)/x
+p**x/(p/x)**x
+p + p**(p/x)*x
+x*(p**2*x)**x
+x**(x*x)/(p + x)
+x**(p**(1/x)) + 1/x
+p*p**(x + x**p)
+p**(p + x)*x**p
+p*x**p + x*x
+(p/p**x)**p/x
+p + x*(p + x)**x
+((p + x)**x/p)**p
+(x*x)**x
+x + (p + x)**(x**x)
+(x**p/p)**(p**x)
+p/(p**(p/x) + x)
+p*x + 1/2
+1/(x*(p/x)**(1/x))
+p**(p + (p + x)**x)
+p/(x*x**x)**x
+x/(p*(p + x))**x
+(p*p**x + p)/x
+p**((x/(p + x))**p)
+x**(p**(x*x)/x)
+(p*x + x)**(p + x)
+(p + x)**((p/x)**p)
+p**(p**(x**(x*x)))
+p**(x**p/x**x)
+x**p*x**(p**x)
+p**((x + x*x)**x)
+x**p*x**(p*x)*x**(x*x)
+(p*(x + x**p))**x
+p**(x**(p**x))/x
+p**(x**(p/p**x))
+p**((x + x**p)**p)
+x/(p**(p/x) + x)
+(p + (x/p)**p)**p
+p*p**(p*p**x)
+x/(p + x**(p**x))
+p**x*(p + x)/x
+(p + x**(p**x))**x
+x + x**(x**x/x)
+x**(x*re(p**p/p**x))
+0**p/x**p
+(p + p/x**x)/x
+p**(x**p/p**p)
+(p + x*x)**x/x
+p*x**(p**x/x)
+x + 1/3
+x**(x**x*(x*x))
+x*(p*x + x**x)
+x + 1/(p*x)
+x/x**(1/(p + 1/x))
+(x/p)**(p + p**x)
+p**(0**p*x)
+p**(1/(p + 1/x)) + x
+(p/x)**p/p**x
+x + (x/p)**(p**x)
+x**((p*x**p)**p)
+p + p/(p/x + x)
+x/(p*x**p + p)
+(x**(x*x)/x)**x
+p*p**(x/x**x)
+x**(x*x**p + x)
+(x/p)**(p**x)/x
+p**x/(p*x)**x
+p**(3/(2*x))
+p*(p + x/p**x)
+p*p**(x + x*x)
+(p*(x + x**p))**p
+x/(p*p**x + x)
+p*(x + x**x/x)
+(p + p/x)**p/x
+p*p**(x**(x**p))
+((p + p**x)/x)**p
+x**(p + x)/(2*x)
+p**(0**(p*x))
+x/(p/(p + x) + x)
+x**(x**(p**(p + x)))
+(x + x**p)**(p*x)
+x**(((x*x)/p)**p)
+(p*(x*x))**(x*x)
+p**(p**((p + x)/x))
+x**(p + x + x*x)
+p + x*(p + x) + x
+(p*p**(x*x))**p
+p + p**(x**(x**p))
+p**((p + x)/p**x)
+(1/(2*x))**x + 1/x
+x**((x/p)**(p/x))
+x + x**(p/p**x)
+(p/x)**(p**(p/x))
+(x*x**(p*x))**x
+p**(p*x + p) + x
+p**(x*re(p**(p**2)))
+p*x*(p + x*x)
+p*(p + x)**p + x
+x**(p/x**(x**p))
+p*x + x**(p**x)
+x + (p/x)**(p + x)
+1/(p + x + 1/(2*x))
+p + x**((p/x)**p)
+x**(x**p)/(p + x)
+2*(x*x)/3
+p/p**(p**(x**x))
+p**(p**x)*p**x
+(p*x*x**x)**x
+((p + x*x)/x)**p
+p*(x + x*x)/x
+x**(p/(p + x**p))
+p**p*x/p**x
+x*(p**x/x)**p
+x**(p/(x*x**x))
+(x*(p*x)**p)**x
+(p/p**x)**x/x
+p*x**(x*(p + x))
+(p + x)**(x**p/x)
+p/((p + x)/x)**x
+(1/(x*(p + 1/x)))**x
+p**x + x*(p + x)
+p**((p/x)**x/x)
+(x/p)**(p + x**p)
+((p + x)/x)**(p/x)
+(x/p**p)**x
+1/(x**(1/x)*(p + x))
+(p + p**(p + x))**p
+(p + x)**(p/x**x)
+x + (x + x**x)**x
+(x/p)**x/p**x
+p*(x + 1/x)**(1/x)
+1 + x**p/p
+(x*(p + x)**p)**x
+p*x**(p**(p**x))
+p + (x*x)/(p + x)
+(x*x**p)**(p/x)
+0**(1/p) + 1/x
+p*x**(1/(p + 1/x))
+(x*(p + x)**x)**x
+1/(p + (p + 1/x)**p)
+p + ((p + x)/x)**x
+(p + p**x)**(p**x)
+x**(x/x**(p*x))
+(x/p**(p**x))**p
+0**(p*p**x)
+(x/(x + x**x))**x
+x**(p/x + x**x)
+(p*x/2)**x
+x + (x*x)/x**x
+p**(x**(x**x)) + x
+p**(p*x)*p**(p*(x*x))
+x**x + x**p/x
+p*x**x + x*x
+p + x/x**(x**p)
+p*x*x**x + p
+((p/x)**x/x)**x
+(p + x*x)**(x**p)
+p**(x**((p/x)**p))
+p/(p + x) + x + x/(p + x)
+(p/(p**x + x))**p
+p + p**x*x + x
+p*p**((p + x)/x)
+(p/p**x)**(x**p)
+x**(p + x**(p**x))
+p**(1/(p + p**(1/x)))
+p**(x*x**x) + x
+(0**(1/p))**(1/x)
+(x/p)**(p**x*x)
+(x**p/(p + x))**x
+((p + x)**x/x)**x
+(x/p**(x**x))**x
+p*p**(x**x)/x
+x*x**(p/x**x)
+x**(p**(p**x)/x)
+p**((p*x)**p) + x
+p*x*x**x + p*x
+x + 1/(x + x**(1/x))
+p**(p**(1/x) + 1/x)
+(1/(1 + 1/p))**p
+p + p**((p + x)/x)
+x**(p*p**p)
+(x/p)**((p*x)**p)
+p*x/p**(p*x)
+p**(p**x/(p + x))
+(x**x/(p + x))**p
+(p + x)**((p + x)/x)
+x**(p**(x*x**p))
+(p*x**x)**(p**x)
+(p**(p + x) + x)**x
+p + (p*x + x)**p
+(x + x**(x*x))**x
+p + (p/x)**(p*x)
+(x*(p*x)**x)**p
+p*(p*x**x)**x
+p/x**(p**(p*x))
+p**(x/(x/p)**x)
+p**((p + x)**x/x)
+0**(x/p**p)
+p**(x**x/x)/x
+(p**(1/x) + 1/x)**x
+p**(p + x)*(p + x)
+x*(x + x*x)**x
+p**(p/x + x**x)
+(p + 1/(2*x))**(1/x)
+p*(p*x**x + x)
+(p + p**x)**p/x
+p**(p*x)/x**(p*x)
+x + (p + p/x)/x
+x**p/(x*x**x)
+x**(p + x)*(p + x)
+x**((x/p)**(p + x))
+x**(p*p**(x**p))
+1/(p + 1/(3*x))
+p**(x**(1/x) + 1/x)
+(x*x)*(x + x*x)
+p*x**(p**x) + x
+x**(p**x)*(p + x)
+1/(x + x**(x**(1/x)))
+p/(p + x)**(p**x)
+x**(p + 1/(p + 1/x))
+p + x**(x/x**x)
+(p**x + x**x)/x
+(p/p**x)**(p**x)
+x**((x + x**p)/x)
+(p/(3*x))**x
+p**((x*x)/2)
+x**p*(p + x**p)
+(x**p/x**x)**p
+(p + x)/x**p
+p + x*(p + x)**p
+p/(x + x/p**x)
+1/(p**(p**(1/x))*x)
+p**((p**x/p)**p)
+p*(x + (p + x)/x)
+1/(x + (p + x)**(1/x))
+x**(x*(p + x)**x)
+p/(p**x + x**x)
+(x**x/p)**(x**p)
+p/(x + (p + x)**p)
+p/x + x*(p + x)
+p/p**(x**p/x)
+p/(x + (p + x)**x)
+p**2
+p**x*p**(p + x)
+(x**x/(p*x))**x
+p + (p + x**p)/x
+(p/x)**(p + x**p)
+p**(0**p)/p
+p*x**x + p + x*x**x
+p**(p/p**(x**x))
+p/(p + x**p) + x
+(p + p**x*x**x)**x
+x**(p**(p + p/x))
+x + (p*x + p)/x
+(x/p)**(p**(x*x))
+x/(p**(p*x) + x)
+p*(p + x*x)**p
+(p + x/x**x)**x
+0**p/(2*x)
+p*x**(x**(x**x))
+((p*x)**x/x)**x
+x + x**(p*x + x)
+x + x**(x**x)/x
+(x**(1/x) + 1/x)**p
+x**(x + x/(p + x))
+x + 1/(p + p**(1/x))
+(p*x)**(p + p/x)
+p*(p*x**x)**p
+x**(1/(p + 1/x))/x
+p*p**x + p + p**x*x
+(p + x)**(p**(p**x))
+p**(p + x + x**p)
+(1 + x/p)**x
+(p**(x*x)/x)**p
+x*(x/p**x)**p
+(p + x*x)**(x*x)
+p*(p*(p + x) + x)
+p**(x**(x**(p + x)))
+p + x + (p/x)**x
+p*(x*x)/(p + x)
+x + (p*(x*x))**p
+p**(p**((p + x)**x))
+p*x**p/(p + x)**p
+(p*(p + p/x))**p
+p**(p/x + x) + x
+1/(p**(1/x)*(p + x))
+p/(x*(p + x**p))
+x**(p/p**(x**x))
+p + p**(p + p**x)
+x/(p**(p + x) + x)
+(x/(p/x)**x)**x
+x**(0**(p**x))
+x**(p**(p**x))/x
+(x*x**(p**x))**x
+(2*p*x)**p
+x**(2*p*x)
+x + (x + x**p)**p
+x/(p + (p + x)**x)
+(x + x*x)/(p + x)
+p**(x*x**p*re(p**p))
+(p**x + x**x)**p
+p*x**(p + x) + p
+p + (p/x)**(x*x)
+(p + x)*p**(x*x)
+p/(p + x) + x*x
+p**(p + (x/p)**p)
+p**x/(3*x)
+(x**p/p)**p/x
+p**(p**p*p**x)
+p**((p + x**x)**x)
+0**(p**(x**p))
+x**((p*x + x)**x)
+(p/(p + x))**(x*x)
+p**(p*x**x/x)
+1/(x + x/(x + 1/x))
+x + x**x*(p + x)
+1/(x*x**p + 1/x)
+(p/p**(p*x))**p
+(x**(x*x)/p)**p
+p**(x**(p**(x**p)))
+0**(p*(x*x))
+x**(x**p/p**x)
+p + (x*x)/x**x
+x**(x**(p + x))/x
+p**(1/(x + 1/(2*x)))
+1/(x*(p + x**(1/x)))
+x**((1/(2*x))**(1/x))
+x*x**p/x**x
+p/(x*(x + x**p))
+(p**x/x)**p/x
+(p + x)*(p + x)**x
+(x**x + x*x)/x
+x**((p + x*x)**p)
+(x/(p/x + x))**x
+p + x/(p/x)**x
+(p + (p + x)**p)**x
+p/p**(p**x) + x
+1/(x*x**(1/x) + x)
+x**(p**((x/p)**p))
+(p*(p + x**x))**p
+p**(x + x**x) + x
+p + (x**p/p)**p
+p + (x/(p + x))**p
+((p*x)**x/p)**p
+p*(p + x) + p + x
+p*p**(x**(p/x))
+x*x**(x*(p + x))
+p*(x*x**p)**x
+p/(p/x + x**p)
+x + x/(x + x**p)
+(p + p/(p + x))**p
+x + (x/p**x)**p
+(x + 1/x)**(1/x)/x
+p**(p*(x + x*x))
+(p + x)**(x + x*x)
+p + p**(x**(x*x))
+x**(x*x**(p/x))
+p/(p/p**x + x)
+p**x/(p**x + x)
+p**p/p**(p**x)
+p*(p + x**p)/x
+(p*x)**(x + x*x)
+0**(p*x)*p**x
+p + p**(p**(p + x))
+p**(x**x)/p**x
+x*(x + (x/p)**p)
+(x*x)/p**(x**x)
+1/(x*x**(1/(2*x)))
+p*((p + x)/x)**p
+(p + x**p)/p**x
+p**(p + x)*x**x
+p**(p**(x**x)/x)
+p + p**x/(2*x)
+(p**(x**p) + x)**x
+((p + x)/x)**p/x
+p/(p + p**(x**x))
+p/p**(x/x**x)
+(p + x*x**p)/x
+(p**(p*x)/x)**x
+1/(p + p**(x**(1/x)))
+p**(1/(x + 1/(p + x)))
+x*(p + x*x)**x
+x/(p*x + x**x)
+x + (p/x)**p/x
+p*(p + x*x)/x
+(x**x/(p + x))**x
+p**(p*x)/x + x
+1/x + 1/(p**x*x)
+p**(p*x + x)/x
+(x*x**x)**(p*x)
+(x**p/(p*x))**x
+p**(p*(p**x + x))
+p**((p/(2*x))**p)
+p**(x + (x/p)**p)
+(p**x*x/p)**p
+(x/(p + x))**(p + x)
+(x*x**(x**p))**p
+x**(x + 1/x) + 1/x
+p/(p/x**x + x)
+p**(x/(p + x)) + x
+x**(p*x)*(p + x)
+p**(x + x/x**x)
+(x/p)**(x/x**x)
+(x/(p**x + x))**p
+p + (x/p)**(p/x)
+(p*x)**(x**(p/x))
+p**x + (p + x)**p
+x + (p/x)**(p**x)
+1/(x**(x**p) + 1/x)
+(p*x + x)/(p + x)
+p/(p + x*x**p)
+p**(x**(p**x*x))
+0**p/p + x
+(1/(p*x**(1/x)))**p
+(x + x**p)**(x**x)
+x*(p*x + x)**p
+p/(x*x**p + x)
+x**((p**x/p)**x)
+(x/p)**x/(2*x)
+1/(p + 1/(p + x**p))
+(p*p**(1/x))**(1/x)
+p**(p + x)/(2*x)
+1/(x + 1/(3*x))
+(p/x)**((p/x)**p)
+1/(p + (1/(2*x))**x)
+x**(p/(x + x**x))
+1/(p/x + 1/(p + x))
+p*p**x/x**x
+(p + x**x)**(p/x)
+p + x*(p + x**x)
+x**p*(p + x*x)
+(x/x**(1/x))**(1/x)
+x**(p**x*x + x)
+1/(p**(1/x)*p**x)
+x**p + x**(p*x)
+p*(p + p**x + x)
+x + (p + p**x)/x
+1/(x + (x + 1/x)**x)
+x*x**(p**x/x)
+(p*p**(p*x))**x
+p**(p**x/x**x)
+p**(p**((p*x)**p))
+p**(p + (p/x)**x)
+(p*x)**(p + p**x)
+p**(p + (p + x)**p)
+p/p**(x**x/x)
+x + ((x*x)/p)**x
+p**x*x**p/x
+p**((p**2*x)**x)
+x + x**((x/p)**x)
+x*p**(x**(x*x))
+(p/p**x + x)**x
+x**(x**(x*x**p))
+p**(p**(x*(p + x)))
+(p + p/p**x)/x
+x**((p**2*x)**p)
+p/(p*x)**(x**p)
+(x*(x/p)**x)**x
+p**(p/x**(p**x))
+((p + p/x)/x)**x
+1/(p*x**(1/x) + p)
+(x**p*(x*x))**p
+p/(x + x**x) + x
+p*(p + x)/p**x
+(1/(2*x))**(x + 1/x)
+p*(p*x)**(p**x)
+x**(x**(x**(p*x)))
+(p + x)**(p**(x*x))
+x*(p + 1/x)**(1/x)
+(p + p**x*x)**p
+(p**2*x)**(p/x)
+p + (p/p**x)**p
+p**x + (p/x)**x
+x**x*(p + x)**p
+p/(p**x*x) + x
+1/(x + 1/(x + x**x))
+p + (p + x)*(x*x)
+x**((p + x)**(p**x))
+x**(x**((x/p)**p))
+x**(x**(p**(x**x)))
+x**((p*x + p)/x)
+p*x*x**(p + x)
+x**(p**(p*x)/x)
+p/x**(p*p**x)
+x**p + (p + x)**p
+p/x + p**p/x
+x**x*(x/p)**x
+p + (p/x)**(p + x)
+1/(x*(x + 1/x)**x)
+p*x**(x*x) + x
+x*x + x*x*x
+x**x*(p*x)**x
+(x/x**(p*x))**x
+p**(x**(x/p**x))
+p**(x*x)/p**x
+(p + x*x*x)**x
+x**((x/p)**x)/x
+p*x**((p + x)**x)
+1/(p + x/p**(1/x))
+p**(p/(p + x)) + x
+p*p**(x*x) + x
+p**(p**x)*x**(p**x)
+(p*p**x)**x/x
+p/p**(x/p**x)
+x + x**(p + p/x)
+p**((p**x*x)**x)
+p**(x + (p + x)**p)
+x/p**(x/p**x)
+p*x**p + p**x
+p*(x*x**p + x)
+1/(p*p**(1/x) + x)
+(p*p**x)**(x**x)
+(p**x + x**p)/x
+x**(p**(x**p)/x)
+(p + x)**p + x*x
+p/(p + 1/x)**(1/x)
+x**(x/p**(p**x))
+p/(p*x)**(p**x)
+(p*(p + x)/x)**p
+(p*x)**(x**(x**x))
+p/(p**(1/x) + 1/x)
+x*(p + x)/p**x
+p + x**(x + x**x)
+x + x**(p + x**x)
+p + x/x**(p*x)
+(p + p**x)/(p + x)
+(p + x)**(p**(p*x))
+(p/x + p**x)**x
+x**p/x**(x**x)
+p**((p + x)*(x*x))
+p**x/p**(p**x)
+(p**(x**x)/p)**p
+x + x**(x + x**x)
+x*(x/x**x)**p
+x**(p**(x*x))/x
+x*x**((x/p)**x)
+(p/x)**(p**(p**x))
+p/(0**p + p)
+x + (p + x)**(p + x)
+p**(p/(p + x) + x)
+p*(p**x + x) + x
+x**((p/x)**(x*x))
+x**(p + (p/x)**p)
+(x*x**x)**x/x
+x + x/(p + x**x)
+p**p + x
+p + (p**x/x)**p
+x*x**(1/x) + 1/x
+x**p/(p*x)**x
+p**(p*(p*x)**x)
+p + p**(p**x + x)
+x**(p**(p*x**p))
+x/x**(x**(p**x))
+p**(p**(x/x**x))
+x*(p + p/(p + x))
+p + (p + 1/x)**(1/x)
+p**(p/x)*x/p
+p*x + p*(x*x) + x
+p**(1/(p + x)) + 1/x
+x**p/x**(p*x)
+((1/(p*x))**p)**(1/x)
+p*x**(p**p)/p**p
+oo**p + 1/x
+x**(p + x/(p + x))
+p + x**((p/x)**x)
+x + x**(p + x*x)
+p**(p**((p + x)**p))
+(p/x)**x/(p + x)
+p/x**(p**(p/x))
+x**(x**p)/(2*x)
+p + (p*x**x)**x
+1/(x**x + 1/(p + x))
+(x**p/(2*x))**x
+(x*x**(1/x))**(1/x)
+x**((x*x**x)**x)
+(p*x)**((p/x)**p)
+x**(p**((p + x)/x))
+(x**p*(p + x))**x
+p**(x**(x*x**x))
+((x/p)**x/p)**p
+x/(2*x**p)
+(x**p + x*x)**x
+x**(x**(x**x/x))
+x + x/x**p
+x**(p**(1/(x + 1/x)))
+x/x**(x*x**p)
+x**(x + x**(p + x))
+x + (x/(p + x))**x
+x**x + (p*x)**p
+0**(x/p**x)
+(p/x)**p*(x*x)
+(p*(x + x**x))**x
+x*(p + x)/x**x
+x + x**(x*x*x)
+(x/(p*p**x))**p
+p + x**((x/p)**x)
+(p + x)**((x/p)**p)
+p + x**(x**(x**p))
+p*(x*x) + x**p
+x/x**(p**(x**x))
+p*x + (p/x)**x
+(p + x)/(x*x**x)
+x**(1/x) + 1/(2*x)
+p**x/x**(x**p)
+p**(p + p**x) + x
+(p + p/x)**(p + x)
+p/x**x + x*x
+p**x/x + x*x
+p + p**(x/x**x)
+((x + x*x)/p)**p
+1/(x + 1/(p**x + x))
+x/p**((p*x)**p)
+x**((p + p**x)**x)
+p**(p/p**x + x)
+p**(x**(p*x**x))
+(oo/p)**(1/x)
+p/x + 1/(p*x)
+p**x + p**x/x
+p**(0**(x/p))
+p/(p**(x**p) + x)
+x**((p + x)**x)/x
+x**(p**(p*(p + x)))
+p**(x + (p + x)/x)
+x*(p*x**x + x)
+x**(p*(x*x) + x)
+1/(p + p**(1/(2*x)))
+p/x + (p + x)**x
+p**(1/(p**x + 1/x))
+p + (x/x**x)**p
+1/(x*(p + 1/(p + x)))
+((x*x)/x**x)**x
+p*x*(p**x + x)
+1/(p + x) + 1/(2*x)
+x + (x*x**p)**p
+x**p*(p/x)**p
+x**((x + x**x)**p)
+x/(p/x + p**x)
+x/(p + p**x + x)
+p**(p**p/x**p)
+x**(x**(x + x**x))
+p + x**(x*x**x)
+x + x**((p/x)**x)
+x/x**(1/(x + 1/x))
+p**((x + x**p)**x)
+x*(p + x + x**p)
+(x*(x/p)**p)**p
+p/x + p**(p/x)
+x**(x + p**(x*x))
+(p*x/p**x)**p
+p + p**(p*x + x)
+x**(p*(p/x)**p)
+x**((p**x/p)**p)
+p*p**(p + x) + p
+x**x/(x/p)**x
+p/p**(p**(x**p))
+p**x + x/p**x
+p**(x**p)*x**p
+(oo*p)**(x**x)
+p + x**(x**(p*x))
+p/(p + x**(x**p))
+x*(p + p/x) + x
+x/(p/p**x)**x
+p + p*(x + x*x)
+(p + p**x + x)**x
+x**(x**(x**(x**x)))
+p**(p**((p*x)**x))
+(x*x**(p/x))**p
+p**(x**(x**x))/x
+x/x**(p**(p**x))
+(x*x)/(x + x**x)
+p/(p*p**x + p)
+p*x**(p/x**x)
+p**((p**2*x)**p)
+p + x + x**(x*x)
+1/(x*(x + 1/(2*x)))
+p + p**(p**(x*x))
+(p*(x*x) + x)**x
+p**(1/(p + 1/(p + x)))
+(x/p)**p*(x*x)
+p + x*(p*x)**x
+p + (p/x)**x/x
+(p*x**x)**(x**p)
+p*(p/x + x)/x
+(x*x)/x**(x**p)
+x/x**(p**(x**p))
+p*p**(p**(x**p))
+((x + 1/x)/p)**(1/x)
+x*(p**(p**x) + x)
+1/(p + x**(p + 1/x))
+x**(x*p**(x*x))
+p*x**x/x**p
+x/(p + 1/(x + 1/x))
+p + p**x/x**x
+(p + (p/x)**p)/x
+x**(x**x/p**x)
+x**(0**p/p)
+p**(0**p)*x**(0**p)
+(x**(1/(p + 1/x)))**p
+p + 1/(p**(1/x)*x)
+p/x + 1/(x + 1/x)
+p**((p + x)/x)/x
+x + (x/p**x)**x
+((x*x)/p)**x/x
+x**((p + x)**(p + x))
+p*(p + x*x**p)
+p**2*x + x*x
+p/(x*(p + x)) + x
+p**p*x**(p**2)
+x**(p**(x**x) + x)
+(p + x)**p*(x*x)
+(1/(p*p**x))**(1/x)
+p*((x*x)/p)**p
+x + 1/(1 + 1/x)
+x**(p*(p + x) + p)
+p**(p**(x**(p + x)))
+(x + x**p)/x**x
+p**(p*(p + x**x))
+x*x**(x**(p**x))
+x**((p + x)**(p/x))
+x**(p + (p + x)/x)
+1/(x + (p + 1/x)/x)
+p**(x*(p + x))*x
+(p/x)**(p + x*x)
+((x + x**x)/p)**x
+(p*x**p)**x/x
+((p/p**x)**x)**p
+x**(1/(p + 1/(2*x)))
+x*(p/x + x)**p
+p + p**(1/x) + 1/x
+p + (1/2)**x
+p*p**x*(x*x)
+x + x**(p + x)/x
+p + x**((p + x)/x)
+(p**(p*x)/x)**p
+p*p**(1/x) + 1/x
+(p**x/p)**(x**p)
+p*x**(p*x)*x**(x*x)
+1/(p + (1/(p*x))**p)
+p**x*(p + p/x)
+p**(p/x)/(p + x)
+p**(x*(p*x)**p)
+p/(p + 1/(x + 1/x))
+(p + x)/(p + x)**x
+x**x/(p + p/x)
+p*p**(x**x/x)
+x*(x**p/x)**p
+(p + (p/x)**p)**p
+p*x**(p*x) + x
+p**(x**p*x**x)
+x*(p + x)**(x**p)
+p/p**(p**(p + x))
+p*(p + x*x*x)
+x**(p**(x**(x*x)))
+sqrt(p)*p**(p/x)
+p**(1/(x + 1/x))/x
+p**(p*(p + x*x))
+1/(p + (p/x)**(1/x))
+((p + x**p)/x)**p
+(x**x*(p + x))**x
+p*x**(p*(x*x))
+p*p**x*x + p*x
+(p*x**p + x)**x
+(x*x)/x**(p**x)
+(p/x)**(p + p**x)
+x*(p*x**x + p)
+(p/x)**(1/(x + 1/x))
+(p*x)**(x/(p + x))
+x/(p + (p/x)**x)
+p + (p + x)**x/x
+p**((x + 1/x)**(1/x))
+p*(p + x)**(x**x)
+(p*x)**p/(p + x)
+p**p/p**x + x
+x**(p + 1/x) + 1/x
+p*x**(x*x*x)
+(p + 1/x)**p + 1/x
+p**((x/p**x)**p)
+x + (x*(p + x))**x
+x**(p**(p**(p + x)))
+(x/x**x)**(p**x)
+x**(x**p)*(p + x)
+p**(x**(x**(p*x)))
+p*x/p**(x**x)
+(x + p**(x*x))**p
+(p*(p + x))**p/x
+x**(1/x)/p**(1/x)
+p**(x + x/p**x)
+(x + (p + x)**p)**p
+0**(p**(x/p))
+1/(p + x + x**(1/x))
+(x/p**x)**(p + x)
+(p*p**x + p)**p
+p**(1/(x*x**(1/x)))
+p**(x**x/p**x)
+x**p + x**(x**x)
+1/(x + 1/(x + x**p))
+p/p**(x**(x**x))
+p*x**(p*x)/p**p
+0**p/(p*x)
+p**(p/x) + x*x
+p*x**(x + x**x)
+(p**x/x**x)**x
+x**((p/x**x)**x)
+x**(p**x/(2*x))
+x*x**x/p**x
+(p/x)**((x/p)**p)
+p/(x + x**(p + x))
+p**(x + x/(p + x))
+p + (p*x)**(p**x)
+(p/x**x)**(p**x)
+(x + x**(x**x))/x
+x + p**(p**(x*x))
+x**(p*(p + x*x))
+p**(p/(p + p**x))
+p/x + p**(p**x)
+x**p + (p/x)**p
+x**(x**p)/p**x
+p/p**((x/p)**x)
+p**(x**x)*x**p
+(x/(p*x + x))**x
+p**(x**(p + x))*x
+(x*x)/(x/p)**x
+(p + x)*(p*x + x)
+p/(p + p**(p + x))
+(x/p)**(1/(x + 1/x))
+1/(p + p/x**(1/x))
+p**x/(p + p**x)
+x**(x**(x**(p + x)))
+x*(p + p**x) + x
+p**(x + x**(p + x))
+(p + p/x)**x/x
+p*(p/(2*x))**x
+p*(x + x**(p*x))
+(x**x/p**x)**p
+x**(p + x**x/x)
+x**(p/x**(p**x))
+x**(1/(p**x + 1/x))
+x + 1/(p**(1/x) + x)
+x*(x**p/p)**x
+x**(x*(p*x)**x)
+x**(p/x**p)
+p**(p*(p + x))*x
+x**p/(p**x*x)
+p + x*x**(x**p)
+x + p**(x + x*x)
+(1/x)**x
+0**(x**(x/p))
+(2*p)**x
+p*p**(x*x*x)
+p**2*x + p + p**p + x*x
+x**(p**x/(p + x))
+x**(1/(x**x + 1/x))
+x + (p/p**x)**x
+x/x**((p + x)**p)
+x*p**(p**(x*x))
+x**(x**x/(p + x))
+((x/p)**p)**(1/x)
+(p/(2*x))**(p + x)
+1/(p**x + 1/(p + x))
+x*x**(x**x) + x
+(p**x/x + x)**p
+(p*x**p/p**p)**x
+(p**(p**x) + x)**p
+(p + p**(x*x))/x
+(p**x*(p + x))**p
+x*x**(p/x + x)
+(p**(x**p)*x)**x
+x*x**p + x**p
+p**((x*x**p)**p)
+x**x + 1/2
+(p/x + x**x)/x
+(p + x)**(p*p**x)
+p**(x*(p + x)**p)
+p*(p + x**(x*x))
+x**((x/x**x)**x)
+(x + x*x*x)**p
+(p + p**(x*x))**x
+p + p**(p**x)*x
+x**(x**((p*x)**p))
+p/p**(x**x) + x
+x + x*x**(x*x)
+x*(p*x)**(x**x)
+p + p**x/(p + x)
+x**(p**(p/(p + x)))
+x**((p/x + x)**x)
+p*(p/(2*x))**p
+x**(p + x + x**p)
+(p + x)**(x/(p + x))
+p**(x*x**(x**p))
+(p**x*x)**(p + x)
+p*(x + p**(x*x))
+(p/x**(1/x))**(1/x)
+p*(p*x**p + x)
+p*(p**x + x**p)
+x + 1/(p**(1/x)*x)
+x + 1/(p + x) + 1/x
+x**(x/(x + x**p))
+(p**x/(2*x))**x
+p**(p/p**p)
+x**x*(p/x)**p
+p**(x/p**p)
+x**x + x**(p/x)
+x/(x + x**p/x)
+x**(p*x)/x**(p**p)
+p + x + (p + x)**p
+x**(x**p/(2*x))
+p**((p + x)**x)*x
+x**(x + x**(x**x))
+p**(p**(p*(x*x)))
+1/(p*(p + 1/x) + p)
+(x/2)**(1/x)
+p*x**p + p/x
+(oo*p)**(x**p)
+p**(x**(x**(x**p)))
+1/(x + (1/(p*x))**p)
+x*x**((p*x)**p)
+p**(1/(2*x)) + 1/x
+(x**(1/x)/x)**(1/x)
+(1/2)**(x**x)
+x + (p**x/p)**x
+(p**(x**x)*x)**p
+p/x + p**(p + x)
+(1/(x*x**x))**(1/x)
+p**((oo*p)**p)
+1/(oo**p + p)
+(p**(1/(p + x)))**(1/x)
+x/(p + 1/x) + 1/(p*x)
+1/(p/(p + 1/x) + x)
+(p*p**x + x)**p
+p**((x/p)**x/x)
+(x**x)**x
+p*(x + x*x)**p
+p/(x/p)**(x**p)
+x**(x**p + x*x)
+p*(x + x**p/x)
+p*p**(p/x)/x
+p**x*x**x/x
+(x**x/x)**(p/x)
+p**(x*(p/x + x))
+x**x/(p*x + x)
+x + (p + x**p)/x
+p**((oo*p)**x)
+x*x**(p/x)/p**(p/x)
+(x/p)**(p/x**x)
+x/x**((p/x)**x)
+p**(x**p) + x**x
+1/(p/x + x + 1/x)
+x/x**((x/p)**x)
+p/x**((x/p)**x)
+x**((x*x)/2)
+1/(p**(1/x)/x + x)
+x + 1/(x**p + 1/x)
+(x*x**(p/x))**x
+x*(x + (p + x)**x)
+p + x**(p**x*x)
+p + p/(x*(p + x))
+(p**(p**x)/x)**p
+x**p + (p + x)**x
+p/(p + 1/2)
+p**(p/x**x) + x
+0**(x/p)/x
+(1/(p*p**(1/x)))**p
+p**(p/x)/(2*x)
+x**p*x**(p/x)/x
+p*((p + x)/x)**x
+(x**(p**2))**p
+x**(1/x)/x + 1/x
+p/(p + p**x + x)
+(x + x**x)*(x*x)
+(p + x)*(p + x)**p
+(1/(p + 1/(p + x)))**x
+(p*(p + x))**(p + x)
+p + p/(p + x)**x
+p*x**p/(p + x)
+((x/p)**(p*x))**x
+x*(p*x**p)**x
+x/(p + x)**(x**x)
+(p + x)**(p**(x**p))
+((p**x + x)/p)**p
+x**(x/x**x)/x
+x*(p/x**x)**x
+(p*(p*x)**x)**x
+(1/(p*x**(1/x)))**x
+1/(x*x**(x**(1/x)))
+x + x/p
+p**(p**(x**x))*x
+p**(1/(p*x))
+x**(p + x)/(p + x)
+(p + p**(p/x))**x
+p/x + p**x/x + x
+p*x + p**x + x
+x*x**(p*x**p)
+x**(x*x*x)/x
+p**(x + x**(p**x))
+x/p**(x**(p + x))
+p**(x**(p + x*x))
+x**(1/x)*(x + 1/x)
+(x*x**x/p)**p
+(p**x + x)**(x**x)
+x**(p*x)/(2*x)
+(oo*p)**(x*x)
+p/x**(1/(x + 1/x))
+p**(p + x*x**p)
+x + (p/x)**(x**p)
+p**(p*(p/x + x))
+p*(p + x**x)/x
+p**(x**x)/x + x
+0**p/x + p
+p**((p + x)/x)*x
+p/(2*p**x)
+x*x**p/x**(p*x)
+x**p*x**x/p**p
+p/(x*(p/x)**x)
+p**(p**(x*x)/x)
+p*x**p*x**(p**p)
+p*x**(p*x)/x**p
+1/(p + (p + x)**(1/x))
+p**(x**x)*x**x
+p*x*(p + p/x)
+x/(p + (p/x)**p)
+(p**x/p)**(p**x)
+(1/(2*p))**x
+p + x + x*x*x
+(p*x + x)**(p/x)
+p**(x**(p*(p + x)))
+p + (x**x/p)**p
+(x*p**(x*x))**x
+x/(p**(p**x) + x)
+p/x + x**(x**p)
+0**(p**p/x**p)
+x**(x**(p**(x*x)))
+(p/x + x)/p**x
+p + x + 1/2
+(x**(x**p)/p)**p
+x**(p*p**x + x)
+p*(x**x/x)**x
+p*(p + x**(x**x))
+p + p**(p*x**p)
+p**x*(p*x)**x
+(p + x)*(x + x*x)
+x**x + p**(x*x)
+1/(p**x + 1/(2*x))
+(p + p**x)/p**x
+x + x/(p + p/x)
+p**((p + x**p)**p)
+(x*x**p)**(p**x)
+(x**p/p)**(x*x)
+1/(x + 1/(p*x + x))
+p + x*(x + x**p)
+p**(p**x + x*x)
+x**(x*(p + x) + x)
+p*p**x + p + x
+p + (p*x**p)**p
+x/(x**x/x)**x
+p**(p**p/p**x)
+1/((x/p)**x + 1/x)
+x/x**(1/x) + 1/x
+p**(p/x)*(p + x)
+p**(p + x) + x**x
+p*x**((x/p)**x)
+x**(p**(x/p**x))
+p**(p**(p**(x*x)))
+p*p**p*x
+(p + p/x)/x**x
+(p**(p/x)*x)**p
+x*x**(p*x)/x**p
+(x**x/x)**(p + x)
+p + x**(p + x*x)
+p/x + p**x + x
+x**((p/x)**(x**x))
+0**((p + x)**x)
+x**x*(p**x + x)
+0**p*x**p
+(p*x**p)**(x**p)
+(1/(x*x**(1/x)))**x
+p**(x**(0**p))
+x + x**(x/p**x)
+x*x**((p/x)**x)
+(p + p**(p + x))/x
+p*(x + x**(x**p))
+p + x + (x/p)**x
+(x + (p*x)**x)/x
+p**(x**(p + x))/x
+p**(p + x) + x**p
+p**((p/x)**p)*x
+x**(1/(p + x**(1/x)))
+p + (p + x)/p**x
+1 + x**x/x
+p**x*(x + x*x)
+p + x**(1/(p + 1/x))
+x**(p**(p*x + x))
+x**x/2
+x/(2*p**x)
+x + (p + p**x)**x
+0**p*p + 0**p*x
+x + (p**2*x)**x
+(x*x**x)**(p + x)
+x**((p/x)**(p**x))
+x**p*(p*x + x)
+(p/x)**(x/p**x)
+x**(x*(x + x**p))
+x**(x*x**(x**p))
+x**(p + x**p/x)
+p**(x**(p**(x*x)))
+x**((p*p**x)**x)
+((p/x)**p/x)**p
+x*x**(p + x**p)
+0**(x**p/p**p)
+(p/x)**(p**x*x)
+p**x + x**x/x
+x**(p**((p/x)**x))
+(p*x**x + p)/x
+0**(1/(x + 1/p))
+(p*p**(p**x))**p
+(x**(1/(p + x)))**(1/x)
+x*((x*x)/p)**x
+p**(x*re(p**p)/x**p)
+0**p*p + x
+p**(2*p)
+x + (p + x)**(p/x)
+(p + x)**((x/p)**x)
+(p + 1/x)**(x + 1/x)
+p + (x**x/x)**p
+(p*x)**(x*(p + x))
+(x**x*(x*x))**x
+x + (x*x)**p
+x/p**(x**(p/x))
+(x/p)**(p**x + x)
+(x**x/p)**p/x
+p**(x*x)/x**x
+x**x*(p + x**x)
+p**(p*x)*x**(p*x)
+p*x**x/(p + x)
+p + x**(x**p/x)
+x + x**(p**x)/x
+p*(x*x) + x + x*x*x
+(p/x)**(p + x)/x
+p*x + x + x**p
+p**x*(p + x*x)
+p*p**(x*x)/x
+(p*x + x)*(x*x)
+x*x**p*x**x
+p*(p*x + p)**p
+p**(x*x**(x**x))
+p**x*x*x**(p*x)
+x*(p + p/x**x)
+x*((p + x)/x)**x
+x**(x*(x/p)**x)
+p**(x*(p**x + x))
+x + x/x**(p*x)
+(p*(p + 1/x))**(1/x)
+(p + x)**(x*x**p)
+p/(x/x**x)**x
+(x + x**(p + x))**x
+p/x**(p**(x**p))
+x**(p + x**x)/x
+p + x + x**p/x
+p + p/(p + x) + x
+p**(x**p + x**x)
+x*(p + (p/x)**p)
+(x/x**x)**x/x
+x**p*x**x/x
+p**(p**(p*x))/x
+1/(p + (1/(p*x))**x)
+p*(x**p/x)**p
+x**(1/3)
+p*(x + x**x) + p
+p*(p**x + x)/x
+0**(p/p**x)
+x + x/(p + p**x)
+(p**x/p)**(x**x)
+p*x**(x**(p + x))
+(x*x)/(p**x + x)
+(p*p**x)**(p + x)
+x**(p*x**x + x)
+p**((x**x/x)**p)
+x*(x/p)**(x**p)
+x + x**(x + x*x)
+x + (p + x*x)**p
+(1/(x + 1/(p + x)))**x
+p/(x/p)**(x**x)
+x**x + (x/p)**x
+(0**(1/p))**(1/p)
+(1/(2*x))**(1/x)/x
+p**(p**(p/x + x))
+p**(x*x**p) + x
+(p + 1/(x + 1/x))**x
+x**(p + x)/p**x
+(x + (x/p)**p)**x
+x**(p*(p/x)**x)
+p**(p/(p + p/x))
+p**((p*x**x)**x)
+p**(p + p**x)/x
+1 + (p + x)**x/x
+p + p**(x**(p**x))
+p**p*x**(p*x)
+p*(x*x) + x*x + x*x*x
+(p*x)**x/p**x
+p**(x**(p**x)/x)
+0**((p + x)**p)
+p**((p**x/x)**p)
+p/x + x + x**x
+(p**x/(p + x))**p
+p**(p + 1/(x + 1/x))
+p**x/(p + x**x)
+p/(x*x**(x**p))
+x**x/(p/x)**x
+p + p**(p + x*x)
+p**(x**p + x*x)
+1/((p + x)**p + 1/x)
+(x**x + x*x)**p
+0**(p**(x**x))
+x + 1/(p + 1/(p + x))
+p/(p + x**(p**x))
+(p*p**x/x)**x
+x**(p*x**p)/x
+x/(p + x + x**p)
+x + (p/p**x)**p
+1/(0**p + 1/x)
+x/p**(1/(p + 1/x))
+x**(p**(x**x/x))
+(p/(2*x))**(x**p)
+p**(x**x + x*x)
+x**(p*(x + x**x))
+p**(x + x**p/x)
+p**(p + x) + x*x
+0**(p**p*p**x)
+(x/p)**((p/x)**p)
+(p*x**p)**(x**x)
+p**(x + x*x)/x
+p**(p/(x*x**x))
+p**((p/p**x)**p)
+x/(x/p)**(p**x)
+(p/x)**(p/(p + x))
+p/x + p**(x*x)
+p**(x/p**x)/x
+x*(p + p**(p/x))
+((x*x)/p)**(x**x)
+p*(x**(1/x) + 1/x)
+p + p**(x*x**x)
+x + 1/(x**x + 1/x)
+p + x**(p + x**x)
+x**(3/(2*x))
+x*x**(p*(x*x))
+1/(p + (p + 1/x)/x)
+p + p**((p/x)**x)
+p + 1/(p/x + 1/x)
+(x + x**(x*x))/x
+(p + x)**(p**x + x)
+(x*(p + x*x))**p
+0**(p*x)/p
+p**(p*x**p)*x
+(x**p + x**x)/x
+(p + (p/x)**x)**p
+(1/(2*x))**p + 1/x
+p + x**(p*x + p)
+p + (x/p)**(p*x)
+p/(p + x/x**x)
+p/x + x + 1/2
+((p + 1/x)/x)**(1/x)
+(p + x)**x/p**x
+p/(p + (p + x)**p)
+x**(x*x)/p**x
+p**((p/(p + x))**p)
+p/x**x + p/x
+(x**p/p)**(p + x)
+1 + x**p/(p**p*x)
+(x**x/(p*x))**p
+p**(p/(p*x)**x)
+x**(0**p)/p
+(p + x**(x**x))**x
+x**(p**x) + x**x
+(p**(1/x) + 1/x)**p
+p*x*(p + p**x)
+(p + p**x*x)/x
+p**(p*x)*x*p**(x*x)
+p**(p/(x + x**p))
+(p*x)**(x*x)/x
+p**(p**(x**(p**x)))
+x/p**(0**p)
+x + x*(x + x*x)
+p + p**(p**x) + x
+(p**2*x)**(x**x)
+p**(p + 1/(p + 1/x))
+x**(p*x**p + x)
+p**x + x**(x**x)
+p**(x*(p + x*x))
+x*x**(p**(x**p))
+p*p**((p + x)**p)
+p*(p + p/x + x)
+p + p**((p*x)**x)
+(x + (x/p)**p)**p
+p**(p*x**(p/x))
+(p*x**(p/x))**p
+1/(x/x**x + 1/x)
+p**(x**(x*x))/x
+4/(3*x)
+(x/(p + x**x))**p
+x**(p + (p + x)**p)
+(p/x + x)/x
+x**(p/x)*(x*x)
+(p/x)**(p*x + x)
+1/(x + x**(1/x)/x)
+0**(p*x**p)
+x + 1/(p + x**(1/x))
+p*x + p + x*x*x
+p*(p + p**(p*x))
+x**(p + x**(x*x))
+(x*(p + x))**(p + x)
+x**(x**(x/p**x))
+x**(p**(x + x**p))
+1/(x**(1/x) + x**x)
+x*x**x + x**p
+p + p/(x + x**p)
+(x**x/p**x)**x
+p + (p + x**x)**p
+p**x*x**(x**p)
+(p**x/x)**(x**p)
+(x*(p + x) + x)**x
+(p*x)**x/x**x
+(1 + x**x/x)**p
+p*x**(0**p)
+p**((p*x**p)**p)
+p + (x + x**p)**x
+p**(p + 1/x) + 1/x
+p + (oo*p)**p
+x**(x*(p*x)**p)
+x**(x + (x/p)**x)
+x**(p + p/(p + x))
+(p*p**(p/x))**p
+x**(p**(p/x**x))
+(x**p/(2*x))**p
+x**(p*re(p**p)/x**p)
+x**p*(p**x + x)
+1/(x + x**(x + 1/x))
+1/(x*(p + x) + 1/x)
+p**(x**p*(p + x))
+(p/x)**(1/(p + 1/x))
+(x + (p + x)**x)**p
+x + x**(p/x**x)
+x/(x**x/p)**x
+x*(x + x**p)**p
+(x*x)/x**p
+p**(p**x)*(x*x)
+x**(p/(2*x))
+x**(p + p**(x*x))
+x + (x + x**x)**p
+p**((x*x)/(p + x))
+0**(p**x*x**x)
+p*x*p**(x*x)
+(p + x**(p/x))**p
+p/(p + x*(p + x))
+x/(p**2*x)**x
+0**(x/p) + p
+x**(x**(p**x)/x)
+x**(p**(p**x) + x)
+(p*x**x)**(p*x)
+(1/(p + x) + 1/x)**x
+(2*p*x)**x
+0**(x/p) + x
+x**p*(p + x)/x
+(p + x)*(p + x**x)
+(p/x)**x/x**x
+(p**x + x**p)**p
+p**(x/p**x) + x
+x**(x*re(p**(p/x)))
+p**(p + x**(p/x))
+(p*(p/x)**p)**p
+(p**x/x)**(p**x)
+x*(p*x + x) + x
+1/(p + p**(1/x)/x)
+x**((p + p/x)**x)
+x**(p/x)/p**x
+p + x**(x**(p + x))
+p*(p*(p + x) + p)
+(oo*p)**(p + x)
+(x/p)**(1/(p + 1/x))
+p**(p*x + x*x)
+p + x**p/(p + x)
+x/(p/x + x**p)
+((p/x + x)/x)**p
+x/(x*x**x + x)
+p**((1/(p*x))**(1/x))
+0**(x**p/p)
+(p**x*x)**(x**p)
+(p + x**(p*x))**x
+x**(x**x*(p + x))
+x/(p**(x**p) + x)
+(x**x/(2*x))**x
+1/(x**(p**x) + 1/x)
+x**x + x**(p + x)
+x + (x + x**x)/x
+(x + 1/(x + 1/x))**p
+(x + x*x)**(p + x)
+x + 1/(x*(x + 1/x))
+p + p*x**(x*x)
+((x*x)/(p + x))**p
+x**(p/p**x + x)
+p**((x + x*x)**p)
+p**(p**x)*x**p
+(p**2)**p
+x**p*x**(x**x)
+(p*x)**p/x**x
+x**p + (p/x)**x
+(p*(p + x)**p)**x
+p/(p/x)**(p**x)
+(p**x + x)/(2*x)
+x*x**(p**x) + x
+(x*x)/p**(x**p)
+(p/(p + x))**(p + x)
+1/(x + (x + 1/x)**p)
+x/(p*x**x)**x
+x*(x/p)**(x*x)
+x/(p/x)**(x**p)
+x**(x**(p + p**x))
+((p*x + p)/x)**p
+1/(p**(p**x) + 1/x)
+p/(x*x**x) + x
+x**x*(p + x)**x
+1/(x + x**(1/(p + x)))
+x*(x + (p/x)**x)
+x + (p/x)**(x*x)
+p**p*x**p/(p**x*x**x)
+x*(p + x*x**p)
+p + x**(x*x)/x
+p/(x + x**(p**x))
+p/(p + x**(p*x))
+p**x + (p/x)**p
+x*x**(x**(x**p))
+p**(p*x)/p
+p**(p**(p*p**x))
+1/(2*x*(x + 1/x))
+((x*x)/p)**p/x
+0**(p**x)/p
+p**(x**p)*(p + x)
+1/x + 1/p
+p + p/(p/x)**x
+(p/x**(x**x))**x
+(x + 1/(p + 1/x))**p
+p*(p/x)**p/x
+p + x*(x + x**x)
+((x*x)/2)**x
+p**((p*x)**(x**p))
+x*x**p + x**x
+((p**x + x)/p)**x
+x/(p**x*x + x)
+x/sqrt(p)
+(p/x + x)/(p + x)
+x**(x/(p*x)**x)
+(x**x/p)**(x*x)
+p**(p/(p/x + x))
+(p**x/p)**(x*x)
+(p**x + x)**(p*x)
+x/(p*x + p + x)
+x*x**x + x*x
+x + (p/(p + x))**p
+(p + x**x)**(x**x)
+1/(p*p**(1/x) + p)
+0**p*x + p*x
+x/(p**x + x)**x
+x*x**(p**p)/x**p
+x**((p/x)**x/x)
+(oo*p)**(p/x)
+x*(p + (p + x)**p)
+x**(x**p*x**x)
+x**(p/x)/p**(1/x)
+p**(p**x)*x**x
+p/x + p**(x**x)
+p**x/x**p
+p**(x*x**p + x)
+x**(x*x**p*re(p**p))
+(p**(p + x) + x)**p
+p**((p/x**x)**p)
+p**x*p**(p/x)/p
+p*x**x + x**x
+(x/x**x)**(x*x)
+(p*(p + x)/x)**x
+(p*x**(1/x))**(1/x)
+x**(p**x*(p + x))
+(x/p)**((p + x)**p)
+x**(p**(p**(x**p)))
+x**p*(p + p/x)
+1/(p/x**x + 1/x)
+p/x**((p + x)**p)
+x**x*(p + p**x)
+p**(0**p)/x
+x/p**(x**(x**x))
+p + x**(x/p**x)
+(p*x)**(p + x**x)
+(p**(p*x)*x)**p
+1/2 + x*x
+p/(0**p + x)
+(x + 1/(x + 1/x))/x
+p**(x*(p + x)) + x
+p**x/(p + x) + x
+p*(p + p**(p**x))
+p + 1/3
+x/(p/x**x + x)
+x + x*p**(x*x)
+p + x**(x*x**p)
+x*(x*(p + x))**x
+x + x**((p + x)/x)
+p**(x**p/p**x)
+x + x/p**(p**x)
+p**x/x**(p*x)
+(p**x*x/p)**x
+p + x*(p + p**x)
+1/(x + 1/(p + x**p))
+(p + x**p)**(x**x)
+x + p**(x*x*x)
+x*(p**x + x)**x
+x**(p**((p/x)**p))
+p*x**(p**x)/x
+p**x*x*x**p
+x**(p/x + x**p)
+x + ((p + x)/x)**x
+x**x*(x + x*x)
+p + x**(p**(p/x))
+((p + p/x)/x)**p
+(p*x + p)**(p + x)
+p**(p*p**x + p)
+p**(x + x**x)*x
+x**(p**x)/p**x
+p**(x**p/x)/x
+p**((p + 1/x)**(1/x))
+(p/x**x + x)**p
+x/(x + x**(p*x))
+x*(x + x**(x*x))
+(p*p**(p**x))**x
+x**(x + x**(x**p))
+(p + x**p)**p/x
+2*p*x + p
+p*p**(p**(x*x))
+(p/x)**(x*x)/x
+x**(x*re(p**(p*x)))
+(x/(p + x))**(x*x)
+p**(0**p)/p**x
+p**(x*(p + x))/x
+(p + x)**(x**(p/x))
+(p/x + x)/x**x
+p**(p + x**x)/x
+(p + x)**p/p**x
+(1/(1 + 1/p))**x
+p/x + x + x**p/x
+p/(p*x + x)**x
+x**x/x**(x**p)
+p**(p*x**p) + x
+p + x/(x + x**x)
+(x*x*x)/x**x
+p + x**(p**x)/x
+x**((p + x**p)/x)
+x**x + 1/(x + 1/x)
+p**(x/p**x)*x
+(x + x**p)**p/x
+0**(x/p)/p
+(0**p/p)**x
+(p**x*x)**(x*x)
+1/(x**x/x + 1/x)
+p + (p*p**x)**p
+p**x*(p**x + x)
+x**((p + x)/p**x)
+p + x**(x + x**p)
+(x*(p + 1/x))**(1/x)
+p**(x**p) + x*x
+(x + x**x)**(p**x)
+p**(p + x)/x + x
+(p/x)**(x*(p + x))
+p*(x/p)**x + p
+x**((p*x**x)**x)
+(p/(x*x**x))**p
+p**(p**(p**x)) + x
+x**(x**(p/x**x))
+x + (p**x*x)**p
+p*p**(p**x)/x
+1/(1/2 + 1/x)
+(p**(x*x)/p)**x
+p/(p**(x**x) + x)
+p + 1/(p**x + 1/x)
+x/p**((p/x)**p)
+p**p*p**(p**p)
+p**(p + p/x**x)
+p/(p + p**x) + x
+x + x**x/p**x
+p**(p*re((p + x)**p))
+p**(x*(p/x)**x)
+x*x**(p**x*x)
+p/(p/x**x)**x
+x*(x + x/p**x)
+1/(x**(x**x) + 1/x)
+p**p*p**x*x**p*x**x
+p**(x*(p + x)**x)
+p*x + p**(x**p)
+p*p**x*x**p
+(p + x)/(x + x**p)
+x/(x + 1/(p + 1/x))
+p*p**(p**(x**x))
+((p + x)**x/p)**x
+p*p**(p/(p + x))
+p/(x*(p + x) + x)
+p + (p + x*x)**x
+p*p**x*x**(p*x)
+x/(p**x/x + x)
+(p + x**(1/x))**(1/x)
+p**(1/(p + 1/(2*x)))
+0**p*p**x
+x**(x**p/x**x)
+p**(x + x*x*x)
+1/(1 + 1/(2*x))
+(x*(p*x + x))**x
+p + p**(x**x/x)
+(p + x)*(x*x*x)
+p**(p + p**x + x)
+(p/x)**(x + x**x)
+(p + x)**(x**(x**p))
+(p**(p/x)/p)**p
+p*x*x**p + p*x
+p**(1/3)
+(p*x**(x**p))**p
+p*(p/x**x)**p
+p**(x**p)/(p + x)
+p**(x + x**x/x)
+(p/(p + x**p))**x
+(p*p**(x*x))**x
+p*(p + p/(p + x))
+(1/(2*p*x))**(1/x)
+p**(p**(x/(p + x)))
+x/x**(x**x/x)
+(x + x**p)/(p + x)
+p/(p + p**x)**x
+x/(p + p**(x**p))
+x**(p**x)*(x*x)
+p**p*p**x*x
+(p*x**x)**x/x
+p/p**x + p**x
+p**(x**(x**p)) + x
+p/(x*x**(p**x))
+p*x**(p**x*x)
+x/(p + p**p)
+p**(p**(p**(x**p)))
+p**(x*x**(p/x))
+(p**x/x + x)**x
+p + p**p*x
+p + (x*x)**p
+(x/p)**(p**(p*x))
+x**(1/x)/(x + 1/x)
+x*(p**x*x + x)
+1/(p*(p + x) + 1/x)
+p + x + x**(p**x)
+x*(x + 1/x)**(1/x)
+0**(p**p*x**p)
+p**(x**(x**p))/x
+(p + x)/(p**x*x)
+(x + 1/x)/x + 1/x
+p*p**(x*x**p)
+(p/x + x**p)**x
+((x + 1/x)/x)**(1/x)
+x*(p + x) + x*x
+(p/(p/x + x))**x
+(1/(2*x))**(x**(1/x))
+(p**x/x)**(p + x)
+(x*(x + 1/x))**(1/x)
+p + x*(p/x)**p
+x*(p**x/x)**x
+p**(p**(p**(p**x)))
+(p/x + x*x)**p
+1/(x + (x/p)**(1/x))
+(p + p**x)*(p + x)
+x/x**x + x**p
+(p/(p + p/x))**x
+x**x/x**(p**x)
+p + p**x + x**p
+p*p**(p**(p/x))
+(p*p**(x**x))**p
+x**(p**(p*x + p))
+p*x**(p/x) + x
+(p**x + x)**(x*x)
+x**((x**p/x)**p)
+p**(p/(x + x**x))
+p + x**p/p**x
+p**(2*p)*x**p
+p**(x**((x/p)**p))
+p**(p*p**p)
+p**((x + x**x)**x)
+x**(p**(p/x + x))
+x + x**(x**(x**x))
+(x + x*x)**x/x
+p + x**(p*(p + x))
+p*p**((p + x)**x)
+p**(x**(p + x**p))
+x**(x**(1/x)) + 1/x
+(p*p**x)**(x*x)
+(x*x**x)**p/x
+x + 1/(p/x + 1/x)
+x*(p + p**(p**x))
+p*x**x + x**p
+(p + (p + x)**p)**p
+p**(x + p**(x*x))
+p*(p + x)**(p + x)
+p**(x/p**(x**x))
+x**p/p**(p**p)
+x**x + 1/(p + 1/x)
+(x**p/x)**(p/x)
+1 + 1/(p**(1/x)*x)
+p/(p + x)**(x**p)
+p + 1/(x*x**(1/x))
+1/(p + 1/(p + p**x))
+p/x**(p**x*x)
+x/p**((p + x)**p)
+p*(p**(x**x) + x)
+p*p**(p*(p + x))
+x*x**(x**x/x)
+p**x + 1/2
+x + (x/x**x)**p
+p/x**(x**x/x)
+x**(p*(p + x)**x)
+p*(p*(p + x))**p
+p + p**(p/x) + x
+(1/3)**x
+(x**(1/x)/p)**(1/x)
+p**((p/x + x)**x)
+x**(0**p)*x**x
+(x/p)**(p**(x**p))
+p**(0**p/x)
+p*(x*(p + x))**x
+p**(x**((p + x)**x))
+(x/p)**(p*x**x)
+p/(2*x**p)
+x + x**p + x*x
+0**p*x**x
+(p + x)**(p/p**x)
+x**(x/(p*x + x))
+x*x**(1/(x + 1/x))
+p**(x*re((p + x)**p))
+x*(p + p**(x**p))
+x*(p*x)**p/p**p
+p**(x**(x**(x**x)))
+x*(p + (p*x)**x)
+x*(x*x**p)**p
+p**(p + x**p) + x
+p**(1/(p*x + 1/x))
+p**(x**p*(x*x))
+1 + x**p*x**x/x
+p/x**(p**x) + x
+p + p/x**(p**x)
+(x**p/(p*x))**p
+(p + x)/(p + p**x)
+p*x/2
+x**((p + x)/x)/x
+p**(1/x)*(x + 1/x)
+p*x + 1/(p + 1/x)
+p**((1/2)**x)
+x*x**(p*x)/x**x
+x**((x/p)**(x*x))
+(p**p)**x
+(p**(1/x) + x)**(1/x)
+x**((p + p/x)/x)
+p**x*(p + p**x)
+x*(p + x*x)**p
+p/(1/(p + x) + 1/x)
+p**(p*x*(p + x))
+(p/x**(x**p))**p
+p + p**(p + x)/x
+1/(p**(p**(1/x)) + x)
+(p*x/2)**p
+1/(x*(x + x**(1/x)))
+p/(p**x + x)**x
+p/x**(p**2)
+(p**(x**p)/p)**p
+(p*p**(p + x))**p
+(p*(p*x + x))**x
+x + (p + x)**(p*x)
+p**x + 1/(x + 1/x)
+(p**x*(x*x))**p
+x + (p**x + x)**x
+p*(p + x/x**x)
+(x/p**(x**p))**x
+p + (p + x**x)/x
+(x/p**x)**(x*x)
+x + (p + x)**(x**p)
+x**((p/x)**(p + x))
+p + (p*(p + x))**x
+x*(1/(p*x))**(1/x)
+p + (x + x**p)**p
+x**(x + x*x)/x
+p/(p/x)**(x**p)
+(x + x**p)**(x**p)
+oo**(p + 1/x)
+(x**(x/(p + x)))**x
+x*p**(p + x*x)
+(p*x + x)/x**x
+x**((x + x**p)**p)
+p/(p**x/x + x)
+p*(p**x + x)**x
+(p**x)**p
+p**(x**p/(p + x))
+p*(p*p**x + p)
+p*(p**x*x)**p
+x**(x + x**x/x)
+x/(p/x**x)**x
+x/x**(p**x*x)
+x**((p*p**x)**p)
+p + p/(p + x**p)
+x*(x + (p*x)**p)
+(p**(1/x)/x)**(1/x)
+(x*(p + x*x))**x
+p**(p/(p**x*x))
+(x + x**(x**x))**x
+(p**(p*x) + x)**x
+(p + p**(x**p))/x
+p**(x/(x + x**x))
+x*(x**x/x)**p
+(x*(p + x**x))**x
+(p + x)*(p*x + p)
+x**x + (x/p)**p
+p**(x*x)/(p + x)
+p**(p**(p/x)) + x
+p**(p/x + x**p)
+x + x**(1/(x + 1/x))
+(x/(p + x))**(p/x)
+(p*p**x/x)**p
+p/x**(x**(x**x))
+1/(x + x**(p + 1/x))
+p + x**(p + p/x)
+x + x**((p*x)**x)
+x/x**(x/(p + x))
+x/(p/x)**(p**x)
+x/(0**p + p)
+(p**x + x*x)/x
+p*p**(x**x) + p
+1/((p/x)**p + 1/x)
+p*(p**(p*x) + x)
+(x*x)/p**p
+p/(p**(p + x) + x)
+x**x*x**(p + x)
+p + (p + x**p)**p
+(p**(x**p)/x)**x
+x*(p + p/x + x)
+x**(1/(p + p**(1/x)))
+1/x + x/p**(1/x)
+p**(p**(1/x)) + 1/x
+p + 1/(p + 1/(p + x))
+(p + x*x)/x**x
+p**(x**(x**p/x))
+p + x**x*(x*x)
+x/(p + x/(p + x))
+0**(p/x**x)
+p*(p/x + p**x)
+p**(1/x) + 1/(p + x)
+x/(p**x*x**x)
+((x + x**x)/x)**x
+x*(x**x + x*x)
+(p/x)**p/x**x
+p + p/(p*x + x)
+(p*x)**(p + x*x)
+(p*x + p + x)**p
+(p/x)**(x*x**p)
+x**((x/p)**(x**x))
+p**x + p**(x**x)
+p/x**(x**x) + x
+(p + p/p**x)**x
+p + (p + x)**(p + x)
+x*(p**x + x)**p
+((p + x)**x/x)**p
+x*(p + p**x)**p
+x**(x + x*x*x)
+p**p/x**(p**p)
+(p**x + x**x)**x
+x**((x/x**x)**p)
+(p + x)*x**(x*x)
+p*p**(p**2)
+1/(0**p + 1/p)
+(p/(p*x)**x)**p
+p*(p + (p + x)**p)
+x**(x + x**p)/x
+x**x + x**(x*x)
+(p + x)**(x**(x*x))
+(1/(p**x*x))**(1/x)
+1/(p**x*(p + 1/x))
+p + (x + x*x)**x
+x**(0**(p + x))
+p + p/p**x + x
+x**(p*x**p*re(p**p))
+x**(x*(p**x + x))
+x**(x + x**(p**x))
+x**(p + x**(p + x))
+p*(p/x + x*x)
+p*p**(p*x)*p**(x*x)
+p**((x + x**x)**p)
+x*x**((x/p)**p)
+x + x**(p**(p/x))
+p/(p*x**x)**x
+p + p**(p/x + x)
+(p*x)**(0**p)
+p**x*x + p**x
+p*x**((p/x)**p)
+x/(p + p/p**x)
+p**(p**x) + x*x
+p + (p/(p + x))**x
+((x*x)/x**x)**p
+(p/x)**(x**p)/x
+((x*x*x)/p)**p
+p/(2*x) + x
+x + p**(x**(x*x))
+x**(x/x**(x**p))
+x**(0**p)/p**(0**p)
+(x/p)**x*(x*x)
+p**(x/p**(x**p))
+0**(x/p)*p
+(p**x/x)**(x**x)
+(p/x)**x/(2*x)
+p**(p**(x**x/x))
+x**(p**x)/(2*x)
+1/(p + 1/(p/x + x))
+x**(x + (p + x)/x)
+1/(p + x**(1/(p + x)))
+p + x*x**(x**x)
+x*(p**x/x + x)
+p + x + x/p**x
+p**(x**x*(x*x))
+x**((p*x + x)/x)
+(p/x**(p*x))**p
+p*(p/x)**p + x
+x**(x**p)/p**(x**p)
+(x*(p/x)**x)**p
+1/(x + (1/(2*x))**p)
+p**((x*(p + x))**p)
+(p/x + x)**(x**x)
+(p + x)**p*(p + x)**x
+(p + x)**((p + x)**x)
+p/x**(p**(p**x))
+(p**x*x)**p/x
+(0**(x/p))**p
+((p + p**x)/x)**x
+x**p*(p + x**x)
+x + (1/2)**p
+x**(x**x/(2*x))
+x**x/p**(x**p)
+p*(p + x) + p**x
+(p + 1/2)**x
+x**(x + (p + x)**p)
+p + (1/(p*x))**(1/x)
+p + 1/(x**x + 1/x)
+(p**(1/(p + 1/x)))**x
+p**(p**(p*x**x))
+p**(x**(1/(x + 1/x)))
+x**(x/(p + p**x))
+x**(p**(x + x*x))
+0**p + x**p
+x**(p + p**(x**x))
+x**p/(x + x**x)
+(x*(p/x)**p)**p
+p**(x*x*x)/x
+0**(1/p) + 1/p
+p**x*x**x + x
+p*(p**x/x)**x
+x**((x/p)**p)/x
+p + x**(x**(p/x))
+p*(p + x**p)**p
+p/(p + x**p)**x
+x*x**(p**(p/x))
+x*(x + x**x) + x
+p**(p + p/p**x)
+p + p/p**(p**x)
+1/x + 1/(x*x**x)
+p*p**x + x*x
+p/x + (p/x)**x
+p/p**(p*x) + x
+p*p**(0**p)
+(x*x)/(p + p/x)
+(1/(x*(x + 1/x)))**x
+(p/x)**(p/x + x)
+x/(p + x) + 1/(p + x)
+(p/p**(x**x))**p
+x + (x**p/p)**x
+p*(p + p/x)**x
+(x/(x + x**p))**x
+1/(p**(1/x) + p**x)
+p**2/x + x
+(x*(x + x*x))**x
+p*x*(p + x**p)
+(x + p**(x*x))**x
+p/(p/x + x) + x
+(p*x + p**x)/x
+1/(p + x/x**(1/x))
+x**x/(x + x**p)
+(p + x**x)**p/x
+p*p**(p**x + x)
+x**(p + p**(p**x))
+1/(p*x**x + 1/x)
+x + x/x**(p**x)
+p**(p**x*x**x)
+p**(p/x**x + x)
+1/(p + p**(p + 1/x))
+p + (p/x + x)**x
+(x**p + x**x)**x
+(p**2*x)**(p + x)
+(x**(x/(p + x)))**p
+p**(p*re(p**(p*x)))
+p**x + p**(p*x)
+(x + x*x*x)**x
+x**(x*(p + x**x))
+(p*x**x)**(p/x)
+x + (p**x/p)**p
+p/(p + x)**x + x
+p/p**(1/x) + 1/x
+(p + x*x**x)**p
+x**(x**(p**x/x))
+p/(p/x + x**x)
+x*p**(x + x*x)
+(p/(p + x**x))**p
+(p + x)**(p + p**x)
+x**(p + x*x)/x
+p**((x**x/p)**p)
+0**(p**x*x)
+x**((x**x/x)**x)
+p*(p + x**p) + p
+p**(p/x)/sqrt(p)
+oo**(1/(p + x))
+p**((p/x)**x)*x
+p**(p*x**p*re(p**p))
+p*x**x + p**x
+p**(p**((p/x)**p))
+p + p/p**x + x/p**x
+p/p**((x/p)**p)
+x/(p + x) + x**x
+p + x*(p/x)**x
+p**(p + x**x) + x
+p**((x/x**x)**x)
+p*(x**p + x*x)
+p*x**(x**p/x)
+p/x + x + x**p
+p**(p**x/x + x)
+x + (p/x)**(x**x)
+x + (p*(p + x))**p
+p + (1/(2*x))**(1/x)
+(p + x)/(p*x + p)
+p*(p**(x**p) + x)
+(x/(p*x + x))**p
+p/x**(p**x/x)
+1/(x + 1/(p + x**x))
+x + x**x/(2*x)
+(p + p/x)/p**x
+(p + x)**(1/x) + 1/x
+x**x*x**(x**p)
+(p*(p**x + x))**p
+x**((x + x**p)**x)
+x**(0**p)/x**x
+p/(x*x**(p*x))
+p**(p**(x*x))/x
+x**x/p**(p**x)
+x**(x*(p + p/x))
+1/(x**p + x**(1/x))
+(p*x**x/x)**p
+1/(p*x**p + 1/x)
+p/p**(0**p)
+(p*x**(x**x))**x
+x + x**(p/x)/x
+(p/(x + x**x))**x
+p*(p**x + x) + p
+x*(p + x + x**x)
+((x/p)**(p*x))**p
+x + (p + x)*(x*x)
+x + x**((p + x)**p)
+(p + p/x + x)**x
+(p + x)**(x/x**x)
+x + (x + x*x)**x
+(x + x**x)/p**x
+p/(p/(p + x))**x
+p**(p*(p + x)/x)
+p*(p + x**(x**p))
+x**p + x**p/x
+1/(p*x**(1/x) + x)
+x*(p**x*x)**x
+p**(x**(p + x)) + x
+p**(1/(1 + 1/x))
+2*p**2*x
+x**(p + p**(p/x))
+(p + p**x)**(x**p)
+1/(p*(x + 1/x) + p)
+x**x + x**(x**p)
+p**(p/x)/x**(p/x)
+(p**(1/x)/p)**(1/x)
+(p*(p + x*x))**x
+p/x + 1/(p + 1/x)
+x*(x + (p/x)**p)
+(x/p)**(p*x**p)
+p + x/(p + x**x)
+p**(x**(x**x/x))
+p**(p**(p**(p*x)))
+x/(p + x + x**x)
+(p + x + x**p)**p
+(p*x**(x*x))**p
+p*p**(p**x/x)
+p/(p + x**(p/x))
+p**(x/(p + p**x))
+x**(x*x**x)/x
+p**(p**(p**x)*x)
+p**(p*x**p)/x
+x**x/x**(0**p)
+x + x**(p/x + x)
+x*(p + p**(x*x))
+(p + 1/(p + 1/x))**x
+(p + p/(p + x))/x
+(x**x + x*x)**x
+1/4
+p*(p + x) + x**x
+x*(p*p**x + p)
+p + x/(p**x + x)
+x*(p**x + x) + x
+(x*x*x)/p**x
+p/(x + x**p/x)
+(p*x**(p**x))**p
+p/p**(p**(p/x))
+x + x**(p**(x**p))
+p**(p + x*x)/x
+2*p**2
+p*(p + p**(p/x))
+x**(x/(p**x + x))
+p**(0**p)/p**p
+x**(((p + x)/x)**x)
+p*p**x*(p + x)
+p**(1/x)/x + 1/x
+(x*(x + x**p))**p
+(p/(p*x + p))**x
+p**(p*x**(x**p))
+x**(sqrt(x))
+((x*x)/p)**(p + x)
+x**(p**x + x*x)
+x*(p*x + x)**x
+x*(p + x*x*x)
+x/(x + 1/2)
+p**((p/x)**(p/x))
+p**x/(x/p)**x
+(p + 1/x)**x + 1/x
+p**(p**x*x + x)
+x + (p/x)**x/x
+p**(x/(p + x))/x
+1/(x + x**x) + 1/x
+(1/(p*x))**(x**(1/x))
+(p + x)/(p*x + x)
+1 + p**(x*x)/x
+(p/x)**(p*x**p)
+(p*x + p + x)**x
+(x*(p*x + x))**p
+x**(1/(x + 1/(2*x)))
+p + 1/(p + 1/(2*x))
+x/(p + x**(p/x))
+x*x + 1/(x + 1/x)
+p + p/p**(p*x)
+(p**(p**x)/p)**x
+x*(x + x**x)**x
+p**(x**((x/p)**x))
+p**((p + x)**p)*x
+x*(p + x**(p + x))
+x**x/(x + x**x)
+p**((p/(p + x))**x)
+x**(p + x/p**x)
+x + x**(p**(p**x))
+p**2*p**x
+(p*x**(p**x))**x
+x*(p + p/x)**p
+x**(x**x)/p**x
+1/(x + 1/(x*x**x))
+x + x**((p/x)**p)
+x + x**(p**x/x)
+p + p**(x*x**p)
+p/(p + x*x**x)
+(x + x**(p + x))**p
+p*x**p/x + x
+(x + 1/2)/x
+x + x**p*x**x
+(x**x/x)**p/x
+0**(p/x**p)
+(p/x + x*x)**x
+(p*x**p)**p/x
+p**(p**x/x) + x
+(1/2)**(p/x)
+1/(p**(1/(p + x)) + x)
+p**((p + x*x)/x)
+p/(p + x) + 1/(p + x)
+p/(p**x*x)**x
+(p/x + x**p)**p
+(x/(p + x))**p/x
+(x**(1/x) + 1/x)**x
+p**x*x/x**x
+p/x + p**x*x
+x**((x/(p + x))**x)
+p*(p/x + x**p)
+(p + x)**(p/x)/x
+x**(p/x + x*x)
+x**((oo*p)**x)
+1/(1/x + x/p**x)
+1/(p + 1/(x*x**x))
+p**(p/x) + x**p
+p**(x/x**p)
+p**(1/x) + x + 1/x
+(p + x)/(p + x**x)
+p*(p/x)**(x*x)
+p**(x**(1/x)) + 1/x
+x/(p + x**x/x)
+p + x**(p + x)/x
+x**(p + p**x/x)
+(x/p**x)**(p/x)
+p**(x + 1/2)
+p + p/x + x**x
+p**p*x*x**p
+(x + 1/(2*x))**(1/x)
+p**(p/(p + x))*x
+p**(p/(p + x))/x
+p**((p/x + x)**p)
+p*p**((p/x)**p)
+p*(x + x**x) + x
+x + (p**x + x)**p
+(p + p**(x**x))**p
+p**x/x**x + x
+p**(x + (x/p)**x)
+p**(p**(p + x))/x
+x**(x**(p + p/x))
+p**(x**(x**x)/x)
+(p*x + p**p + x)**p
+x/(p + p**(p + x))
+p + x**(p/x**x)
+1/(x + x**x + 1/x)
+(p**p)**p
+p + (p/x)**(x**p)
+x**(x/p**(p*x))
+p*x**(p*x)/p**x
+p/(p + x**x)**x
+((x*x*x)/p)**x
+x/(1/(2*x))**(1/x)
+x + (x/p)**(x**x)
+x**((p**x/x)**x)
+p**(p/x)*x**x
+(p + (p + x)**x)**p
+p*(x + (x/p)**x)
+0**(p**x) + x
+x*(x + x**(p**x))
+x**(p**x)/(p + x)
+p/x + x**(p*x)
+p**((x/x**x)**p)
+p + p**(p*(p + x))
+p + (x + x*x)**p
+(x**p + x**x)**p
+p*x**x*(p + x)
+x**(p**((p + x)**p))
+(x*x)/(p + x**p)
+x*(p + (p + x)/x)
+p*(1/(p*x))**(1/x)
+x**((x/p**x)**p)
+p/(x*x**(x**x))
+x**((x + x**x)**x)
+(p**2*x)**(p**x)
+((p + x)**p/x)**x
+1/(x*(p*x + 1/x))
+0**(p/p**p)
+x**(p**(p + x**p))
+(p + (p/x)**p)**x
+p + x**((p + x)**p)
+p**(p/x + x*x)
+(p*(p + x) + x)**x
+p/(p/p**x)**x
+2*p + x
+x*(p/x)**(x**p)
+p + p**(x**x) + x
+(x*(p + x) + x)**p
+(p + p**x*x**x)**p
+x/(x*(p + x) + x)
+p + x**(p*x + x)
+((p + x)*(x*x))**x
+(x*(p + x))**x/x
+x*x**(p**x + x)
+x**(x/(x/p)**x)
+x**x*(p + x**p)
+p + (x*x**p)**x
+x*x**p/(p + x)
+x*(x + x**(p + x))
+x*(x*(p + x))**p
+p*(p*x + p + x)
+p*(p + x**(p**x))
+p**2/x + p
+((p + x)/x)**x/x
+p**(1/x) + x**(1/x)
+(p/x)**(x*x**x)
+p*x**(p**(x**x))
+x**((p + x*x)/x)
+p**(p + x**p/x)
+p*(p + 1/x)**(1/x)
+p**(x*x**p/p**p)
+p + x**x/(p + x)
+x**(x**(p**(p**x)))
+x**p*(x*x)/p**p
+(x**x/p)**(p**x)
+p**(p/x**(x**x))
+p**(x**(x**p)/x)
+x*(p + x**p)**x
+1/(p + x**(1/x)/x)
+(x*x**p)**(x**x)
+x**(x*re(0**p))
+p/(x*x**x + x)
+x + x**(x**(p/x))
+x**((x*x**p)**x)
+(p*(p + x))**(p/x)
+(x*(p + p/x))**p
+x*(1/(2*x))**(1/x)
+p*(x + x**x)**x
+p*(p + x) + x**p
+(1/(p*x))**(1/x)/x
+p**(p + p**(p/x))
+p + x + x**(p + x)
+x/p**(p**(x**p))
+(p + x)/p**(x**x)
+(p*x**p/x)**x
+1/(p + p**(1/x)*x)
+p**(p + p/x + x)
+p*(p/p**x)**p
+p*(p**2*x)**p
+(p/x**x)**(p + x)
+(p**x/x)**(x*x)
+p/(x + x**p)**x
+(p/(x + x**p))**p
+p + (p/(p + x))**p
+x**(x**(x/(p + x)))
+p**x/p**(x**x)
+x + x/p**(x**p)
+x**((p/(2*x))**x)
+p*(p*x + x)**x
+x*x**p/p**x
+(p**x/x)**x/x
+p**((p**x + x)**x)
+p + p**x + x*x
+p**(x*x**(p**x))
+x**(p*x + p*(x*x))
+sqrt(x)*sqrt(1/p)
+x**(((x*x)/p)**x)
+x*(x**p + x*x)
+x/(x + (p + x)**x)
+p + (p**x*x)**p
+x**(p*x)*x**(p*(x*x))
+p**(x**p/x) + x
+(x/(p + x))**(x**x)
+p*(p/x)**p + p
+0**(1/(p + 1/x))
+1/(x + x/x**(1/x))
+x**((x**p/x)**x)
+(p*(x + x*x))**x
+(p + x)/(p/x + x)
+p/x + x**(p + x)
+x**(x**(1/(p + 1/x)))
+p*x**(x**x/x)
+x**(p + x*(p + x))
+x*x**(p + p**x)
+1/(x*x**x + 1/x)
+x**(p**x/x**x)
+1 + x**x/x**p
+p + p/(p + x**x)
+(p*x + x)**(p**x)
+p*(x*(p + x) + x)
+x + (p/(2*x))**x
+(p + x**(x**p))**x
+p/(p*p**x)**x
+p*x**(1/(x + 1/x))
+(x/(p + x))**(p**x)
+p*(p + x*(p + x))
+x**(x**p/x)/x
+(x**(p/x)/x)**p
+(x + x*x)/(2*x)
+x/x**((p + x)**x)
+p*(p + x**x) + p
+p + (x**x/x)**x
+p*p**(p*x + x)
+(x*(p + x))**p/x
+p**(p + x**(p + x))
+p**x + x + x*x
+p**(p*(p + x)**p)
+p**(x*x**(x*x))
+x**(p**x/x)/x
+p**(p**x*x*re(p**p))
+(x/p)**(p**x/x)
+1/(p + x**x + 1/x)
+p*x**(x**p) + p
+3/2
+x + (p**2*x)**p
+p + p**x*(x*x)
+0**(p**p)*0**(p*x)
+(x + (p/x)**x)**x
+x**(x + x/x**x)
+1/(x*x**(p**(1/x)))
+p**(x**p)*x**(x**p)
+p**((x**p/p)**p)
+p**(x/(p + x))*x
+x/x**(x**(p + x))
+p + x**p*(x*x)
+(1/(2*x))**(p + 1/x)
+x**x + (p + x)**x
+x**(x**((x/p)**x))
+x*(x/x**x)**x
+(x/(p/x + x))**p
+p**(x*x**p)/x
+(p*x**x)**(x*x)
+(x/(x/p)**x)**p
+x**((p/(p + x))**x)
+(x + x**(p/x))**p
+(p*x**p)**(p**x)
+x**(p**(p + x**x))
+(p**x + x*x)**p
+(p + x)**p/(p + x)
+(x + 1/x)**(x**(1/x))
+x + 3/(2*x)
+p + x**(0**p)
+(p + p**x + x)**p
+1 + x**p/(x*x**x)
+p/x + p**x/(2*x)
+(p + 1/x)**(1/x)/x
+1/(p**(p/x) + 1/x)
+x**x*(p + x)/x
+x**p/(p**x + x)
+1/(x + (p + 1/x)**p)
+((p/x)**x/x)**p
+x/(p + p**x*x)
+(p/(p + p**x))**x
+x*x**(p*(p + x))
+x**((x + x**x)/x)
+p + p**(x/(p + x))
+(p + x)**(x*x**x)
+x + (p**x*x)**x
+p*(x + x**(p**x))
+p*(p/x)**(p + x)
+p + (p*x + p)/x
+x/(p**x + x**p)
+(p/(2*x))**p/x
+p**x + p**(p + x)
+x**(p/p**x)/x
+x**(p**(p**x + x))
+((p/x)**p/p)**p
+p + (p/(2*x))**p
+p*(x + x**p) + x
+p/x**(x**(p**x))
+x + (p*(p + x))**x
+x**((p/x**x)**p)
+p**(x*x)/(2*x)
+(p + p/x + x)**p
+x*x**p*x**(p/x)
+p**(p**(p + x)/x)
+(p/p**x + x)**p
+x + (x + x*x)**p
+p**(x*x) + x*x
+(p + p/x)**(p**x)
+p + p**(x**(p + x))
+p**((p/x)**(p + x))
+1/(p + (x + 1/x)**p)
+p**(p + x)/x**x
+(p + x)**(p**x/x)
+p**(p*x**(x**x))
+p*(p + 1/(x + 1/x))
+0**p + p/x
+p/(p**(x**p)*x)
+x**(p**(p + p**x))
+p**(p**(x**x)) + x
+(x**p/x)**(p**x)
+p**((x + x**p)/x)
+x**(p + 1/(x + 1/x))
+p*x**p/p**p + x
+1/(p + x + 1/(p + x))
+p*(p + x*x)**x
+(p/x**x)**(p/x)
+x**(0**p/x)
+((x*x)/(p + x))**x
+(x + x**(1/x))**(1/x)
+(p/p**(p**x))**x
+1/(x*(1/(2*x))**p)
+1/(x*(p/x)**(1/p))
+1/(p*(p/x)**(1/p))
+1/(x*(x + 1/x)**p)
+1/(p*(x + 1/x)**p)
+1/(p*(1/(2*x))**p)
+x/p**(x*(p + x))
+p/p**(x*(p + x))
+x + x/(p/x)**p
+(x*x)/(p/x)**p
+x**(x/(p/x)**p)
+x/p**((p + x)/x)
+p/(p/x)**p + x
+p*x/(p/x)**p
+x/(p*(p/x)**p)
+x**(p/(p/x)**p)
+p + x/(p/x)**p
+p/(x*(p/x)**p)
+p**(x/(p/x)**p)
+p/p**((p + x)/x)
+p + p/(p/x)**p
+p**(p/(p/x)**p)
+x/(p/x)**(x/p)
+x/(p/x)**(p/x)
+p**(1 + x/p)
+p**((p + x)/(2*x))
+p/(p/x)**(x/p)
+p/(p/x)**(p/x)
+x/(x + 1/x)**(1/p)
+p/(x + 1/x)**(1/p)
+x/(x/x**x)**p
+x/(x/x**p)**p
+x/(p/(2*x))**p
+x/(p/x**x)**p
+x/(p/x**p)**p
+p/(x/x**x)**p
+p/(x/x**p)**p
+p/(p/(2*x))**p
+p/(p/x**x)**p
+p/(p/x**p)**p
+x/(x**x/x)**p
+x/((p + x)/x)**p
+x/(x**p/x)**p
+x/(p**x/x)**p
+x/(p*p**x)**p
+x/(p**x/p)**p
+p/(x**x/x)**p
+p/((p + x)/x)**p
+p/(x**p/x)**p
+p/(p**x/x)**p
+0**(p**(p + x))
+x**x/(p/x)**p
+(p + x)/(p/x)**p
+x**p/(p/x)**p
+p**x/(p/x)**p
+(p**(p + x) + x)/x
+(p*p**(x/p))**x
+(p/p**(x/p))**x
+(p*p**(x/p))**p
+(p/p**(x/p))**p
+(x/(p/x)**p)**x
+(x/(p/x)**p)**p
+(p/(p/x)**p)**x
+(p/(p/x)**p)**p
+(p*p**x)**(x/p)
+(p**x/p)**(x/p)
+(p*p**(1/x))**(1/p)
+(p**(1/x)/p)**(1/p)
+(p**(x/p)/p)**x
+(p**(x/p)/p)**p
+(p*p**x)**p/p
+(p*p**x)**x/p
+(p**x/p)**x/p
+(p**x/p)**p/p

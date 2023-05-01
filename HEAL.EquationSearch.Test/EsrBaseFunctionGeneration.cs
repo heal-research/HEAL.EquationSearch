@@ -28,20 +28,34 @@ public class EsrBaseFunctionGeneration {
 
   private void EnumerateAll(Grammar grammar, int maxComplexity) {
     
-    var allFunctionsFile = $"generated_complexity_{maxComplexity}.txt";
+    var allFunctionsFile = $"function_sets/core_maths/generated_complexity_{maxComplexity}.txt";
     GenerateAllToFile(grammar, maxComplexity, allFunctionsFile);
     System.Console.WriteLine($"All functions generated in file {Path.GetFullPath(allFunctionsFile)}.\n\n");
 
-    var uniqueFunctionsFile = $"generated_complexity_{maxComplexity}_normalized.txt";
+    var uniqueFunctionsFile = $"function_sets/core_maths/generated_complexity_{maxComplexity}_normalized.txt";
     NormalizeFilesWithSymPy(allFunctionsFile, uniqueFunctionsFile);
     System.Console.WriteLine($"Unique functions written to {Path.GetFullPath(uniqueFunctionsFile)}.\n\n");
 
     var esrFunctions = ReadEsrFunctionSet(maxComplexity);
     var generatedFunctions = ReadGeneratedFunctions(uniqueFunctionsFile);
+
+    var total = esrFunctions.Union(generatedFunctions).ToList();
+    var intersect = esrFunctions.Intersect(generatedFunctions).ToList();
+    var notGenerated = esrFunctions.Except(generatedFunctions).ToList();
+    var notInEsr = generatedFunctions.Except(esrFunctions).ToList();
     
-    CompareFunctionSets(esrFunctions, generatedFunctions);
-    
-    System.Console.WriteLine($"{esrFunctions.Length} ESR functions\n{generatedFunctions.Length} generated functions\n");
+    System.Console.WriteLine($"{esrFunctions.Length} ESR functions\n" +
+                             $"{generatedFunctions.Length} generated functions\n" +
+                             $"\n" +
+                             $"{total.Count} distinct functions in total\n" +
+                             $"{intersect.Count} functions overlap\n" +
+                             $"{notGenerated.Count} ESR functions that are not generated\n" +
+                             $"{notInEsr.Count} generated function that are not in ESR\n");
+
+    System.Console.WriteLine($"intersecting:\n\n{string.Join("  ,  ", intersect)}\n\n");
+
+    System.Console.WriteLine($"not generated:\n\n{string.Join("  ,  ", notGenerated)}\n\n");
+    System.Console.WriteLine($"not in ESR:\n\n{string.Join("  ,  ", notInEsr)}");
   }
 
   private void GenerateAllToFile(Grammar grammar, int maxComplexity, string filename) {
@@ -85,29 +99,6 @@ public class EsrBaseFunctionGeneration {
     process.WaitForExit();
   }
 
-  private void CompareFunctionSets(string[] esrFunctions, string[] generatedFunctions) {
-    System.Console.WriteLine("   ESR Functions that are not generated:");
-    int notGeneratedCount = 0;
-    foreach (var esrFunc in esrFunctions) {
-      if (!generatedFunctions.Contains(esrFunc)) {
-        System.Console.WriteLine(esrFunc);
-        notGeneratedCount++;
-      }
-    }
-
-    int notInEsrCount = 0;
-    System.Console.WriteLine("\n   Generated Function that are not in the ESR function set.");
-    foreach (var generatedFunc in generatedFunctions) {
-      if (!esrFunctions.Contains(generatedFunc)) {
-        System.Console.WriteLine(generatedFunc);
-        notInEsrCount++;
-      }
-    }
-    
-    System.Console.WriteLine($"   {notGeneratedCount} ESR functions found that are not generated ");
-    System.Console.WriteLine($"   {notInEsrCount} generated functions that are not in ESR");
-  }
-
   private void SetCoefficientsToZero(Expression expr) {
     foreach (var sym in expr.OfType<Grammar.ParameterSymbol>()) {
       sym.Value = 0.0;
@@ -115,7 +106,7 @@ public class EsrBaseFunctionGeneration {
   }
 
   private string[] ReadEsrFunctionSet(int complexity) {
-    string file = $"function_sets/core_maths/unique_equations_{complexity}_normalized.txt";
+    string file = $"function_sets/core_maths/unique_equations_{complexity}_cum_normalized.txt";
     return File.ReadAllLines(file);
   }
 

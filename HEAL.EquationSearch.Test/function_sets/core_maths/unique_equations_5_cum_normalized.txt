@@ -1,0 +1,76 @@
+x
+p
+1/x
+p**x
+p*x
+p/x
+0
+x**p
+x*x
+x**x
+p + x
+1
+1/(p + x)
+1/(2*x)
+zoo
+p**(1/x)
+x + 1/x
+x**(1/x)
+p + 1/x
+p**(p + x)
+p**(p*x)
+x**(p*x)
+x + x**x
+p*x + p
+p**(x*x)
+x*x*x
+x/p**x
+p*(p + x)
+1/2
+p + x**p
+p**x/x
+p/p**x
+x**(x*x)
+(p*x)**p
+(p/x)**p
+x**p/x
+(p + x)**x
+p**(p**x)
+p/x**x
+p**(x**p)
+x + x*x
+p*x**p
+x**(p**x)
+x**(p/x)
+x**(x**p)
+p**x + x
+p/(p + x)
+(x/p)**p
+x**x/x
+x + x**p
+p + p**x
+p*x**x
+p**x*x
+x**(x**x)
+x*(p + x)
+0**p
+p*p**x
+p + p/x
+p*(x*x)
+1/(x + 1/x)
+p**(p/x)
+1/(p + 1/x)
+p + x*x
+(p/x)**x
+x**(p + x)
+p**(x**x)
+p + x**x
+(p + x)**p
+(p*x)**x
+(x/p)**x
+p*x + x
+x*x**x
+x/(p + x)
+p/x + x
+x/x**x
+x*x**p

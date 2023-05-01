@@ -4,28 +4,35 @@ from sympy.parsing.sympy_parser import parse_expr
 import sys
 
 param = symbols("p")
-zero = symbols("0")
 line_cnt = 1
 
+# we can replace a0, a1, ... a_4 with a generic parameter symbol. Given that we substiute other constants, expressions
+# like a0+a1 become p+p and further on 2*p 
+paramsIndexed = [symbols(f"a{i}") for i in range(5)]
+param_substitution = {pi: param for pi in paramsIndexed}
+
+# replace x**p with p subsequent multplications of x for "discretizing" the exponent. This is primarily to match
+# the notation of grammar enumeration.
 discrete_power_substitution = {
-    parse_expr(f"x**{i}", evaluate=False): parse_expr(str.join("*", ["x"] * i), evaluate=False) for i in range(2, 10)
+    parse_expr(f"x**{i}", evaluate=False): UnevaluatedExpr(parse_expr(str.join("*", ["x"] * i), evaluate=False)) for i in range(2, 10)
 }
 
+# x+x+...+x becomes [1|2|3...]*x. Since we also have p*x in the search space, so can skip such 
+# discrete values as factors.
 discrete_multiplication_substitutions = {
     parse_expr(str(i), evaluate=False): param for i in range(2, 10)
 }
 
-all_subsitutions = {
-    **discrete_power_substitution,
-    ** discrete_multiplication_substitutions,
-}
+
+
 
 def parse_line(line):
     f = parse_expr(line)
-    f = f.subs(all_subsitutions)
-    f = f.subs({param: zero}, evaluate=False)
+    f = f.subs(param_substitution, evaluate=False)
+    f = f.subs(discrete_power_substitution, evaluate=False)
+    f = f.subs(discrete_multiplication_substitutions, evaluate=False)
 
-    return f
+    return str(f)
 
 
 def normalize_file(src_filename, target_filename):
@@ -36,7 +43,6 @@ def normalize_file(src_filename, target_filename):
         for line in f_src:
             try:
                 parsed_line = parse_line(line)
-                parsed_line = str(parsed_line)
 
                 if "-" not in parsed_line and parsed_line not in functions:
                   f_out.write(str(parsed_line) + "\n")
