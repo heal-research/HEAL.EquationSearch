@@ -158,5 +158,15 @@ namespace HEAL.EquationSearch.Test {
       var parameters = "--dataset CC_Hubble.csv --target H --inputs x --train 0:31 --max-length 30 --noise-sigma H_err --seed 1234";
       HEAL.EquationSearch.Console.Program.Main(parameters.Split(" ", StringSplitOptions.RemoveEmptyEntries));
     }
+
+    // The data were generated from the function in https://en.wikipedia.org/wiki/Navarro%E2%80%93Frenk%E2%80%93White_profile
+    [TestMethod]
+    public void Nfw() {
+      var parameters = "--dataset NFW.csv " +
+                       " --target y --inputs x " +
+                       " --train 0:999 --max-length 30" +
+                       " --noise-sigma yerr --seed 1234";
+      HEAL.EquationSearch.Console.Program.Main(parameters.Split(" ", StringSplitOptions.RemoveEmptyEntries));
+    }
   }
 }
