@@ -114,9 +114,7 @@ namespace HEAL.EquationSearch {
       }
 
       var mdl = MDL(expr, data);
-
-      // for debugging and unit tests
-      Console.Error.WriteLine($"len: {expr.Length} MDL: {mdl} logLik: {summary.FinalCost} {expr}");
+      
       return mdl;
     }
 
@@ -192,10 +190,21 @@ namespace HEAL.EquationSearch {
         else return 0.5 * Math.Log(diagFisherInfo[paramIdx]) - 0.5 * Math.Log(3) + Math.Log(Math.Abs(parameters[paramIdx].Value));
       }
 
+      var mdl = -logLike
+                + numNodes * Math.Log(numSymbols) + constants.Sum(ci => Math.Log(Math.Abs(ci.Value)))
+                + Enumerable.Range(0, numParam).Sum(i => paramCodeLength(i));
+      
+      // for debugging and unit tests
+      Console.Error.WriteLine($"len: {expr.Length}" +
+                              $", MDL: {mdl:E}" +
+                              $", neglogLik: {-logLike:E}" +
+                              $", function part: {numNodes * Math.Log(numSymbols):E}" +
+                              $", parameter part: {Enumerable.Range(0, numParam).Sum(i => paramCodeLength(i)):E}" +
+                              $"\n      {expr.ToInfixString()}");
+
+      
       // The grammar does not allow negative or zero constants
-      return -logLike
-        + numNodes * Math.Log(numSymbols) + constants.Sum(ci => Math.Log(Math.Abs(ci.Value)))
-        + Enumerable.Range(0, numParam).Sum(i => paramCodeLength(i));
+      return mdl;
     }
 
     private double GaussianLogLikelihood(double[] invNoiseVariance, double[] target, double[] result) {
