@@ -114,7 +114,7 @@ namespace HEAL.EquationSearch {
 
       // every variable is an alternative
       rules[Factor] = Variables.Select(varSy => new Symbol[] { varSy }).ToList();
-      rules[Factor].Add(new[] { PolyExprOne, One, Div });
+      rules[Factor].Add(new[] { PolyExpr, One, Div });
       rules[Factor].Add(new[] { PolyExprOne, Abs, Log });
       rules[Factor].Add(new[] { PolyExprOne, Abs, Sqrt });
       rules[Factor].Add(new[] { Parameter, PolyTerm, Times, Exp });

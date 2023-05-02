@@ -164,7 +164,7 @@ namespace HEAL.EquationSearch.Test {
     public void Nfw() {
       var parameters = "--dataset NFW.csv " +
                        " --target y --inputs x " +
-                       " --train 0:999 --max-length 30" +
+                       " --train 0:999 --max-length 40" +
                        " --noise-sigma yerr --seed 1234";
       HEAL.EquationSearch.Console.Program.Main(parameters.Split(" ", StringSplitOptions.RemoveEmptyEntries));
     }

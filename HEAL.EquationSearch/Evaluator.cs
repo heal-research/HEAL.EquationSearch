@@ -73,7 +73,7 @@ namespace HEAL.EquationSearch {
     // TODO: make iterations configurable
     // This method always optimizes parameters in expr but does not use caching to make sure all parameters of the evaluated expressions are set correctly.
     // Use this method to optimize the best solutions (found via MSE)
-    internal double OptimizeAndEvaluateMDL(Expression expr, Data data, int iterations = 10) {
+    internal double OptimizeAndEvaluateMDL(Expression expr, Data data, int iterations = 200) {
       Interlocked.Increment(ref EvaluatedExpressions);
 
       var terms = new List<(int start, int end)>();
