@@ -12,7 +12,7 @@ namespace HEAL.EquationSearch {
 
   public class Algorithm {
     public Expression? BestExpression { get; private set; }
-    public double? BestMSE { get; private set; }
+    public double? BestMDL { get; private set; }
 
     public string[]? VariableNames { get; private set; }
 
@@ -28,12 +28,13 @@ namespace HEAL.EquationSearch {
       this.VariableNames = (string[])varNames.Clone();
       var data = new Data(varNames, x, y, invNoiseVariance: noiseSigma.Select(si => 1.0 / (si * si)).ToArray());
 
-      var evaluator = new VarProEvaluator();
+      var evaluator = new AutoDiffEvaluator();
       var cts = CancellationTokenSource.CreateLinkedTokenSource(token);
       var control = GraphSearchControl.Start(new State(data, maxLength, grammar, evaluator))
         .WithCancellationToken(cts.Token)
         .WithImprovementCallback((ctrl, state, quality) => {
-          Console.WriteLine($"Found new best solution with {quality} after {ctrl.Elapsed} {ctrl.BestQualityState}");
+          var mse = CalculateMSE(state.Expression, data);
+          Console.WriteLine($"Found new best solution with {quality} rmse: {Math.Sqrt(mse):g5} after {ctrl.Elapsed} {ctrl.BestQualityState}");
           if (quality.Value < earlyStopQuality) cts.Cancel(); // early stopping
         });
 
@@ -46,12 +47,23 @@ namespace HEAL.EquationSearch {
         Console.WriteLine($"Quality: {control.BestQuality} nodes: {control.VisitedNodes} ({(control.VisitedNodes / control.Elapsed.TotalSeconds):F2} nodes/sec)\n" +
           $"Evaluations (including cached): {evaluator.EvaluatedExpressions}\n" +
           $"VarPro evals: {evaluator.OptimizedExpressions} ({(evaluator.OptimizedExpressions / control.Elapsed.TotalSeconds):F2} expr/sec)\n" +
-          $"Evaluator best cached value (MSE): {(evaluator.exprQualities.Values.Any()? evaluator.exprQualities.Values.Min().ToString("g4") : "no heuristic evaluations")}",
+          $"Evaluator best cached value (MSE): {(evaluator.exprQualities.Values.Any() ? evaluator.exprQualities.Values.Min().ToString("g4") : "no heuristic evaluations")}",
           $"runtime: {control.Elapsed}");
 
         BestExpression = control.BestQualityState.Expression;
-        BestMSE = control.BestQuality.Value.Value;
+        BestMDL = control.BestQuality.Value.Value;
       }
+    }
+
+    private double CalculateMSE(Expression expression, Data data) {
+      var evaluator = new AutoDiffEvaluator();
+      var yPred = evaluator.Evaluate(expression, data);
+      var ssr = 0.0;
+      for (int i = 0; i < yPred.Length; i++) {
+        var res = yPred[i] - data.Target[i];
+        ssr += res * res;
+      }
+      return ssr / yPred.Length;
     }
 
     public double[] Predict(double[,] x) {

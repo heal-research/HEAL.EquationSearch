@@ -149,13 +149,13 @@ namespace HEAL.EquationSearch.Test {
       // Run for Cosmic Chronometer dataset from Exhaustive Symbolic Regression
       // https://github.com/DeaglanBartlett/ESR/blob/main/esr/data/CC_Hubble.dat
       // https://arxiv.org/pdf/2211.11461.pdf
-      var parameters = "--dataset CC_Hubble.csv --target H --inputs z --train 0:31 --max-length 30 --noise-sigma H_err --seed 1234";
+      var parameters = "--dataset CC_Hubble.csv --target H --inputs z --train 0:31 --max-length 20 --noise-sigma H_err --seed 1234";
       HEAL.EquationSearch.Console.Program.Main(parameters.Split(" ", StringSplitOptions.RemoveEmptyEntries));
     }
     [TestMethod]
     public void CosmicChronometerX() {
       // as above but use x = z+1 and search for H(x)
-      var parameters = "--dataset CC_Hubble.csv --target H --inputs x --train 0:31 --max-length 30 --noise-sigma H_err --seed 1234";
+      var parameters = "--dataset CC_Hubble.csv --target H --inputs x --train 0:31 --max-length 20 --noise-sigma H_err --seed 1234";
       HEAL.EquationSearch.Console.Program.Main(parameters.Split(" ", StringSplitOptions.RemoveEmptyEntries));
     }
   }
