@@ -66,7 +66,7 @@ namespace HEAL.EquationSearch.Console {
       Buffer.BlockCopy(shufX, 0, shufY, 0, shufY.Length * sizeof(double));
     }
 
-    private static void PrepareData(RunOptions options, ref string[] inputs, out double[,] x, out double[] y, out double[] noiseSigma, 
+    public static void PrepareData(RunOptions options, ref string[] inputs, out double[,] x, out double[] y, out double[] noiseSigma, 
       out int trainStart, out int trainEnd, out int testStart, out int testEnd, 
       out double[,] trainX, out double[] trainY, out double[] trainNoiseSigma) {
       if (double.TryParse(options.NoiseSigma, out var noiseSigmaVal)) {
@@ -166,7 +166,7 @@ namespace HEAL.EquationSearch.Console {
 
       y = new double[lines.Count - 1];
       s = new double[lines.Count - 1];
-      x = new double[y.Length, inputs.Length];
+      x = new double[y.Length, inputs.Length]; // x contains only input variables
       for (int i = 0; i < lines.Count - 1; i++) {
         var toks = lines[i + 1].Split(',');
         for (int j = 0; j < inputs.Length; j++) {
@@ -178,7 +178,7 @@ namespace HEAL.EquationSearch.Console {
     }
 
     // TODO: options for grammar rules, options for search parameters (type, beam-width, ...)
-    private class RunOptions {
+    public class RunOptions {
       [Option('d', "dataset", Required = true, HelpText = "Filename with dataset in csv format.")]
       public string Dataset { get; set; }
 

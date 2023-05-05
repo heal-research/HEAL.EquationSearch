@@ -1,8 +1,4 @@
-﻿using System.ComponentModel.Design;
-using System.Linq.Expressions;
-using HEAL.Expressions;
-using HEAL.NonlinearRegression;
-using HEAL.NonlinearRegression.Likelihoods;
+﻿using HEAL.NonlinearRegression;
 
 namespace HEAL.EquationSearch {
   public class AutoDiffEvaluator : IEvaluator {
@@ -19,6 +15,11 @@ namespace HEAL.EquationSearch {
     // semantic hashes for expressions with nonterminal symbols (this is necessary to distinguish terminal states from nonterminal states),
     // while the cache in Evaluator only sees expressions where nonterminal symbols have been replaced by terminal symbols.
     public NonBlocking.ConcurrentDictionary<ulong, double> exprQualities = new();
+    private readonly LikelihoodBase likelihood;
+
+    public AutoDiffEvaluator(LikelihoodBase likelihood) {
+      this.likelihood = likelihood;
+    }
 
     // TODO: make iterations configurable
     // This method uses caching for efficiency.
@@ -33,11 +34,12 @@ namespace HEAL.EquationSearch {
       }
 
       var model = HEALExpressionBridge.ConvertToExpressionTree(expr, data.VarNames, out var parameterValues);
+      var modelLikelihood = this.likelihood.Clone();
+      modelLikelihood.ModelExpr = model;
 
-      var likelihood = new SimpleGaussianLikelihood(data.X, data.Target, model, noiseSigma: 1.0);
 
       var nlr = new NonlinearRegression.NonlinearRegression();
-      nlr.Fit(parameterValues, likelihood, maxIterations: iterations);
+      nlr.Fit(parameterValues, modelLikelihood, maxIterations: iterations);
       // successfull?
       if (nlr.ParamEst != null) {
         HEALExpressionBridge.UpdateParameters(expr, nlr.ParamEst);
@@ -57,16 +59,17 @@ namespace HEAL.EquationSearch {
       Interlocked.Increment(ref evaluatedExpressions);
 
       var model = HEALExpressionBridge.ConvertToExpressionTree(expr, data.VarNames, out var parameterValues);
-      var likelihood = new GaussianLikelihood(data.X, data.Target, model, data.InvNoiseSigma);
+      var modelLikelihood = this.likelihood.Clone();
+      modelLikelihood.ModelExpr = model;
 
       var nlr = new NonlinearRegression.NonlinearRegression();
-      nlr.Fit(parameterValues, likelihood, maxIterations: 0);
-      
+      nlr.Fit(parameterValues, modelLikelihood, maxIterations: 0);
+
       // successful
       if (nlr.ParamEst != null) {
         HEALExpressionBridge.UpdateParameters(expr, nlr.ParamEst);
         var mdl = ModelSelection.MDL(nlr.Likelihood.ModelExpr, nlr.ParamEst, -nlr.NegLogLikelihood, nlr.LaplaceApproximation.diagH);
-        Console.WriteLine($"{-nlr.NegLogLikelihood} {nlr.NegLogLikelihood - nlr.Likelihood.BestNegLogLikelihood} {mdl - nlr.Likelihood.BestNegLogLikelihood} {nlr.Likelihood.ModelExpr} {expr}");
+        Console.WriteLine($"{-nlr.NegLogLikelihood};{nlr.NegLogLikelihood - nlr.Likelihood.BestNegLogLikelihood(nlr.ParamEst)};{mdl - nlr.Likelihood.BestNegLogLikelihood(nlr.ParamEst)};{nlr.Likelihood.ModelExpr};{expr}");
         return mdl;
       } else {
         return double.MaxValue;
@@ -78,10 +81,12 @@ namespace HEAL.EquationSearch {
       Interlocked.Increment(ref evaluatedExpressions);
 
       var model = HEALExpressionBridge.ConvertToExpressionTree(expr, data.VarNames, out var parameterValues);
-      var likelihood = new GaussianLikelihood(data.X, data.Target, model, data.InvNoiseSigma);
+      var modelLikelihood = this.likelihood.Clone();
+      modelLikelihood.ModelExpr = model;
+
 
       var nlr = new NonlinearRegression.NonlinearRegression();
-      nlr.SetModel(parameterValues, likelihood);
+      nlr.SetModel(parameterValues, modelLikelihood);
       return nlr.Predict(data.X);
     }
 

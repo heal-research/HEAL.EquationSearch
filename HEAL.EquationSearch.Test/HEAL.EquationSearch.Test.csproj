@@ -21,6 +21,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="HEAL.Expressions">
+      <HintPath>..\HEAL.EquationSearch\HEAL.Expressions.dll</HintPath>
+    </Reference>
+    <Reference Include="HEAL.NonlinearRegression">
+      <HintPath>..\HEAL.EquationSearch\HEAL.NonlinearRegression.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="CC_Hubble.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

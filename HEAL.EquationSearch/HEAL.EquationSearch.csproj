@@ -28,13 +28,13 @@
 
   <ItemGroup>
     <None Update="HEAL.Expressions.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="HEAL.Expressions.pdb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="HEAL.NonlinearRegression.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="HEAL.NonlinearRegression.pdb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

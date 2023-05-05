@@ -159,9 +159,8 @@ namespace HEAL.EquationSearch.Test {
       var parameters = "--dataset CC_Hubble.csv --target H --inputs x --train 0:31 --max-length 20 --noise-sigma H_err --seed 1234";
       HEAL.EquationSearch.Console.Program.Main(parameters.Split(" ", StringSplitOptions.RemoveEmptyEntries));
     }
-
     [TestMethod]
-    public void RAR() {
+    public void RARSimpleLikelihood() {
       // https://arxiv.org/abs/2301.04368
       // File RAR.dat recieved from Harry (Slack)
 
@@ -173,9 +172,33 @@ namespace HEAL.EquationSearch.Test {
       //                               $sigma_tot = sqrt($e_log_gobs**2 + (0.6725 * $e_log_gbar)**2);
       //                              ' \
       //                              > RAR_sigma.csv
-      var parameters = "--dataset RAR_sigma.csv --target log_gobs --inputs log_gbar --train 0:2695 --max-length 30 --noise-sigma sigma_tot --seed 1234";
-
+      var parameters = "--dataset RAR_sigma.csv --target log_gobs --inputs log_gbar --train 0:2695 --max-length 20 --noise-sigma sigma_tot --seed 1234";
       HEAL.EquationSearch.Console.Program.Main(parameters.Split(" ", StringSplitOptions.RemoveEmptyEntries));
+    }
+
+    [TestMethod]
+    public void RAR() {
+      // https://arxiv.org/abs/2301.04368
+      // File RAR.dat recieved from Harry (Slack)
+
+      var options = new HEAL.EquationSearch.Console.Program.RunOptions();
+      options.Dataset = "RAR_sigma.csv";
+      options.Target = "log_gobs";
+      options.TrainingRange = "0:2695";
+      options.MaxLength = 20;
+      options.Seed = 1234;
+      string[] inputs = new string[] { "log_gbar" };
+      HEAL.EquationSearch.Console.Program.PrepareData(options, ref inputs, out var x, out var y, out var noiseSigma, out var trainStart, out var trainEnd, out var testStart, out var testEnd, out var trainX, out var trainY, out var trainNoiseSigma);
+
+      string[] errors = new string[] { "e_log_gobs", "e_log_gbar" };
+      HEAL.EquationSearch.Console.Program.PrepareData(options, ref errors, out var errorX, out var _, out var _, out var _, out var _, out var _, out var _, out var _, out var _, out var _);
+      var e_log_gobs = Enumerable.Range(0, errorX.GetLength(0)).Select(i => errorX[i, 0]).ToArray();
+      var e_log_gbar = Enumerable.Range(0, errorX.GetLength(0)).Select(i => errorX[i, 1]).ToArray();
+      var alg = new Algorithm();
+      var evaluator = new AutoDiffEvaluator(new RARLikelihood(x, y, modelExpr: null, e_log_gobs, e_log_gbar));
+      alg.Fit(trainX, trainY, trainNoiseSigma, inputs, CancellationToken.None, evaluator: evaluator, maxLength: options.MaxLength, randSeed: options.Seed);
+
+      System.Console.WriteLine($"Best expression: {alg.BestExpression.ToInfixString()}");
     }
 
   }

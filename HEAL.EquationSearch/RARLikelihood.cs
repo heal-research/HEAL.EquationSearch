@@ -4,18 +4,21 @@ using System;
 using System.Linq.Expressions;
 namespace HEAL.EquationSearch {
 
-  // errors are iid N(0, noise_sigma)
-  public class GaussianLikelihood : LikelihoodBase {
-    private readonly double[] invNoiseSigma;
+  // as reported in https://arxiv.org/pdf/2301.04368.pdf Eq. 3
+  public class RARLikelihood : LikelihoodBase {
+    private readonly double[] e_log_gobs;
+    private readonly double[] e_log_gbar;
 
-    // public override double Dispersion { get { return sErr; } set { sErr = value; } }
+    // public override double Dispersion { get { return sErr; } set { sErr = value; } }    
 
-    internal GaussianLikelihood(GaussianLikelihood original) : base(original) {
-      this.invNoiseSigma = original.invNoiseSigma;
+    internal RARLikelihood(RARLikelihood original) : base(original) {
+      this.e_log_gobs = original.e_log_gobs;
+      this.e_log_gbar = original.e_log_gbar;
     }
-    public GaussianLikelihood(double[,] x, double[] y, Expression<Expr.ParametricFunction> modelExpr, double[] invNoiseSigma)
+    public RARLikelihood(double[,] x, double[] y, Expression<Expr.ParametricFunction> modelExpr, double[] e_log_gobs, double[] e_log_gbar)
       : base(modelExpr, x, y, numLikelihoodParams: 1) {
-      this.invNoiseSigma = invNoiseSigma;
+      this.e_log_gobs = e_log_gobs;
+      this.e_log_gbar = e_log_gbar;
     }
 
     public override double[,] FisherInformation(double[] p) {
@@ -26,6 +29,8 @@ namespace HEAL.EquationSearch {
       var yHessJ = new double[m, n]; // buffer
 
       var yPred = Expr.EvaluateFuncJac(ModelExpr, p, x, ref yJac);
+      double[,]? yJacX = null;
+      Expr.EvaluateFuncJacX(ModelExpr, p, X, ref yJacX); // TODO: calculate once
 
       // evaluate hessian
       for (int j = 0; j < p.Length; j++) {
@@ -41,8 +46,9 @@ namespace HEAL.EquationSearch {
       for (int j = 0; j < n; j++) {
         for (int i = 0; i < m; i++) {
           var res = yPred[i] - y[i];
+          var stot = (e_log_gobs[i] * e_log_gobs[i] + yJacX[i, 0] * yJac[i, 0] * e_log_gbar[i] * e_log_gbar[i]);
           for (int k = 0; k < n; k++) {
-            hessian[j, k] += (yJac[i, j] * yJac[i, k] + res * yHess[j, i, k]) * invNoiseSigma[i] * invNoiseSigma[i];
+            hessian[j, k] += (yJac[i, j] * yJac[i, k] + res * yHess[j, i, k]) / stot;
           }
         }
       }
@@ -53,7 +59,14 @@ namespace HEAL.EquationSearch {
     // for the calculation of deviance
     public override double BestNegLogLikelihood(double[] p) {
       int m = y.Length;
-      return Enumerable.Range(0, m).Sum(i => 0.5 * Math.Log(2.0 * Math.PI / invNoiseSigma[i] / invNoiseSigma[i])); // residuals are zero
+      double[,]? jac = null;
+      Expr.EvaluateFuncJacX(ModelExpr, p, X, ref jac);
+      var nll = 0.0;
+      for (int i = 0; i < m; i++) {
+        var stot = (e_log_gobs[i] * e_log_gobs[i] + jac[i, 0] * jac[i, 0] * e_log_gbar[i] * e_log_gbar[i]);
+        nll += 0.5 * Math.Log(2.0 * Math.PI * stot);
+      }
+      return nll;
     }
 
     public override double NegLogLikelihood(double[] p) {
@@ -64,7 +77,9 @@ namespace HEAL.EquationSearch {
     public override void NegLogLikelihoodGradient(double[] p, out double nll, double[]? nll_grad) {
       var m = y.Length;
       var n = p.Length;
-      double[,]? yJac = null;
+      double[,]? yJacP = null;
+      double[,]? yJacX = null;
+      Expr.EvaluateFuncJacX(ModelExpr, p, X, ref yJacX); // TODO: calculate once
 
       nll = BestNegLogLikelihood(p);
 
@@ -72,24 +87,25 @@ namespace HEAL.EquationSearch {
       if (nll_grad == null) {
         yPred = Expr.EvaluateFunc(ModelExpr, p, x);
       } else {
-        yPred = Expr.EvaluateFuncJac(ModelExpr, p, x, ref yJac);
+        yPred = Expr.EvaluateFuncJac(ModelExpr, p, x, ref yJacP);
         Array.Clear(nll_grad, 0, n);
       }
 
       for (int i = 0; i < m; i++) {
+        var stot = (e_log_gobs[i] * e_log_gobs[i] + yJacX[i, 0] * yJacX[i, 0] * e_log_gbar[i] * e_log_gbar[i]);
         var res = yPred[i] - y[i];
-        nll += 0.5 * res * res * invNoiseSigma[i] * invNoiseSigma[i];
+        nll += 0.5 * res * res / stot;
 
         if (nll_grad != null) {
           for (int j = 0; j < n; j++) {
-            nll_grad[j] += res * yJac[i, j] * invNoiseSigma[i] * invNoiseSigma[i];
+            nll_grad[j] += res * yJacP[i, j] / stot;
           }
         }
       }
     }
 
     public override LikelihoodBase Clone() {
-      return new GaussianLikelihood(this);
+      return new RARLikelihood(this);
     }
   }
 }
