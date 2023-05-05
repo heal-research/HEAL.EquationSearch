@@ -152,11 +152,31 @@ namespace HEAL.EquationSearch.Test {
       var parameters = "--dataset CC_Hubble.csv --target H --inputs z --train 0:31 --max-length 20 --noise-sigma H_err --seed 1234";
       HEAL.EquationSearch.Console.Program.Main(parameters.Split(" ", StringSplitOptions.RemoveEmptyEntries));
     }
+
     [TestMethod]
     public void CosmicChronometerX() {
       // as above but use x = z+1 and search for H(x)
       var parameters = "--dataset CC_Hubble.csv --target H --inputs x --train 0:31 --max-length 20 --noise-sigma H_err --seed 1234";
       HEAL.EquationSearch.Console.Program.Main(parameters.Split(" ", StringSplitOptions.RemoveEmptyEntries));
     }
+
+    [TestMethod]
+    public void RAR() {
+      // https://arxiv.org/abs/2301.04368
+      // File RAR.dat recieved from Harry (Slack)
+
+      // RAR_sigma.csv is created via:
+      // mlr --csv --from RAR.csv put '$log_gbar = log10($gbar);
+      //                               $log_gobs = log10($gobs);
+      //                               $e_log_gbar = $e_gbar/($gbar*log(10));
+      //                               $e_log_gobs = $e_gobs/($gobs*log(10));
+      //                               $sigma_tot = sqrt($e_log_gobs**2 + (0.6725 * $e_log_gbar)**2);
+      //                              ' \
+      //                              > RAR_sigma.csv
+      var parameters = "--dataset RAR_sigma.csv --target log_gobs --inputs log_gbar --train 0:2695 --max-length 30 --noise-sigma sigma_tot --seed 1234";
+
+      HEAL.EquationSearch.Console.Program.Main(parameters.Split(" ", StringSplitOptions.RemoveEmptyEntries));
+    }
+
   }
 }

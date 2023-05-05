@@ -1,5 +1,7 @@
 ﻿using HEAL.NativeInterpreter;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace HEAL.EquationSearch {
@@ -43,7 +45,7 @@ namespace HEAL.EquationSearch {
         // TODO: we could reuse expr here and set the parameter correctly. 
         var ym = data.Target.Average();
         var sse = 0.0;
-        for(int i=0;i<data.Target.Length;i++) {
+        for (int i = 0; i < data.Target.Length; i++) {
           var res = data.Target[i] - ym;
           sse += data.InvNoiseVariance[i] * res * res;
         }
@@ -54,7 +56,7 @@ namespace HEAL.EquationSearch {
 
       mse = double.MaxValue;
 
-      // optimize parameters (objective: minimize sum_i (w_i^2 (y_i - y_pred_i)^2)  where we use w = 1/sErr²)
+      // optimize parameters (objective: minimize sum_i 1/2 (w_i^2 (y_i - y_pred_i)^2)  where we use w = 1/sErr)
       var solverOptions = new SolverOptions() { Iterations = iterations, Algorithm = 1 }; // Algorithm 1: Krogh Variable Projection
       var coeff = new double[coeffIndexes.Count];
       Debug.Assert(coeffIndexes.Count == 1 + termIdx.Count); // one coefficient for each term + intercept
@@ -62,7 +64,7 @@ namespace HEAL.EquationSearch {
       Interlocked.Increment(ref optimizedExpressions);
 
       // update parameters if optimization lead to an improvement
-      if (!double.IsNaN(summary.FinalCost) && summary.FinalCost < summary.InitialCost ) {
+      if (!double.IsNaN(summary.FinalCost) && summary.FinalCost < summary.InitialCost) {
         mse = summary.FinalCost * 2 / data.Rows;
       } else {
         mse = summary.InitialCost * 2 / data.Rows;
@@ -94,21 +96,20 @@ namespace HEAL.EquationSearch {
 
       var result = new double[data.Rows];
 
-      // optimize parameters
       var solverOptions = new SolverOptions() { Iterations = iterations, Algorithm = 1 };
       var coeff = new double[coeffIndexes.Count];
-      // The first coefficient is always the intercept
+      // optimize parameters (objective: minimize sum_i 1/2 (w_i^2 (y_i - y_pred_i)^2)  where we use w = 1/sErr)
       NativeWrapper.OptimizeVarPro(code, termIdx.ToArray(), data.AllRowIdx, data.Target, data.InvNoiseSigma, coeff, solverOptions, result, out var summary);
       Interlocked.Increment(ref optimizedExpressions);
 
       // update parameters if optimization lead to an improvement
       if (summary.Success == 1) {
         expr.UpdateCoefficients(coeffIndexes.ToArray(), coeff);
-        
+
         foreach (var (codePos, exprPos) in paramIdx) {
           var instr = code[codePos];
           if (instr.Optimize != 1) continue;
-        
+
           if (expr[exprPos] is Grammar.ParameterSymbol paramSy)
             paramSy.Value = instr.Coeff;
         }
@@ -117,7 +118,8 @@ namespace HEAL.EquationSearch {
       var mdl = MDL(expr, data);
 
       // for debugging and unit tests
-      Console.Error.WriteLine($"len: {expr.Length} MDL: {mdl} logLik: {summary.FinalCost} {expr}");
+      var constLikelihoodTerm = data.InvNoiseVariance.Sum(invVar => -0.5 * Math.Log(2 * Math.PI * 1 / invVar));
+      Console.Error.WriteLine($"len: {expr.Length} MDL: {mdl} logLik (res): {-summary.FinalCost} logLik (full): {-summary.FinalCost + constLikelihoodTerm} {expr}");
       return mdl;
     }
 
@@ -204,6 +206,7 @@ namespace HEAL.EquationSearch {
       var logLik = 0.0;
       for (int i = 0; i < target.Length; i++) {
         var res = target[i] - result[i];
+        logLik -= 0.5 * Math.Log(2 * Math.PI * 1 / invNoiseVariance[i]); // 'constant' term (the same for all models)
         logLik -= 0.5 * invNoiseVariance[i] * res * res;
       }
       return logLik;
