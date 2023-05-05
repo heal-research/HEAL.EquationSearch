@@ -54,7 +54,7 @@ namespace HEAL.EquationSearch {
     public override double BestNegLogLikelihood {
       get {
         int m = y.Length;
-        return Enumerable.Range(0, m).Sum(i => 0.5 * Math.Log(2.0 * Math.PI * invNoiseSigma[i] * invNoiseSigma[i])); // residuals are zero
+        return Enumerable.Range(0, m).Sum(i => 0.5 * Math.Log(2.0 * Math.PI  / invNoiseSigma[i] / invNoiseSigma[i])); // residuals are zero
       }
     }
 
