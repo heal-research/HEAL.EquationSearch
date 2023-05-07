@@ -1,5 +1,6 @@
 ﻿namespace HEAL.EquationSearch {
   internal class Heuristics {
+    // private static IEvaluator evaluator = new VarProEvaluator();
     public static float PartialMSE(State state) {
       var origExpr = state.Expression;
       Expression expr;

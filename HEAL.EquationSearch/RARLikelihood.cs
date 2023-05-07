@@ -24,17 +24,17 @@ namespace HEAL.EquationSearch {
     public override double[,] FisherInformation(double[] p) {
       var m = y.Length;
       var n = p.Length;
+      var yJacX = new double[m, xCol.Length];
       var yJac = new double[m, n];
       var yHess = new double[n, m, n]; // parameters x rows x parameters
       var yHessJ = new double[m, n]; // buffer
 
-      var yPred = Expr.EvaluateFuncJac(ModelExpr, p, x, ref yJac);
-      double[,]? yJacX = null;
-      Expr.EvaluateFuncJacX(ModelExpr, p, X, ref yJacX); // TODO: calculate once
+      var yPred = interpreter.EvaluateWithJac(p, yJacX, yJac);
 
       // evaluate hessian
       for (int j = 0; j < p.Length; j++) {
-        Expr.EvaluateFuncJac(ModelGradient[j], p, x, ref yHessJ);
+        // Expr.EvaluateFuncJac(ModelGradient[j], p, x, ref yHessJ);
+        gradInterpreter[j].EvaluateWithJac(p, null, yHessJ);
         Buffer.BlockCopy(yHessJ, 0, yHess, j * m * n * sizeof(double), m * n * sizeof(double));
         Array.Clear(yHessJ, 0, yHessJ.Length);
       }
@@ -46,7 +46,7 @@ namespace HEAL.EquationSearch {
       for (int j = 0; j < n; j++) {
         for (int i = 0; i < m; i++) {
           var res = yPred[i] - y[i];
-          var stot = (e_log_gobs[i] * e_log_gobs[i] + yJacX[i, 0] * yJac[i, 0] * e_log_gbar[i] * e_log_gbar[i]);
+          var stot = (e_log_gobs[i] * e_log_gobs[i] + yJacX[i, 0] * yJac[i, 0] * e_log_gbar[i] * e_log_gbar[i]);// yJacX[., 0] is gradient for e_log_gbar
           for (int k = 0; k < n; k++) {
             hessian[j, k] += (yJac[i, j] * yJac[i, k] + res * yHess[j, i, k]) / stot;
           }
@@ -59,11 +59,13 @@ namespace HEAL.EquationSearch {
     // for the calculation of deviance
     public override double BestNegLogLikelihood(double[] p) {
       int m = y.Length;
-      double[,]? jac = null;
-      Expr.EvaluateFuncJacX(ModelExpr, p, X, ref jac);
+      double[,]? yJacX = new double[m, xCol.Length];
+
+      var yPred = interpreter.EvaluateWithJac(p, yJacX, null);
+
       var nll = 0.0;
       for (int i = 0; i < m; i++) {
-        var stot = (e_log_gobs[i] * e_log_gobs[i] + jac[i, 0] * jac[i, 0] * e_log_gbar[i] * e_log_gbar[i]);
+        var stot = (e_log_gobs[i] * e_log_gobs[i] + yJacX[i, 0] * yJacX[i, 0] * e_log_gbar[i] * e_log_gbar[i]); // yJacX[., 0] is gradient for e_log_gbar
         nll += 0.5 * Math.Log(2.0 * Math.PI * stot);
       }
       return nll;
@@ -78,23 +80,22 @@ namespace HEAL.EquationSearch {
       var m = y.Length;
       var n = p.Length;
       double[,]? yJacP = null;
-      double[,]? yJacX = null;
-      Expr.EvaluateFuncJacX(ModelExpr, p, X, ref yJacX); // TODO: calculate once
+      double[,]? yJacX = new double[m, xCol.Length];
 
-      nll = BestNegLogLikelihood(p);
 
-      double[] yPred;
-      if (nll_grad == null) {
-        yPred = Expr.EvaluateFunc(ModelExpr, p, x);
-      } else {
-        yPred = Expr.EvaluateFuncJac(ModelExpr, p, x, ref yJacP);
+      if (nll_grad != null) {
+        yJacP = new double[m, n];
         Array.Clear(nll_grad, 0, n);
       }
 
+      var yPred = interpreter.EvaluateWithJac(p, yJacX, yJacP);
+
+      nll = 0.0;
+
       for (int i = 0; i < m; i++) {
-        var stot = (e_log_gobs[i] * e_log_gobs[i] + yJacX[i, 0] * yJacX[i, 0] * e_log_gbar[i] * e_log_gbar[i]);
+        var stot = (e_log_gobs[i] * e_log_gobs[i] + yJacX[i, 0] * yJacX[i, 0] * e_log_gbar[i] * e_log_gbar[i]); // yJacX[., 0] is gradient for e_log_gbar
         var res = yPred[i] - y[i];
-        nll += 0.5 * res * res / stot;
+        nll += 0.5 * Math.Log(2.0 * Math.PI * stot) + 0.5 * res * res / stot;
 
         if (nll_grad != null) {
           for (int j = 0; j < n; j++) {

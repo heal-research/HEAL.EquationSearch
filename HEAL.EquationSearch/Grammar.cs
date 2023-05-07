@@ -8,7 +8,7 @@ namespace HEAL.EquationSearch {
       get {
         return new[] { One, Parameter }
                      .Concat(Variables)
-                     .Concat(new[] { Plus, Times, Div, Abs, Log, Sqrt, Exp, Cos })
+                     .Concat(new[] { Plus, Times, Div, Abs, Log, Sqrt, Exp, Cos, Pow })
                      .Concat(Nonterminals);
       }
     }
@@ -38,6 +38,7 @@ namespace HEAL.EquationSearch {
     public Symbol Sqrt = new Symbol("sqrt", arity: 1);
     public Symbol Abs = new Symbol("abs", arity: 1);
     public Symbol Cos = new Symbol("cos", arity: 1);
+    public Symbol Pow = new Symbol("pow", arity: 2);
 
     public Symbol One = new ConstantSymbol(1.0);
     public Symbol Parameter = new ParameterSymbol(0.0);
@@ -96,6 +97,7 @@ namespace HEAL.EquationSearch {
       //         | sqrt '(' abs '(' PolyExprOne ')' ')'
       //         | exp '(' param * PolyTerm ')'
       //         | cos '(' PolyExpr ')'
+      //         | pow '(' abs '(' PolyExprOne ')' ',' param ')'
       // PolyExpr    -> param * PolyTerm + param | param * PolyTerm + PolyExpr  // with intercept param
       // PolyExprOne -> param * PolyTerm + 1 | param * PolyTerm + PolyExprOne   // with constant one intercept
       // PolyTerm -> PolyFact | PolyFact * PolyTerm
@@ -119,6 +121,7 @@ namespace HEAL.EquationSearch {
       rules[Factor].Add(new[] { PolyExprOne, Abs, Sqrt });
       rules[Factor].Add(new[] { Parameter, PolyTerm, Times, Exp });
       rules[Factor].Add(new[] { PolyExpr, Cos });
+      // rules[Factor].Add(new[] { PolyExprOne, Abs, Parameter, Pow });
 
 
       // parametric intercept

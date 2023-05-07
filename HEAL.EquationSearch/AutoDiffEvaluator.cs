@@ -36,8 +36,8 @@ namespace HEAL.EquationSearch {
       var model = HEALExpressionBridge.ConvertToExpressionTree(expr, data.VarNames, out var parameterValues);
       var modelLikelihood = this.likelihood.Clone();
       modelLikelihood.ModelExpr = model;
-
-
+      
+      
       var nlr = new NonlinearRegression.NonlinearRegression();
       nlr.Fit(parameterValues, modelLikelihood, maxIterations: iterations);
       // successfull?
@@ -47,6 +47,7 @@ namespace HEAL.EquationSearch {
       } else {
         mse = double.MaxValue;
       }
+      
 
       exprQualities.GetOrAdd(semHash, mse);
       return mse;
@@ -68,7 +69,7 @@ namespace HEAL.EquationSearch {
       // successful
       if (nlr.ParamEst != null) {
         HEALExpressionBridge.UpdateParameters(expr, nlr.ParamEst);
-        var mdl = ModelSelection.MDL(nlr.Likelihood.ModelExpr, nlr.ParamEst, -nlr.NegLogLikelihood, nlr.LaplaceApproximation.diagH);
+        var mdl = ModelSelection.MDL(nlr.Likelihood.ModelExpr, nlr.ParamEst, nlr.Likelihood);
         Console.WriteLine($"{-nlr.NegLogLikelihood};{nlr.NegLogLikelihood - nlr.Likelihood.BestNegLogLikelihood(nlr.ParamEst)};{mdl - nlr.Likelihood.BestNegLogLikelihood(nlr.ParamEst)};{nlr.Likelihood.ModelExpr};{expr}");
         return mdl;
       } else {
