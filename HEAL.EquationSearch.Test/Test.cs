@@ -273,8 +273,9 @@ namespace HEAL.EquationSearch.Test {
         var theta = new double[] { 0.84, -0.02, 0.38 };
         nlr.Fit(theta, likelihood); // fit parameters
         var mdl = ModelSelection.MDL(theta, likelihood);
-        Assert.AreEqual(-1250.6, mdl, 1e-1); // reference result: 1250.6, which omits abs() and has DL(func) Math.Log(5)*9 = 14.5
+        Assert.AreEqual(-1244.66, mdl, 1e-1); // reference result: 1250.6, which omits abs() and has DL(func) Math.Log(5)*9 = 14.5
                                              // we use DL(func) = Math.Log(6)*10 = 17.9 (+3.4 nats more)
+                                             // we also have slightly lower likelihood (1277) and 
       }
     }
   }
