@@ -13,6 +13,7 @@ namespace HEAL.EquationSearch {
     private readonly double[] e_log_gbar;
 
     private readonly static MethodInfo log = typeof(Math).GetMethod("Log", new Type[] { typeof(double) });
+    private readonly static MethodInfo abs = typeof(Math).GetMethod("Abs", new Type[] { typeof(double) });
     private readonly static MethodInfo pow = typeof(Math).GetMethod("Pow", new Type[] { typeof(double), typeof(double) });
 
 
@@ -48,7 +49,7 @@ namespace HEAL.EquationSearch {
 
           // wrap log(f(x))
           value = value.Update(LinqExpr.Divide(
-            LinqExpr.Call(log, value.Body),
+            LinqExpr.Call(log, LinqExpr.Call(abs, value.Body)),
             LinqExpr.Constant(Math.Log(10))), value.Parameters);
 
           var d_log_f_dgbar = Expr.Derive(value, value.Parameters[1], 0);
