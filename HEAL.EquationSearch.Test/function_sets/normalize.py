@@ -36,7 +36,7 @@ def parse_line(line):
     f = f.subs(discrete_power_substitution, evaluate=False)
     f = f.subs(discrete_multiplication_substitutions, evaluate=False)
 
-    f = regex_remove_plus_one.sub("", str(f))
+    f = regex_remove_plus_one.sub("", str(f))  # some plus-ones might remain
 
     return f
 

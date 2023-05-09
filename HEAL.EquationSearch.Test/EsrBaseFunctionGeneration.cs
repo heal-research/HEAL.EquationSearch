@@ -68,18 +68,21 @@ public class EsrBaseFunctionGeneration {
     while (openPhrases.Any()) {
       var peek = openPhrases.Dequeue();
       foreach (var child in grammar.CreateAllDerivations(peek)) {
+        // Since ESR uses a different logic for Abs symbols, we filter them out for now.
         if (GetComplexity(child) > maxComplexity) continue;
 
         if (child.IsSentence) {
-          var childHash = Semantics.GetHashValue(child);
+          var childNormalized = new Expression(grammar, child.SymbolString.Where(s => s != grammar.Abs).ToArray());
+
+          var childHash = Semantics.GetHashValue(childNormalized);
 
           if (!visitedSentences.Contains(childHash)) {
             visitedSentences.Add(childHash);
 
             // Format and output child            
-            SetCoefficientsToZero(child);
+            SetCoefficientsToZero(childNormalized);
 
-            var childString = child.ToInfixString();
+            var childString = childNormalized.ToInfixString();
 
             // prepare parameters
             childString = childString.Replace("0", "p");
@@ -115,6 +118,6 @@ public class EsrBaseFunctionGeneration {
   }
 
   private int GetComplexity(Expression expr) {
-    return expr.Count(symbol => symbol != expr.Grammar.One);
+    return expr.Count(symbol => symbol != expr.Grammar.One && symbol != expr.Grammar.Abs);
   }
 }

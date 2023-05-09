@@ -154,7 +154,7 @@ namespace HEAL.EquationSearch {
         new Symbol[] { Expr, Expr, Times },
         new Symbol[] { Expr, One, Div },
         new Symbol[] { Expr, Expr, Div },
-        new Symbol[] { Expr, Expr, Pow },
+        new Symbol[] { Expr, Expr, Abs, Pow },
         
         new Symbol[] { Factor }, // Hacky placeholder for variables
         new Symbol[] { Parameter }
