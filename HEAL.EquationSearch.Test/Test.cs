@@ -1,4 +1,4 @@
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using System.Reflection;
 using HEAL.Expressions;
 using HEAL.NonlinearRegression;
@@ -181,6 +181,7 @@ namespace HEAL.EquationSearch.Test {
       var likelihood = new CCLikelihood(x, y, modelExpr: null, noiseSigma.Select(s => 1.0 / s).ToArray());
       var evaluator = new AutoDiffEvaluator(likelihood);
 
+      // top two expressions from ESR Paper
       {
         likelihood.ModelExpr = (p, x) => p[0] * x[0] * x[0];
         var theta = new double[] { 3883.44 };
@@ -222,27 +223,59 @@ namespace HEAL.EquationSearch.Test {
 
     [TestMethod]
     public void RARExpr() {
-      // test a problematic expression
-      Expression<Expressions.Expr.ParametricFunction> expr =(p, x) => (p[0] + (Math.Sqrt(Math.Abs((1 + ((x[0] * x[0]) * p[1])))) * p[2]));
+      // top expressions from RAR paper
+      // Harry:
+      // e_loggbar = e_gbar / (gbar * np.log(10.))
+      // e_loggobs = e_gobs / (gobs * np.log(10.))
+      // sigma2_tot = e_loggobs**2 + (gobs1_diff*e_loggbar)**2
+      // negloglike = 0.5 * np.sum((np.log10(gobs) - np.log10(gobs1))**2 ./ sigma2_tot + np.log(2.* np.pi * sigma2_tot))
       var options = new HEAL.EquationSearch.Console.Program.RunOptions();
       options.Dataset = "RAR_sigma.csv";
-      options.Target = "log_gobs";
+      options.Target = "gobs";
       options.TrainingRange = "0:2695";
       options.MaxLength = 20;
       options.Seed = 1234;
-      string[] inputs = new string[] { "log_gbar" };
+      string[] inputs = new string[] { "gbar" };
       HEAL.EquationSearch.Console.Program.PrepareData(options, ref inputs, out var x, out var y, out var noiseSigma, out var trainStart, out var trainEnd, out var testStart, out var testEnd, out var trainX, out var trainY, out var trainNoiseSigma);
 
       string[] errors = new string[] { "e_log_gobs", "e_log_gbar" };
       HEAL.EquationSearch.Console.Program.PrepareData(options, ref errors, out var errorX, out var _, out var _, out var _, out var _, out var _, out var _, out var _, out var _, out var _);
       var e_log_gobs = Enumerable.Range(0, errorX.GetLength(0)).Select(i => errorX[i, 0]).ToArray();
       var e_log_gbar = Enumerable.Range(0, errorX.GetLength(0)).Select(i => errorX[i, 1]).ToArray();
-      
-      var likelihood = new RARLikelihood(x, y, modelExpr: expr, e_log_gobs, e_log_gbar);
+      var likelihood = new RARLikelihood(x, y, modelExpr: null, e_log_gobs, e_log_gbar);
 
-      var nlr = new NonlinearRegression.NonlinearRegression();
-      var theta = new double[] { 0.0, 1.0, 1.0 };
-      nlr.Fit(theta, likelihood);
+
+      {
+        // RAR IF: gbar/(1 − exp(−√(gbar/g0))) with g0 = 1.127
+        // re-parameterized RAR IF: x / (1 - exp(x/p0))
+        likelihood.ModelExpr = (p, x) => x[0] / (1.0 - Math.Exp(Math.Sqrt(x[0]) / p[0])); // using x / p[0]  instead of x * p[0] to reduce distinct symbols?
+        var theta = new double[] { -Math.Sqrt(1.127) };
+        Assert.AreEqual(-1212.77, likelihood.NegLogLikelihood(theta), 1e-1);
+        var mdl = ModelSelection.MDL(theta, likelihood);
+
+        Assert.AreEqual(-1191.3, mdl, 1);  // reference result -1192.7 but I count log(2) (=0.7) nats extra for the constant sign
+      }
+
+      {
+        // simple IF: gbar/2 + sqrt(gbar^2 / 4 + gbar g0)
+        // re-parameterized simple IF: p0 ( x + sqrt(x (x + p1))
+        likelihood.ModelExpr = (p, x) => (x[0] + Math.Sqrt(x[0] * (x[0] + p[0]))) / 2.0;
+        var theta = new double[] { 4 * 1.11 };
+        Assert.AreEqual(-1217.3, likelihood.NegLogLikelihood(theta), 1e-1);
+        var mdl = ModelSelection.MDL(theta, likelihood);
+
+        Assert.AreEqual(-1194.05, mdl, 1);   // reference result -1194.8 but I count log(2) (=0.7) nats extra for the constant sign
+      }
+
+      {
+        likelihood.ModelExpr = (p, x) => p[0] * (Math.Pow(Math.Abs(p[1] + x[0]), p[2]) + x[0]);
+        var nlr = new NonlinearRegression.NonlinearRegression();
+        var theta = new double[] { 0.84, -0.02, 0.38 };
+        nlr.Fit(theta, likelihood); // fit parameters
+        var mdl = ModelSelection.MDL(theta, likelihood);
+        Assert.AreEqual(-1250.6, mdl, 1e-1); // reference result: 1250.6, which omits abs() and has DL(func) Math.Log(5)*9 = 14.5
+                                             // we use DL(func) = Math.Log(6)*10 = 17.9 (+3.4 nats more)
+      }
     }
   }
 }
