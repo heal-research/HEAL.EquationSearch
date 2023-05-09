@@ -73,6 +73,8 @@ namespace HEAL.EquationSearch {
         HEALExpressionBridge.UpdateParameters(expr, nlr.ParamEst);
         var mdl = ModelSelection.MDL(nlr.ParamEst, nlr.Likelihood);
         if (double.IsNaN(mdl)) return double.MaxValue;
+        // TODO: MDL potentially simplifies the expression tree and re-fits the parameters.
+        // We must therefore update our postfix representation of the expression to report the correct (simplified) result.
         Console.WriteLine($"{-nlr.NegLogLikelihood};{nlr.NegLogLikelihood - nlr.Likelihood.BestNegLogLikelihood(nlr.ParamEst)};{mdl - nlr.Likelihood.BestNegLogLikelihood(nlr.ParamEst)};{nlr.OptReport.Iterations};{nlr.OptReport.NumJacEvals};{nlr.Likelihood.ModelExpr};{expr}");
         return mdl;
       } else {
