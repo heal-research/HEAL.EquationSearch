@@ -148,29 +148,6 @@ namespace HEAL.EquationSearch.Test {
     }
 
     [TestMethod]
-    public void CosmicChronometerZ() {
-      // Run for Cosmic Chronometer dataset from Exhaustive Symbolic Regression
-      // https://github.com/DeaglanBartlett/ESR/blob/main/esr/data/CC_Hubble.dat
-      // https://arxiv.org/pdf/2211.11461.pdf
-      var options = new HEAL.EquationSearch.Console.Program.RunOptions();
-      options.Dataset = "CC_Hubble.csv";
-      options.Target = "H";
-      options.TrainingRange = "0:31";
-      options.NoiseSigma = "H_err";
-      options.MaxLength = 30;
-      options.Seed = 1234;
-      string[] inputs = new[] { "z" };
-      HEAL.EquationSearch.Console.Program.PrepareData(options, ref inputs, out var x, out var y, out var noiseSigma, out var _, out var _, out var _, out var _, out var _, out var _, out var _);
-
-      var likelihood = new CCLikelihood(x, y, modelExpr: null, noiseSigma.Select(s => 1.0 / s).ToArray());
-      var evaluator = new AutoDiffEvaluator(likelihood);
-      var alg = new Algorithm();
-      var grammar = new Grammar(inputs);
-      grammar.UsePolynomialRules();
-      alg.Fit(x, y, noiseSigma, inputs, CancellationToken.None, evaluator: evaluator, grammar: grammar);
-    }
-
-    [TestMethod]
     public void CosmicChronometerX() {
       var options = new HEAL.EquationSearch.Console.Program.RunOptions();
       options.Dataset = "CC_Hubble.csv";
@@ -186,7 +163,6 @@ namespace HEAL.EquationSearch.Test {
       var evaluator = new AutoDiffEvaluator(likelihood);
       var alg = new Algorithm();
       var grammar = new Grammar(inputs);
-      grammar.UsePolynomialRules();
       alg.Fit(x, y, noiseSigma, inputs, CancellationToken.None, evaluator: evaluator, grammar: grammar);
     }
 
@@ -220,24 +196,6 @@ namespace HEAL.EquationSearch.Test {
     }
 
     [TestMethod]
-    public void RARSimpleLikelihood() {
-      // https://arxiv.org/abs/2301.04368
-      // File RAR.dat recieved from Harry (Slack)
-
-      // RAR_sigma.csv is created via:
-      // mlr --csv --from RAR.csv put '$log_gbar = log10($gbar);
-      //                               $log_gobs = log10($gobs);
-      //                               $e_log_gbar = $e_gbar/($gbar*log(10));
-      //                               $e_log_gobs = $e_gobs/($gobs*log(10));
-      //                               $sigma_tot = sqrt($e_log_gobs**2 + (0.6725 * $e_log_gbar)**2);
-      //                              ' \
-      //                              > RAR_sigma.csv
-      var parameters = "--dataset RAR_sigma.csv --target log_gobs --inputs log_gbar --train 0:2695 --max-length 20 --noise-sigma sigma_tot --seed 1234";
-      HEAL.EquationSearch.Console.Program.Main(parameters.Split(" ", StringSplitOptions.RemoveEmptyEntries));
-    }
-
-
-    [TestMethod]
     public void RAR() {
       // https://arxiv.org/abs/2301.04368
       // File RAR.dat recieved from Harry (Slack)
@@ -264,6 +222,7 @@ namespace HEAL.EquationSearch.Test {
 
     [TestMethod]
     public void RARExpr() {
+      // test a problematic expression
       Expression<Expressions.Expr.ParametricFunction> expr =(p, x) => (p[0] + (Math.Sqrt(Math.Abs((1 + ((x[0] * x[0]) * p[1])))) * p[2]));
       var options = new HEAL.EquationSearch.Console.Program.RunOptions();
       options.Dataset = "RAR_sigma.csv";
