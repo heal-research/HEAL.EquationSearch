@@ -37,7 +37,6 @@ namespace HEAL.EquationSearch {
     public CCLikelihood(double[,] x, double[] y, Expression<Expr.ParametricFunction> modelExpr, double[] invNoiseSigma)
       : base(modelExpr, x, y, numLikelihoodParams: 0) {
       this.invNoiseSigma = invNoiseSigma;
-      ModelExpr = modelExpr;
     }
 
     public override double[,] FisherInformation(double[] p) {
