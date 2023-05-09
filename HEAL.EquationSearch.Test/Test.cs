@@ -203,11 +203,11 @@ namespace HEAL.EquationSearch.Test {
 
       var options = new HEAL.EquationSearch.Console.Program.RunOptions();
       options.Dataset = "RAR_sigma.csv";
-      options.Target = "log_gobs";
+      options.Target = "gobs";
       options.TrainingRange = "0:2695";
       options.MaxLength = 20;
       options.Seed = 1234;
-      string[] inputs = new string[] { "log_gbar" };
+      string[] inputs = new string[] { "gbar" };
       HEAL.EquationSearch.Console.Program.PrepareData(options, ref inputs, out var x, out var y, out var noiseSigma, out var trainStart, out var trainEnd, out var testStart, out var testEnd, out var trainX, out var trainY, out var trainNoiseSigma);
 
       string[] errors = new string[] { "e_log_gobs", "e_log_gbar" };
