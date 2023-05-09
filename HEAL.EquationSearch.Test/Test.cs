@@ -1,3 +1,7 @@
+using System.Linq.Expressions;
+using System.Reflection;
+using HEAL.Expressions;
+using HEAL.NonlinearRegression;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 
 namespace HEAL.EquationSearch.Test {
@@ -127,7 +131,6 @@ namespace HEAL.EquationSearch.Test {
       var rand = new Random(1234);
       var x = Util.GenerateRandom(rand, 100, 2, -2, 2);
       var y = new double[100];
-      var w = new double[100];
       var noiseRange = 0.4;
       for (int i = 0; i < y.Length; i++) {
         y[i] = 2.0 * x[i, 0] + 3.0 * x[i, 1] + 4
@@ -149,16 +152,73 @@ namespace HEAL.EquationSearch.Test {
       // Run for Cosmic Chronometer dataset from Exhaustive Symbolic Regression
       // https://github.com/DeaglanBartlett/ESR/blob/main/esr/data/CC_Hubble.dat
       // https://arxiv.org/pdf/2211.11461.pdf
-      var parameters = "--dataset CC_Hubble.csv --target H --inputs z --train 0:31 --max-length 30 --noise-sigma H_err --seed 1234";
-      HEAL.EquationSearch.Console.Program.Main(parameters.Split(" ", StringSplitOptions.RemoveEmptyEntries));
+      var options = new HEAL.EquationSearch.Console.Program.RunOptions();
+      options.Dataset = "CC_Hubble.csv";
+      options.Target = "H";
+      options.TrainingRange = "0:31";
+      options.NoiseSigma = "H_err";
+      options.MaxLength = 30;
+      options.Seed = 1234;
+      string[] inputs = new[] { "z" };
+      HEAL.EquationSearch.Console.Program.PrepareData(options, ref inputs, out var x, out var y, out var noiseSigma, out var _, out var _, out var _, out var _, out var _, out var _, out var _);
+
+      var likelihood = new CCLikelihood(x, y, modelExpr: null, noiseSigma.Select(s => 1.0 / s).ToArray());
+      var evaluator = new AutoDiffEvaluator(likelihood);
+      var alg = new Algorithm();
+      var grammar = new Grammar(inputs);
+      grammar.UsePolynomialRules();
+      alg.Fit(x, y, noiseSigma, inputs, CancellationToken.None, evaluator: evaluator, grammar: grammar);
     }
 
     [TestMethod]
     public void CosmicChronometerX() {
-      // as above but use x = z+1 and search for H(x)
-      var parameters = "--dataset CC_Hubble.csv --target H --inputs x --train 0:31 --max-length 30 --noise-sigma H_err --seed 1234";
-      HEAL.EquationSearch.Console.Program.Main(parameters.Split(" ", StringSplitOptions.RemoveEmptyEntries));
+      var options = new HEAL.EquationSearch.Console.Program.RunOptions();
+      options.Dataset = "CC_Hubble.csv";
+      options.Target = "H";
+      options.TrainingRange = "0:31";
+      options.NoiseSigma = "H_err";
+      options.MaxLength = 30;
+      options.Seed = 1234;
+      string[] inputs = new [] { "x" }; // x = z+1
+      HEAL.EquationSearch.Console.Program.PrepareData(options, ref inputs, out var x, out var y, out var noiseSigma, out var _, out var _, out var _, out var _, out var _, out var _, out var _);
+
+      var likelihood = new CCLikelihood(x, y, modelExpr: null, noiseSigma.Select(s => 1.0 / s).ToArray());
+      var evaluator = new AutoDiffEvaluator(likelihood);
+      var alg = new Algorithm();
+      var grammar = new Grammar(inputs);
+      grammar.UsePolynomialRules();
+      alg.Fit(x, y, noiseSigma, inputs, CancellationToken.None, evaluator: evaluator, grammar: grammar);
     }
+
+    [TestMethod]
+    public void CosmicChronometerExpr() {
+      var options = new HEAL.EquationSearch.Console.Program.RunOptions();
+      options.Dataset = "CC_Hubble.csv";
+      options.Target = "H";
+      options.TrainingRange = "0:31";
+      options.NoiseSigma = "H_err";
+      options.MaxLength = 30;
+      options.Seed = 1234;
+      string[] inputs = new[] { "x" };
+      HEAL.EquationSearch.Console.Program.PrepareData(options, ref inputs, out var x, out var y, out var noiseSigma, out var _, out var _, out var _, out var _, out var _, out var _, out var _);
+
+      var likelihood = new CCLikelihood(x, y, modelExpr: null, noiseSigma.Select(s => 1.0 / s).ToArray());
+      var evaluator = new AutoDiffEvaluator(likelihood);
+
+      {
+        likelihood.ModelExpr = (p, x) => p[0] * x[0] * x[0];
+        var theta = new double[] { 3883.44 };
+        var mdl = ModelSelection.MDL(theta, likelihood);
+        Assert.AreEqual(16.39, mdl, 1e-2);
+      }
+      {        
+        likelihood.ModelExpr = (p, x) => Math.Pow(p[0], Math.Pow(x[0], p[1]));
+        var theta = new double[] { 3982.43, 0.22 };
+        var mdl = ModelSelection.MDL(theta, likelihood);
+        Assert.AreEqual(18.72, mdl, 1e-2); // does not match exactly
+      }
+    }
+
     [TestMethod]
     public void RARSimpleLikelihood() {
       // https://arxiv.org/abs/2301.04368
@@ -175,6 +235,7 @@ namespace HEAL.EquationSearch.Test {
       var parameters = "--dataset RAR_sigma.csv --target log_gobs --inputs log_gbar --train 0:2695 --max-length 20 --noise-sigma sigma_tot --seed 1234";
       HEAL.EquationSearch.Console.Program.Main(parameters.Split(" ", StringSplitOptions.RemoveEmptyEntries));
     }
+
 
     [TestMethod]
     public void RAR() {
@@ -201,5 +262,28 @@ namespace HEAL.EquationSearch.Test {
       System.Console.WriteLine($"Best expression: {alg.BestExpression.ToInfixString()}");
     }
 
+    [TestMethod]
+    public void RARExpr() {
+      Expression<Expressions.Expr.ParametricFunction> expr =(p, x) => (p[0] + (Math.Sqrt(Math.Abs((1 + ((x[0] * x[0]) * p[1])))) * p[2]));
+      var options = new HEAL.EquationSearch.Console.Program.RunOptions();
+      options.Dataset = "RAR_sigma.csv";
+      options.Target = "log_gobs";
+      options.TrainingRange = "0:2695";
+      options.MaxLength = 20;
+      options.Seed = 1234;
+      string[] inputs = new string[] { "log_gbar" };
+      HEAL.EquationSearch.Console.Program.PrepareData(options, ref inputs, out var x, out var y, out var noiseSigma, out var trainStart, out var trainEnd, out var testStart, out var testEnd, out var trainX, out var trainY, out var trainNoiseSigma);
+
+      string[] errors = new string[] { "e_log_gobs", "e_log_gbar" };
+      HEAL.EquationSearch.Console.Program.PrepareData(options, ref errors, out var errorX, out var _, out var _, out var _, out var _, out var _, out var _, out var _, out var _, out var _);
+      var e_log_gobs = Enumerable.Range(0, errorX.GetLength(0)).Select(i => errorX[i, 0]).ToArray();
+      var e_log_gbar = Enumerable.Range(0, errorX.GetLength(0)).Select(i => errorX[i, 1]).ToArray();
+      
+      var likelihood = new RARLikelihood(x, y, modelExpr: expr, e_log_gobs, e_log_gbar);
+
+      var nlr = new NonlinearRegression.NonlinearRegression();
+      var theta = new double[] { 0.0, 1.0, 1.0 };
+      nlr.Fit(theta, likelihood);
+    }
   }
 }

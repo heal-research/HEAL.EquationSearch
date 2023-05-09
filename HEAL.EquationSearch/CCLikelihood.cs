@@ -1,21 +1,43 @@
 ﻿using HEAL.Expressions;
 using HEAL.NonlinearRegression;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
+using System.Reflection;
+
 namespace HEAL.EquationSearch {
 
-  // errors are iid N(0, noise_sigma)
-  public class GaussianLikelihood : LikelihoodBase {
+  // likelihood for cosmic chonometer
+  public class CCLikelihood : LikelihoodBase {
     private readonly double[] invNoiseSigma;
 
     // public override double Dispersion { get { return sErr; } set { sErr = value; } }
 
-    internal GaussianLikelihood(GaussianLikelihood original) : base(original) {
-      this.invNoiseSigma = original.invNoiseSigma;
+    private readonly static MethodInfo sqrt = typeof(Math).GetMethod("Sqrt", new Type[] { typeof(double) });
+    private readonly static MethodInfo abs = typeof(Math).GetMethod("Abs", new Type[] { typeof(double) });
+    private Expression<Expr.ParametricFunction> h2Expr;
+
+    public override Expression<Expr.ParametricFunction> ModelExpr {
+      get => h2Expr;
+      set {
+        h2Expr = value;
+        if (value != null) {
+          // wrap H=sqrt(abs(model))
+
+          value = value.Update(System.Linq.Expressions.Expression.Call(null, sqrt, System.Linq.Expressions.Expression.Call(null, abs, value.Body)), value.Parameters);
+        } 
+        base.ModelExpr = value;
+      }
     }
-    public GaussianLikelihood(double[,] x, double[] y, Expression<Expr.ParametricFunction> modelExpr, double[] invNoiseSigma)
+
+    internal CCLikelihood(CCLikelihood original) : base(original) {
+      this.invNoiseSigma = original.invNoiseSigma;
+      this.h2Expr = original.h2Expr;
+    }
+    public CCLikelihood(double[,] x, double[] y, Expression<Expr.ParametricFunction> modelExpr, double[] invNoiseSigma)
       : base(modelExpr, x, y, numLikelihoodParams: 0) {
       this.invNoiseSigma = invNoiseSigma;
+      ModelExpr = modelExpr;
     }
 
     public override double[,] FisherInformation(double[] p) {
@@ -55,7 +77,8 @@ namespace HEAL.EquationSearch {
     // for the calculation of deviance
     public override double BestNegLogLikelihood(double[] p) {
       int m = y.Length;
-      return Enumerable.Range(0, m).Sum(i => 0.5 * Math.Log(2.0 * Math.PI / invNoiseSigma[i] / invNoiseSigma[i])); // residuals are zero
+      return 0.0;
+      // return Enumerable.Range(0, m).Sum(i => 0.5 * Math.Log(2.0 * Math.PI / invNoiseSigma[i] / invNoiseSigma[i])); // residuals are zero
     }
 
     public override double NegLogLikelihood(double[] p) {
@@ -68,14 +91,12 @@ namespace HEAL.EquationSearch {
       var n = p.Length;
       double[,]? yJac = null;
 
-      nll = BestNegLogLikelihood(p);
+      nll = 0.0; //  BestNegLogLikelihood(p);
 
       double[] yPred;
       if (nll_grad == null) {
-        // yPred = Expr.EvaluateFunc(ModelExpr, p, x);
         yPred = interpreter.Evaluate(p);
       } else {
-        // yPred = Expr.EvaluateFuncJac(ModelExpr, p, x, ref yJac);
         yJac = new double[m, n];
         yPred = interpreter.EvaluateWithJac(p, null, yJac);
         Array.Clear(nll_grad, 0, n);
@@ -94,7 +115,7 @@ namespace HEAL.EquationSearch {
     }
 
     public override LikelihoodBase Clone() {
-      return new GaussianLikelihood(this);
+      return new CCLikelihood(this);
     }
   }
 }

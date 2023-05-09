@@ -16,7 +16,7 @@ namespace HEAL.EquationSearch {
       this.e_log_gbar = original.e_log_gbar;
     }
     public RARLikelihood(double[,] x, double[] y, Expression<Expr.ParametricFunction> modelExpr, double[] e_log_gobs, double[] e_log_gbar)
-      : base(modelExpr, x, y, numLikelihoodParams: 1) {
+      : base(modelExpr, x, y, 0) {
       this.e_log_gobs = e_log_gobs;
       this.e_log_gbar = e_log_gbar;
     }

@@ -5,7 +5,7 @@
       var origExpr = state.Expression;
       Expression expr;
       if (origExpr.IsSentence) {
-        expr = origExpr;
+        return 0.0f; // sentences should always be visited (evaluated) first
       } else {
         expr = state.Grammar.MakeSentence(origExpr);
       }

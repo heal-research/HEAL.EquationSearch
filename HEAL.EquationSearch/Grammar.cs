@@ -226,9 +226,10 @@ namespace HEAL.EquationSearch {
       if (symbol == Term) return new[] { One };
       if (symbol == Factor) return new[] { One };
       if (symbol == PolyExpr) return new[] { new ParameterSymbol(0.0) };
+      if (symbol == PolyExprOne) return new[] { One };
       if (symbol == PolyTerm) return new[] { One };
       if (symbol == PolyFactor) return new[] { One };
-      return new[] { new ParameterSymbol(0.0) }; // default
+      throw new InvalidProgramException(); // assert that we have handled all NTs
     }
 
     internal Expression MakeSentence(Expression expr) {
