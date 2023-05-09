@@ -6,7 +6,7 @@ p*x
 p/x
 0
 x**p
-x*x
+x**2
 x**x
 p + x
 1

@@ -1,0 +1,87 @@
+exp(exp(sqrt(x)))
+1/(p + x)
+sqrt(x)*sqrt(1/p)
+p**(x/2)
+exp(x**4)
+exp(x**x)
+x + 1/x
+sqrt(p)
+x**(3/2)
+x**(sqrt(x))
+x**(x**2)
+p**(1/8)
+exp(p/x)
+p + x
+0
+exp(p**2)
+p
+sqrt(2)*sqrt(x)
+exp(1/sqrt(x))
+exp(p*x**2)
+exp(x**(1/4))
+p/sqrt(x)
+sqrt(x) + x
+p**(1/x)
+x**4
+sqrt(x)
+p**(x**2)
+exp(exp(x)/2)
+exp(p*x)
+E
+exp(p*sqrt(x))
+exp(exp(x**2))
+p/x
+p + 1/x
+exp(2/x)
+exp(x)/x
+x + exp(x)
+exp(1/sqrt(p))
+x**(x/2)
+p + x**2
+exp(sqrt(x)/2)
+p**(sqrt(x))
+p + sqrt(x)
+p*sqrt(x)
+x**3
+x**8
+zoo
+exp(p)
+p*x**p
+p*x**2
+exp(p/2)
+exp(x**2/2)
+exp(p**(1/4))
+exp(p**x)
+exp(exp(1/x))
+p*exp(x)
+x**exp(x)
+exp(x/4)
+x**(1/x)
+x*exp(x)
+exp(exp(x/2))
+exp(exp(p))
+exp(x**2)
+exp(1/(p*x))
+p**(p*x)
+x**p
+x**(1/8)
+x**2
+exp(x)
+1/sqrt(x)
+p*x
+x/sqrt(p)
+1/x
+exp(exp(exp(x)))
+1
+exp(x**p)
+p/x**2
+(p + x)**2
+x**2 + x
+p + exp(x)
+x**(p*x)
+p**exp(x)
+exp(exp(p*x))
+exp(p*exp(x))
+x
+1/p
+1/(p*x)

@@ -1,0 +1,849 @@
+exp(exp(sqrt(x)))
+1/(a0 + x)
+sqrt(x)*sqrt(1/a0)
+---
+---
+---
+a0**(x/2)
+exp((x*x)**2)
+exp(x**x)
+x + 1/x
+a0/sqrt(a1)
+x**(3/2)
+x**(sqrt(x))
+x**(x*x)
+a0**(1/8)
+---
+exp(a0/x)
+a0 + x
+0
+---
+---
+exp(2*a0)
+a0
+---
+sqrt(2)*sqrt(x)
+exp(1/sqrt(x))
+exp(2*(x*x))
+---
+---
+exp(x**(1/4))
+a0/sqrt(x)
+---
+---
+---
+---
+sqrt(x) + x
+---
+a0**(1/x)
+(x*x)**2
+sqrt(x)
+a0**(x*x)
+---
+exp(exp(x)/2)
+exp(2*x)
+E
+---
+exp(2*sqrt(x))
+exp(exp(x*x))
+---
+a0/x
+a0 + 1/x
+---
+exp(2/x)
+exp(x)/x
+---
+x + exp(x)
+exp(1/sqrt(a0))
+x**(x/2)
+---
+---
+---
+---
+---
+---
+a0 + x*x
+exp(sqrt(x)/2)
+---
+a0**(sqrt(x))
+---
+a0 + sqrt(x)
+---
+a0*sqrt(x)
+---
+x*x*x
+(x*x)**4
+zoo
+---
+exp(a0)
+---
+a0*(x*x)
+4*(x*x)
+exp(a0*x)
+exp(a0/2)
+exp((x*x)/2)
+exp(a0**(1/4))
+exp(a0**x)
+exp(exp(1/x))
+a0*exp(x)
+x**exp(x)
+exp(x/4)
+x**(1/x)
+x*exp(x)
+exp(exp(x/2))
+exp(exp(a0))
+exp(x*x)
+---
+exp(1/(2*x))
+a0**(2*x)
+x**a0
+---
+x**(1/8)
+exp(4*x)
+x*x
+exp(x)
+1/sqrt(x)
+a0*x
+x/sqrt(a0)
+1/x
+---
+---
+---
+---
+exp(exp(exp(x)))
+---
+---
+---
+1
+---
+---
+exp(x**a0)
+---
+(a0 + x)**2
+x + x*x
+---
+a0 + exp(x)
+x**(2*x)
+---
+---
+a0**exp(x)
+exp(exp(2*x))
+exp(2*exp(x))
+---
+x
+1/a0
+1/(2*x)
+a0 + exp(sqrt(x))
+---
+---
+---
+x*x*x*x*x
+sqrt(1/a0)*exp(x/2)
+---
+exp(x**(sqrt(x)))
+a1/sqrt(a0)
+a0**(a1**(1/4))
+x**(a0**x)
+exp(a0**exp(x))
+a0*exp(1/x)
+---
+sqrt(x + x*x)
+---
+1/(a0 + 1/x)
+---
+exp(a0/sqrt(x))
+exp(x**exp(x))
+---
+exp(exp(1/sqrt(x)))
+a1 + 1/sqrt(a0)
+a0**(x**(1/4))
+x + exp(a0)
+---
+a0**(1/4)*a1
+---
+---
+---
+(x + 1/x)**2
+exp(1/2)
+---
+---
+---
+(x*x)**3
+---
+exp(x**x/2)
+---
+exp(2*x**x)
+---
+a0**(a1/2)
+---
+---
+---
+x/a0
+exp(2*a0**(1/4))
+---
+---
+exp(exp(a0/x))
+---
+sqrt(x)*exp(x)
+x**(x**(1/4))
+---
+---
+exp((x*x)**4)
+exp(2*x**(1/4))
+---
+sqrt(x) + x*x
+---
+---
+---
+---
+exp(4*a0)
+exp(exp(x))
+---
+exp(a0*(x*x))
+---
+(x + x*x)**2
+exp(2*exp(sqrt(x)))
+a0*(x*x)**2
+(x*x)/a0
+exp(exp(x**x))
+x**(4*x)
+---
+a0**exp(2*x)
+x**(2*a0)
+---
+---
+---
+x**exp(2*x)
+---
+---
+1/(a0 + exp(x))
+a0**(2/x)
+---
+exp(a0**x/2)
+---
+x**(5/4)
+---
+---
+x**(1/sqrt(x))
+---
+a0/a1**(1/4)
+---
+a0**x/x
+exp(exp(a0**(1/4)))
+exp(1/a0)
+---
+exp(2*exp(2*x))
+exp(a0**(1/8))
+---
+---
+---
+x**exp(1/x)
+---
+1/(sqrt(a0)*sqrt(x))
+a0 + 1/sqrt(x)
+exp(2/sqrt(x))
+nan
+exp(exp(2*a0))
+exp(1/(a0 + x))
+---
+x + exp(x/2)
+exp(2*x**a0)
+---
+(sqrt(x) + x)**2
+---
+---
+x + x**a0
+2*x
+---
+exp(exp(a0**x))
+---
+---
+exp(sqrt(2)*sqrt(x))
+---
+x**(x**x)
+exp((a0 + x)**2)
+exp(x + 1/x)
+---
+exp(a0**(sqrt(x)))
+---
+---
+---
+(a0*x)**x
+---
+---
+---
+(a0 + exp(x))**2
+---
+exp(2*x)/x
+x**x
+a0*exp(x/2)
+a0*x**(1/4)
+---
+---
+a0**(1/16)
+---
+exp(1/x)
+a0**x
+---
+---
+exp(exp(exp(x/2)))
+a0**(2*a1)
+---
+---
+a0**(1/4)/x
+---
+exp(x**(x/2))
+x**(2*exp(x))
+1/(sqrt(x) + x)
+---
+---
+x**(1/4)*sqrt(1/a0)
+exp(2*exp(x/2))
+---
+---
+a0**exp(a1)
+exp(exp(x/4))
+---
+2*(x*x)
+(a0/x)**a1
+---
+a0**x*x
+a0*exp(exp(x))
+exp(x**(1/4)/2)
+---
+exp(a0/4)
+a0 + exp(exp(x))
+a0*exp(2*x)
+---
+exp(exp(x)/x)
+---
+exp(x + exp(x))
+exp(a0*sqrt(x))
+---
+exp((x*x)/4)
+---
+---
+---
+---
+a0 + a1*x
+(x*x)/sqrt(a0)
+---
+a0**(a1 + x)
+---
+exp(2*exp(1/x))
+---
+---
+x**(5/2)
+exp(x**(1/8))
+x*exp(x*x)
+exp(exp(x**(1/4)))
+---
+---
+exp(2*exp(x*x))
+---
+---
+a0 + x**x
+exp(exp(x)/4)
+oo
+exp(exp(exp(2*x)))
+x**exp(x*x)
+exp(sqrt(x)*sqrt(1/a0))
+---
+---
+---
+---
+---
+---
+exp(4*exp(x))
+a0**(a1**x)
+---
+1/(x + 1/x)
+exp(x/sqrt(a0))
+---
+---
+---
+---
+---
+a0**(1/(2*x))
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+a0 + exp(2*x)
+---
+exp(exp(x*x)/2)
+---
+a0**x + x
+---
+exp(E)
+---
+---
+---
+---
+---
+---
+---
+(x + exp(x))**2
+a0**(2*sqrt(x))
+---
+sqrt(x)*exp(x/2)
+(x/a0)**a1
+x**a0/x
+(a0 + 1/x)**2
+---
+---
+---
+a0**(1/4)*x**(1/4)
+---
+exp(exp(2*x)/2)
+1/(sqrt(a0)*x)
+---
+exp(x)/sqrt(x)
+---
+---
+---
+x**x/x
+---
+---
+---
+exp(1/x)/x
+---
+---
+---
+---
+---
+a0 + exp(1/x)
+a0**(exp(x)/2)
+x*x + 1/x
+exp(x/2)/x
+x**((x*x)/2)
+x*exp(a0)
+sqrt(x + exp(x))
+exp(a0/sqrt(a1))
+---
+---
+a0**(4*x)
+---
+---
+exp(2*a0**x)
+1/(x + exp(x))
+exp(exp(1/sqrt(a0)))
+x**(x/4)
+a1 + x**a0
+sqrt(sqrt(x) + x)
+---
+---
+exp(a0 + x)
+---
+---
+---
+exp(4*(x*x))
+exp(exp(1/(2*x)))
+---
+exp(4/x)
+---
+a0*exp(sqrt(x))
+x**(1/sqrt(a0))
+---
+a0**(1/4)*sqrt(1/a1)
+(a0 + sqrt(x))**2
+x + x**x
+sqrt(2)/(2*sqrt(x))
+---
+---
+exp(exp(2*exp(x)))
+exp(x**(x*x))
+---
+exp(a0)/x
+---
+---
+---
+exp(x**(2*x))
+---
+exp(a0**(2*x))
+---
+exp(exp((x*x)**2))
+---
+a0**(a1/x)
+a0**x*a1
+---
+a0 + exp(x/2)
+---
+---
+---
+a0**(sqrt(x)/2)
+---
+---
+---
+---
+a0**(x/4)
+---
+exp(2*(x*x)**2)
+a0**(1/4)/x**(1/4)
+a0**(1/sqrt(a1))
+exp(exp(exp(x))/2)
+---
+x/a0**(1/4)
+exp(exp(exp(sqrt(x))))
+x**exp(sqrt(x))
+exp(4*sqrt(x))
+---
+---
+x*exp(exp(x))
+---
+---
+exp(2*exp(a0))
+exp(x/8)
+exp(x)/sqrt(a0)
+---
+---
+---
+a0**((x*x)**2)
+a0/x + x
+x + exp(sqrt(x))
+x/(a0 + x)
+x**(2*sqrt(x))
+---
+---
+exp(x + x*x)
+---
+---
+exp(2)
+x*exp(1/x)
+---
+---
+exp(sqrt(x)/4)
+---
+a0 + (x*x)**2
+x**(1/16)
+---
+---
+---
+---
+---
+exp(x*x*x)
+---
+---
+---
+exp(exp(exp(exp(x))))
+---
+---
+---
+---
+1/sqrt(a0)
+---
+exp(exp(2/x))
+---
+---
+---
+x/a0**x
+x + (x*x)**2
+---
+---
+---
+---
+x**((x*x)**2)
+---
+(a0 + x*x)**2
+exp(1/(4*x))
+---
+---
+a0*x + x
+(a0 + x)**a1
+(x/a0)**x
+---
+x*x**x
+a0**(x**a1)
+x + exp(1/x)
+---
+---
+a0**(a1*x)
+---
+exp(x)*(x*x)
+---
+---
+---
+---
+---
+---
+---
+a0*x**x
+exp(exp(sqrt(x))/2)
+x**(1/4)*(1/a0)**(1/4)
+---
+a0**exp(1/x)
+exp(exp(sqrt(x)/2))
+x + exp(exp(x))
+---
+---
+---
+---
+---
+---
+a0/x**x
+2*exp(x)
+x**(2/x)
+(a0 + x)**(1/4)
+exp(exp(x))/x
+---
+---
+x + 1/sqrt(x)
+(x*x)**8
+---
+---
+---
+---
+---
+---
+sqrt(x)/sqrt(a0)
+---
+exp(x*x)/x
+exp(x*exp(x))
+exp(exp(exp(a0)))
+---
+x + exp(x*x)
+---
+x**(3/4)
+(2*x)**x
+---
+---
+---
+(2*x)**a0
+---
+---
+a0/(a1 + x)
+a0**(1/4)*x
+a0**(1/4) + x
+x*x**a0
+x + 1/sqrt(a0)
+---
+(a0/x)**x
+---
+---
+x*exp(sqrt(x))
+exp(a0**(x*x))
+a0/x**(1/4)
+---
+x**(exp(x)/2)
+---
+---
+exp(exp(exp(1/x)))
+---
+exp(sqrt(x))
+16*(x*x)**2
+---
+---
+a0**exp(sqrt(x))
+---
+---
+exp(x) + x*x
+---
+sqrt(exp(cos(atan2(0, a0)/2)/sqrt(a0)))
+---
+---
+sqrt(x) + 1/x
+---
+x**(a0/x)
+x**(sqrt(x)/2)
+---
+a0**exp(exp(x))
+---
+---
+---
+exp(x/2)
+---
+1/2
+---
+exp(exp(a0/2))
+---
+x**(1/(2*x))
+---
+---
+---
+a0**(2*exp(x))
+---
+a1 + exp(a0)
+---
+a0**(1/4)*sqrt(x)
+exp(exp(1/x)/2)
+---
+---
+x + exp(2*x)
+exp(a0*exp(x))
+---
+sqrt(x)/a0**(1/4)
+---
+---
+---
+---
+---
+a0 + 2*x
+3*x
+exp(exp(2*(x*x)))
+x**(a0 + x)
+---
+---
+exp(exp(a0*x))
+---
+---
+2
+---
+a0**exp(x*x)
+---
+a0/a1**x
+---
+a0/x + a1
+---
+---
+---
+x**exp(a0)
+x*(a0 + x)
+exp(exp(exp(x*x)))
+exp(2*x)*(x*x)
+---
+---
+a0**(1/4) + a1
+x**(a0/2)
+---
+(a0*x)**a1
+---
+---
+---
+x/x**x
+sqrt(a0 + x)
+exp(exp(x**a0))
+x**(a0*x)
+exp(x) + 1/x
+---
+---
+---
+---
+---
+exp(exp(a0)/2)
+1/(a0 + sqrt(x))
+---
+---
+---
+x**exp(exp(x))
+---
+sqrt(x) + exp(x)
+a1*(a0 + x)
+exp(x**(1/x))
+x*exp(x/2)
+---
+exp((x*x)**2/2)
+---
+---
+---
+exp(x/2)/sqrt(x)
+a0 + exp(x*x)
+---
+---
+2**(1/4)*x**(1/4)
+exp(2*exp(exp(x)))
+---
+---
+---
+---
+---
+---
+---
+x*exp(2*x)
+---
+---
+---
+exp(2/sqrt(a0))
+exp(x**a0/2)
+a0 + x**(1/4)
+a0*exp(x*x)
+a0**(1/4)/sqrt(x)
+---
+a0**((x*x)/2)
+---
+---
+2/x
+---
+---
+x**(x**a0)
+x**(1/4) + x
+---
+exp(a0**(x/2))
+---
+---
+a0**(1/4)
+exp(exp(exp(x)/2))
+x**(1/4)
+x**(2*(x*x))
+---
+a1*exp(a0)
+(a0 + x)**x
+---
+---
+---
+a0**(2*(x*x))
+x**(a0**(1/4))
+a0**(x**x)
+---
+---
+exp(exp(2*sqrt(x)))
+---
+---
+exp(1/(2*sqrt(x)))
+---
+exp(exp(x/2)/2)
+exp(exp(4*x))
+a1*x**a0
+2*sqrt(x)
+(a0 + x)**4
+a0**x + a1
+exp(a0**(1/4)/2)
+exp(exp((x*x)/2))
+exp(sqrt(x))/x
+a0**(1/sqrt(x))
+---
+---
+---
+---
+---
+exp(a0**(1/x))
+---
+---
+sqrt(x + 1/x)
+---
+0**a0
+---
+---
+---
+a0**exp(x/2)
+exp(sqrt(x) + x)
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+x**exp(x/2)
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+exp(8*x)
+exp(x**(3/2))
