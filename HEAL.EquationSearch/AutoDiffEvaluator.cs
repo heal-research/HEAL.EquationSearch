@@ -28,9 +28,9 @@ namespace HEAL.EquationSearch {
       var semHash = Semantics.GetHashValue(expr);
       Interlocked.Increment(ref evaluatedExpressions);
 
-      if (exprQualities.TryGetValue(semHash, out double mse)) {
+      if (exprQualities.TryGetValue(semHash, out double nll)) {
         // NOTE: parameters of expression are not set in this case
-        return mse;
+        return nll;
       }
 
 
@@ -41,18 +41,18 @@ namespace HEAL.EquationSearch {
       
       var nlr = new NonlinearRegression.NonlinearRegression();
       nlr.Fit(parameterValues, modelLikelihood, maxIterations: 0);
-      // successfull?
+      // successful?
       if (nlr.ParamEst != null) {
         HEALExpressionBridge.UpdateParameters(expr, nlr.ParamEst);
-        mse = nlr.Dispersion * nlr.Dispersion;
-        if (double.IsNaN(mse)) mse = double.MaxValue;
+        nll = nlr.NegLogLikelihood;
+        if (double.IsNaN(nll)) nll = double.MaxValue;
       } else {
-        mse = double.MaxValue;
+        nll = double.MaxValue;
       }
 
 
-      exprQualities.GetOrAdd(semHash, mse);
-      return mse;
+      exprQualities.GetOrAdd(semHash, nll);
+      return nll;
     }
 
     // TODO: make iterations configurable
