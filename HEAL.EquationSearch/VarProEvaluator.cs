@@ -1,5 +1,4 @@
 ﻿using HEAL.NativeInterpreter;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -344,6 +343,8 @@ namespace HEAL.EquationSearch {
         return (int)OpCode.Abs;
       } else if (symbol == grammar.Cos) {
         return (int)OpCode.Cos;
+      } else if (symbol == grammar.Pow) {
+        return (int)OpCode.Power;
       } else if (symbol is Grammar.VariableSymbol) {
         return (int)OpCode.Variable;
       } else if (symbol is Grammar.ParameterSymbol) {
