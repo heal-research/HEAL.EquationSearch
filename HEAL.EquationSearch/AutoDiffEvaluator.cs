@@ -37,22 +37,38 @@ namespace HEAL.EquationSearch {
       var model = HEALExpressionBridge.ConvertToExpressionTree(expr, data.VarNames, out var parameterValues);
       var modelLikelihood = this.likelihood.Clone();
       modelLikelihood.ModelExpr = model;
-      
-      
+
+
       var nlr = new NonlinearRegression.NonlinearRegression();
-      nlr.Fit(parameterValues, modelLikelihood, maxIterations: 0);
-      // successful?
-      if (nlr.ParamEst != null) {
-        HEALExpressionBridge.UpdateParameters(expr, nlr.ParamEst);
-        nll = nlr.NegLogLikelihood;
-        if (double.IsNaN(nll)) nll = double.MaxValue;
-      } else {
-        nll = double.MaxValue;
+
+      var bestNLL = double.MaxValue;
+
+      // default scale and precision is one
+      // var scale = Enumerable.Repeat(1.0, parameterValues.Length).ToArray();
+      // var prec = Enumerable.Repeat(1.0, parameterValues.Length).ToArray(); 
+      for (int restart = 0; restart < 10; restart++) {
+        nlr.Fit(parameterValues, modelLikelihood, maxIterations: 0 /* , scale: scale, diagHess: prec*/);
+        // successful?
+        if (nlr.ParamEst != null && nlr.NegLogLikelihood < bestNLL) {
+          bestNLL = nlr.NegLogLikelihood;
+          
+          // use scale and precision based on this estimation to hopefully speed up next iteration
+          // prec = (double[])nlr.LaplaceApproximation.diagH.Clone();
+          // scale = nlr.ParamEst.Select((pi,i) => pi / Math.Sqrt(prec[i])).ToArray();
+
+          HEALExpressionBridge.UpdateParameters(expr, nlr.ParamEst);
+        } 
+
+        // try random restart
+        for (int i = 0; i < parameterValues.Length; i++) {
+          parameterValues[i] = Random.Shared.NextDouble() * 2 - 1;  // TODO: shared random
+        }
       }
 
+      
 
-      exprQualities.GetOrAdd(semHash, nll);
-      return nll;
+      exprQualities.GetOrAdd(semHash, bestNLL);
+      return bestNLL;
     }
 
     // TODO: make iterations configurable
