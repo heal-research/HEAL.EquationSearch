@@ -63,7 +63,10 @@ namespace HEAL.EquationSearch {
           var y_expr = LinqExpr.ArrayIndex(xParam, LinqExpr.Constant(y_idx));
           var sTotExpr = LinqExpr.Add(
             LinqExpr.Multiply(e_log_gobs_expr, e_log_gobs_expr),
-            LinqExpr.Call(pow, LinqExpr.Multiply(LinqExpr.Multiply(LinqExpr.Multiply(d_log_f_dgbar.Body, gbar_expr), LinqExpr.Constant(Math.Log(10))), e_log_gbar_expr), LinqExpr.Constant(2.0))
+            LinqExpr.Call(pow, LinqExpr.Multiply(LinqExpr.Multiply(LinqExpr.Multiply(d_log_f_dgbar.Body, gbar_expr), 
+                                                                   LinqExpr.Constant(Math.Log(10))),
+                                                 e_log_gbar_expr), 
+                               LinqExpr.Constant(2.0))
             );
 
           var baseExpr = LinqExpr.Multiply(LinqExpr.Constant(0.5), LinqExpr.Call(log, LinqExpr.Multiply(LinqExpr.Constant(2.0 * Math.PI), sTotExpr))); //  0.5 * Math.Log(2.0 * Math.PI * stot)
