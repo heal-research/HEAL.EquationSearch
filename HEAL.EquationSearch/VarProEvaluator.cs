@@ -82,6 +82,8 @@ namespace HEAL.EquationSearch {
 
       var terms = new List<(int start, int end)>();
       var coeffIndexes = new List<int>();
+      GetTerms(expr, terms, coeffIndexes);
+
       // compile all terms individually
       var code = CompileTerms(expr, terms, data, out var termIdx, out var paramIdx);
 
