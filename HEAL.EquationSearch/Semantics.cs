@@ -102,7 +102,7 @@ namespace HEAL.EquationSearch {
       }
 
       private bool HasNonlinearParameters() {
-        return Symbol == expr.Grammar.Exp || Symbol == expr.Grammar.Log || Symbol == expr.Grammar.Div || Symbol == expr.Grammar.Cos
+        return Symbol == expr.Grammar.Exp || Symbol == expr.Grammar.Log || Symbol == expr.Grammar.Div || Symbol == expr.Grammar.Cos || Symbol == expr.Grammar.Pow
               || children.Any(c => c.HasNonlinearParameters());
       }
 
