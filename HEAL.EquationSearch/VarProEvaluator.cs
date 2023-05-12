@@ -1,4 +1,5 @@
 ﻿using HEAL.NativeInterpreter;
+using HEAL.NonlinearRegression;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -92,7 +93,8 @@ namespace HEAL.EquationSearch {
         // This case is not particularly interesting (average model).
         // TODO: we could reuse expr here and set the parameter correctly. 
         // TODO: here we would also need to take a weighted average. 
-        return MDL(new Expression(expr.Grammar, new Grammar.Symbol[] { new Grammar.ParameterSymbol(data.Target.Average()) }), data);
+        // return MDL(new Expression(expr.Grammar, new Grammar.Symbol[] { new Grammar.ParameterSymbol(data.Target.Average()) }), data);
+        return double.MaxValue;
       }
 
       var result = new double[data.Rows];
@@ -116,11 +118,14 @@ namespace HEAL.EquationSearch {
         }
       }
 
-      var mdl = MDL(expr, data);
+      // var mdl = MDL(expr, data);
+      var exprTree = HEALExpressionBridge.ConvertToExpressionTree(expr, data.VarNames, out var paramValues);
+      var likelihood = new GaussianLikelihood(data.X, data.Target, exprTree, data.InvNoiseSigma);
+      var mdl = ModelSelection.MDL(paramValues, likelihood);
 
       // for debugging and unit tests
       var constLikelihoodTerm = data.InvNoiseVariance.Sum(invVar => -0.5 * Math.Log(2 * Math.PI * 1 / invVar));
-      Console.Error.WriteLine($"len: {expr.Length} MDL: {mdl} logLik (res): {-summary.FinalCost} logLik (full): {-summary.FinalCost + constLikelihoodTerm} {expr}");
+      Console.Error.WriteLine($"len: {expr.Length} MDL: {mdl} logLik (full): {likelihood.NegLogLikelihood(paramValues)} {expr.ToInfixString()}");
       return mdl;
     }
 
@@ -133,6 +138,7 @@ namespace HEAL.EquationSearch {
       return result;
     }
 
+    /*
 
     // as described in https://arxiv.org/abs/2211.11461
     // Deaglan J. Bartlett, Harry Desmond, Pedro G. Ferreira, Exhaustive Symbolic Regression, 2022
@@ -167,30 +173,7 @@ namespace HEAL.EquationSearch {
       var numSymbols = expr.Select(sy => sy.GetHashCode()).Distinct().Count();
       var parameters = expr.OfType<Grammar.ParameterSymbol>().ToArray();
       int numParam = parameters.Length;
-
-      /*
-       * TODO: This does not work reliably yet
-      for (int i = 0; i < numParam; i++) {
-        // if the parameter estimate is not significantly different from zero
-        if (Math.Abs(parameters[i].Value) / Math.Sqrt(12.0 / diagFisherInfo[i]) < 1.0) {
-
-          // set param to zero and calculate MDL for the manipulated expression and code and re-evaluate 
-          ((Grammar.ParameterSymbol)expr[paramSyIdx[i].exprPos]).Value = 0.0;
-          code[paramSyIdx[i].codePos].Coeff = 0.0;
-
-          Interlocked.Increment(ref EvaluatedExpressions);
-          NativeWrapper.GetValues(code, data.AllRowIdx, result);
-
-          // update likelihood for manipulated expression
-          // As described in the ESR paper. More accurately we would need to set the value to zero, simplify and re-optimize the expression and recalculate logLik and FIM.
-          // Here we are not too concerned about this, because the simplified expression is likely to be visited independently anyway. 
-          logLike = GaussianLogLikelihood(data.InvNoiseVariance, data.Target, result);
-        }
-
-        // IDEA: a similar manipulation could be performed for multiplicative coefficients that are approximately equal to 1.0
-      }
-      */
-
+      
       double paramCodeLength(int paramIdx) {
         // ignore zeros
         if (parameters[paramIdx].Value == 0) return 0.0;
@@ -238,6 +221,7 @@ namespace HEAL.EquationSearch {
       }
       return fi;
     }
+  */
 
     private NativeInstruction[] CompileTerms(Expression expr, IEnumerable<(int start, int end)> terms, Data data,
       out List<int> termIdx, out List<(int codePos, int exprPos)> paramSyIdx) {
