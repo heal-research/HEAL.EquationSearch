@@ -36,9 +36,7 @@ dsmoothed <- diff(smoothed) / diff(log_gbar)
 
 plot(log_gbar[1:9999], dsmoothed)
 
-
-
-data$df_dlogbar <- sapply(data$log_gbar, FUN=function(x) {dsmoothed[min(which(log_gbar>=x))] })
+data$df_dlogbar <- sapply(data$log_gbar, FUN=function(x) {dsmoothed[min(9998, min(which(log_gbar>=x)))] })
 
 
 data$stot <- sqrt(data$e_log_gobs**2 + (data$df_dlogbar*data$e_log_gbar)**2)
