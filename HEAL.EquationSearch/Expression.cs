@@ -57,7 +57,7 @@ namespace HEAL.EquationSearch {
       }
       if (subExpressions.Any()) {
         if (subExpressions.Count == 1) {
-          return rootStr + subExpressions[0];
+          return rootStr + "( " + subExpressions[0] + " )";
         } else {
           return string.Join(" " + rootStr + " ", subExpressions);
         }
