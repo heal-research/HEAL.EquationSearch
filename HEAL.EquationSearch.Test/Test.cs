@@ -196,6 +196,29 @@ namespace HEAL.EquationSearch.Test {
       }
     }
 
+
+    [TestMethod]
+    public void RARApproximateLikelihood() {
+      // https://arxiv.org/abs/2301.04368
+      // File RAR.dat recieved from Harry
+
+      var options = new HEAL.EquationSearch.Console.Program.RunOptions();
+      options.Dataset = "RAR_sigma.csv";
+      options.Target = "log_gobs";
+      options.NoiseSigma = "stot";
+      options.TrainingRange = "0:2695";
+      options.MaxLength = 20;
+      options.Seed = 1234;
+      string[] inputs = new string[] { "gbar" };
+      HEAL.EquationSearch.Console.Program.PrepareData(options, ref inputs, out var x, out var y, out var noiseSigma, out var trainStart, out var trainEnd, out var testStart, out var testEnd, out var trainX, out var trainY, out var trainNoiseSigma);
+
+      var alg = new Algorithm();
+      var evaluator = new VarProEvaluator();
+      alg.Fit(trainX, trainY, trainNoiseSigma, inputs, CancellationToken.None, evaluator: evaluator, maxLength: options.MaxLength, randSeed: options.Seed);
+
+      System.Console.WriteLine($"Best expression: {alg.BestExpression.ToInfixString()}");
+    }
+
     [TestMethod]
     public void RAR() {
       // https://arxiv.org/abs/2301.04368
@@ -205,7 +228,7 @@ namespace HEAL.EquationSearch.Test {
       options.Dataset = "RAR_sigma.csv";
       options.Target = "gobs";
       options.TrainingRange = "0:2695";
-      options.MaxLength = 12;
+      options.MaxLength = 14;
       options.Seed = 1234;
       string[] inputs = new string[] { "gbar" };
       HEAL.EquationSearch.Console.Program.PrepareData(options, ref inputs, out var x, out var y, out var noiseSigma, out var trainStart, out var trainEnd, out var testStart, out var testEnd, out var trainX, out var trainY, out var trainNoiseSigma);
