@@ -5,7 +5,7 @@ Search is implemented via https://github.com/heal-research/TreesearchLib.
 
 We use separable nonlinear least squares (variable projection) for parameter optimization. The linear parameters are solved via ordinary least squares (via QR decomposition) and the nonlinear parameters are optimized via an iterative algorithm (see https://iopscience.iop.org/article/10.1088/0266-5611/19/2/201). 
 
-The algorithm can be used via breath-first search to generate all expressions up to a given length from the grammar.
+The algorithm can be used via breadth-first search to generate all expressions up to a given length from the grammar.
 
 ## Grammars
 Several grammars for expressions can be used. 
