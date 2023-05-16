@@ -38,12 +38,12 @@ namespace HEAL.EquationSearch {
     public Symbol Sqrt = new Symbol("sqrt", arity: 1);
     public Symbol Abs = new Symbol("abs", arity: 1);
     public Symbol Cos = new Symbol("cos", arity: 1);
-    public Symbol Pow = new Symbol("pow", arity: 2);
+    public Symbol Pow = new Symbol("**", arity: 2);
 
     public Symbol One = new ConstantSymbol(1.0);
     public Symbol Parameter = new ParameterSymbol(0.0);
 
-    private VariableSymbol[] Variables;
+    public VariableSymbol[] Variables;
 
     private Dictionary<Symbol, List<Symbol[]>> rules = new Dictionary<Symbol, List<Symbol[]>>();
 
@@ -99,7 +99,7 @@ namespace HEAL.EquationSearch {
       //         | cos '(' PolyExpr ')'
       //         | pow '(' abs '(' PolyExprOne ')' ',' param ')'
       // PolyExpr    -> param * PolyTerm + param | param * PolyTerm + PolyExpr  // with intercept param
-      // PolyExprOne -> param * PolyTerm + 1 | param * PolyTerm + PolyExprOne   // with constant one intercept
+      // PolyExprOne -> PolyTerm | PolyExprOne + param * PolyTerm               // with one degree of freedom removed
       // PolyTerm -> PolyFact | PolyFact * PolyTerm
       // PolyFact -> var_1 | ... | var_n
 
@@ -115,13 +115,14 @@ namespace HEAL.EquationSearch {
       };
 
       // every variable is an alternative
+      // be careful with functions in multiple variables (the order of arguments is reversed)
       rules[Factor] = Variables.Select(varSy => new Symbol[] { varSy }).ToList();
-      rules[Factor].Add(new[] { PolyExprOne, One, Div });
+      rules[Factor].Add(new[] { PolyExprOne, One, Div });  // it is important that one is the last child (= 1 / PolyExprOne)
       rules[Factor].Add(new[] { PolyExprOne, Abs, Log });
       rules[Factor].Add(new[] { PolyExprOne, Abs, Sqrt });
       rules[Factor].Add(new[] { Parameter, PolyTerm, Times, Exp });
       rules[Factor].Add(new[] { PolyExpr, Cos });
-      // rules[Factor].Add(new[] { PolyExprOne, Abs, Parameter, Pow });
+      rules[Factor].Add(new[] { Parameter, PolyExprOne, Abs, Pow }); // is is important that parameter is the first child (= PolyExprOne ^ Parameter)
 
 
       // parametric intercept
@@ -130,10 +131,13 @@ namespace HEAL.EquationSearch {
         new Symbol[] { Parameter, PolyTerm, Times, PolyExpr, Plus }, // param * PolyTerm + PolyExpr
       };
 
-      // constant 1 intercept
+      // PolyExpr with one degree of freedom removed
       rules[PolyExprOne] = new List<Symbol[]>() {
-        new Symbol[] { Parameter, PolyTerm, Times, One, Plus }, // param * PolyTerm + 1
-        new Symbol[] { Parameter, PolyTerm, Times, PolyExprOne, Plus }, // param * PolyTerm + PolyExprOne
+        // new Symbol[] { Parameter, PolyTerm, Times, One, Plus }, // param * PolyTerm + 1
+        // new Symbol[] { Parameter, PolyTerm, Times, PolyExprOne, Plus }, // param * PolyTerm + PolyExprOne
+        
+        new Symbol[] { Parameter, PolyTerm, Plus}, // param + PolyTerm
+        new Symbol[] { Parameter, PolyTerm, Times, PolyExprOne, Plus }, // PolyExprOne + param * PolyTerm 
       };
 
       rules[PolyTerm] = new List<Symbol[]>() {
@@ -186,6 +190,7 @@ namespace HEAL.EquationSearch {
 
       var idx = FirstIndexOfNT(syString);
       if (idx < 0) yield break;
+      // NOTE: if you get an exception here, make sure all your grammar rules are right-recursive
       foreach (var alternative in rules[syString[idx]]) {
         yield return Replace(syString, idx, alternative);
       }

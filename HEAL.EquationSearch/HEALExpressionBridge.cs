@@ -45,7 +45,7 @@ namespace HEAL.EquationSearch {
       else if (expr[i] == expr.Grammar.Exp) { return LinqExpr.Call(exp, children[0]); }
       else if (expr[i] == expr.Grammar.Log) { return LinqExpr.Call(log, children[0]); }
       else if (expr[i] == expr.Grammar.Sqrt) { return LinqExpr.Call(sqrt, children[0]); } 
-      else if (expr[i] == expr.Grammar.Pow) { return LinqExpr.Call(pow, children[1], children[0]); } 
+      else if (expr[i] == expr.Grammar.Pow) { return LinqExpr.Call(pow, children[0], children[1]); } 
       else throw new NotSupportedException("unsupported symbol");
     }
 
