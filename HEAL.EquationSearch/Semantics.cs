@@ -152,7 +152,8 @@ namespace HEAL.EquationSearch {
            Symbol == expr.Grammar.Log || 
            Symbol == expr.Grammar.Div || 
            Symbol == expr.Grammar.Cos || 
-           Symbol == expr.Grammar.Pow)
+           Symbol == expr.Grammar.Pow ||
+           Symbol == expr.Grammar.Square)
               && children.Any(c => c.HasParameter());
       }
 

@@ -8,7 +8,7 @@ namespace HEAL.EquationSearch {
       get {
         return new[] { One, Parameter }
                      .Concat(Variables)
-                     .Concat(new[] { Plus, Times, Pow, Div, Abs, Log, Sqrt, Exp, Cos })
+                     .Concat(new[] { Plus, Times, Pow, Div, Abs, Log, Sqrt, Exp, Cos, Square })
                      .Concat(Nonterminals);
       }
     }
@@ -32,13 +32,14 @@ namespace HEAL.EquationSearch {
     // terminals
     public Symbol Plus = new Symbol("+", arity: 2, precedence: 0);
     public Symbol Times = new Symbol("*", arity: 2, precedence: 1);
-    public Symbol Div = new Symbol("/", arity: 2, precedence: 1);
-    public Symbol Pow = new Symbol("**", arity: 2, precedence: 2); // unary and nullary symbols have precedence int.Max
+    public Symbol Div = new Symbol("/", arity: 2, precedence: 2);
+    public Symbol Pow = new Symbol("**", arity: 2, precedence: 3); // unary and nullary symbols have precedence int.Max
     public Symbol Exp = new Symbol("exp", arity: 1);
     public Symbol Log = new Symbol("log", arity: 1);
     public Symbol Sqrt = new Symbol("sqrt", arity: 1);
     public Symbol Abs = new Symbol("abs", arity: 1);
     public Symbol Cos = new Symbol("cos", arity: 1);
+    public Symbol Square = new Symbol("square", arity: 1);
 
     public Symbol One = new ConstantSymbol(1.0);
     public Symbol Parameter = new ParameterSymbol(0.0);
@@ -155,6 +156,27 @@ namespace HEAL.EquationSearch {
         new Symbol[] { Expr, One, Div },
         new Symbol[] { Expr, Expr, Div },
         new Symbol[] { Expr, Expr, Abs, Pow },
+        
+        new Symbol[] { Factor }, // Hacky placeholder for variables
+        new Symbol[] { Parameter }
+      };
+
+      rules[Factor] = Variables.Select(varSy => new Symbol[] { varSy }).ToList();
+    }
+    
+    /// <summary>
+    /// Grammar for ESR base functions
+    /// </summary>
+    public void UseExtendedMathGrammar() {
+      rules[Expr] = new List<Symbol[]>() {
+        new Symbol[] { Expr, Expr, Plus },
+        new Symbol[] { Expr, Expr, Times },
+        new Symbol[] { Expr, One, Div },
+        new Symbol[] { Expr, Expr, Div },
+        new Symbol[] { Expr, Expr, Abs, Pow },
+        new Symbol[] { Expr, Exp },
+        new Symbol[] { Expr, Square },
+        new Symbol[] { Expr, Abs, Sqrt },
         
         new Symbol[] { Factor }, // Hacky placeholder for variables
         new Symbol[] { Parameter }

@@ -6,7 +6,7 @@ public class EsrBaseFunctionGeneration {
     Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
     System.Globalization.CultureInfo.DefaultThreadCurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
   }
-  
+
   [DataTestMethod]
   [DataRow(1)]
   [DataRow(2)]
@@ -18,25 +18,55 @@ public class EsrBaseFunctionGeneration {
   [DataRow(8)]
   [DataRow(9)]
   [DataRow(10)]
-  public void OneDimensionalSpace(int maxLength) {
-    var varNames = new [] { "x" };
+  public void OneDimensionalSpace(int maxComplexity) {
+    var varNames = new[] { "x" };
 
     var grammar = new Grammar(varNames);
     grammar.UseCoreMathGrammar();
-    EnumerateAll(grammar, maxLength);
+    EnumerateAll(
+      $"function_sets/core_maths/generated_complexity_{maxComplexity}.txt",
+      $"function_sets/core_maths/generated_complexity_{maxComplexity}_normalized.txt",
+      $"function_sets/core_maths/unique_equations_{maxComplexity}_cum_normalized.txt",
+      grammar, maxComplexity);
   }
 
-  private void EnumerateAll(Grammar grammar, int maxComplexity) {
+  [DataTestMethod]
+  [DataRow(4)]
+  [DataRow(5)]
+  [DataRow(6)]
+  [DataRow(7)]
+  [DataRow(8)]
+  [DataRow(9)]
+  [DataRow(10)]
+  [DataRow(11)]
+  [DataRow(12)]
+  public void ExtendedGrammarSpace(int maxComplexity) {
+    var varNames = new [] { "x" };
+
+    var grammar = new Grammar(varNames);
+    grammar.UseExtendedMathGrammar();
     
-    var allFunctionsFile = $"function_sets/core_maths/generated_complexity_{maxComplexity}.txt";
+    EnumerateAll(
+      $"function_sets/ext_maths/generated_complexity_{maxComplexity}.txt",
+      $"function_sets/ext_maths/generated_complexity_{maxComplexity}_normalized.txt",
+      $"function_sets/ext_maths/unique_equations_{maxComplexity}_cum_normalized.txt",
+      grammar, maxComplexity);  
+  }
+
+  private void EnumerateAll(
+      string allFunctionsFile,
+      string uniqueFunctionsFile,
+      string esrFunctionsFile,
+      Grammar grammar, int maxComplexity) {
+    
     GenerateAllToFile(grammar, maxComplexity, allFunctionsFile);
     System.Console.WriteLine($"All functions generated in file {Path.GetFullPath(allFunctionsFile)}.\n\n");
 
-    var uniqueFunctionsFile = $"function_sets/core_maths/generated_complexity_{maxComplexity}_normalized.txt";
     NormalizeFilesWithSymPy(allFunctionsFile, uniqueFunctionsFile);
     System.Console.WriteLine($"Unique functions written to {Path.GetFullPath(uniqueFunctionsFile)}.\n\n");
 
-    var esrFunctions = ReadEsrFunctionSet(maxComplexity);
+    System.Console.WriteLine($"ESR functions read from {esrFunctionsFile}");
+    var esrFunctions = ReadEsrFunctionSet(esrFunctionsFile);
     var generatedFunctions = ReadGeneratedFunctions(uniqueFunctionsFile);
 
     var total = esrFunctions.Union(generatedFunctions).ToList();
@@ -108,8 +138,7 @@ public class EsrBaseFunctionGeneration {
     }
   }
 
-  private string[] ReadEsrFunctionSet(int complexity) {
-    string file = $"function_sets/core_maths/unique_equations_{complexity}_cum_normalized.txt";
+  private string[] ReadEsrFunctionSet(string file) {
     return File.ReadAllLines(file);
   }
 

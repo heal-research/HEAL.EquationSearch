@@ -341,6 +341,8 @@ namespace HEAL.EquationSearch {
         return (int)OpCode.Abs;
       } else if (symbol == grammar.Cos) {
         return (int)OpCode.Cos;
+      } else if (symbol == grammar.Square) {
+        return (int)OpCode.Square;
       } else if (symbol is Grammar.VariableSymbol) {
         return (int)OpCode.Variable;
       } else if (symbol is Grammar.ParameterSymbol) {

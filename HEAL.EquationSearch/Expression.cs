@@ -61,6 +61,10 @@ namespace HEAL.EquationSearch {
         return string.Join(operatorPadding + rootStr + operatorPadding, childExpressions);
       }
 
+      if (syString[rootIdx] == Grammar.Square) {
+        return $"({childExpressions[0]})**2";
+      }
+      
       if (syString[rootIdx].Arity == 1) {
         return $"{rootStr}({childExpressions[0]})";
       }
