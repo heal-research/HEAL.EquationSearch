@@ -1,87 +1,55 @@
 exp(exp(sqrt(x)))
 1/(p + x)
 sqrt(x)*sqrt(1/p)
----
----
----
 p**(x/2)
-exp((x*x)**p)
+exp(x**4)
 exp(x**x)
 x + 1/x
 sqrt(p)
 x**(3/2)
 x**(sqrt(x))
-x**(x*x)
+x**(x**2)
 p**(1/8)
----
 exp(p/x)
 p + x
 0
----
----
 exp(p**2)
 p
----
-sqrt(p)*sqrt(x)
+sqrt(2)*sqrt(x)
 exp(1/sqrt(x))
-exp(p*(x*x))
----
----
+exp(p*x**2)
 exp(x**(1/4))
 p/sqrt(x)
----
----
----
----
 sqrt(x) + x
----
 p**(1/x)
-(x*x)**p
+x**4
 sqrt(x)
-p**(x*x)
----
+p**(x**2)
 exp(exp(x)/2)
 exp(p*x)
 E
----
 exp(p*sqrt(x))
-exp(exp(x*x))
----
+exp(exp(x**2))
 p/x
 p + 1/x
----
----
+exp(2/x)
 exp(x)/x
----
 x + exp(x)
 exp(1/sqrt(p))
 x**(x/2)
----
----
----
----
----
----
-p + x*x
+p + x**2
 exp(sqrt(x)/2)
----
 p**(sqrt(x))
----
 p + sqrt(x)
----
 p*sqrt(x)
----
-x*x*x
----
+x**3
+x**8
 zoo
----
 exp(p)
----
-p*(x*x)
----
----
+p*x**p
+p*x**2
 exp(p/2)
-exp((x*x)/2)
+exp(x**2/2)
 exp(p**(1/4))
 exp(p**x)
 exp(exp(1/x))
@@ -92,4811 +60,1838 @@ x**(1/x)
 x*exp(x)
 exp(exp(x/2))
 exp(exp(p))
-exp(x*x)
----
-exp(1/(2*x))
+exp(x**2)
+exp(1/(p*x))
 p**(p*x)
 x**p
----
 x**(1/8)
----
-x*x
+x**2
 exp(x)
 1/sqrt(x)
 p*x
 x/sqrt(p)
 1/x
----
----
----
----
 exp(exp(exp(x)))
----
----
----
 1
----
----
 exp(x**p)
----
-(p + x)**p
-x + x*x
----
+p/x**2
+(p + x)**2
+x**2 + x
 p + exp(x)
 x**(p*x)
----
----
 p**exp(x)
 exp(exp(p*x))
 exp(p*exp(x))
----
 x
 1/p
-1/(2*x)
+1/(p*x)
 p + exp(sqrt(x))
----
----
----
-x*x*x*x*x
+x**5
 sqrt(1/p)*exp(x/2)
----
 exp(x**(sqrt(x)))
----
 p**(p**(1/4))
 x**(p**x)
 exp(p**exp(x))
 p*exp(1/x)
----
-sqrt(x + x*x)
----
+sqrt(x**2 + x)
 1/(p + 1/x)
----
 exp(p/sqrt(x))
 exp(x**exp(x))
----
 exp(exp(1/sqrt(x)))
 p + 1/sqrt(p)
 p**(x**(1/4))
 x + exp(p)
----
 p**(5/4)
----
----
----
-(x + 1/x)**p
+(x + 1/x)**2
 exp(1/2)
----
----
----
----
----
+x**6
 exp(x**x/2)
----
 exp(p*x**x)
----
 p**(p/2)
----
----
----
 x/p
 exp(p**(5/4))
----
----
 exp(exp(p/x))
----
 sqrt(x)*exp(x)
 x**(x**(1/4))
----
----
----
+exp(x**8)
 exp(p*x**(1/4))
----
-sqrt(x) + x*x
----
----
----
----
----
+sqrt(x) + x**2
 exp(exp(x))
----
----
----
-(x + x*x)**p
+(x**2 + x)**2
 exp(p*exp(sqrt(x)))
-p*(x*x)**p
-(x*x)/p
+p*x**4
+x**2/p
 exp(exp(x**x))
----
----
 p**exp(p*x)
 x**(p**2)
----
----
----
 x**exp(p*x)
----
----
 1/(p + exp(x))
-p**(p/x)
----
+p**(2/x)
 exp(p**x/2)
----
 x**(5/4)
----
----
 x**(1/sqrt(x))
----
 p**(3/4)
----
 p**x/x
 exp(exp(p**(1/4)))
 exp(1/p)
----
 exp(p*exp(p*x))
 exp(p**(1/8))
----
----
----
 x**exp(1/x)
----
 1/(sqrt(p)*sqrt(x))
 p + 1/sqrt(x)
----
+exp(2/sqrt(x))
 nan
 exp(exp(p**2))
 exp(1/(p + x))
----
 x + exp(x/2)
 exp(p*x**p)
----
-(sqrt(x) + x)**p
----
----
+(sqrt(x) + x)**2
 x + x**p
----
----
 exp(exp(p**x))
----
----
-exp(sqrt(p)*sqrt(x))
----
+exp(sqrt(2)*sqrt(x))
 x**(x**x)
-exp((p + x)**p)
+exp((p + x)**2)
 exp(x + 1/x)
----
 exp(p**(sqrt(x)))
----
----
----
 (p*x)**x
----
----
----
-(p + exp(x))**p
----
+p/x**4
+(p + exp(x))**2
 exp(p*x)/x
 x**x
 p*exp(x/2)
 p*x**(1/4)
----
----
 p**(1/16)
----
 exp(1/x)
 p**x
----
----
 exp(exp(exp(x/2)))
 p**(p**2)
----
----
 p**(1/4)/x
----
 exp(x**(x/2))
 x**(p*exp(x))
 1/(sqrt(x) + x)
----
----
 x**(1/4)*sqrt(1/p)
 exp(p*exp(x/2))
----
----
 p**exp(p)
 exp(exp(x/4))
----
----
 (p/x)**p
----
+exp(p*x)/x**2
 p**x*x
 p*exp(exp(x))
 exp(x**(1/4)/2)
----
 exp(p/4)
 p + exp(exp(x))
 p*exp(p*x)
----
 exp(exp(x)/x)
----
 exp(x + exp(x))
----
----
-exp((x*x)/4)
----
----
----
----
+exp(x**2/4)
 p*x + p
-(x*x)/sqrt(p)
----
+x**2/sqrt(p)
 p**(p + x)
----
 exp(p*exp(1/x))
----
----
 x**(5/2)
 exp(x**(1/8))
-x*exp(x*x)
+x*exp(x**2)
 exp(exp(x**(1/4)))
----
----
-exp(p*exp(x*x))
----
----
+exp(p*exp(x**2))
 p + x**x
 exp(exp(x)/4)
 oo
 exp(exp(exp(p*x)))
-x**exp(x*x)
+x**exp(x**2)
 exp(sqrt(x)*sqrt(1/p))
----
----
----
----
----
----
----
+exp(2/x**2)
 p**(p**x)
----
 1/(x + 1/x)
 exp(x/sqrt(p))
----
----
----
----
----
-p**(1/(2*x))
----
----
----
----
----
----
----
----
----
----
+p**(1/(p*x))
 p + exp(p*x)
----
-exp(exp(x*x)/2)
----
+exp(exp(x**2)/2)
 p**x + x
----
 exp(E)
----
----
----
----
----
----
----
-(x + exp(x))**p
+(x + exp(x))**2
 p**(p*sqrt(x))
----
 sqrt(x)*exp(x/2)
 (x/p)**p
 x**p/x
-(p + 1/x)**p
----
----
----
+(p + 1/x)**2
 p**(1/4)*x**(1/4)
----
 exp(exp(p*x)/2)
 1/(sqrt(p)*x)
----
 exp(x)/sqrt(x)
----
----
----
 x**x/x
----
----
----
 exp(1/x)/x
----
----
----
----
----
+1/(x**2 + x)
 p + exp(1/x)
 p**(exp(x)/2)
-x*x + 1/x
+x**2 + 1/x
 exp(x/2)/x
-x**((x*x)/2)
+x**(x**2/2)
 x*exp(p)
 sqrt(x + exp(x))
 exp(sqrt(p))
----
----
----
----
----
 exp(p*p**x)
 1/(x + exp(x))
 exp(exp(1/sqrt(p)))
 x**(x/4)
 p + x**p
 sqrt(sqrt(x) + x)
----
----
 exp(p + x)
----
----
----
----
-exp(exp(1/(2*x)))
----
----
----
+exp(exp(1/(p*x)))
+exp(4/x)
 p*exp(sqrt(x))
 x**(1/sqrt(p))
----
 p**(1/4)*sqrt(1/p)
-(p + sqrt(x))**p
+(p + sqrt(x))**2
 x + x**x
-sqrt(p)/(2*sqrt(x))
----
----
+sqrt(2)/(p*sqrt(x))
 exp(exp(p*exp(x)))
-exp(x**(x*x))
----
+exp(x**(x**2))
 exp(p)/x
----
----
----
 exp(x**(p*x))
----
 exp(p**(p*x))
----
-exp(exp((x*x)**p))
----
----
+exp(exp(x**4))
+p**(p/x)
 p*p**x
----
 p + exp(x/2)
----
----
----
 p**(sqrt(x)/2)
----
----
----
----
 p**(x/4)
----
-exp(p*(x*x)**p)
+exp(p*x**4)
 p**(1/4)/x**(1/4)
 p**(1/sqrt(p))
 exp(exp(exp(x))/2)
----
 x/p**(1/4)
 exp(exp(exp(sqrt(x))))
 x**exp(sqrt(x))
----
----
----
 x*exp(exp(x))
----
----
 exp(p*exp(p))
 exp(x/8)
 exp(x)/sqrt(p)
----
----
----
-p**((x*x)**p)
+p**(x**4)
 p/x + x
 x + exp(sqrt(x))
 x/(p + x)
 x**(p*sqrt(x))
----
----
-exp(x + x*x)
----
----
----
+exp(x**2 + x)
+exp(2)
 x*exp(1/x)
----
----
 exp(sqrt(x)/4)
----
-p + (x*x)**p
+p + x**4
 x**(1/16)
----
----
----
----
----
-exp(x*x*x)
----
----
----
+exp(x**3)
 exp(exp(exp(exp(x))))
----
----
----
----
 1/sqrt(p)
----
----
----
----
----
+exp(exp(2/x))
 x/p**x
-x + (x*x)**p
----
----
----
----
-x**((x*x)**p)
----
-(p + x*x)**p
-exp(1/(4*x))
----
----
+x**4 + x
+x**(x**4)
+(p + x**2)**2
 p*x + x
----
+(p + x)**p
 (x/p)**x
----
 x*x**x
 p**(x**p)
 x + exp(1/x)
----
----
----
----
-exp(x)*(x*x)
----
----
----
----
----
----
----
+x**p*exp(x)
 p*x**x
 exp(exp(sqrt(x))/2)
 x**(1/4)*(1/p)**(1/4)
----
 p**exp(1/x)
 exp(exp(sqrt(x)/2))
 x + exp(exp(x))
----
----
----
----
----
----
+exp(1/(p*x**2))
 p/x**x
----
-x**(p/x)
+x**(2/x)
 (p + x)**(1/4)
 exp(exp(x))/x
----
----
 x + 1/sqrt(x)
----
----
----
----
----
----
----
+x**16
 sqrt(x)/sqrt(p)
----
-exp(x*x)/x
+exp(x**2)/x
 exp(x*exp(x))
 exp(exp(exp(p)))
----
-x + exp(x*x)
----
+x + exp(x**2)
 x**(3/4)
----
----
----
----
 (p*x)**p
----
----
 p/(p + x)
 p**(1/4)*x
 p**(1/4) + x
 x*x**p
 x + 1/sqrt(p)
----
 (p/x)**x
----
----
 x*exp(sqrt(x))
-exp(p**(x*x))
+exp(p**(x**2))
 p/x**(1/4)
----
 x**(exp(x)/2)
----
----
 exp(exp(exp(1/x)))
----
 exp(sqrt(x))
-16*(x*x)**p
----
----
 p**exp(sqrt(x))
----
----
-exp(x) + x*x
----
+exp(p/x**2)
+x**2 + exp(x)
 sqrt(exp(cos(atan2(0, p)/2)/sqrt(p)))
----
----
 sqrt(x) + 1/x
----
----
+x**(p/x)
 x**(sqrt(x)/2)
----
 p**exp(exp(x))
----
----
----
+1/(p + x**2)
 exp(x/2)
----
 1/2
----
 exp(exp(p/2))
----
-x**(1/(2*x))
----
----
----
+x**(1/(p*x))
 p**(p*exp(x))
----
 p + exp(p)
----
 p**(1/4)*sqrt(x)
 exp(exp(1/x)/2)
----
----
 x + exp(p*x)
----
----
 sqrt(x)/p**(1/4)
----
----
----
----
----
----
----
-exp(exp(p*(x*x)))
+exp(x)/x**2
+exp(exp(p*x**2))
 x**(p + x)
----
----
----
----
----
----
----
-p**exp(x*x)
----
+2
+p**exp(x**2)
 p/p**x
----
 p + p/x
----
----
----
 x**exp(p)
 x*(p + x)
-exp(exp(exp(x*x)))
-exp(p*x)*(x*x)
----
----
+exp(exp(exp(x**2)))
+x**p*exp(p*x)
 p**(1/4) + p
 x**(p/2)
----
----
----
----
----
 x/x**x
 sqrt(p + x)
 exp(exp(x**p))
----
 exp(x) + 1/x
----
----
----
----
----
 exp(exp(p)/2)
 1/(p + sqrt(x))
----
----
----
 x**exp(exp(x))
----
 sqrt(x) + exp(x)
 p*(p + x)
 exp(x**(1/x))
 x*exp(x/2)
----
-exp((x*x)**p/2)
----
----
----
+exp(x**4/2)
 exp(x/2)/sqrt(x)
-p + exp(x*x)
----
----
----
+p + exp(x**2)
+2**(1/4)*x**(1/4)
 exp(p*exp(exp(x)))
----
----
----
----
----
----
----
+1/(p*x**2)
 x*exp(p*x)
----
----
----
----
+exp(2/sqrt(p))
 exp(x**p/2)
 p + x**(1/4)
-p*exp(x*x)
+p*exp(x**2)
 p**(1/4)/sqrt(x)
----
-p**((x*x)/2)
----
----
----
----
----
+p**(x**2/2)
+2/x
 x**(x**p)
 x**(1/4) + x
----
 exp(p**(x/2))
----
----
 p**(1/4)
 exp(exp(exp(x)/2))
 x**(1/4)
-x**(p*(x*x))
----
+x**(p*x**2)
 p*exp(p)
 (p + x)**x
----
----
----
-p**(p*(x*x))
+p**(p*x**2)
 x**(p**(1/4))
 p**(x**x)
----
----
 exp(exp(p*sqrt(x)))
----
----
-exp(1/(2*sqrt(x)))
----
+exp(1/(p*sqrt(x)))
 exp(exp(x/2)/2)
----
-p*x**p
----
----
+(p + x)**4
 p + p**x
 exp(p**(1/4)/2)
-exp(exp((x*x)/2))
+exp(exp(x**2/2))
 exp(sqrt(x))/x
 p**(1/sqrt(x))
----
----
----
----
----
 exp(p**(1/x))
----
----
 sqrt(x + 1/x)
----
 0**p
----
----
----
 p**exp(x/2)
 exp(sqrt(x) + x)
----
----
----
----
----
----
----
----
----
----
 x**exp(x/2)
----
----
----
----
----
----
----
----
----
----
----
----
----
 exp(x**(3/2))
 p*x**(3/2)
 exp(p**(1/4)*x)
----
----
 exp(x)/(p + x)
 x**(p**(x/2))
-exp(p**(x*x)/2)
----
-exp(exp(x))*(x*x)
----
+exp(p**(x**2)/2)
+x**p*exp(exp(x))
 p*exp(1/sqrt(p))
----
 x**(x**(x/2))
----
-exp(exp(x*x)/x)
----
----
----
----
----
----
+exp(exp(x**2)/x)
+(x + 1/x)**4
+p/x**2 + x
 p + exp(p**2)
 sqrt(x + exp(exp(x)))
 x**p/sqrt(x)
----
----
----
 exp(p**(p*x)/2)
----
----
-exp(p/(p + x))
+exp(2/(p + x))
 exp(exp(exp(p)/2))
----
----
 (x/p)**(sqrt(x))
----
 exp(exp(exp(p*x))/2)
----
----
----
-(p + x)**p/x
+(p + x)**2/x
 1/sqrt(p + x)
----
----
----
 p**(1/8)*sqrt(x)
----
-exp(16*x)
----
 p + exp(p**(1/4))
----
 x*(x + 1/x)
 x**(sqrt(x) + x)
 x**exp(exp(1/x))
-p**(1/(2*sqrt(x)))
----
-exp(sqrt(p)/(2*sqrt(x)))
----
+p**(1/(p*sqrt(x)))
+exp(sqrt(2)/(p*sqrt(x)))
 x*x**(p*x)
----
-sqrt(p)*x**(3/2)
----
----
+sqrt(2)*x**(3/2)
 exp(exp(exp(exp(sqrt(x)))))
 p**(sqrt(x)) + x
 exp(x/p**(1/4))
----
----
----
----
----
 exp((p*x)**x)
----
 exp(exp(p*exp(p)))
----
----
----
----
----
 p + exp(exp(sqrt(x)))
----
----
----
----
----
 exp(x**(x/2)/2)
----
----
----
----
+p + x**8
 sqrt(exp(1/p))
 (p/sqrt(x))**p
 p*exp(p**x)
 exp(exp(x) + 1/x)
-(p*x)**(x*x)
----
----
----
+(p*x)**(x**2)
 exp(p**(p/x))
----
----
-(p*(x*x))**x
----
----
-(p + exp(x*x))**p
----
----
----
----
----
-p**(1/4)*(x*x)
----
----
+(p*x**p)**x
+(p + exp(x**2))**2
+p**(1/4)*x**p
 x**(p**(5/4))
-exp((p + exp(x))**p)
----
----
----
----
+exp((p + exp(x))**2)
 p**(x**p/2)
----
-(x + exp(sqrt(x)))**p
+(x + exp(sqrt(x)))**2
 exp(x**(x**x))
-x**p*(x*x)
+x**(2*p)
 exp(exp(x**(p*x)))
----
----
+exp(x**6)
 exp(p*exp(exp(p)))
 p**(p*exp(sqrt(x)))
----
-p*(x*x*x)
----
 p*x + exp(x)
 1/(x**(1/4)*(1/p)**(1/4))
----
----
----
----
+exp(1/(p + x**2))
 exp(x**(1/16))
 exp(cos(atan2(0, p)/2)/sqrt(p))
-exp(exp(x) + x*x)
----
----
+exp(x**2 + exp(x))
 x + exp(x/4)
----
+exp(exp(2/x**2))
 x*exp(p/x)
----
----
-p**(1/4) + x*x
----
-exp(exp(sqrt(p)))
----
----
-(p*(x*x))**p
----
----
----
----
----
----
+p**(1/4) + x**2
+exp(exp(2/sqrt(p)))
+(p*x**2)**p
 x**p/sqrt(p)
----
-x**p + x*x
----
+x**2 + x**p
 exp(p*exp(p**(1/4)))
 exp(p**(1/16))
----
----
----
----
----
----
----
----
 exp(exp(p**(1/x)))
-exp(exp((x*x)**p)/2)
+exp(exp(x**4)/2)
 x**(exp(exp(x))/2)
-p*exp(p/x)
----
----
----
+p*exp(2/x)
 p + exp(p*sqrt(x))
-(p*x + p)**p
----
----
----
----
----
----
----
+(p*x + p)**2
+p*x**3
 p*exp(x**(1/4))
 x**(p**x/2)
 sqrt(p**(cos(atan2(0, p)/2)/sqrt(p)))
----
----
----
----
-(p + p/x)**p
+(p + p/x)**2
 exp(exp(x/sqrt(p)))
 exp(sqrt(x)) + exp(x)
 p**(p*exp(1/x))
----
-x**(x*x)/x
+x**(x**2)/x
 (p/x)**(sqrt(x))
----
----
----
----
 exp(x*exp(exp(x)))
 x**exp(p/x)
----
 (p + x)/sqrt(p)
 p*exp(x) + p
-p + p*(x*x)
----
----
----
+p*x**2 + p
 p**exp(x**p)
----
-exp(p*exp(p/x))
----
+exp(p*exp(2/x))
 x**p + exp(x)
----
----
----
----
----
----
----
----
----
----
 sqrt(x) + exp(x/2)
----
-exp(p/p**x)
----
----
----
----
----
----
----
----
----
----
-x**exp(1/(2*x))
----
+exp(2/p**x)
+p*exp(p/x)
+1/(p*x**p)
+x**exp(1/(p*x))
 x*exp(x**(1/4))
----
----
-p**(sqrt(p))
----
----
-x**(sqrt(p)*sqrt(x))
----
----
+p**(2/sqrt(p))
+x**(sqrt(2)*sqrt(x))
 p/(x + exp(x))
----
----
----
----
----
----
----
 exp((p/x)**x)
 exp((p*x)**p)
----
 p + exp(p**x)
----
----
 sqrt(x) + exp(p*x)
----
-sqrt(p)*sqrt(x) + p
----
----
+p + sqrt(2)*sqrt(x)
 x + exp(1/sqrt(p))
 exp(exp(p**(5/4)))
----
----
----
----
----
----
----
+exp(4/sqrt(x))
 x**exp(1/sqrt(x))
 x**(exp(1/x)/2)
 1/sqrt(x + 1/x)
----
 exp(1/(sqrt(x) + x))
 exp(exp(sqrt(x))/x)
 p**(1/8)/x
----
 exp(x*x**p)
----
-p**((x*x)**p/2)
----
-(exp(x) + x*x)**p
+p**(x**4/2)
+(x**2 + exp(x))**2
 exp(exp(1/(p + x)))
----
 1/(p*x + p)
----
----
----
-x + exp((x*x)**p)
----
----
----
+x + exp(x**4)
 x**(3/2)*sqrt(1/p)
----
 (p*sqrt(x))**x
-x**((x*x)**p/2)
+x**(x**4/2)
 x*exp(x/4)
----
----
----
----
----
----
----
 p**(1/4) + exp(x)
----
----
----
----
----
----
 x**(p**(1/8))
----
----
 exp(exp(x**(1/4))/2)
----
----
----
----
----
 exp(exp(exp(exp(x))/2))
----
-x/(p + x)**p
+x/(p + x)**2
 p*exp(p*sqrt(x))
----
----
----
----
----
----
+exp(p*x**8)
 p**x + exp(x)
----
+exp(exp(p*x**p))
 exp(exp(x)/2)/x
 exp(p*exp(x)/2)
----
----
-(p + x)*(x*x)
+x**p*(p + x)
 x**(p/sqrt(x))
 exp(p**x/4)
----
-p**(1/(2*sqrt(p)))
 exp(sqrt(x) + 1/x)
----
+p/x**3
 exp(p*exp(exp(1/x)))
-x + exp(1/(2*x))
-sqrt(x + exp(x*x))
+x + exp(1/(p*x))
+sqrt(x + exp(x**2))
 exp(exp(sqrt(x))/4)
----
----
----
----
----
----
+x**8 + x
 exp(p*exp(p**2))
----
----
 p*exp(p/2)
 p/x**exp(x)
----
----
----
-exp(p/x**(1/4))
----
+exp(2/x**(1/4))
 exp(sqrt(x)*sqrt(1/p)/2)
----
-(p + x*x)/x
----
+(p + x**2)/x
 p**exp(1/sqrt(x))
----
----
----
 p/(sqrt(x) + x)
 (p*x)**(1/x)
----
 exp(x + 1/sqrt(p))
----
----
-sqrt(x)*exp(x*x)
----
+sqrt(x)*exp(x**2)
 x/(p + 1/x)
 (p + sqrt(x))**(1/4)
----
----
----
----
 x + exp(exp(exp(x)))
----
----
----
 x**(sqrt(x)*sqrt(1/p))
----
 exp(p/2)/sqrt(x)
----
----
-x**exp((x*x)**p)
----
-p + exp(1/(2*x))
----
----
----
----
----
----
----
+x**exp(x**4)
+p + exp(1/(p*x))
+(x + exp(x))**4
+p**(p/x**2)
 x**(9/8)
----
----
 (p + 1/x)**x
----
----
----
----
----
----
----
----
 p/x**p
 x**(x/8)
----
----
----
----
----
----
----
----
----
 x*exp(sqrt(x)/2)
----
----
----
 p**(exp(p)/2)
 exp(exp(p**(1/4)/2))
----
----
 exp(exp(exp(x**x)))
----
 p/x**(3/2)
 x**exp(p**x)
----
-exp(p)*(x*x)
----
+x**p*exp(p)
 x**(p*p**x)
----
 exp(p*x**(sqrt(x)))
----
-(x*x)/p**x
----
----
+x**(2/x**2)
+x**2/p**x
 exp(exp(exp(1/x)/2))
-exp((x + 1/x)**p)
----
----
+exp((x + 1/x)**2)
+exp(4)
 1/(p/x + x)
 p**(x + exp(x))
-exp(x*x*x*x*x)
----
----
----
-exp(x + exp(x*x))
----
-p**x*(x*x)
+exp(x**5)
+exp(x + exp(x**2))
+p**x*x**p
 exp(x**(exp(x)/2))
----
-exp(p*(x*x))/x
----
----
----
----
----
+exp(p*x**2)/x
 exp(1/(p + exp(x)))
----
----
 exp(p*x**exp(x))
----
----
----
----
----
----
----
 p/sqrt(x) + x
----
----
----
+x/x**(x**2)
 x/x**(p*x)
 (p*x)**(sqrt(x))
----
----
----
-exp(x*x)/sqrt(x)
+exp(p/x**4)
+exp(x**2)/sqrt(x)
 exp(x/2 + exp(x)/2)
-exp(x**((x*x)**p))
----
----
----
----
----
----
----
----
----
----
+exp(x**(x**4))
 p**x/sqrt(p)
----
----
 exp(x/4)/x
----
----
----
----
 (sqrt(x) + x)**(1/4)
----
----
----
 p + 1/p
----
----
-exp(p*x) + x*x
----
----
----
+x**2 + exp(p*x)
 sqrt(p)*x
-sqrt(p + x*x)
----
-exp((x*x)**p/4)
-p*exp((x*x)/2)
----
+sqrt(p + x**2)
+exp(x**4/4)
+p*exp(x**2/2)
 exp(p*exp(x**p))
----
 x*exp(exp(x/2))
----
 p**(x/2)/sqrt(x)
 1/(exp(x) + 1/x)
----
----
----
 p*exp(1/sqrt(x))
-(1/(2*x))**x
-exp(x**(x*x)/2)
----
----
-256*(x*x)**p
----
----
----
----
----
+(1/(p*x))**x
+exp(x**(x**2)/2)
 exp(p**(x/2)/2)
----
----
----
----
----
-(x + x*x)/x
----
----
----
+(x**2 + x)/x
 1/(p**x + x)
-(exp(x) + 1/x)**p
-exp(p**(3/2)*sqrt(x))
----
+(exp(x) + 1/x)**2
+exp(sqrt(2)*p*sqrt(x))
+1/(x**4 + x)
 exp(x/2) + 1/x
----
 exp(cos(atan2(0, p)/2)/sqrt(p))**x
----
----
 exp(p*exp(x**(1/4)))
----
----
 exp(x**exp(x)/2)
----
----
----
 x**(p*exp(p*x))
----
----
----
----
----
+(p + 1/x)**4
 x + exp(p*sqrt(x))
----
 sqrt(x + 1/sqrt(x))
 (p + x)**(x/2)
----
----
----
----
----
----
+p**(p*x)/x**2
 exp(exp(exp(p/2)))
 p**(p**exp(x))
----
----
----
----
----
----
 exp(x*exp(x/2))
----
 x**(x + 1/x)
----
----
 p**(p*x**x)
----
-exp((p + x)**p/2)
+exp((p + x)**2/2)
 x**(exp(x/2)/2)
 exp(p*x**(1/x))
----
----
-(x + x*x)**x
----
+(x**2 + x)**x
+exp(x**2)/x**2
 exp(exp(p)/x)
----
 p + p**(x/2)
 p/p**(p*x)
 x*x**(sqrt(x))
----
 x + exp(exp(p*x))
 p**exp(exp(sqrt(x)))
 p**(x/2) + x
----
----
----
----
----
----
----
----
----
-exp((sqrt(x) + x)**p)
+exp((sqrt(x) + x)**2)
 x**(x**(1/4)/2)
-exp(sqrt(x + x*x))
-(x*x)**p/p
----
----
----
----
----
----
----
----
+exp(sqrt(x**2 + x))
+x**4/p
 exp(sqrt(x)/2)/x
----
----
----
 exp(p**2 + p*x)
 p/x + sqrt(x)
----
----
----
 p**(exp(x/2)/2)
----
----
----
----
 p*exp(x) + x
----
----
-exp(p/(2*x))
----
----
----
-sqrt(sqrt(x) + x*x)
----
----
----
----
+sqrt(sqrt(x) + x**2)
+exp(exp(2))
 x**exp(exp(x/2))
 p*exp(x**x)
 sqrt(exp(1/(p + x)))
----
----
-exp((x*x)/p)
----
----
-(x*x)*exp(p*(x*x))
----
----
----
----
----
----
----
----
-(x*x)**16
-exp(x/2)*(x*x)
-p + x*x*x
----
+x**12
+exp(x**2/p)
+exp(4/sqrt(p))
+x**p*exp(p*x**2)
+x**32
+x**p*exp(x/2)
+p + x**3
 exp(p**x)/x
-(x*x)/(p + x)**p
----
----
----
----
----
+x**2/(p + x)**2
 1/(p**(1/4)*sqrt(x))
----
----
 exp(x/4)/sqrt(x)
----
 p**(9/8)
 exp(x/2)/sqrt(p)
 sqrt(x)/x**x
 sqrt(x)/(p + x)
 (x/p)**exp(x)
----
 exp(exp(p*exp(1/x)))
----
----
----
----
----
 x**(1/x)/x
----
 exp(cos(atan2(0, p)/2)/sqrt(p))**(1/4)
 exp(x/p)
----
----
-0**(p**p)
----
----
----
-(p + exp(p))**p
----
+0**(p**2)
+(p + exp(p))**2
 exp(exp(x**(3/2)))
-x*x + 1/sqrt(p)
----
+x**2 + 1/sqrt(p)
 exp(x**exp(p))
----
----
 p**(x/2)/x
 x**(x**x/2)
----
----
----
----
----
----
 p*x**(x/2)
-(x + x**x)**p
----
----
+(x + x**x)**2
 p**(p*x + p)
----
----
----
----
----
 exp(exp(exp(x)/4))
----
----
----
----
----
----
----
----
 exp(exp(x**(1/4)/2))
----
-exp(p*(x*x)/2)
----
----
----
-exp(exp(exp(x*x)/2))
+exp(x/2)/x**2
+exp(p*x**p/2)
+exp(exp(exp(x**2)/2))
 exp(1/(x + 1/x))
-(p + 1/sqrt(p))**p
----
----
----
----
+(p + 1/sqrt(p))**2
 x*exp(p**x)
-(p**(1/4) + x)**p
+(p**(1/4) + x)**2
 E/x
----
 p*(x + 1/x)
 p**exp(sqrt(x)/2)
----
----
-p**(3/2)*sqrt(x)
----
+sqrt(2)*p*sqrt(x)
 exp(exp(p/2)/2)
 x*(x + exp(x))
----
----
----
----
 x/p**p
----
----
----
----
----
----
----
----
----
+exp(4/x**2)
 p**(1/x) + x
 x + exp(p**x)
----
----
----
 (sqrt(x) + x)/x
-p*(x*x) + x
+p*x**2 + x
 exp(p**(1/4)/4)
 (exp(x)/p)**p
 x**(p*exp(1/x))
 p + x*exp(x)
 x**exp(x)/x
----
----
 exp(p) + exp(x)
----
----
+p**(2/x**2)
 p**(1/8)/sqrt(x)
----
----
 p**exp(x**(1/4))
----
----
----
----
----
 x**(1/4)*exp(x/2)
----
----
----
----
 p*(x + exp(x))
 exp(p*x**(1/8))
-x**(3*x/2)
+x**(p*x/2)
 x**(p + 1/x)
----
----
----
 exp(1/sqrt(p))/x
----
----
 exp(x**(x**p))
 exp(p)/sqrt(p)
----
----
-x*p**(x*x)
----
-(p + x**p)**p
-(p**x + x)**p
----
+p**(x**2)*x
+(p + x**p)**2
+(p**x + x)**2
 exp(exp(exp(x**p)))
----
----
----
----
----
 x + exp(exp(sqrt(x)))
 exp(p**exp(1/x))
----
----
----
----
----
----
----
----
----
 exp(sqrt(x + 1/x))
----
----
----
----
----
----
----
 exp(x/2)/p**(1/4)
----
----
----
----
----
----
----
 p**exp(p/2)
----
-(1/(p*x))**x
 exp(exp(x**(sqrt(x))))
 exp(x**(1/4))/x
-p*exp((x*x)**p)
----
-((x*x)/p)**x
----
----
+p*exp(x**4)
+(x**p/p)**x
 p + exp(x**p)
----
----
----
----
----
----
----
----
 sqrt(x)*(1/p)**(1/4)
----
 x**exp(exp(p*x))
----
-p**exp((x*x)**p)
----
-exp(exp(exp(1/(2*x))))
----
----
----
----
+p**exp(x**4)
+exp(exp(exp(1/(p*x))))
+p/x**8
+exp(p*x)/x**4
+exp(exp(sqrt(p)))
 exp(p*exp(exp(exp(x))))
----
 exp(x**exp(x/2))
 x + x**(x/2)
-exp(1/x)*(x*x)
+x**p*exp(1/x)
 p*exp(exp(p*x))
 (p/x)**(1/x)
 p**(exp(sqrt(x))/2)
 exp(x**(3/2)/2)
----
----
----
----
----
 1/sqrt(sqrt(x) + x)
 p**(1/x)/x
----
----
----
----
 sqrt(x)*exp(p/2)
----
 1/sqrt(exp(cos(atan2(0, p)/2)/sqrt(p)))
----
----
 exp(p/2 + x/2)
 exp(exp(p/sqrt(x)))
----
----
----
----
+p/(x**2 + x)
 x/x**(x/2)
 p**(1/(p + x))
 1/(x + exp(1/x))
----
----
 x*exp(exp(p))
----
----
----
+exp(exp(p*x)/x**2)
 exp(sqrt(x)/2)/sqrt(x)
----
----
 exp(p*sqrt(x)/2)
----
 x**exp(exp(sqrt(x)))
----
-p**p*x**p
+2**p*x**p
 exp(x**exp(sqrt(x)))
-x*x*x*x*x*x*x
----
----
----
+x**7
 p**(1/32)
 p*(p + sqrt(x))
----
----
----
----
----
 exp(x*exp(sqrt(x)))
 sqrt(x)/p**(x/2)
 x**exp(p/2)
 p**(p*x) + x
----
----
----
----
 exp(exp(exp(1/sqrt(x))))
-exp(x*exp(x*x))
----
+exp(x*exp(x**2))
 p*exp(exp(sqrt(x)))
----
 exp(exp(x/8))
----
----
 1/(x + 1/sqrt(p))
----
----
-p/(p + x)**p
+p/(p + x)**2
 exp(sqrt(x)*exp(x))
----
 x**exp(x**x)
----
----
 p**(exp(1/x)/2)
----
 p*p**(p*x)
----
 1/(sqrt(x) + 1/x)
----
----
----
 exp(x**(5/2))
 exp(x**(1/4)*(1/p)**(1/4))
----
----
----
-p*exp(p*(x*x))
----
+p*exp(p*x**2)
 p*x**exp(x)
-(p + x)**(x*x)
----
-exp(p/x)*(x*x)
----
----
+(p + x)**(x**2)
+x**p*exp(2/x)
 1/(p + x**p)
----
----
 exp(p**(p*sqrt(x)))
 p**exp(1/sqrt(p))
----
----
 exp(p*x**(x/2))
----
----
-exp(exp(x**(x*x)))
----
+x**(4/x)
+exp(exp(x**(x**2)))
 1/(x + exp(x/2))
----
----
----
-exp(exp(x)/(2*x))
----
-exp(x*x)/sqrt(p)
----
+exp(exp(x)/(p*x))
+exp(x**2)/sqrt(p)
 exp(exp(p**exp(x)))
----
----
----
----
----
----
----
 exp(x**(5/4))
----
 1/(p + exp(x/2))
----
----
----
----
----
 p*exp(p**2)
 p/p**p
-exp(x*x) + 1/x
----
-exp(p*exp((x*x)**p))
+exp(x**2) + 1/x
+exp(p*exp(x**4))
 p*exp(x**p)
----
----
----
 exp(sqrt(x)/2 + x/2)
 x**exp(sqrt(x)/2)
----
----
 exp(p*p**exp(x))
 exp(1/x)*exp(x)
-exp(p**exp(x*x))
----
+exp(p**exp(x**2))
 exp(exp(exp(exp(exp(x)))))
-x + exp(p*(x*x))
----
+x + exp(p*x**2)
 exp(x + exp(p))
----
----
----
----
----
----
 exp(exp(exp(x))/x)
----
----
 p*exp(x)/x
-x**(p**(x*x))
-x**p*exp(x)
----
----
----
----
----
+x**(p**(x**2))
+x**x/x**2
 x**(p**(1/x))
----
----
----
----
 exp(exp(p*exp(p*x)))
----
----
----
----
 x*exp(1/sqrt(x))
----
 p**(p + sqrt(x))
----
----
----
----
 exp(exp(p*p**x))
----
----
----
----
----
+p**(4/x)
 sqrt(1/p)*exp(exp(x)/2)
----
----
----
----
 exp(p*sqrt(x) + p*x)
----
----
 x**(3/8)
 p/x**(p*x)
----
----
----
----
----
----
----
----
----
----
 p**2*x
----
-exp(p*x)*(x*x)**p
-exp(p**((x*x)/2))
----
----
-p + exp((x*x)**p)
----
+exp(p**(x**2/2))
+p + exp(x**4)
 p/(p + exp(x))
 (x/p)**(p*x)
 exp(p*x)/sqrt(x)
 p**x + sqrt(x)
 (p*x)**(x/2)
----
-exp(p*p**(x*x))
+exp(p*p**(x**2))
 p**(p**(x/2))
 exp(p**(sqrt(x))/2)
 exp(p**2*x)
----
----
 p + sqrt(x) + x
----
-exp(x)/(2*x)
+p**(1/(p*x**2))
+exp(x)/(p*x)
 x**(1/8) + x
 x**exp(x**p)
----
----
----
 exp(p**(p**x))
----
----
+(p/x**2)**x
 exp(exp(exp(x**(1/4))))
 x + exp(x**p)
----
----
----
-exp((x*x)**p)/x
----
+exp(x**4)/x
 p**(p**(1/8))
 exp(exp(1/x))/x
 exp(x**x)/x
----
----
 1/(x*x**x)
 1/(p + exp(1/x))
 exp(sqrt(exp(cos(atan2(0, p)/2)/sqrt(p))))
 x + exp(exp(p))
 (exp(x)/p)**x
 1/(sqrt(x) + exp(x))
----
----
----
----
----
----
----
----
 exp(x + exp(p*x))
 exp(p**(p**(1/4)))
----
----
----
----
----
----
----
 exp(x**(p**x))
 p*x**(1/x)
----
 x**(p**exp(x))
----
----
----
----
 x**(p*x)/x
----
 p*exp(exp(x)/2)
-x*x + (x*x)**p
----
----
----
----
----
----
-p + exp(p*(x*x))
----
----
-exp(p*exp(1/(2*x)))
-exp(exp(p*exp(x*x)))
----
+x**4 + x**2
+p + exp(p*x**2)
+p/p**(x**2)
+exp(p*exp(1/(p*x)))
+exp(exp(p*exp(x**2)))
 p*sqrt(x) + p
----
-sqrt(x + (x*x)**p)
+sqrt(x**4 + x)
 p**(1/p)
----
----
+exp(p*x**2)/x**2
 p + exp(exp(p))
----
-p**exp(p/x)
----
----
----
----
----
----
+p**exp(2/x)
 p + exp(x**(1/4))
----
 1/x + 1/sqrt(p)
----
 1/(p**(1/4) + p)
----
-(p + p**x)**p
----
+(p + p**x)**2
 p*x + 1/x
----
-(1/(2*x))**p
----
----
+(1/(p*x))**p
 exp(E/2)
----
 (sqrt(x)*sqrt(1/p))**x
 exp(x/4)/x**(1/4)
----
 x + x**(sqrt(x))
----
 p**(x**(p*x))
----
----
----
----
 exp(exp(p**(sqrt(x))))
----
----
 p**(p/4)
----
 exp(exp(x/2)/x)
----
----
 p + exp(exp(p*x))
----
----
----
----
----
-(x**(1/4) + x)**p
+exp(exp(2/sqrt(x)))
+p + p/x**2
+(x**(1/4) + x)**2
 p**(1/8) + x
----
----
 exp((x/p)**p)
 x/p**(1/8)
----
----
----
----
----
 x*(sqrt(x) + x)
----
----
----
----
----
-sqrt(p)*sqrt(x) + x
----
----
----
----
+sqrt(2)*sqrt(x) + x
 exp(x**p/4)
 exp(x**(3/4))
----
----
----
----
----
 exp(1/(p + 1/x))
----
 exp(p**2/sqrt(x))
----
----
-exp(16*(x*x)**p)
 p*(p + 1/x)
----
----
----
-x + exp(p/x)
----
-exp(1/(2*x**x))
----
----
----
----
+x + exp(2/x)
+exp(1/(p*x**x))
+p/(p + x**2)
 exp(sqrt(x)/sqrt(p))
 exp(1/(x + exp(x)))
----
----
 exp(p*x**(3/2))
 exp(p**x + x)
----
----
 p + x**(3/2)
----
----
 exp(x)/p**x
 (x/p)**(x/2)
----
----
----
----
----
 p*(sqrt(x) + x)
 exp(exp(p/x)/2)
----
 x + exp(exp(1/x))
----
----
----
 x**(p*exp(sqrt(x)))
-(p + x)**p*(x*x)
----
----
----
----
----
----
----
----
----
----
----
+x**p*(p + x)**2
+exp((p + x)**4)
 exp(exp(exp(x/2))/2)
----
----
----
----
----
-p**(sqrt(p)*sqrt(x))
----
----
----
----
----
+1/(sqrt(p)*x**p)
+p**(sqrt(2)*sqrt(x))
 x*exp(p**(1/4))
 x + exp(p/2)
-exp(p/x**x)
----
+exp(2/x**x)
 exp(p**exp(sqrt(x)))
----
----
-x**(1/(2*sqrt(p)))
----
----
----
 exp(p**(p/2))
----
 x + exp(p**2)
----
----
-x + exp((x*x)/2)
----
----
----
----
+x + exp(x**2/2)
 (p + x)**(sqrt(x))
----
 exp(exp(x**exp(x)))
 1/(p + exp(exp(x)))
----
+exp(p*sqrt(x))/x**2
 sqrt(p)/x
----
----
 p/x**(sqrt(x))
 x**(9/4)
----
----
 exp(x) + exp(p*x)
 exp(x + 1/sqrt(x))
 (p*exp(x))**p
----
----
----
----
 p/x + exp(x)
-exp((x*x)/8)
-exp(x) + exp(x*x)
----
----
----
----
----
----
----
----
-(x*x)/(p + x)
----
----
----
----
----
----
----
----
----
----
----
+exp(x**2/8)
+exp(x) + exp(x**2)
+x**2/(p + x)
 p*x**(1/8)
----
-x**exp(p*(x*x))
----
----
----
----
----
----
----
----
+x**exp(p*x**2)
 exp(x**(sqrt(x)/2))
----
 1/4
----
----
----
----
-(x + 1/sqrt(x))**p
+(x + 1/sqrt(x))**2
 p**(1/8)/x**(1/4)
 p*exp(x/4)
----
----
----
----
----
----
 exp(exp(x**(x/2)))
----
----
----
----
----
----
+(sqrt(x) + x)**p
+(p + x**2)**4
 p*(p + x)**p
-x + x**(x*x)
----
+x + x**(x**2)
 exp(exp(p**x)/2)
 E*p
----
----
 exp(exp(exp(p*exp(x))))
 p*sqrt(x) + x
----
----
----
----
----
----
----
+1/sqrt(x**2 + x)
+1/(p + x**4)
 exp(p**(1/4)/sqrt(x))
----
----
----
----
 1/(p + 1/sqrt(p))
----
 x*exp(exp(1/x))
----
----
-p*x + x*x
+exp(exp(p/x**2))
+p*x + x**2
 (p*x)**exp(x)
----
----
-exp(1/(2*x))/x
----
+exp(1/(p*x))/x
 exp(exp(re(p**p))*cos(im(p**p))/2)
----
----
----
----
----
----
----
----
 1/(p + x**x)
-(p**(1/4) + p)**p
----
+(p**(1/4) + p)**2
 (x/sqrt(p))**p
 exp(exp(p*x**x))
-(x + exp(x/2))**p
----
----
----
----
----
----
+(x + exp(x/2))**2
 x**(1/4)/sqrt(p)
----
 exp(exp(exp(x)/2)/2)
----
----
 sqrt(x)*exp(x/4)
 p*x*exp(x)
----
 x**(p*x**x)
----
 p**exp(x)/x
----
----
----
 sqrt(exp(sqrt(p)*cos(atan2(0, p)/2)))
----
 p**(x/2)*x
----
----
 exp(x + exp(1/x))
----
 exp(x*x**x)
----
----
----
 x**(p/4)
----
----
 E*x
----
----
+4
 x**(5/8)
----
----
----
 x**(x/sqrt(p))
----
 x*exp(1/sqrt(p))
----
----
----
----
----
-exp(1/x) + x*x
----
----
+x**2 + exp(1/x)
 p*exp(exp(1/x))
 sqrt(p + sqrt(x))
----
----
----
 p/x + 1/x
-p**((p + x)**p)
----
----
+p**((p + x)**2)
 exp(exp(exp(p**2)))
----
----
----
 x**(7/8)
----
----
 exp(1/x) + 1/x
----
 x**exp(1/sqrt(p))
----
----
 exp(p*p**(x/2))
 x/x**exp(x)
----
----
----
----
----
+exp(1/(p*x**4))
 exp(exp(exp(1/sqrt(p))))
 exp(x**(p/x))
----
----
 p*p**(sqrt(x))
----
----
----
----
 sqrt(x)*exp(sqrt(x)/2)
----
----
----
----
----
 p*p**(x/2)
----
----
----
 x**(x**(1/8))
----
----
-p/(2*x)
 exp(p*sqrt(x))/x
----
 exp(p/8)
 sqrt(x)/p
----
----
----
----
----
 exp(p*exp(p*exp(x)))
-(x/p)**(x*x)
----
----
----
-sqrt(x*x + 1/x)
-p**(1/8)*x**(1/8)
----
----
----
+(x/p)**(x**2)
+sqrt(x**2 + 1/x)
+2**(1/8)*x**(1/8)
 (p/x)**exp(x)
----
----
 sqrt(1/p)*exp(sqrt(x)/2)
-x + exp(exp(x*x))
+x + exp(exp(x**2))
 p**(1/4)/x**(1/8)
----
 exp(exp(p*x)/x)
----
-exp((x + exp(x))**p)
----
----
----
----
----
+exp((x + exp(x))**2)
 exp(p**2*exp(x))
----
----
----
 p**exp(p*exp(x))
----
 exp(x**(1/sqrt(p)))
----
 (x + exp(x))**x
 exp(1/(p + sqrt(x)))
----
-x*exp(p*(x*x))
----
+x*exp(p*x**2)
 1/(x + exp(p*x))
----
 exp(x + exp(exp(x)))
----
----
----
 p**exp(p**2)
----
----
+exp(exp(4/x))
 sqrt(p) + p
-(p*x + x)**p
----
----
+(p*x + x)**2
 x*exp(exp(x)/2)
----
----
-exp((p + x*x)**p)
----
----
----
----
----
----
+exp((p + x**2)**2)
 x*(p + exp(x))
----
 exp(x**(1/4)*sqrt(1/p))
----
----
----
----
----
----
----
----
----
 exp(exp(p**(1/4))/2)
----
 p + p**(sqrt(x))
----
----
----
-exp(sqrt(p)*sqrt(x)/2)
+exp(sqrt(2)*sqrt(x)/2)
 exp(exp(x/2))/x
-(x*x)*exp(x*x)
+x**p*exp(x**2)
 p/p**(1/x)
----
 p**(sqrt(x)/4)
----
----
----
----
----
----
----
-sqrt(exp(x) + x*x)
----
-p**2*(x*x)
----
----
+sqrt(x**2 + exp(x))
+p**2*x**p
 exp(p/2)/sqrt(p)
----
----
----
 exp(1/(sqrt(p)*sqrt(x)))
----
 (p*exp(x))**x
 (p + 1/x)/x
 x**(1/(p + x))
----
----
----
----
 p + x**(1/8)
----
----
 sqrt(p + 1/x)
-x + 1/(2*x)
----
----
-exp((p + 1/x)**p)
----
----
----
+x + 1/(p*x)
+exp((p + 1/x)**2)
 exp(x*exp(p*x))
----
 (x + exp(x))**(1/4)
 exp(p*p**(sqrt(x)))
 exp(exp(exp(p**x)))
 1/(p**(1/4) + x)
----
----
----
-exp(x*x + 1/x)
-(p + exp(sqrt(x)))**p
----
----
----
+exp(x**2 + 1/x)
+(p + exp(sqrt(x)))**2
 1/(x + 1/sqrt(x))
----
-x**(p*(x*x)**p)
-exp(sqrt(x)) + x*x
----
----
+x**(p*x**4)
+x**2 + exp(sqrt(x))
 0**(sqrt(p))
 x*exp(x) + x
 p**exp(exp(p*x))
----
----
 p**(sqrt(p + x))
----
----
----
 x**(1/8)*(1/p)**(1/8)
----
----
+(p + x**2)**p
 x**E
-p**(3/2)/sqrt(x)
----
----
----
----
----
----
----
----
+sqrt(2)*p/sqrt(x)
+1/(x**2 + exp(x))
+exp(exp(1/(p*x**2)))
 x**(1/4) + exp(x)
----
----
----
----
----
 exp(p + sqrt(x))
----
-exp((x*x*x)/2)
+exp(x**3/2)
 exp(x) + 1/sqrt(p)
-(x + 1/sqrt(p))**p
+(x + 1/sqrt(p))**2
 exp(exp(exp(p*sqrt(x))))
----
----
----
 p**exp(exp(p))
----
----
----
-exp(1/(2*x**(1/4)))
----
+exp(1/(p*x**(1/4)))
 p**(1/8)*x
----
 sqrt(p*x + x)
 (p + x)/sqrt(x)
----
----
----
----
+(x**2 + x)**p
 exp(exp(exp(exp(x)/2)))
----
----
----
----
----
----
 exp(E*p)
-p**(3/2)/(2*sqrt(x))
----
----
-(x*x)/p**(1/4)
----
----
----
+sqrt(2)/sqrt(x)
+x**2/p**(1/4)
+(p + x)**8
 p**(p**x/2)
 p*exp(exp(exp(x)))
----
----
 p**(p**(1/x))
 x/p**(sqrt(x))
 p/(x + 1/x)
----
----
----
----
----
 p**(x**(3/2))
-exp(exp(p**(x*x)))
----
----
----
+exp(exp(p**(x**2)))
 (p/x)**(x/2)
 sqrt(x + x**p)
 sqrt(x)*(p + x)
----
----
----
 x*exp(exp(sqrt(x)))
----
----
----
 exp(exp(exp(x)))/x
----
----
----
----
 exp(p**(sqrt(x)/2))
 p**x/sqrt(x)
----
----
-x**exp(exp(x*x))
----
+x**exp(exp(x**2))
 exp(x**(p**2))
----
----
 exp(exp(p**(p*x)))
----
----
----
 x**(x/2)/x
----
----
-exp(p*exp(p*(x*x)))
----
+exp(p*exp(p*x**2))
 exp(exp(1/sqrt(x))/2)
----
 exp(p**2/x)
----
 exp(p**(1/8)/2)
----
-x**(p*exp(x*x))
+x**(p*exp(x**2))
 x/(x + 1/x)
 sqrt(x) + exp(exp(x))
----
----
-exp(p**(1/4)*x**(1/4))
----
-sqrt(1/p)*exp((x*x)/2)
----
+exp(2**(1/4)*x**(1/4))
+sqrt(1/p)*exp(x**2/2)
 exp(p**(1/sqrt(p)))
----
 x/p**(1/x)
----
----
----
 x**(7/2)
----
----
----
----
+exp(exp(x))/x**2
 p*exp(p*exp(x))
----
----
----
----
-exp(x**(1/(2*x)))
+exp(x**(1/(p*x)))
 x**exp(p**(1/4))
 x*exp(p*sqrt(x))
----
----
----
 x + x**exp(x)
----
----
----
-exp((x + x*x)**p)
----
----
----
----
+exp((x**2 + x)**2)
 x**(9/2)
----
----
----
----
+(sqrt(x) + x)**4
 x + exp(sqrt(x)/2)
----
----
 exp(p*x*exp(x))
----
 (exp(x)/x)**x
----
 p + sqrt(x)/sqrt(p)
----
----
-exp(x/2 + (x*x)/2)
+exp(x**2/2 + x/2)
 p + exp(exp(1/x))
 exp(exp(p*exp(exp(x))))
----
----
----
----
----
----
----
+exp(p)/x**2
 x**(1/4)*exp(x/4)
----
----
----
----
-exp(p**(3/4))
+exp(exp(x)/x**2)
+exp(2/p**(1/4))
 exp(p*exp(1/sqrt(p)))
-p*exp(exp(x*x))
----
-exp((x*x)/2)/x
+p*exp(exp(x**2))
+exp(x**2/2)/x
 oo*p
 exp(exp(p)/4)
 x + x**(1/x)
-exp(exp(p*(x*x)**p))
----
----
----
----
----
----
----
----
----
+exp(exp(p*x**4))
+exp(x**16)
 p**exp(exp(x)/2)
----
----
----
----
----
----
----
 (x/p)**(1/x)
----
----
----
-x**(x + x*x)
-((x*x)/p)**p
----
----
+x**(x**2 + x)
+(x**p/p)**p
 exp(p*x + x)
----
----
----
----
 p*x**(p*x)
-exp(exp(sqrt(p)*sqrt(x)))
----
----
-sqrt(p)*sqrt(x)/2
----
----
----
-exp((x*x)/2)/sqrt(x)
----
----
-exp(exp(exp((x*x)/2)))
+exp(exp(sqrt(2)*sqrt(x)))
+sqrt(2)*sqrt(x)/2
+exp(x**2/2)/sqrt(x)
+p*(p + x)**2
+exp(exp(exp(x**2/2)))
 sqrt(p**x + x)
----
----
----
----
----
-(p/x)**(x*x)
-x**(sqrt(p))
----
----
----
----
+(p/x)**(x**2)
+x**(2/sqrt(p))
+(p + 1/x)**p
 x/(p + exp(x))
----
----
----
----
----
-exp(p*(x*x*x))
----
+exp(p*x**3)
 sqrt(x) + 1/sqrt(p)
----
----
 x**(sqrt(p + x))
 exp(exp(x**(1/8)))
 exp(exp(p*sqrt(x))/2)
-exp(p*exp(x))*(x*x)
+x**p*exp(p*exp(x))
 exp(sqrt(x)) + 1/x
-x*x + 1/sqrt(x)
-p + exp(p/x)
+x**2 + 1/sqrt(x)
+p + exp(2/x)
 p**(p*x)/x
----
----
----
----
----
----
----
 sqrt(x**(cos(atan2(0, p)/2)/sqrt(p)))
----
-x*(p + x)**p
+x*(p + x)**2
 p*p**(1/x)
----
----
 x**(7/4)
----
----
 1/(p + exp(p))
----
----
 (x + 1/x)**(1/4)
 exp(p*exp(x))/x
----
----
----
----
----
-p**(p*x)*(x*x)
----
----
----
----
----
----
----
----
-exp(exp(x)*(x*x))
----
----
----
----
+p**(p*x)*x**p
+exp(p**(3/4))
+exp(x**p*exp(x))
 x*x**(x/2)
 x**(p**(p*x))
 p*exp(exp(x/2))
 x + 1/(p + x)
 exp(p) + 1/x
-exp(p**(1/(2*x)))
----
----
+exp(p**(1/(p*x)))
 exp(exp(exp(p**(1/4))))
----
----
----
----
-exp(sqrt(x))*(x*x)
----
+x**p*exp(sqrt(x))
 sqrt(exp(x) + 1/x)
----
----
 exp(exp(sqrt(x)/4))
 exp(x + exp(sqrt(x)))
-exp(p*exp((x*x)/2))
----
----
----
-p**(exp(x*x)/2)
----
----
----
----
----
----
----
----
----
----
----
----
----
+exp(p*exp(x**2/2))
+p**(exp(x**2)/2)
 x**exp(x/4)
----
----
----
 p/(p + 1/x)
----
----
----
-exp((x*x)/sqrt(p))
+exp(sqrt(x))/x**2
+exp(x**2/sqrt(p))
 p**(1/4) + 1/x
----
----
----
 sqrt(x) + x**p
----
----
-exp(1/(4*sqrt(x)))
----
 exp(p*sqrt(x)*sqrt(1/p))
----
 exp(exp(x*exp(x)))
----
 exp((p + x)**x)
----
 p**exp(exp(1/x))
----
 p/x**(x/2)
 exp(p*x)/sqrt(p)
 x**x/sqrt(x)
----
----
 exp(exp(exp(x)/x))
----
----
-(x + x*x)**(1/4)
----
----
+exp(p/x**(1/4))
+(x**2 + x)**(1/4)
 exp(exp(p**(1/8)))
----
 p**(x/2)*sqrt(1/p)
----
-(sqrt(p)*sqrt(x))**x
+(sqrt(2)*sqrt(x))**x
 p**(1/x)*x
----
----
----
----
----
 exp(exp(sqrt(x)/2)/2)
----
----
----
 exp(p/2)/x
----
----
-x**(x*x*x)
----
+x**(x**3)
 exp(exp(x + exp(x)))
----
----
----
----
 exp(x/x**x)
----
----
 exp(x + exp(x/2))
----
----
----
 p + exp(exp(x/2))
----
----
----
----
----
----
----
 exp(x**exp(p*x))
----
----
 exp(exp(x + 1/x))
----
-(x*x + 1/x)**p
----
+(x**2 + 1/x)**2
 p**(x**(sqrt(x)))
-exp(exp(exp(p*(x*x))))
----
+exp(exp(exp(p*x**2)))
 p + exp(exp(x)/2)
----
 exp(sqrt(sqrt(x) + x))
----
----
-sqrt(p)/sqrt(x)
----
----
----
 p**(1/4)*exp(x/4)
----
----
 p + x + 1/x
----
----
----
----
 exp(p*p**(p*x))
----
----
----
----
-sqrt(p)*exp(x/2)
----
----
----
----
----
----
----
----
----
+sqrt(2)*exp(x/2)
 x**(exp(x)/x)
 exp(exp(exp(p))/2)
----
----
----
 exp(exp(x))/sqrt(p)
 x**(exp(p)/2)
----
----
----
----
+1/(sqrt(x) + x**2)
 exp(p**(p**2))
----
----
----
----
----
----
----
----
----
----
 sqrt(x) + 1/sqrt(x)
----
----
----
 exp((p/x)**p)
 x**(exp(x)/4)
-exp(p**2)*(x*x)
-x**(p*x)*(x*x)
+x**p*exp(p**2)
+x**p*x**(p*x)
 p**(x**(1/x))
 x**(x**(p*x))
-sqrt(exp(exp(1/4)*cos(atan2(0, exp(1/p))/2)))
+sqrt(exp(exp(2/p)**(1/4)*cos(atan2(0, exp(1/p))/2)))
 exp(p*p**(1/x))
-(p + x*x)**x
----
+(p + x**2)**x
 (p/x)**(p*x)
----
 sqrt(x + exp(x/2))
----
 x**(x + exp(x))
----
 exp(p**(1/4)*sqrt(x))
----
----
----
-p**((x*x)/4)
----
----
----
+p**(x**2/4)
 (p*sqrt(x))**p
----
----
----
----
----
-exp(exp(x*x*x))
----
+exp(p/p**x)
+exp(exp(x**3))
 exp(exp(x/4)/2)
----
----
----
----
----
----
----
----
+x + exp(p/x)
 p*x + sqrt(x)
----
-exp(p/x)/x
+exp(2/x)/x
 p*x**(sqrt(x))
 exp(p**(1/4)/x**(1/4))
 p/(p + sqrt(x))
 x*exp(exp(exp(x)))
 exp(p)/sqrt(x)
----
----
----
+sqrt(2)*x
 exp(exp(x/2)/4)
-exp(exp(1/(2*sqrt(x))))
----
----
+exp(exp(1/(p*sqrt(x))))
 exp(x/2)/x**(1/4)
----
----
----
 exp(exp(E))
----
----
----
----
 sqrt(x)*x**p
----
 exp(p*x/2)
----
 exp(x)/x**(1/4)
----
----
----
 exp(exp(1/x)/4)
 p + x**(1/x)
----
----
-(p + x**(1/4))**p
----
----
+(p + x**(1/4))**2
 1 + 1/x
----
----
 exp(x + x**x)
-(x*x)/x**x
----
----
----
----
-(p + 1/sqrt(x))**p
----
----
-exp(exp((x*x)**p/2))
----
----
----
----
+x**2/x**x
+(p + 1/sqrt(x))**2
+exp(exp(x**4/2))
 exp(x)/p**(1/4)
----
----
 exp(x**(p*x)/2)
 p**exp(exp(exp(x)))
----
----
----
----
 exp(0**p)
----
----
----
----
----
 1/(x + x**x)
-p + p**(x*x)
+p + p**(x**2)
 exp(p*x)/p
 x**(x**(3/2))
 sqrt(p**(1/4) + p)
----
----
----
----
 p**(p**(5/4))
-p*(x + x*x)
-(x + exp(x*x))**p
----
+p*(x**2 + x)
+(x + exp(x**2))**2
 p**(p**(1/4)/2)
 exp(x**p)/x
----
----
----
----
----
 p + exp(p*exp(x))
----
 x**x + exp(x)
----
 sqrt(sqrt(x) + exp(x))
----
 exp(exp(p**2)/2)
-(p + (x*x)**p)**p
+(p + x**4)**2
 p**(p*exp(p))
----
 exp(exp(p**(x/2)))
----
----
----
----
----
----
----
----
----
----
----
----
----
----
----
+p*x**p + p
 exp(sqrt(1/p)*exp(x/2))
----
----
----
----
----
----
 x**(x**exp(x))
----
 (x*exp(x))**p
----
 sqrt(x)/x**(x/2)
----
----
 (exp(x)/x)**p
----
----
----
----
----
----
 exp(exp(exp(p/x)))
-exp(p*sqrt(x))*(x*x)
----
+x**p*exp(p*sqrt(x))
 p**(x**exp(x))
----
----
----
----
----
 p*exp(p**(1/4))
----
----
----
+p**(sqrt(p))
 exp(exp(exp(x/2)/2))
 exp(exp(exp(exp(x)))/2)
----
----
----
 sqrt(p**(1/4) + x)
----
----
-sqrt(x) + exp(x*x)
-exp(exp(1/(4*x)))
----
----
----
+sqrt(x) + exp(x**2)
+1/(x + exp(x**2))
 sqrt(p*x + p)
----
----
 (p + 1/x)**(1/4)
 (p + exp(x))**x
----
----
 p + exp(x/4)
 x/(sqrt(x) + x)
----
----
 p**exp(p**x)
----
----
----
 exp(1/x)/sqrt(x)
----
----
 x**(p*x**(1/4))
 sqrt(x) + x**x
-sqrt(x)*exp((x*x)/2)
----
----
----
----
----
----
----
----
----
+sqrt(x)*exp(x**2/2)
+sqrt(p)/sqrt(x)
 x**x*exp(x)
----
----
-p**exp(p*(x*x))
----
----
----
----
----
----
----
+p**exp(p*x**2)
+exp(x**(2/x))
 x*exp(x**x)
----
 1/(p + x**(1/4))
----
----
-(x*x)/x**(p*x)
----
----
----
----
----
----
----
----
----
+x**2/x**(p*x)
 sqrt(sqrt(x) + 1/x)
-p**(p + x*x)
+p**(p + x**2)
 p + exp(p/2)
 p**(sqrt(x))*x
-x**(x**(x*x))
----
----
----
----
----
+x**(x**(x**2))
 exp(exp(1/2))
----
 1/(x**(1/4) + x)
----
----
----
 p**(p*x**(1/4))
----
----
----
----
 1/(x + exp(sqrt(x)))
----
----
----
 p**(x/2)*sqrt(x)
----
----
----
----
----
 1/(p*sqrt(x))
 p + exp(1/sqrt(x))
 sqrt(x)*exp(p*x)
----
----
 p**(exp(exp(x))/2)
----
----
----
 x**exp(exp(exp(x)))
-x*exp((x*x)**p)
-p**exp(exp(x*x))
----
+x*exp(x**4)
+p**exp(exp(x**2))
 x**(p**(sqrt(x)))
----
----
----
----
----
-exp(p + x*x)
----
+exp(p + x**2)
 x**(exp(p*x)/2)
----
----
----
----
----
----
----
----
----
----
----
----
----
+(x**2 + x)**4
+p + exp(p/x)
+exp(exp(2/x)/2)
 x**(x*exp(x))
----
 exp(p**(exp(x)/2))
 exp(exp(x**(1/x)))
----
 exp(exp(x))/sqrt(x)
----
----
-exp(exp(exp(x*x))/2)
----
----
----
+exp(exp(exp(x**2))/2)
+x**(p/x**2)
 exp(exp(p*exp(sqrt(x))))
----
----
-x**(p + x*x)
----
-x**exp((x*x)/2)
----
-(sqrt(x) + exp(x))**p
+x**(p + x**2)
+x**exp(x**2/2)
+(sqrt(x) + exp(x))**2
 exp(p**(1/4)/x)
----
 exp(sqrt(p + x))
----
 x**(p + x/2)
 exp(x*exp(p))
-p + (p + x)**p
+p + (p + x)**2
 p**(x/sqrt(p))
----
 exp(x**p/x)
----
-exp(exp(1/(2*x))/2)
-(x + exp(exp(x)))**p
----
----
+exp(exp(1/(p*x))/2)
+(x + exp(exp(x)))**2
 exp(x/2) + exp(x)
----
----
----
----
----
----
+sqrt(p)*sqrt(x)
 (p + x)**exp(x)
----
----
----
----
----
----
 sqrt(p + p/x)
 1/sqrt(x + exp(x))
----
----
 x + 1/p
 exp(exp(p + x))
-exp(x) + (x*x)**p
----
+x**4 + exp(x)
 x + exp(exp(x)/2)
----
----
 (p + sqrt(x))/x
----
----
 exp(x**(1/8)/2)
----
----
----
----
+(p*x**p)**p
 exp(exp(x**x)/2)
----
----
----
 x**(x**(1/x))
----
----
----
----
----
+exp(p**2)/x**2
 x*exp(exp(p*x))
----
-p**exp(1/(2*x))
----
----
----
----
+p**exp(1/(p*x))
+(p + exp(x))**4
 p**x*exp(x)
----
----
----
----
 exp(p**x*x)
----
----
----
----
----
----
-p*p**(x*x)
----
----
----
----
+exp(1/x)/x**2
+p*p**(x**2)
 x**(1/4)/p**(1/8)
----
----
 exp(exp(exp(exp(x/2))))
----
----
 (p + exp(x))/x
----
 exp(p**exp(exp(x)))
 x/(x + exp(x))
----
----
----
----
----
 x**x + 1/x
----
----
 x**(p*exp(p))
----
 p + p**(p*x)
-p**(x*x)/x
+p**(x**2)/x
 (x + 1/x)/x
----
----
----
-x + (p + x)**p
----
-exp(x)*(x*x)**p
----
----
----
----
----
----
----
----
----
+x + (p + x)**2
 exp((x/p)**x)
----
 exp(p**(1/4))/x
----
----
----
----
----
----
-sqrt(1/p)*exp(1/(2*x))
+x**(p*x)/x**2
+sqrt(1/p)*exp(1/(p*x))
 exp(sqrt(x))*exp(x)
 x*exp(p**2)
 exp(exp(exp(p*x)/2))
----
----
----
----
----
 exp(1/x) + exp(x)
----
----
----
 x/2
 1/(p + 1/sqrt(x))
----
----
----
-exp(p*x**(x*x))
----
-p**(p*exp(x*x))
+exp(p*x**(x**2))
+p**(p*exp(x**2))
 p**(exp(p*x)/2)
----
----
----
 exp(exp(p*x)/4)
 1/(p + exp(p*x))
----
 exp(p**(1/4) + x)
----
----
----
----
----
-exp(3*x/2)
 exp(x) + 1/sqrt(x)
----
----
----
----
----
----
 x/x**p
 exp(exp(exp(sqrt(x)/2)))
----
----
----
 p/p**(sqrt(x))
----
 x + exp(p*exp(x))
-exp(exp(exp(exp(x*x))))
+exp(exp(exp(exp(x**2))))
 x**(p*x + p)
-x + x*x*x
+x**3 + x
 exp(cos(atan2(0, p)/2)/sqrt(p))**p
-p**(x**(x*x))
----
----
----
-exp(x*x) + x*x
----
+p**(x**(x**2))
+x**2 + exp(x**2)
 exp(exp(x)) + 1/x
 x**(1/32)
----
----
 x*(p + sqrt(x))
----
 exp(1/x)/sqrt(p)
----
----
----
----
----
----
 exp(x)/p
----
 exp(p*x) + 1/x
----
----
+x**(1/(p*x**2))
 x**(1/p)
----
----
----
-(p + exp(x/2))**p
----
----
----
----
----
----
+(p + exp(x/2))**2
+exp(p**2/x**2)
 sqrt(x + exp(p))
----
+(x + 1/x)**p
 p**(7/8)
----
----
 exp(x**(p*exp(x)))
----
 exp(p*exp(exp(p*x)))
----
-x*(x + x*x)
----
----
+x*(x**2 + x)
 (x + 1/x)**x
-exp(p/(2*sqrt(x)))
----
----
----
----
----
----
-p**exp((x*x)/2)
----
----
----
----
----
----
----
----
+p**exp(x**2/2)
 p**(3/8)
----
----
-x**(exp(x*x)/2)
+x**(exp(x**2)/2)
 exp(x**(1/sqrt(x)))
----
----
----
----
 exp(p)*exp(x)
-exp(p*x + p/x)
+exp(p*x + 2/x)
 x/p**(p*x)
-(x*x)**p/sqrt(p)
----
----
----
----
----
+x**4/sqrt(p)
 x/p**exp(x)
----
----
----
----
----
----
----
 p + exp(x**x)
----
----
----
----
----
----
----
-p*exp(1/(2*x))
+p**x/x**2
+p*exp(1/(p*x))
 exp(p**(p + x))
----
----
----
----
----
----
----
-(p/x + x)**p
----
----
-p**p
----
-exp(p**((x*x)**p))
----
----
----
+(p/x + x)**2
+p**2
+exp(p**(x**4))
 x**(p + sqrt(x))
 p**exp(x) + x
----
----
----
----
----
----
----
-exp(1/(8*x))
-exp(exp((p + x)**p))
----
----
+exp(exp((p + x)**2))
 exp(x**exp(1/x))
----
 x**(x/2)*sqrt(1/p)
----
----
----
----
----
----
+x**(sqrt(p))
 p + x**(p*x)
 sqrt(x)*exp(exp(x)/2)
----
 (sqrt(x)/p)**p
----
----
----
----
----
----
+exp(p/x**x)
 x*exp(p/2)
----
----
 exp(p*exp(x)/x)
----
----
----
----
----
----
+(p + sqrt(x))**4
 exp(x**(x/4))
-sqrt(p)*sqrt(x)*sqrt(1/p)
----
----
----
----
----
----
----
+sqrt(2)*sqrt(x)*sqrt(1/p)
 sqrt(exp(x*cos(atan2(0, p)/2)/sqrt(p)))
----
----
-1/(2*sqrt(x))
----
 oo**p
----
 x + exp(1/sqrt(x))
 x**(3/2)/sqrt(p)
----
----
----
----
+exp(p/(p + x))
 x**(x**p/2)
----
-sqrt(p)*x**(1/4)
+sqrt(2)*x**(1/4)
 1/(p**(1/4)*x)
----
----
 p + x**(x/2)
 x**(p*x**p)
----
-x*exp((x*x)/2)
----
----
----
----
----
+x*exp(x**2/2)
+exp(x**8/2)
 x**(3/2) + x
-p*x**(x*x)
+p*x**(x**2)
 exp(exp(sqrt(x) + x))
----
----
----
 p**(p + exp(x))
----
----
----
-p*(p + x*x)
----
----
+(p/x**2)**p
+p**(1/8)*x**(1/8)
+p*(p + x**2)
 sqrt(x + exp(p*x))
 exp(p*exp(x**x))
 exp(p*exp(sqrt(x)/2))
 x**exp(p**2)
----
 sqrt(x)*exp(p)
----
----
 exp(x)*exp(exp(x))
 exp(x)/x**x
----
----
----
----
----
----
----
----
 x**(1/4)/p**(1/4)
----
----
 p**x + 1/x
-exp(x**((x*x)/2))
+exp(x**(x**2/2))
 p + x**(sqrt(x))
----
----
----
----
----
----
 p**(1/8)/x**(1/8)
----
----
----
----
-p**x + x*x
----
----
-exp(exp(x*x)/4)
+p**exp(p/x)
+p**x + x**2
+exp(exp(x**2)/4)
 (p + x)**(1/x)
 x/x**(sqrt(x))
----
----
----
----
----
----
-(x + exp(1/x))**p
----
+(x + exp(1/x))**2
 p**(sqrt(x) + x)
----
 p**(x/8)
----
 x + exp(exp(x/2))
----
----
----
 exp(exp(p/4))
----
-exp(exp(p*x**p))
----
 x + exp(p**(1/4))
 exp(p*exp(1/sqrt(x)))
----
 1/(p**x*x)
----
----
 exp(exp(sqrt(x)*sqrt(1/p)))
----
 x**(p + exp(x))
 exp(x*exp(x)/2)
----
----
----
----
----
----
----
----
----
 exp(exp(p*x**(1/4)))
----
----
----
----
 p*exp(exp(p))
----
----
+exp(exp(x**8))
 exp(p**2*sqrt(x))
----
----
----
----
----
----
----
 exp(x**(1/4)/4)
 x + x**(p*x)
----
----
----
----
 exp(exp(exp(x/4)))
----
----
----
----
 p**(p*p**x)
----
 sqrt(x)*exp(1/x)
----
-sqrt(x) + (x*x)**p
----
----
+sqrt(x) + x**4
 p**(p*exp(x/2))
----
 p**exp(x/4)
 exp(sqrt(x))/sqrt(p)
----
----
----
----
----
+exp(2/x**4)
 (x + exp(x))/x
----
----
-1/(p*x)
 sqrt(x + 1/sqrt(p))
----
----
----
 p + p**exp(x)
 exp(exp(x**p/2))
----
 sqrt(x)/p**x
----
 exp(p*x**(p*x))
----
 p**(sqrt(x)*sqrt(1/p))
----
 exp(p**(1/x)/2)
----
----
----
----
----
 x**exp(exp(p))
 x**(1/8)*sqrt(1/p)
----
----
----
----
-(x + exp(p))**p
----
----
----
----
----
----
----
----
----
----
----
----
----
+(x + exp(p))**2
+exp(2/x)/x**2
 exp(sqrt(x))/sqrt(x)
 x**x/sqrt(p)
 1/(sqrt(p)*x**(1/4))
-p**(x + x*x)
----
+p**(x**2 + x)
 x**exp(x**(1/4))
----
 exp(p*exp(exp(x/2)))
 x**(sqrt(x))/x
 sqrt(x**(1/4) + x)
-exp(p*exp(exp(x*x)))
+exp(p*exp(exp(x**2)))
 exp((p + x)/x)
 p**(x**(1/4)/2)
----
----
----
+(p + x)/x**2
 exp(x) + exp(exp(x))
 exp(x**(1/4) + x)
----
 p**(1/4)*exp(x/2)
-exp(exp(exp((x*x)**p)))
+exp(exp(exp(x**4)))
 (p + x)**(p*x)
----
----
----
 sqrt(x + x**x)
----
----
----
----
----
 x**(1/4)*exp(x)
----
----
 sqrt(p + x**p)
-p + 1/(2*x)
+p + 1/(p*x)
 exp(p**(1/4)*sqrt(1/p))
----
----
----
----
----
 1/(x + x**p)
 exp(exp(x/2)/sqrt(x))
----
----
-exp(x**exp(x*x))
+exp(x**exp(x**2))
 sqrt(p + x**x)
 x**(x/2)/sqrt(x)
----
 exp(exp(exp(sqrt(x)))/2)
----
----
+sqrt(2)
 x*exp(p*exp(x))
----
----
 exp(x*(p + x))
 sqrt(exp(cos(atan2(0, p)/4)/p**(1/4)))
 exp(exp(x**x/2))
 exp(exp(x)/sqrt(x))
----
 exp(p + 1/x)
----
----
----
----
 x**(1/4) + sqrt(x)
----
----
----
----
----
----
+exp(exp(exp(2/x)))
 p + exp(x)/x
 (p*x)**(p*x)
----
----
----
----
----
 x + E
----
-(p + exp(exp(x)))**p
+(p + exp(exp(x)))**2
 1/(p + p/x)
----
----
----
 1/(x + exp(p))
----
 p + x/sqrt(p)
----
----
----
----
----
----
 sqrt(p + x**(1/4))
----
----
----
----
 x**(p*exp(x/2))
 p**(1/8) + p
 exp(p*exp(p**x))
----
----
----
----
----
----
----
----
 exp(x**(sqrt(x))/2)
----
----
----
-exp(exp(x + x*x))
----
+(p + exp(x))**p
+exp(exp(x**2 + x))
 p**(p**(sqrt(x)))
----
 sqrt(x)*sqrt(1/(p + x))
 sqrt(x)*x**x
----
 1/(p + p**x)
----
----
 exp(p**x/x)
----
-exp(p**(p*(x*x)))
----
----
+exp(p**(p*x**2))
 p**(p/sqrt(x))
----
 exp(p**(x/4))
----
----
----
----
----
----
----
 exp(sqrt(x + exp(x)))
----
----
----
 exp(p*exp(p*sqrt(x)))
----
----
----
----
----
----
----
+p*x**p + x
 sqrt(x) + exp(sqrt(x))
----
----
-(sqrt(x) + 1/x)**p
+(sqrt(x) + 1/x)**2
 p**(1/8)*sqrt(1/p)
 exp(exp(exp(exp(p))))
 exp(x*exp(1/x))
----
----
 exp(p**(x**(1/4)))
 x**(x**(sqrt(x)))
 p/x**(1/x)
----
----
----
----
----
----
----
 p/x**(1/8)
----
 exp(x**x/x)
----
----
 x**(1/8)*(1/p)**(1/4)
 x**exp(p*exp(x))
 exp(x/(p + x))
 p**(1/4)*exp(x)
----
 (p + x)**(1/8)
----
----
----
+x**10
 exp(x**x/4)
----
 p**(p*x)*x
-exp(exp((x*x)/4))
----
+exp(exp(x**2/4))
 p + p/sqrt(x)
----
 exp(exp(exp(1/x))/2)
----
----
----
+x/(p + x**2)
+x**(x**8)
 exp(exp(p**x/2))
-(sqrt(x) + x*x)**p
----
+(sqrt(x) + x**2)**2
 (x/sqrt(p))**x
----
----
----
----
----
----
----
----
----
----
----
+x**p/x**2
 (sqrt(x) + x)**x
----
 exp(exp(x)/2)/sqrt(x)
 exp(x**(1/x)/2)
----
----
----
----
----
----
----
----
----
 exp(sqrt(x)*exp(x/2))
----
----
 p**(p*x**p)
 sqrt(x) + exp(p)
 p + exp(1/sqrt(p))
----
----
----
 exp(p/x + x)
----
----
 exp(p + exp(x))
----
----
----
----
----
----
----
----
----
-x*exp(1/(2*x))
----
----
----
----
+x*exp(1/(p*x))
+(p + sqrt(x))**p
 exp(exp(exp(sqrt(x))/2))
----
----
----
----
----
 sqrt(x + exp(sqrt(x)))
----
----
----
----
----
----
+p*x**8
 p*p**exp(x)
----
 p**(1/8)*(1/p)**(1/4)
----
----
 x**(p*exp(exp(x)))
-exp(x**(p*(x*x)))
----
+exp(x**(p*x**2))
 x**p/p**p
----
-x**(1/(2*sqrt(x)))
----
----
----
----
+x**(1/(p*sqrt(x)))
 sqrt(x)*exp(exp(x))
----
----
----
 p**(sqrt(x))/x
----
----
----
----
----
----
----
-exp(exp((x*x)/2)/2)
----
----
-p**(p**(x*x))
-p + exp((x*x)/2)
+1/(p + exp(x**2))
+exp(exp(x**2/2)/2)
+p**(p**(x**2))
+p + exp(x**2/2)
 1/(x + exp(exp(x)))
----
----
----
----
 sqrt(x)/p**(1/8)
----
----
----
 (p + exp(x))**(1/4)
----
----
----
-(p + exp(1/x))**p
----
----
----
----
----
-(p + x**x)**p
----
+(p + exp(1/x))**2
+(p + x**x)**2
 sqrt(p + p**x)
----
 exp(exp(x)/8)
----
-(x + (x*x)**p)**p
----
-exp(1/(2*x))/sqrt(x)
----
----
----
----
----
----
----
----
----
+(x**4 + x)**2
+exp(1/(p*x))/sqrt(x)
+exp(p*exp(p/x))
 sqrt(x) + exp(1/x)
----
 exp(p**exp(p*x))
----
----
 1/(x*(p + x))
----
----
----
----
 exp(p**(x**x))
----
----
----
----
----
----
----
-1/(3*x)
----
----
----
 sqrt(p) + x
----
----
----
----
-exp(p*(p + x)**p)
-(p + exp(p*x))**p
----
+p**(x**8)
+exp(p*(p + x)**2)
+(p + exp(p*x))**2
+p**(1/4)/x**2
 0**(1/p)
----
-sqrt(p)/2
----
+sqrt(2)/2
 (p + x)*exp(x)
----
----
-exp(exp(x*x))/x
----
----
----
-x**x + x*x
----
+exp(exp(x**2))/x
+x**2 + x**x
 sqrt(p + exp(x))
 p*(p + exp(x))
----
----
----
----
----
----
----
+exp(p/x)/x
 exp(exp(exp(exp(1/x))))
 p**(exp(x)/4)
 x*x**exp(x)
----
 1/x + 1/sqrt(x)
----
 x + exp(x)/x
 (sqrt(x)/p)**x
----
----
----
----
----
----
 1/(p**(1/4)*x**(1/4))
----
----
-p + x**(x*x)
-(p + x*x)**(1/4)
----
+p + x**(x**2)
+(p + x**2)**(1/4)
 p + p**(1/x)
----
----
----
-exp(p*x + p*(x*x))
----
----
----
----
----
----
----
----
----
+exp(x)/x**4
+exp(p*x**2 + p*x)
 exp(x/16)
----
----
----
 p/p**exp(x)
----
----
----
----
----
----
----
 exp(p*(p + x))
----
-p + exp(exp(x*x))
----
+p + exp(exp(x**2))
 x**(p**(1/4)/2)
----
 exp(sqrt(x)/p**(1/4))
----
----
----
----
----
+(p*x**2)**x
 p/p**(x/2)
----
----
----
----
----
----
----
----
----
----
----
----
-exp(p**2*(x*x))
+p/x**(x**2)
+x**exp(2/x)
+exp(p**2*x**p)
 p**(exp(x)/x)
 exp(sqrt(x) + exp(x))
-exp(exp(p*x)*(x*x))
----
----
----
----
----
----
+exp(x**p*exp(p*x))
 p + exp(exp(exp(x)))
----
----
----
----
----
----
----
----
----
----
----
----
----
----
+exp(1/(x**2 + x))
 exp(p*exp(x/4))
----
----
 exp(1/(sqrt(p)*x))
 exp(x**(p/2))
----
----
----
----
 exp(p*x + p*exp(x))
----
----
----
 p + E
 exp(x + x**p)
----
 (1/p)**(1/4)*exp(x/4)
----
----
----
----
----
 p**x*sqrt(x)
 exp(x**(p*sqrt(x)))
 p**(p*exp(p*x))
----
----
----
----
----
----
----
 p**E
-(x + exp(p*x))**p
----
----
----
----
+(x + exp(p*x))**2
 exp(p*exp(exp(sqrt(x))))
----
----
----
----
----
----
----
----
 p + x + exp(x)
----
----
----
----
 p**(1/4)*x**(1/8)
----
----
----
----
----
----
----
-exp(x/2) + x*x
----
+x**2 + exp(x/2)
 exp(exp(p))/x
 x + exp(x**(1/4))
----
----
----
----
----
-exp(x + (x*x)**p)
----
----
----
----
-(1/(p*x))**p
----
----
----
----
+exp(x**4 + x)
 sqrt(1/p)*exp(x/4)
----
----
-x**(1/4) + x*x
----
----
----
----
----
+x**(1/4) + x**2
 exp(p*exp(exp(x)/2))
----
----
 x**(sqrt(x)/4)
-x*exp(exp(x*x))
+x*exp(exp(x**2))
 1/(p + exp(sqrt(x)))
 p**exp(p**(1/4))
----
----
-exp(p) + x*x
----
----
-p**(x*x*x)
----
----
----
----
----
----
----
----
----
----
-exp(x)*exp(x*x)
-p + x + x*x
+x**(2/sqrt(x))
+x**2 + exp(p)
+p**(x**3)
+exp(x)*exp(x**2)
+p + x**2 + x
 exp(p**(1/sqrt(x)))
----
----
 1/(p*x + x)
 p**(p*exp(exp(x)))
----
----
----
+exp(p*exp(x))/x**2
 exp(p**(9/8))
----
----
----
----
+p**(2/sqrt(x))
 x + x/sqrt(p)
----
----
----
----
 sqrt(x)*x**(x/2)
-x*x**(x*x)
+x*x**(x**2)
 exp(exp(x**p)/2)
----
----
----
----
----
-sqrt(x)*exp(1/(2*x))
----
----
----
----
----
----
+sqrt(x)*exp(1/(p*x))
+x/p**(x**2)
+(x + exp(x))**p
 exp(1/4)
----
-(x*x)/p**(p*x)
----
+x**2/p**(p*x)
 p**(p**(p*x))
 x**(exp(sqrt(x))/2)
----
----
 p*exp(sqrt(x)/2)
----
 exp(x**exp(exp(x)))
----
----
----
+1/(x**2 + 1/x)
 p**(p + 1/x)
----
----
----
----
----
----
----
----
----
 exp(p**exp(x/2))
----
 exp(sqrt(p)*x)
----
----
+exp(2/p)
 exp(exp(p*x))/x
----
----
----
----
----
----
+exp((p + x)**p)
 p**(p + x/2)
 exp(p**(x**p))
 exp((p + x)**(1/4))
 x**p + 1/x
----
----
----
----
+exp(p**(2/x))
 p**exp(p*sqrt(x))
----
-(x*x)**p + 1/x
----
----
----
+x**4 + 1/x
+4/x**2
 sqrt(exp(exp(cos(atan2(0, p)/2)/sqrt(p))*cos(sin(atan2(0, p)/2)/sqrt(p))))
 p**exp(x**x)
 x**exp(exp(x)/2)
----
----
----
----
-x**((p + x)**p)
----
+x**((p + x)**2)
 exp(p**exp(p))
----
----
----
 p**(x**x/2)
----
----
----
----
----
----
----
----
----
----
----
----
-x**(1/(4*x))
 exp(p**2)/x
 exp(exp(p*exp(x))/2)
----
----
----
----
+exp(8/x)
 p**(x*exp(x))
-x*(p + x*x)
+x*(p + x**2)
 exp(p**exp(x)/2)
 p + 1/(p + x)
 x/x**(1/x)
 x/p**(x/2)
-p**(3/4)/(2*x**(1/4))
+2**(3/4)/(p*x**(1/4))
 exp(x/p**x)
-exp(x/2 + 1/(2*x))
----
----
----
----
+exp(x/2 + 1/(p*x))
 x*x**(1/x)
----
----
 p**(x**(1/8))
----
----
----
-exp(sqrt(x) + x*x)
+exp(sqrt(x) + x**2)
 exp(exp(1/x)/x)
----
----
----
----
----
 exp(p*exp(p/2))
----
----
-1/(4*x)
----
----
----
----
----
+exp(p**(1/4)*x**(1/4))
 p**(x**(x/2))
----
 sqrt(x)*sqrt(1/p) + x
----
----
 x**exp(p*sqrt(x))
----
 exp(sqrt(x)/8)
----
----
-exp(exp(x)) + x*x
----
----
+x**2 + exp(exp(x))
 p**(1/8)*x**(1/4)
----
----
----
 p**exp(x)*x
----
-(x + x**p)**p
----
----
-exp(exp(p*(x*x))/2)
----
----
----
----
----
----
----
----
----
+(x + x**p)**2
+exp(exp(p*x**2)/2)
+sqrt(3)*sqrt(x)
+x*exp(2/x)
 x/(p + sqrt(x))
----
----
----
----
----
----
----
 p**exp(exp(x/2))
 exp(exp(x)/sqrt(p))
 exp(p**(p*exp(x)))
----
-p**(1/(4*x))
-x**((x*x)/4)
+x**(x**2/4)
 exp(exp(sqrt(x)))/x
-x + p**(x*x)
----
----
----
+p**(x**2) + x
 (p + sqrt(x))**x
----
 exp(exp(exp(x))/4)
----
----
----
----
----
----
----
----
 sqrt(x)*exp(sqrt(x))
 p**(x + 1/x)
 exp(x**(p**(1/4)))
----
----
 exp(exp(1/p))
 p + exp(sqrt(x)/2)
----
----
----
----
----
----
----
----
+x/(x**2 + x)
 x + exp(x**x)
----
----
----
----
----
----
-(x*x*x)**p
-exp((p + sqrt(x))**p)
+x**9
+exp((p + sqrt(x))**2)
 exp(x**(p + x))
 (p/sqrt(x))**x
-p**(p*(x*x)**p)
-x**x*(x*x)
----
+p**(p*x**4)
+x**p*x**x
 exp(exp(p*exp(x/2)))
----
----
 p**(1/4) + sqrt(x)
----
-p/x + x*x
----
----
----
+p/x + x**2
 exp(x**(x**(1/4)))
----
 (x*exp(x))**x
----
----
----
----
----
----
 exp(exp(exp(exp(p*x))))
 x*exp(x**p)
 exp(1/sqrt(x))/x
----
----
----
 x**(1/4) + 1/x
 p + x**exp(x)
 sqrt(x + exp(1/x))
----
----
