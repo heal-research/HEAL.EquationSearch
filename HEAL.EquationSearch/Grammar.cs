@@ -162,6 +162,7 @@ namespace HEAL.EquationSearch {
         changed = false;
         // we iterate the NTs in reverse order (bottom up) for efficiency but the algorithm should work for any order
         foreach (var ntSy in Nonterminals.Reverse()) {
+          if (!rules.ContainsKey(ntSy)) continue;
           var alternatives = rules[ntSy];
 
           // go over all alternatives (including the newly introduced ones)
