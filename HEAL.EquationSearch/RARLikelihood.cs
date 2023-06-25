@@ -17,9 +17,10 @@ namespace HEAL.EquationSearch {
     private readonly double[] e_log_gobs;
     private readonly double[] e_log_gbar;
     private readonly double[][] extendedXCol;
-    private int y_idx;
-    private int e_log_gbar_idx;
-    private int e_log_gobs_idx;
+    private readonly double[,] extendedX;
+    private readonly int y_idx;
+    private readonly int e_log_gbar_idx;
+    private readonly int e_log_gobs_idx;
 
     private readonly static MethodInfo log = typeof(Math).GetMethod("Log", new Type[] { typeof(double) });
     private readonly static MethodInfo abs = typeof(Math).GetMethod("Abs", new Type[] { typeof(double) });
@@ -30,15 +31,22 @@ namespace HEAL.EquationSearch {
     private ExpressionInterpreter likelihoodInterpreter = null;
     private ExpressionInterpreter bestLikelihoodInterpreter = null;
     private ExpressionInterpreter[] likelihoodGradInterpreter = null;
+    // public ExpressionInterpreter sigmaTotInterpreter = null;
+    // public ExpressionInterpreter derivativeInterpreter = null;
 
     private double[,] jacP; // buffer for jacobian
+    // private double[] f;
+    // private readonly Expr.ParametricVectorFunction likelihoodFunc;
+    // private readonly Expr.ParametricJacobianFunction likelihoodFuncAndJac;
+    // private readonly Expr.ParametricJacobianFunction bestLikelihoodFunc;
+    // private readonly Expr.ParametricJacobianFunction[] likelihoodGradFunc;
 
     public override Expression<Expr.ParametricFunction> ModelExpr {
       get => origExpr;
       set {
         origExpr = value;
         this.jacP = null;
-        if (value != null) {
+        if (value != null && extendedXCol != null && extendedX != null) {
           // We create an expression for the likelihood which wraps the model expression as well as it's partial derivative over log(bar).
           // This allows us to use the autodiff interpreter for the full likelihood and simplifies the likelihood code.
 
@@ -48,6 +56,7 @@ namespace HEAL.EquationSearch {
           var xParam = value.Parameters[1];
 
           this.jacP = new double[y.Length, numParam];
+          // this.f = new double[y.Length];
 
           // wrap log(f(x))
           value = value.Update(LinqExpr.Divide(
@@ -63,11 +72,17 @@ namespace HEAL.EquationSearch {
           var y_expr = LinqExpr.ArrayIndex(xParam, LinqExpr.Constant(y_idx));
           var sTotExpr = LinqExpr.Add(
             LinqExpr.Multiply(e_log_gobs_expr, e_log_gobs_expr),
-            LinqExpr.Call(pow, LinqExpr.Multiply(LinqExpr.Multiply(LinqExpr.Multiply(d_log_f_dgbar.Body, gbar_expr), 
+            LinqExpr.Call(pow, LinqExpr.Multiply(LinqExpr.Multiply(LinqExpr.Multiply(d_log_f_dgbar.Body, gbar_expr),
                                                                    LinqExpr.Constant(Math.Log(10))),
-                                                 e_log_gbar_expr), 
+                                                 e_log_gbar_expr),
                                LinqExpr.Constant(2.0))
             );
+
+          // for debugging
+          // sigmaTotInterpreter = new ExpressionInterpreter(LinqExpr.Lambda<Expr.ParametricFunction>(sTotExpr, pParam, xParam), extendedXCol);
+          // derivativeInterpreter = new ExpressionInterpreter(LinqExpr.Lambda<Expr.ParametricFunction>(
+          //   LinqExpr.Multiply(LinqExpr.Multiply(d_log_f_dgbar.Body, gbar_expr),
+          //                                                          LinqExpr.Constant(Math.Log(10))), pParam, xParam), extendedXCol);
 
           var baseExpr = LinqExpr.Multiply(LinqExpr.Constant(0.5), LinqExpr.Call(log, LinqExpr.Multiply(LinqExpr.Constant(2.0 * Math.PI), sTotExpr))); //  0.5 * Math.Log(2.0 * Math.PI * stot)
           var residualExpr = LinqExpr.Multiply(LinqExpr.Constant(0.5), LinqExpr.Divide(LinqExpr.Call(pow, LinqExpr.Subtract(value.Body, y_expr), LinqExpr.Constant(2.0)), sTotExpr)); //0.5 * res * res / stot;
@@ -83,11 +98,16 @@ namespace HEAL.EquationSearch {
 
           likelihoodInterpreter = new ExpressionInterpreter(likelihoodExpr, extendedXCol);
           bestLikelihoodInterpreter = new ExpressionInterpreter(baseLikelihoodExpr, extendedXCol);
+          // likelihoodFunc = Expr.Broadcast(likelihoodExpr).Compile();
+          // likelihoodFuncAndJac = Expr.Jacobian(likelihoodExpr, numParam).Compile();
+          // bestLikelihoodFunc = Expr.Jacobian(baseLikelihoodExpr, numParam).Compile();
 
           likelihoodGradInterpreter = new ExpressionInterpreter[numParam];
+          // likelihoodGradFunc = new Expr.ParametricJacobianFunction[numParam];
           for (int i = 0; i < numParam; i++) {
             var dLikeExpr = Expr.Derive(likelihoodExpr, i);
             likelihoodGradInterpreter[i] = new ExpressionInterpreter(dLikeExpr, extendedXCol);
+            // likelihoodGradFunc[i] = Expr.Jacobian(dLikeExpr, numParam).Compile();
           }
         }
 
@@ -100,6 +120,7 @@ namespace HEAL.EquationSearch {
       this.e_log_gobs = original.e_log_gobs;
       this.e_log_gbar = original.e_log_gbar;
       this.extendedXCol = original.extendedXCol;
+      this.extendedX = original.extendedX;
       this.y_idx = original.y_idx;
       this.e_log_gbar_idx = original.e_log_gbar_idx;
       this.e_log_gobs_idx = original.e_log_gobs_idx;
@@ -114,6 +135,7 @@ namespace HEAL.EquationSearch {
 
       // the interpreter for the likelihood has additional variables e_log_gbar, e_log_gobs, and y
       this.extendedXCol = new double[xCol.Length + 3][];
+      this.extendedX = new double[x.GetLength(0), x.GetLength(1) + 3];
       for (int i = 0; i < xCol.Length; i++) {
         extendedXCol[i] = xCol[i];
       }
@@ -121,6 +143,15 @@ namespace HEAL.EquationSearch {
       extendedXCol[xCol.Length] = e_log_gobs; this.e_log_gobs_idx = xCol.Length;
       extendedXCol[xCol.Length + 1] = e_log_gbar; this.e_log_gbar_idx = xCol.Length + 1;
       extendedXCol[xCol.Length + 2] = y.Select(Math.Log10).ToArray(); this.y_idx = xCol.Length + 2;
+
+      for (int i = 0; i < x.GetLength(0); i++) {
+        for (int j = 0; j < x.GetLength(1); j++) {
+          extendedX[i, j] = x[i, j];
+        }
+        extendedX[i, xCol.Length] = e_log_gobs[i];
+        extendedX[i, xCol.Length + 1] = e_log_gbar[i];
+        extendedX[i, xCol.Length + 2] = Math.Log10(y[i]);
+      }
     }
 
     public override double[,] FisherInformation(double[] p) {
@@ -132,6 +163,7 @@ namespace HEAL.EquationSearch {
       var hessian = new double[n, n];
       for (int j = 0; j < n; j++) {
         likelihoodGradInterpreter[j].EvaluateWithJac(p, null, jacP);
+        // likelihoodGradFunc[j](p, extendedX, f, jacP);
         for (int i = 0; i < m; i++) {
           for (int k = 0; k < n; k++) {
             hessian[j, k] += jacP[i, k];
@@ -145,6 +177,8 @@ namespace HEAL.EquationSearch {
     // for the calculation of deviance
     public override double BestNegLogLikelihood(double[] p) {
       return bestLikelihoodInterpreter.Evaluate(p).Sum();
+      // bestLikelihoodFunc(p, extendedX, f, null);
+      // return f.Sum();
     }
 
     public override double NegLogLikelihood(double[] p) {
@@ -177,6 +211,12 @@ namespace HEAL.EquationSearch {
 
     public double[] NegLogLikelihoodJacobian(double[] p, double[,]? jac) {
       return likelihoodInterpreter.EvaluateWithJac(p, null, jac);
+      // if (jac != null) {
+      //   likelihoodFuncAndJac(p, extendedX, f, jac);
+      // } else {
+      //   likelihoodFunc(p, extendedX, f);
+      // }
+      // return f;
     }
 
     public override LikelihoodBase Clone() {

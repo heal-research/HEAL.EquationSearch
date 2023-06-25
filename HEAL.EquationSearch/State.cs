@@ -51,7 +51,7 @@ namespace HEAL.EquationSearch {
         if (quality.HasValue) return quality;
 
         if (expression.IsSentence) {
-          quality = new MinimizeDouble(evaluator.OptimizeAndEvaluateMDL(expression, data)); // we use MSE as heuristic but MDL for the quality of states
+          quality = new MinimizeDouble(evaluator.OptimizeAndEvaluateDL(expression, data)); // we use MSE as heuristic but MDL for the quality of states
           return quality;
         } 
 

@@ -46,10 +46,10 @@ namespace HEAL.EquationSearch {
       // default scale and precision is one
       // var scale = Enumerable.Repeat(1.0, parameterValues.Length).ToArray();
       // var prec = Enumerable.Repeat(1.0, parameterValues.Length).ToArray(); 
-      for (int restart = 0; restart < 10; restart++) {
-        nlr.Fit(parameterValues, modelLikelihood, maxIterations: 0 /* , scale: scale, diagHess: prec*/);
+      for (int restart = 0; restart < 20; restart++) {
+        nlr.Fit(parameterValues, modelLikelihood, maxIterations: iterations /* , scale: scale, diagHess: prec*/);
         // successful?
-        if (nlr.ParamEst != null && nlr.NegLogLikelihood < bestNLL) {
+        if (nlr.ParamEst != null && !nlr.ParamEst.Any(double.IsNaN) && nlr.NegLogLikelihood < bestNLL) {
           bestNLL = nlr.NegLogLikelihood;
 
           // use scale and precision based on this estimation to hopefully speed up next iteration
@@ -74,9 +74,9 @@ namespace HEAL.EquationSearch {
     // TODO: make iterations configurable
     // This method always optimizes parameters in expr but does not use caching to make sure all parameters of the evaluated expressions are set correctly.
     // Use this method to optimize the best solutions (found via MSE)
-    public double OptimizeAndEvaluateMDL(Expression expr, Data data, int iterations = 100) {
+    public double OptimizeAndEvaluateDL(Expression expr, Data data, int iterations = 1000) {
       Interlocked.Increment(ref evaluatedExpressions);
-
+      System.Console.WriteLine(expr);
       var model = HEALExpressionBridge.ConvertToExpressionTree(expr, data.VarNames, out var parameterValues);
       var modelLikelihood = this.likelihood.Clone();
       modelLikelihood.ModelExpr = model;
@@ -84,38 +84,50 @@ namespace HEAL.EquationSearch {
       var bestNLL = double.MaxValue;
       double[] bestParam = (double[])parameterValues.Clone();
 
-      // default scale and precision is one
-      // var scale = Enumerable.Repeat(1.0, parameterValues.Length).ToArray();
-      // var prec = Enumerable.Repeat(1.0, parameterValues.Length).ToArray(); 
       var nlr = new NonlinearRegression.NonlinearRegression();
-      for (int restart = 0; restart < 10; restart++) {
-        nlr.Fit(parameterValues, modelLikelihood, maxIterations: 0 /* , scale: scale, diagHess: prec*/);
+
+      // TODO: Harrys restart method
+      for (int restart = 0; restart < 20; restart++) {
+        nlr.Fit(parameterValues, modelLikelihood, maxIterations: iterations);
         // successful?
-        if (nlr.ParamEst != null && nlr.NegLogLikelihood < bestNLL) {
+        if (nlr.ParamEst != null && !nlr.ParamEst.Any(double.IsNaN) && nlr.NegLogLikelihood < bestNLL) {
+          if (nlr.LaplaceApproximation == null) {
+            System.Console.Error.WriteLine("Hessian not positive semidefinite after fitting");
+            continue;
+          }
           bestNLL = nlr.NegLogLikelihood;
           bestParam = (double[])nlr.ParamEst.Clone();
-
+          // bestLaplaceApproximation = nlr.LaplaceApproximation;
+          // nlr.WriteStatistics();
         }
         for (int i = 0; i < parameterValues.Length; i++) {
-          parameterValues[i] = Random.Shared.NextDouble() * 2 - 1;  // TODO: shared random
+          parameterValues[i] = Random.Shared.NextDouble() * 10 - 5;  // TODO: shared random
         }
       }
 
+      if (bestNLL == double.MaxValue) return double.MaxValue;
+
       HEALExpressionBridge.UpdateParameters(expr, bestParam);
-      // try random restart
-      var mdl = ModelSelection.MDL(bestParam, modelLikelihood);
 
-      if (double.IsNaN(mdl)) return double.MaxValue;
-      // TODO: MDL potentially simplifies the expression tree and re-fits the parameters.
-      // We must therefore update our postfix representation of the expression to report the correct (simplified) result.
-      Console.WriteLine($"{mdl};{-bestNLL};{expr.ToInfixString()}");
-      return mdl;
+      try {
+        var dl = ModelSelection.DLWithIntegerSnap(bestParam, modelLikelihood);
+        // bestLaplaceApproximation.GetParameterIntervals(0.01, out var low, out var high);
+        // for(int i=0;i<low.Length;i++) {
+        //   System.Console.WriteLine($"{bestParamEst[i]:g4} {low[i]:g4} {high[i]:g4}");
+        // }
+        if (double.IsNaN(dl)) return double.MaxValue;
 
-      // use scale and precision based on this estimation to hopefully speed up next iteration
-      // prec = (double[])nlr.LaplaceApproximation.diagH.Clone();
-      // scale = nlr.ParamEst.Select((pi,i) => pi / Math.Sqrt(prec[i])).ToArray();
+        // modelLikelihood.ModelExpr = bestExpr;
+        // bestNLL = modelLikelihood.NegLogLikelihood(bestParamEst);
 
-
+        // TODO: MDL potentially simplifies the expression tree and re-fits the parameters.
+        // We must therefore update our postfix representation of the expression to report the correct (simplified) result.
+        // Console.WriteLine($"{mdl};{-bestNLL};{bestExpr};{string.Join(";", bestParamEst.Select(pi => pi.ToString("g4")))}");
+        return dl;
+      } catch (Exception e) {
+        System.Console.Error.WriteLine(e.Message);
+        return double.MaxValue;
+      }
     }
 
 

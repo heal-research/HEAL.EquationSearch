@@ -55,6 +55,7 @@ namespace HEAL.EquationSearch {
 
     public void UseDefaultRules() {
       UseFullRules();
+      // UsePolynomialRules();
     }
 
     public void UsePolynomialRules() {
@@ -123,6 +124,7 @@ namespace HEAL.EquationSearch {
       rules[Factor].Add(new[] { Parameter, PolyTerm, Times, Exp });
       rules[Factor].Add(new[] { PolyExpr, Cos });
       rules[Factor].Add(new[] { Parameter, PolyExprOne, Abs, Pow }); // is is important that parameter is the first child (= PolyExprOne ^ Parameter)
+      // rules[Factor].Add(new[] { PolyExprOne, PolyExprOne, Abs, Pow });
 
 
       // parametric intercept

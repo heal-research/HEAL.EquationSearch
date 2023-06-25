@@ -55,7 +55,7 @@ namespace HEAL.EquationSearch {
     // for the calculation of deviance
     public override double BestNegLogLikelihood(double[] p) {
       int m = y.Length;
-      return Enumerable.Range(0, m).Sum(i => 0.5 * Math.Log(2.0 * Math.PI / invNoiseSigma[i] / invNoiseSigma[i])); // residuals are zero
+      return Enumerable.Range(0, m).Sum(i => 0.5 * Math.Log(2.0 * Math.PI / (invNoiseSigma[i] * invNoiseSigma[i]))); // residuals are zero
     }
 
     public override double NegLogLikelihood(double[] p) {
@@ -91,6 +91,7 @@ namespace HEAL.EquationSearch {
           }
         }
       }
+      if (double.IsNaN(nll)) nll = 1e300;
     }
 
     public override LikelihoodBase Clone() {

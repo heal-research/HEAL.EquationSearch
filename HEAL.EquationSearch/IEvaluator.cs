@@ -3,9 +3,9 @@
     long OptimizedExpressions { get; }
     long EvaluatedExpressions { get; }
 
-    double OptimizeAndEvaluateMSE(Expression expr, Data data, int iterations = 10);
+    double OptimizeAndEvaluateMSE(Expression expr, Data data, int iterations = 100);
 
-    double OptimizeAndEvaluateMDL(Expression expr, Data data, int iterations = 10);
+    double OptimizeAndEvaluateDL(Expression expr, Data data, int iterations = 100);
 
     double[] Evaluate(Expression expression, Data data);
   }

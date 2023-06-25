@@ -1,7 +1,6 @@
 ﻿using HEAL.Expressions;
 using HEAL.NonlinearRegression;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -11,10 +10,8 @@ namespace HEAL.EquationSearch {
   public class CCLikelihood : LikelihoodBase {
     private readonly double[] invNoiseSigma;
 
-    // public override double Dispersion { get { return sErr; } set { sErr = value; } }
-
-    private readonly static MethodInfo sqrt = typeof(Math).GetMethod("Sqrt", new Type[] { typeof(double) });
-    private readonly static MethodInfo abs = typeof(Math).GetMethod("Abs", new Type[] { typeof(double) });
+    private static readonly MethodInfo sqrt = typeof(Math).GetMethod("Sqrt", new Type[] { typeof(double) });
+    private static readonly MethodInfo abs = typeof(Math).GetMethod("Abs", new Type[] { typeof(double) });
     private Expression<Expr.ParametricFunction> h2Expr;
 
     public override Expression<Expr.ParametricFunction> ModelExpr {
@@ -76,8 +73,7 @@ namespace HEAL.EquationSearch {
     // for the calculation of deviance
     public override double BestNegLogLikelihood(double[] p) {
       int m = y.Length;
-      return 0.0;
-      // return Enumerable.Range(0, m).Sum(i => 0.5 * Math.Log(2.0 * Math.PI / invNoiseSigma[i] / invNoiseSigma[i])); // residuals are zero
+      return Enumerable.Range(0, m).Sum(i => 0.5 * Math.Log(2.0 * Math.PI / invNoiseSigma[i] / invNoiseSigma[i])); // residuals are zero
     }
 
     public override double NegLogLikelihood(double[] p) {

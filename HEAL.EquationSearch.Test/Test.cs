@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Diagnostics;
+using System.Linq.Expressions;
 using System.Reflection;
 using HEAL.Expressions;
 using HEAL.NonlinearRegression;
@@ -147,6 +148,8 @@ namespace HEAL.EquationSearch.Test {
       alg.Fit(x, y, noiseSigma, varNames, CancellationToken.None, maxLength: 20); // use a small sigma (we actually have zero noise)
     }
 
+
+
     [TestMethod]
     public void CosmicChronometerX() {
       var options = new HEAL.EquationSearch.Console.Program.RunOptions();
@@ -154,7 +157,7 @@ namespace HEAL.EquationSearch.Test {
       options.Target = "H";
       options.TrainingRange = "0:31";
       options.NoiseSigma = "H_err";
-      options.MaxLength = 30;
+      options.MaxLength = 20;
       options.Seed = 1234;
       string[] inputs = new[] { "x" }; // x = z+1
       HEAL.EquationSearch.Console.Program.PrepareData(options, ref inputs, out var x, out var y, out var noiseSigma, out var _, out var _, out var _, out var _, out var _, out var _, out var _);
@@ -185,20 +188,29 @@ namespace HEAL.EquationSearch.Test {
       {
         likelihood.ModelExpr = (p, x) => p[0] * x[0] * x[0];
         var theta = new double[] { 3883.44 };
-        var mdl = ModelSelection.MDL(theta, likelihood);
-        Assert.AreEqual(16.39, mdl, 1e-2);
+        var dl = ModelSelection.DL(theta, likelihood);
+        Assert.AreEqual(16.39, dl, 1e-2);
       }
       {
         likelihood.ModelExpr = (p, x) => Math.Pow(p[0], Math.Pow(x[0], p[1]));
         var theta = new double[] { 3982.43, 0.22 };
-        var mdl = ModelSelection.MDL(theta, likelihood);
-        Assert.AreEqual(18.72, mdl, 1e-2); // does not match exactly
+        var dl = ModelSelection.DL(theta, likelihood);
+        Assert.AreEqual(18.72, dl, 1e-2);  // does not match exactly the value in the paper
+      }
+      // an expr found with EQS
+      {
+        likelihood.ModelExpr = (p, x) => p[0] * Math.Pow(x[0], 4.0) + p[1] * x[0];
+        var theta = new double[] { 416.93, 4055.4 };
+        var dl = ModelSelection.DL(theta, likelihood);
+        Assert.AreEqual(27.74, dl, 1e-2);
       }
     }
 
 
     [TestMethod]
     public void RARApproximateLikelihood() {
+      // use EQS to find RAR model (using approximate likelihood and default evaluator (VarPro))
+
       // https://arxiv.org/abs/2301.04368
       // File RAR.dat recieved from Harry
 
@@ -221,6 +233,8 @@ namespace HEAL.EquationSearch.Test {
 
     [TestMethod]
     public void RAR() {
+      // use EQS to find RAR model (using the likelihood from the RAR paper)
+
       // https://arxiv.org/abs/2301.04368
       // File RAR.dat recieved from Harry
 
@@ -228,7 +242,7 @@ namespace HEAL.EquationSearch.Test {
       options.Dataset = "RAR_sigma.csv";
       options.Target = "gobs";
       options.TrainingRange = "0:2695";
-      options.MaxLength = 14;
+      options.MaxLength = 20;
       options.Seed = 1234;
       string[] inputs = new string[] { "gbar" };
       HEAL.EquationSearch.Console.Program.PrepareData(options, ref inputs, out var x, out var y, out var noiseSigma, out var trainStart, out var trainEnd, out var testStart, out var testEnd, out var trainX, out var trainY, out var trainNoiseSigma);
@@ -269,9 +283,9 @@ namespace HEAL.EquationSearch.Test {
         likelihood.ModelExpr = (p, x) => x[0] / (1.0 - Math.Exp(Math.Sqrt(x[0]) / p[0])); // using x / p[0]  instead of x * p[0] to reduce distinct symbols?
         var theta = new double[] { -Math.Sqrt(1.127) };
         Assert.AreEqual(-1212.77, likelihood.NegLogLikelihood(theta), 1e-1);
-        var mdl = ModelSelection.MDL(theta, likelihood);
+        var dl = ModelSelection.DL(theta, likelihood);
 
-        Assert.AreEqual(-1191.3, mdl, 1);  // reference result -1192.7 but I count log(2) (=0.7) nats extra for the constant sign
+        Assert.AreEqual(-1191.3, dl, 1);  // reference result -1192.7 but I count log(2) (=0.7) nats extra for the constant sign
       }
 
       {
@@ -280,9 +294,9 @@ namespace HEAL.EquationSearch.Test {
         likelihood.ModelExpr = (p, x) => (x[0] + Math.Sqrt(x[0] * (x[0] + p[0]))) / 2.0;
         var theta = new double[] { 4 * 1.11 };
         Assert.AreEqual(-1217.3, likelihood.NegLogLikelihood(theta), 1e-1);
-        var mdl = ModelSelection.MDL(theta, likelihood);
+        var dl = ModelSelection.DL(theta, likelihood);
 
-        Assert.AreEqual(-1194.05, mdl, 1);   // reference result -1194.8 but I count log(2) (=0.7) nats extra for the constant sign
+        Assert.AreEqual(-1194.05, dl, 1);   // reference result -1194.8 but I count log(2) (=0.7) nats extra for the constant sign
       }
 
       {
@@ -290,19 +304,19 @@ namespace HEAL.EquationSearch.Test {
         var nlr = new NonlinearRegression.NonlinearRegression();
         var theta = new double[] { 0.84, -0.02, 0.38 };
         nlr.Fit(theta, likelihood); // fit parameters
-        var mdl = ModelSelection.MDL(theta, likelihood);
-        Assert.AreEqual(-1244.66, mdl, 1e-1); // reference result: 1250.6, which omits abs() and has DL(func) Math.Log(5)*9 = 14.5
+        var dl = ModelSelection.DL(theta, likelihood);
+        Assert.AreEqual(-1246.92, dl, 1e-1); // reference result: 1250.6, which omits abs() and has DL(func) Math.Log(5)*9 = 14.5
                                               // we use DL(func) = Math.Log(6)*10 = 17.9 (+3.4 nats more)
-                                              // we also have slightly lower likelihood (1277)
       }
     }
 
     [TestMethod]
-    public void RARParamOpt() {
-      // This test checks the parameter optimization for the best ESR expression reported in the RAR paper
+    public void RARParamOptRARLikelihood() {
+      // Checks the parameter optimization success rate for the best ESR expression reported in the RAR paper
       var options = new HEAL.EquationSearch.Console.Program.RunOptions();
       options.Dataset = "RAR_sigma.csv";
       options.Target = "gobs";
+      options.NoiseSigma = "stot";
       options.TrainingRange = "0:2695";
       options.MaxLength = 20;
       options.Seed = 1234;
@@ -315,79 +329,117 @@ namespace HEAL.EquationSearch.Test {
       var e_log_gbar = Enumerable.Range(0, errorX.GetLength(0)).Select(i => errorX[i, 1]).ToArray();
       var likelihood = new RARLikelihood(x, y, modelExpr: null, e_log_gobs, e_log_gbar);
 
+      int REPS = 30;
       var rand = new Random(1234);
+      // fit with the full RAR likelihood
+      // best expression from RAR
+      likelihood.ModelExpr = (p, x) => p[0] * (Math.Pow(Math.Abs(p[1] + x[0]), p[2]) + x[0]); // model 1
+      // likelihood.ModelExpr = (p, x) => Math.Pow(Math.Pow(p[0], x[0]) / x[0], p[1]) + x[0];   // model 7
+      // likelihood.ModelExpr = (p, x) => p[0] + p[1] * x[0] + p[2] * (Math.Pow(Math.Abs(p[3] + x[0]), p[4])); // GE version of model 1
+      var nlr = new NonlinearRegression.NonlinearRegression();
+      var nll = new List<double>();
+      int nFails = 0;
+      for (int iter = 0; iter < REPS; iter++) {
+        // var theta = new double[] { 0.84, -0.02, 0.38 }; // parameter estimate from RAR
+        var theta = Enumerable.Range(0, 3).Select(_ => rand.NextDouble() * 10 - 5).ToArray(); // ~unif(-5, 5)
+        var sw = new Stopwatch();
+        sw.Start();
+        nlr.Fit(theta, likelihood, epsF: 0.0);
+        sw.Stop();
+        if (nlr.ParamEst != null) {
+          try {
+            System.Console.WriteLine($"{nlr.NegLogLikelihood:f2} " +
+              $"DL: {ModelSelection.DL(nlr.ParamEst, likelihood)} " +
+              // $"MDL with snap: {ModelSelection.DLLatticeWithIntegerSnap(nlr.ParamEst, likelihood)} " +
+              // $"MDL (lattice): {ModelSelection.MDLLattice(nlr.ParamEst, likelihood)} " +
+              // $"Evidence: {ModelSelection.Evidence(nlr.ParamEst, likelihood)} " +
+              $"iters: {nlr.OptReport.Iterations} " +
+              $"time: {sw.ElapsedMilliseconds} " +
+              $"fEvals: {nlr.OptReport.NumFuncEvals} " +
+              $"param: {string.Join(" ", nlr.ParamEst.Select(pi => pi.ToString("g4")))} "
+              // $"diagH: {string.Join(" ", nlr.LaplaceApproximation.diagH.Select(di => di.ToString("g4")))} "
+              // $"grad: {string.Join(" ", grad.Select(pi => pi.ToString("g4")))} "
+              );
+            nll.Add(nlr.NegLogLikelihood);
+
+          } catch {
+            System.Console.WriteLine("fail");
+            nFails++;
+          }
+        } else {
+          System.Console.WriteLine("fail");
+          nFails++;
+        }
+
+
+      }
+      var bestNll = nll.Min();
+      var threshold = nll.Min() - 0.001 * nll.Min();
+      System.Console.WriteLine($"failure rate: {nFails / (double)REPS:f2} best nll: {bestNll:f2}, success rate (within 0.1% of best) : {nll.Count(nlli => nlli < threshold) / (double)nll.Count:f2}");
+
+    }
+
+    [TestMethod]
+    public void RARParamOptRARApproximateLikelihood() {
+      // Checks the parameter optimization success rate for the best ESR expression reported in the RAR paper
+      // Uses approximate likelihood (Gaussian)
+      var options = new HEAL.EquationSearch.Console.Program.RunOptions();
+      options.Dataset = "RAR_sigma.csv";
+      options.Target = "log_gobs";
+      options.NoiseSigma = "stot";
+      options.TrainingRange = "0:2695";
+      options.MaxLength = 20;
+      options.Seed = 1234;
+      string[] inputs = new string[] { "gbar" };
+      HEAL.EquationSearch.Console.Program.PrepareData(options, ref inputs, out var x, out var y, out var noiseSigma, out var trainStart, out var trainEnd, out var testStart, out var testEnd, out var trainX, out var trainY, out var trainNoiseSigma);
+
+      string[] errors = new string[] { "e_log_gobs", "e_log_gbar" };
+      HEAL.EquationSearch.Console.Program.PrepareData(options, ref errors, out var errorX, out var _, out var _, out var _, out var _, out var _, out var _, out var _, out var _, out var _);
+      var e_log_gobs = Enumerable.Range(0, errorX.GetLength(0)).Select(i => errorX[i, 0]).ToArray();
+      var e_log_gbar = Enumerable.Range(0, errorX.GetLength(0)).Select(i => errorX[i, 1]).ToArray();
+
+      var likelihood = new GaussianLikelihood(x, y, modelExpr: null, noiseSigma.Select(s => 1.0 / s).ToArray());
+
+      var rand = new Random(1234);
+      int REPS = 30;
       {
         // best expression from RAR
-        likelihood.ModelExpr = (p, x) => p[0] * (Math.Pow(Math.Abs(p[1] + x[0]), p[2]) + x[0]);
+        likelihood.ModelExpr = (p, x) => Math.Log(p[0] * (Math.Pow(Math.Abs(p[1] + x[0]), p[2]) + x[0])) / Math.Log(10); // model 1
+        // likelihood.ModelExpr = (p, x) => Math.Log(Math.Pow(Math.Pow(p[0], x[0]) / x[0], p[1]) + x[0]) / Math.Log(10);   // model 7
+        // likelihood.ModelExpr = (p, x) => Math.Log(p[0] + p[1] * x[0] + p[2] * (Math.Pow(Math.Abs(p[3] + x[0]), p[4]))) / Math.Log(10); // GE version of model 1
+
+
         var nlr = new NonlinearRegression.NonlinearRegression();
-        for (int iter = 0; iter < 10; iter++) {
+        int nFails = 0;
+        var nll = new List<double>();
+        for (int iter = 0; iter < REPS; iter++) {
           // var theta = new double[] { 0.84, -0.02, 0.38 }; // parameter estimate from RAR
-          var theta = Enumerable.Range(0, 3).Select(_ => rand.NextDouble() * 0.2 - 0.1).ToArray(); // ~unif(-0.1, 0.1)
+          var theta = Enumerable.Range(0, 3).Select(_ => rand.NextDouble() * 10 - 5).ToArray(); // ~unif(-5, 5)
 
           nlr.Fit(theta, likelihood);
-          if (nlr.ParamEst != null) {
-            System.Console.WriteLine($"{nlr.NegLogLikelihood:f2} {nlr.OptReport.Iterations} {nlr.OptReport.NumFuncEvals} {string.Join(" ", nlr.ParamEst.Select(pi => pi.ToString("g4")))} {string.Join(" ", nlr.LaplaceApproximation.diagH.Select(pi => pi.ToString("g4")))}");
-            var mdl = ModelSelection.MDL(theta, likelihood);
-          } else System.Console.WriteLine("fail");
-          //Assert.AreEqual(-1244.66, mdl, 1e-1); // reference result: 1250.6, which omits abs() and has DL(func) Math.Log(5)*9 = 14.5
-          // we use DL(func) = Math.Log(6)*10 = 17.9 (+3.4 nats more)
-          // we also have slightly lower likelihood (1277)
+          if (nlr.ParamEst != null && !nlr.ParamEst.Any(double.IsNaN)) {
+            nll.Add(nlr.NegLogLikelihood);
+            System.Console.WriteLine($"{nlr.NegLogLikelihood:f2} " +
+              $"DL: {ModelSelection.DL(nlr.ParamEst, likelihood)} " +
+              // $"MDL: {ModelSelection.DLLattice(nlr.ParamEst, likelihood)} " +
+              // $"MDL with snap: {ModelSelection.DLLatticeWithIntegerSnap(nlr.ParamEst, likelihood)} " +
+              $"iters: {nlr.OptReport.Iterations} " +
+              $"fEvals: {nlr.OptReport.NumFuncEvals} " +
+              $"param: {string.Join(" ", nlr.ParamEst.Select(pi => pi.ToString("g4")))} "
+              // $"diagH: {string.Join(" ", nlr.LaplaceApproximation.diagH.Select(di => di.ToString("g4")))} "
+              );
 
-
+          } else {
+            System.Console.WriteLine("fail");
+            nFails++;
+          }
         }
+        var bestNll = nll.Min();
+        var threshold = nll.Min() - 0.001 * nll.Min();
+        System.Console.WriteLine($"failure rate: {nFails / (double)REPS:f2} best nll: {bestNll:f2}, success rate (within 0.1% of best) : {nll.Count(nlli => nlli < threshold) / (double)nll.Count:f2}");
+
+
       }
-
-      {
-
-        // re-try multiple times with random parameters to find probability of convergence to local optima
-        System.Console.WriteLine($"nll iterations nFuncEvals parameters");
-
-        for (int iter = 0; iter < 100; iter++) {
-          // likelihood.ModelExpr = (p, x) => p[0] * (Math.Pow(Math.Abs(p[1] + x[0]), 0.3809) + x[0]);
-          // likelihood.ModelExpr = (p, x) => Math.Pow(Math.Abs(p[0] + p[1] * x[0]), p[2]) + x[0];
-          Expression<Expr.ParametricFunction> expr = (p, x) => p[0] + x[0] * p[1]+ x[0]*x[0]*p[2];
-          e_log_gobs = Enumerable.Range(0, errorX.GetLength(0)).Select(i => errorX[i, 0]).ToArray();
-          e_log_gbar = Enumerable.Range(0, errorX.GetLength(0)).Select(i => errorX[i, 1]).ToArray();
-          likelihood = new RARLikelihood(x, y, modelExpr: null, e_log_gobs, e_log_gbar);
-          likelihood.ModelExpr = expr;
-
-
-          var nlr = new NonlinearRegression.NonlinearRegression();
-          var theta = Enumerable.Range(0, 3).Select(_ => rand.NextDouble() * 0.2 - 0.1).ToArray(); // ~unif(-0.1, 0.1)
-          // var theta = new []{ 0.1421, 1.997, 0.173 };
-
-          // var jac = new double[y.Length, theta.Length];
-          // likelihood.NegLogLikelihoodJacobian(theta, jac);
-          // // 
-          // // diag (J^T J)
-          // var diagHess = new double[theta.Length];
-          // for (int i = 0; i < y.Length; i++) {
-          //   for (int j = 0; j < theta.Length; j++) {
-          //     diagHess[j] += jac[i, j] * jac[i, j];
-          //   }
-          // }
-
-
-          // 
-          // nlr.Fit(theta, likelihood, scale: scale);
-          // var scale = new double[] { 0.01, 0.1, 1e+04 };
-
-          // var diagHess = new double[] {6.736e+04, 7.016e+07, 1.753e+05 };
-          // for(int i = 0; i < theta.Length; i++) {
-          //   scale[i] = Math.Sqrt(scale[i]);
-          // }
-
-          //var diagHess = new double[] { 4.693e+05, 1.35e+04, 8.348e+05 };
-
-          nlr.Fit(theta, likelihood);
-          if (nlr.ParamEst != null)
-            System.Console.WriteLine($"{nlr.NegLogLikelihood:f2} {nlr.OptReport.Iterations} {nlr.OptReport.NumFuncEvals} {string.Join(" ", nlr.ParamEst.Select(pi => pi.ToString("g4")))} {string.Join(" ", nlr.LaplaceApproximation.diagH.Select(pi => pi.ToString("g4")))}");
-          else System.Console.WriteLine("fail");
-
-          // nlr.WriteStatistics();
-        }
-      }
-
     }
   }
 }

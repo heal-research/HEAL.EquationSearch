@@ -29,7 +29,8 @@ namespace HEAL.EquationSearch {
 
       this.VariableNames = (string[])varNames.Clone();
       var data = new Data(varNames, x, y, invNoiseVariance: noiseSigma.Select(si => 1.0 / (si * si)).ToArray());
-      evaluator ??= new AutoDiffEvaluator(new GaussianLikelihood(x, y, modelExpr: null, data.InvNoiseSigma));
+
+      evaluator ??= new VarProEvaluator();
 
       var cts = CancellationTokenSource.CreateLinkedTokenSource(token);
       var control = GraphSearchControl.Start(new State(data, maxLength, grammar, evaluator))
@@ -40,9 +41,9 @@ namespace HEAL.EquationSearch {
           if (quality.Value < earlyStopQuality) cts.Cancel(); // early stopping
         });
 
-      // Algorithms.BreadthSearch(control, control.InitialState, depth: 0, filterWidth: int.MaxValue, depthLimit: int.MaxValue, nodesReached: int.MaxValue);
+      Algorithms.BreadthSearch(control, control.InitialState, depth: 0, filterWidth: int.MaxValue, depthLimit: int.MaxValue, nodesReached: int.MaxValue);
       // ConcurrentAlgorithms.ParallelBreadthSearch(control, control.InitialState, depth: 0, filterWidth: int.MaxValue, depthLimit: int.MaxValue, maxDegreeOfParallelism: 16 /*, nodesReached: int.MaxValue*/);
-      TreesearchLib.Heuristics.BeamSearch(control, new PriorityBiLevelFIFOCollection<State>(control.InitialState), depth: 0, beamWidth: 1000, Heuristics.PartialMSE, filterWidth: int.MaxValue, depthLimit: int.MaxValue);
+      // TreesearchLib.Heuristics.BeamSearch(control, new PriorityBiLevelFIFOCollection<State>(control.InitialState), depth: 0, beamWidth: 1000, Heuristics.PartialMSE, filterWidth: int.MaxValue, depthLimit: int.MaxValue);
 
 
       if (control.BestQuality != null) {

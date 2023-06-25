@@ -59,7 +59,7 @@ namespace HEAL.EquationSearch {
       // optimize parameters (objective: minimize sum_i 1/2 (w_i^2 (y_i - y_pred_i)^2)  where we use w = 1/sErr)
       var solverOptions = new SolverOptions() { Iterations = iterations, Algorithm = 1 }; // Algorithm 1: Krogh Variable Projection
       var coeff = new double[coeffIndexes.Count];
-      Debug.Assert(coeffIndexes.Count == 1 + termIdx.Count); // one coefficient for each term + intercept
+      // Debug.Assert(coeffIndexes.Count == 1 + termIdx.Count); // one coefficient for each term + intercept
       NativeWrapper.OptimizeVarPro(code, termIdx.ToArray(), data.AllRowIdx, data.Target, data.InvNoiseSigma, coeff, solverOptions, result, out var summary);
       Interlocked.Increment(ref optimizedExpressions);
 
@@ -78,7 +78,7 @@ namespace HEAL.EquationSearch {
     // TODO: make iterations configurable
     // This method always optimizes parameters in expr but does not use caching to make sure all parameters of the evaluated expressions are set correctly.
     // Use this method to optimize the best solutions (found via MSE)
-    public double OptimizeAndEvaluateMDL(Expression expr, Data data, int iterations = 10) {
+    public double OptimizeAndEvaluateDL(Expression expr, Data data, int iterations = 10) {
       Interlocked.Increment(ref evaluatedExpressions);
 
       var terms = new List<(int start, int end)>();
@@ -99,34 +99,49 @@ namespace HEAL.EquationSearch {
 
       var result = new double[data.Rows];
 
-      var solverOptions = new SolverOptions() { Iterations = iterations, Algorithm = 1 };
+      var solverOptions = new SolverOptions() { Iterations = 100, Algorithm = 1 };
       var coeff = new double[coeffIndexes.Count];
-      // optimize parameters (objective: minimize sum_i 1/2 (w_i^2 (y_i - y_pred_i)^2)  where we use w = 1/sErr)
-      NativeWrapper.OptimizeVarPro(code, termIdx.ToArray(), data.AllRowIdx, data.Target, data.InvNoiseSigma, coeff, solverOptions, result, out var summary);
-      Interlocked.Increment(ref optimizedExpressions);
+      var bestCost = double.MaxValue;
 
-      // update parameters if optimization lead to an improvement
-      if (summary.Success == 1) {
-        expr.UpdateCoefficients(coeffIndexes.ToArray(), coeff);
+      // TODO: allow to configure number of restarts
+      for (int rep = 0; rep < 10; rep++) {
+        // optimize parameters (objective: minimize sum_i 1/2 (w_i^2 (y_i - y_pred_i)^2)  where we use w = 1/sErr)
+        NativeWrapper.OptimizeVarPro(code, termIdx.ToArray(), data.AllRowIdx, data.Target, data.InvNoiseSigma, coeff, solverOptions, result, out var summary);
+        Interlocked.Increment(ref optimizedExpressions);
 
-        foreach (var (codePos, exprPos) in paramIdx) {
-          var instr = code[codePos];
-          if (instr.Optimize != 1) continue;
+        // update parameters if optimization lead to an improvement
+        if (summary.Success == 1 && summary.FinalCost < bestCost) {
+          bestCost = summary.FinalCost;
+          expr.UpdateCoefficients(coeffIndexes.ToArray(), coeff);
 
-          if (expr[exprPos] is Grammar.ParameterSymbol paramSy)
-            paramSy.Value = instr.Coeff;
+          foreach (var (codePos, exprPos) in paramIdx) {
+            var instr = code[codePos];
+            if (instr.Optimize != 1) continue;
+
+            if (expr[exprPos] is Grammar.ParameterSymbol paramSy)
+              paramSy.Value = instr.Coeff;
+          }
+        }
+
+        // re-try with random parameters
+        for (int i = 0; i < code.Length; i++) {
+          if (code[i].Optimize == 1) {
+            code[i].Coeff = System.Random.Shared.NextDouble() * 10 - 5; // TODO: shared random
+          }
         }
       }
 
-      // var mdl = MDL(expr, data);
       var exprTree = HEALExpressionBridge.ConvertToExpressionTree(expr, data.VarNames, out var paramValues);
       var likelihood = new GaussianLikelihood(data.X, data.Target, exprTree, data.InvNoiseSigma);
-      var mdl = ModelSelection.MDL(paramValues, likelihood);
+      try {
+        var dl = ModelSelection.DLWithIntegerSnap(paramValues, likelihood);
 
-      // for debugging and unit tests
-      var constLikelihoodTerm = data.InvNoiseVariance.Sum(invVar => -0.5 * Math.Log(2 * Math.PI * 1 / invVar));
-      Console.Error.WriteLine($"len: {expr.Length} MDL: {mdl} logLik (full): {likelihood.NegLogLikelihood(paramValues)} {expr.ToInfixString()}");
-      return mdl;
+        Console.WriteLine($"len: {expr.Length} DL: {dl} logLik (full): {likelihood.NegLogLikelihood(paramValues)} {expr.ToInfixString()}");
+        return dl;
+      } catch (Exception e) {
+        System.Console.Error.WriteLine(e.Message);
+        return double.MaxValue;
+      }
     }
 
 
@@ -138,90 +153,6 @@ namespace HEAL.EquationSearch {
       return result;
     }
 
-    /*
-
-    // as described in https://arxiv.org/abs/2211.11461
-    // Deaglan J. Bartlett, Harry Desmond, Pedro G. Ferreira, Exhaustive Symbolic Regression, 2022
-
-    private double MDL(Expression expr, Data data) {
-      var code = CompileTerms(expr, new[] { (start: 0, end: expr.Length - 1) }, data, out var _, out var paramSyIdx);
-
-      var result = new double[data.Rows];
-      NativeWrapper.GetValues(code, data.AllRowIdx, result);
-
-      // total description length:
-      // L(D) = L(D|H) + L(H)
-
-      // c_j are constants
-      // theta_i are parameters
-      // k is the number of nodes
-      // n is the number of different symbols
-      // Delta_i is inverse precision of parameter i
-      // Delta_i are optimized to find minimum total description length
-      // The paper shows that the optima for delta_i are sqrt(12/I_ii)
-      // The formula implemented here is Equation (7).
-
-      // L(D) = -log(L(theta)) + k log n - p/2 log 3
-      //        + sum_j (1/2 log I_ii + log |theta_i| )
-
-      var logLike = GaussianLogLikelihood(data.InvNoiseVariance, data.Target, result);
-      var diagFisherInfo = ApproximateFisherInformation(logLike, code, paramSyIdx, data);
-      if (diagFisherInfo.Any(fi => fi <= 0)) return double.MaxValue;
-
-      int numNodes = expr.Length;
-      var constants = expr.OfType<Grammar.ConstantSymbol>().ToArray();
-      var numSymbols = expr.Select(sy => sy.GetHashCode()).Distinct().Count();
-      var parameters = expr.OfType<Grammar.ParameterSymbol>().ToArray();
-      int numParam = parameters.Length;
-      
-      double paramCodeLength(int paramIdx) {
-        // ignore zeros
-        if (parameters[paramIdx].Value == 0) return 0.0;
-        else return 0.5 * Math.Log(diagFisherInfo[paramIdx]) - 0.5 * Math.Log(3) + Math.Log(Math.Abs(parameters[paramIdx].Value));
-      }
-
-      // The grammar does not allow negative or zero constants
-      return -logLike
-        + numNodes * Math.Log(numSymbols) + constants.Sum(ci => Math.Log(Math.Abs(ci.Value)))
-        + Enumerable.Range(0, numParam).Sum(i => paramCodeLength(i));
-    }
-
-    private double GaussianLogLikelihood(double[] invNoiseVariance, double[] target, double[] result) {
-      var logLik = 0.0;
-      for (int i = 0; i < target.Length; i++) {
-        var res = target[i] - result[i];
-        logLik -= 0.5 * Math.Log(2 * Math.PI * 1 / invNoiseVariance[i]); // 'constant' term (the same for all models)
-        logLik -= 0.5 * invNoiseVariance[i] * res * res;
-      }
-      return logLik;
-    }
-
-    private double[] ApproximateFisherInformation(double logLik, NativeInstruction[] code, List<(int codePos, int exprPos)> paramSyIdx, Data data) {
-      // numeric approximation of fisher information for each parameter (diagonal of fisher information matrix)
-      // TODO: it would be much better to extract the Jacobian from hl-native-interpreter instead
-      // TODO: this is numerically unstable!
-      const double delta = 1e-6;
-      var fi = new double[paramSyIdx.Count];
-      var paramIdx = 0;
-      var tempResult = new double[data.Rows];
-      foreach (var (codePos, exprPos) in paramSyIdx) { // paramSyIdx is sorted
-        var origCoeff = code[codePos].Coeff;
-        code[codePos].Coeff = origCoeff - delta;
-        NativeWrapper.GetValues(code, data.AllRowIdx, tempResult);
-        var low = GaussianLogLikelihood(data.InvNoiseVariance, data.Target, tempResult);
-
-        code[codePos].Coeff = origCoeff + delta;
-        NativeWrapper.GetValues(code, data.AllRowIdx, tempResult);
-        var high = GaussianLogLikelihood(data.InvNoiseVariance, data.Target, tempResult);
-
-        // https://math.stackexchange.com/questions/2634825/approximating-second-derivative-from-taylors-theorem
-        // factor -1 for the Fisher information
-        fi[paramIdx++] = -(1 / delta / delta) * (low + high - 2 * logLik);
-        code[codePos].Coeff = origCoeff;
-      }
-      return fi;
-    }
-  */
 
     private NativeInstruction[] CompileTerms(Expression expr, IEnumerable<(int start, int end)> terms, Data data,
       out List<int> termIdx, out List<(int codePos, int exprPos)> paramSyIdx) {
