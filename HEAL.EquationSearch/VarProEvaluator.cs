@@ -1,7 +1,5 @@
 ﻿using HEAL.NativeInterpreter;
 using HEAL.NonlinearRegression;
-using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace HEAL.EquationSearch {
@@ -23,7 +21,7 @@ namespace HEAL.EquationSearch {
     // TODO: make iterations configurable
     // This method uses caching for efficiency.
     // IMPORTANT: This method does not update parameter values in expr. Use for heuristic evaluation only.
-    public double OptimizeAndEvaluateMSE(Expression expr, Data data, int iterations = 10) {
+    public double OptimizeAndEvaluateMSE(Expression expr, Data data) {
       var semHash = Semantics.GetHashValue(expr);
       Interlocked.Increment(ref evaluatedExpressions);
 
@@ -56,8 +54,9 @@ namespace HEAL.EquationSearch {
 
       mse = double.MaxValue;
 
+      // TODO: restarts
       // optimize parameters (objective: minimize sum_i 1/2 (w_i^2 (y_i - y_pred_i)^2)  where we use w = 1/sErr)
-      var solverOptions = new SolverOptions() { Iterations = iterations, Algorithm = 1 }; // Algorithm 1: Krogh Variable Projection
+      var solverOptions = new SolverOptions() { Iterations = 0, Algorithm = 1 }; // Algorithm 1: Krogh Variable Projection
       var coeff = new double[coeffIndexes.Count];
       // Debug.Assert(coeffIndexes.Count == 1 + termIdx.Count); // one coefficient for each term + intercept
       NativeWrapper.OptimizeVarPro(code, termIdx.ToArray(), data.AllRowIdx, data.Target, data.InvNoiseSigma, coeff, solverOptions, result, out var summary);
@@ -78,7 +77,7 @@ namespace HEAL.EquationSearch {
     // TODO: make iterations configurable
     // This method always optimizes parameters in expr but does not use caching to make sure all parameters of the evaluated expressions are set correctly.
     // Use this method to optimize the best solutions (found via MSE)
-    public double OptimizeAndEvaluateDL(Expression expr, Data data, int iterations = 10) {
+    public double OptimizeAndEvaluateDL(Expression expr, Data data) {
       Interlocked.Increment(ref evaluatedExpressions);
 
       var terms = new List<(int start, int end)>();
@@ -99,12 +98,30 @@ namespace HEAL.EquationSearch {
 
       var result = new double[data.Rows];
 
-      var solverOptions = new SolverOptions() { Iterations = 100, Algorithm = 1 };
+      var solverOptions = new SolverOptions() { Iterations = 0, Algorithm = 1 };
       var coeff = new double[coeffIndexes.Count];
       var bestCost = double.MaxValue;
 
-      // TODO: allow to configure number of restarts
-      for (int rep = 0; rep < 10; rep++) {
+      double[]? parameterValues = new double[paramIdx.Count];
+
+      // extract parameter vector from compiled expr
+      // (for random restarts)
+      for (int i = 0; i < code.Length; i++) {
+        if (code[i].Optimize == 1) {
+          parameterValues[i] = code[i].Coeff;
+        }
+      }
+      var restartPolicy = new RestartPolicy(parameterValues.Length);
+      do {
+
+        // set initial value for nonlinear parameters (for random restarts)
+        // (this is not necessary on the first iteration)
+        for (int i = 0; i < code.Length; i++) {
+          if (code[i].Optimize == 1) {
+            code[i].Coeff = parameterValues[i];
+          }
+        }
+
         // optimize parameters (objective: minimize sum_i 1/2 (w_i^2 (y_i - y_pred_i)^2)  where we use w = 1/sErr)
         NativeWrapper.OptimizeVarPro(code, termIdx.ToArray(), data.AllRowIdx, data.Target, data.InvNoiseSigma, coeff, solverOptions, result, out var summary);
         Interlocked.Increment(ref optimizedExpressions);
@@ -123,13 +140,11 @@ namespace HEAL.EquationSearch {
           }
         }
 
-        // re-try with random parameters
-        for (int i = 0; i < code.Length; i++) {
-          if (code[i].Optimize == 1) {
-            code[i].Coeff = System.Random.Shared.NextDouble() * 10 - 5; // TODO: shared random
-          }
+        if (summary.Success == 1) {
+          restartPolicy.Update(parameterValues, -summary.FinalCost);
         }
-      }
+        parameterValues = restartPolicy.Next();
+      } while (parameterValues != null);
 
       var exprTree = HEALExpressionBridge.ConvertToExpressionTree(expr, data.VarNames, out var paramValues);
       var likelihood = new GaussianLikelihood(data.X, data.Target, exprTree, data.InvNoiseSigma);
