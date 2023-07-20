@@ -7,6 +7,8 @@
     // for early stopping (when finding NConv times the best parameters)
     public int NConv => 15 + (length - 1) * 20; // 15, 35, 55, 75 ... 
 
+    public int MaxSeconds { get; private set; }
+    public DateTime StartTime { get; private set; }
     public int Iterations { get; private set; } = 0;
 
     public double BestLoss { get; private set; } = double.MaxValue;
@@ -14,8 +16,10 @@
     public int NumBest { get; private set; } = 0; // how often the best loss was found
     public List<(double[] p, double loss)> Parameters { get; private set; } = new(); // for debugging
 
-    public RestartPolicy(int length) {
-      this.length = length;
+    public RestartPolicy(int length, int maxSeconds = 3600) {
+      this.length = length;      
+      this.MaxSeconds = maxSeconds;
+      this.StartTime = DateTime.Now;
     }
 
     // null means to stop restarts
@@ -23,6 +27,7 @@
       if (Iterations >= MaxIterations
           || NumBest >= NConv 
           || BestLoss == double.MaxValue && Iterations > 50 // no valid solution in 50 iterations
+          || (DateTime.Now - StartTime).TotalSeconds > MaxSeconds
           ) return null;
 
 
