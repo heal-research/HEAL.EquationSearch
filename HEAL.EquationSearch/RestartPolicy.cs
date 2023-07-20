@@ -2,15 +2,17 @@
   // controls random restarts for parameter optimization
   internal class RestartPolicy {
     public int length { get; private set; }
-    public int MaxIterations => (int)(70.71 * Math.Exp(0.381 * length)); // $N_\text{iter}=\{100, 160, 220, 320\}$ 7
-    public int NConv => 15 + (length - 1) * 20; // $N_\text{conv}=\{15, 35, 55, 75\}
+    public int MaxIterations => (int)(70.71 * Math.Exp(0.381 * length)); // 104, 152, 222, 325 ...
+    
+    // for early stopping (when finding NConv times the best parameters)
+    public int NConv => 15 + (length - 1) * 20; // 15, 35, 55, 75 ... 
 
     public int Iterations { get; private set; } = 0;
 
     public double BestLoss { get; private set; } = double.MaxValue;
     public double[] BestParameters { get; private set; } = null;
     public int NumBest { get; private set; } = 0; // how often the best loss was found
-    public List<(double[] p, double loss)> Parameters { get; private set; } = new();
+    public List<(double[] p, double loss)> Parameters { get; private set; } = new(); // for debugging
 
     public RestartPolicy(int length) {
       this.length = length;
