@@ -64,7 +64,7 @@ namespace HEAL.EquationSearch.Test {
             LinqExpr.Call(log, value.Body),
             LinqExpr.Constant(Math.Log(10))), value.Parameters);
 
-          var d_log_f_dgbar = Expr.Derive(value, value.Parameters[1], 0);
+          var d_log_f_dgbar = Expr.Derive(value, value.Parameters[1], 0); // d/dx0
 
           var gbar_expr = LinqExpr.ArrayIndex(xParam, LinqExpr.Constant(0));
           var e_log_gobs_expr = LinqExpr.ArrayIndex(xParam, LinqExpr.Constant(e_log_gobs_idx));
@@ -108,6 +108,9 @@ namespace HEAL.EquationSearch.Test {
             var dLikeExpr = Expr.Derive(likelihoodExpr, i);
             // likelihoodGradInterpreter[i] = new ExpressionInterpreter(dLikeExpr, extendedXCol, y.Length);
             likelihoodGradFunc[i] = Expr.Jacobian(dLikeExpr, numParam).Compile();
+
+            // for debugging
+            System.Console.Error.WriteLine($"df/dp_{i} number of nodes: {Expr.NumberOfNodes(dLikeExpr)}");
           }
         }
 
