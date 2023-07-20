@@ -31,7 +31,7 @@ namespace HEAL.EquationSearch.Test {
       Assert.AreEqual(2.0, res[0]);
 
 
-      var eval2 = new AutoDiffEvaluator(new SimpleGaussianLikelihood(data.X, data.Target, modelExpr: null, noiseSigma: 1.0));
+      var eval2 = new Evaluator(new SimpleGaussianLikelihood(data.X, data.Target, modelExpr: null, noiseSigma: 1.0));
       res = eval2.Evaluate(expr, data);
       Assert.AreEqual(2.0, res[0]);
     }
@@ -55,7 +55,7 @@ namespace HEAL.EquationSearch.Test {
       var res = eval.Evaluate(expr, data);
       Assert.AreEqual(9.0, res[0]);
 
-      var eval2 = new AutoDiffEvaluator(new SimpleGaussianLikelihood(data.X, data.Target, modelExpr: null, noiseSigma: 1.0));
+      var eval2 = new Evaluator(new SimpleGaussianLikelihood(data.X, data.Target, modelExpr: null, noiseSigma: 1.0));
       res = eval2.Evaluate(expr, data);
       Assert.AreEqual(9.0, res[0]);
 

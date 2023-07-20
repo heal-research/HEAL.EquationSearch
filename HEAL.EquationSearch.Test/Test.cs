@@ -191,7 +191,7 @@ namespace HEAL.EquationSearch.Test {
       HEAL.EquationSearch.Console.Program.PrepareData(options, ref inputs, out var x, out var y, out var noiseSigma, out var _, out var _, out var _, out var _, out var _, out var _, out var _);
 
       var likelihood = new CCLikelihoodCompiled(x, y, modelExpr: null, noiseSigma.Select(s => 1.0 / s).ToArray());
-      var evaluator = new AutoDiffEvaluator(likelihood);
+      var evaluator = new Evaluator(likelihood);
       var alg = new Algorithm();
       var grammar = new Grammar(inputs);
       alg.Fit(x, y, noiseSigma, inputs, CancellationToken.None, evaluator: evaluator, grammar: grammar, maxLength: 10, randSeed: 1234);
@@ -210,7 +210,7 @@ namespace HEAL.EquationSearch.Test {
       HEAL.EquationSearch.Console.Program.PrepareData(options, ref inputs, out var x, out var y, out var noiseSigma, out var _, out var _, out var _, out var _, out var _, out var _, out var _);
 
       var likelihood = new CCLikelihoodCompiled(x, y, modelExpr: null, noiseSigma.Select(s => 1.0 / s).ToArray());
-      var evaluator = new AutoDiffEvaluator(likelihood);
+      var evaluator = new Evaluator(likelihood);
 
       // top two expressions from ESR Paper
       {
@@ -287,7 +287,7 @@ namespace HEAL.EquationSearch.Test {
       var e_log_gobs = Enumerable.Range(0, errorX.GetLength(0)).Select(i => errorX[i, 0]).ToArray();
       var e_log_gbar = Enumerable.Range(0, errorX.GetLength(0)).Select(i => errorX[i, 1]).ToArray();
       var alg = new Algorithm();
-      var evaluator = new AutoDiffEvaluator(new RARLikelihood(x, y, modelExpr: null, e_log_gobs, e_log_gbar));
+      var evaluator = new Evaluator(new RARLikelihood(x, y, modelExpr: null, e_log_gobs, e_log_gbar));
       alg.Fit(trainX, trainY, trainNoiseSigma, inputs, CancellationToken.None, evaluator: evaluator, maxLength: options.MaxLength, randSeed: options.Seed);
 
       System.Console.WriteLine($"Best expression: {alg.BestExpression.ToInfixString()}");

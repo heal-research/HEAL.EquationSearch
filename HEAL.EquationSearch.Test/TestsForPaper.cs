@@ -24,7 +24,7 @@ namespace HEAL.EquationSearch.Test {
       grammar.UseFullRules();
 
       var alg = new Algorithm();
-      var evaluator = new AutoDiffEvaluator(new RARLikelihood(trainX, trainY, modelExpr: null, e_log_gobs, e_log_gbar));
+      var evaluator = new Evaluator(new RARLikelihood(trainX, trainY, modelExpr: null, e_log_gobs, e_log_gbar));
       alg.Fit(trainX, trainY, trainNoiseSigma, inputs, CancellationToken.None, grammar: grammar, evaluator: evaluator, maxLength: maxLength, randSeed: 1234, algorithmType: AlgorithmTypeEnum.BreadthFirst);
       Assert.AreEqual(expectedDL, alg.BestMDL.Value, Math.Abs(expectedDL * 1e-4));
     }
@@ -43,7 +43,7 @@ namespace HEAL.EquationSearch.Test {
       grammar.UseFullRules();
 
       var alg = new Algorithm();
-      var evaluator = new AutoDiffEvaluator(new RARLikelihood(trainX, trainY, modelExpr: null, e_log_gobs, e_log_gbar));
+      var evaluator = new Evaluator(new RARLikelihood(trainX, trainY, modelExpr: null, e_log_gobs, e_log_gbar));
       alg.Fit(trainX, trainY, trainNoiseSigma, inputs, CancellationToken.None, grammar: grammar, evaluator: evaluator, maxLength: maxLength, randSeed: 1234, algorithmType: AlgorithmTypeEnum.Beam);
       Assert.AreEqual(expectedDL, alg.BestMDL.Value, Math.Abs(expectedDL * 1e-4));
     }

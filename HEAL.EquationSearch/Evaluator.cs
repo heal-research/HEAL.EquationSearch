@@ -1,7 +1,7 @@
 ﻿using HEAL.NonlinearRegression;
 
 namespace HEAL.EquationSearch {
-  public class AutoDiffEvaluator : IEvaluator {
+  public class Evaluator : IEvaluator {
     private long optimizedExpressions = 0;
     private long evaluatedExpressions = 0;
     public long OptimizedExpressions => optimizedExpressions;
@@ -17,7 +17,7 @@ namespace HEAL.EquationSearch {
     public NonBlocking.ConcurrentDictionary<ulong, double> exprQualities = new();
     private readonly LikelihoodBase likelihood;
 
-    public AutoDiffEvaluator(LikelihoodBase likelihood) {
+    public Evaluator(LikelihoodBase likelihood) {
       this.likelihood = likelihood;
     }
 
