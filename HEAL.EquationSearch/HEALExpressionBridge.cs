@@ -37,7 +37,8 @@ namespace HEAL.EquationSearch {
         if (varIdx < 0) throw new InvalidProgramException("var name not found");
         return LinqExpr.ArrayIndex(x, LinqExpr.Constant(varIdx));
       } else if (expr[i] == expr.Grammar.One) { return LinqExpr.Constant(1.0); } 
-      else if (expr[i] == expr.Grammar.Plus) { return LinqExpr.Add(children[0], children[1]); }
+      else if (expr[i] == expr.Grammar.Plus) { return LinqExpr.Add(children[0], children[1]); }    
+      // else if (expr[i] == expr.Grammar.Minus) { return LinqExpr.Subtract(children[0], children[1]); }
       else if (expr[i] == expr.Grammar.Times) { return LinqExpr.Multiply(children[0], children[1]); } 
       else if (expr[i] == expr.Grammar.Div) { return LinqExpr.Divide(children[0], children[1]); }
       else if (expr[i] == expr.Grammar.Abs) { return LinqExpr.Call(abs, children[0]); }

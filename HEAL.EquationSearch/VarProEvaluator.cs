@@ -56,7 +56,7 @@ namespace HEAL.EquationSearch {
 
       // TODO: restarts
       // optimize parameters (objective: minimize sum_i 1/2 (w_i^2 (y_i - y_pred_i)^2)  where we use w = 1/sErr)
-      var solverOptions = new SolverOptions() { Iterations = 0, Algorithm = 1 }; // Algorithm 1: Krogh Variable Projection
+      var solverOptions = new SolverOptions() { Iterations = 5000, Algorithm = 1 }; // Algorithm 1: Krogh Variable Projection
       var coeff = new double[coeffIndexes.Count];
       // Debug.Assert(coeffIndexes.Count == 1 + termIdx.Count); // one coefficient for each term + intercept
       NativeWrapper.OptimizeVarPro(code, termIdx.ToArray(), data.AllRowIdx, data.Target, data.InvNoiseSigma, coeff, solverOptions, result, out var summary);
@@ -98,27 +98,31 @@ namespace HEAL.EquationSearch {
 
       var result = new double[data.Rows];
 
-      var solverOptions = new SolverOptions() { Iterations = 0, Algorithm = 1 };
+      var solverOptions = new SolverOptions() { Iterations = 5000, Algorithm = 1 };
       var coeff = new double[coeffIndexes.Count];
       var bestCost = double.MaxValue;
+      double[]? bestCoeff = null;
 
       double[]? parameterValues = new double[paramIdx.Count];
 
       // extract parameter vector from compiled expr
       // (for random restarts)
+      var pIdx = 0;
       for (int i = 0; i < code.Length; i++) {
         if (code[i].Optimize == 1) {
-          parameterValues[i] = code[i].Coeff;
+          parameterValues[pIdx++] = code[i].Coeff;
         }
       }
+
       var restartPolicy = new RestartPolicy(parameterValues.Length);
       do {
 
         // set initial value for nonlinear parameters (for random restarts)
         // (this is not necessary on the first iteration)
+        pIdx = 0;
         for (int i = 0; i < code.Length; i++) {
           if (code[i].Optimize == 1) {
-            code[i].Coeff = parameterValues[i];
+            code[i].Coeff = parameterValues[pIdx++];
           }
         }
 
@@ -129,23 +133,31 @@ namespace HEAL.EquationSearch {
         // update parameters if optimization lead to an improvement
         if (summary.Success == 1 && summary.FinalCost < bestCost) {
           bestCost = summary.FinalCost;
-          expr.UpdateCoefficients(coeffIndexes.ToArray(), coeff);
-
-          foreach (var (codePos, exprPos) in paramIdx) {
-            var instr = code[codePos];
-            if (instr.Optimize != 1) continue;
-
-            if (expr[exprPos] is Grammar.ParameterSymbol paramSy)
-              paramSy.Value = instr.Coeff;
-          }
+          bestCoeff = coeff;
         }
 
         if (summary.Success == 1) {
-          restartPolicy.Update(parameterValues, -summary.FinalCost);
+          restartPolicy.Update(parameterValues, loss: summary.FinalCost);
         }
+
+        // prepare for next iteration
         parameterValues = restartPolicy.Next();
       } while (parameterValues != null);
 
+      // when parameters were improved
+      if (bestCost < double.MaxValue) {
+        // update linear coefficients in expr
+        expr.UpdateCoefficients(coeffIndexes.ToArray(), bestCoeff);
+        // update nonlinear parameters in expr
+        foreach (var (codePos, exprPos) in paramIdx) {
+          var instr = code[codePos];
+          if (instr.Optimize != 1) continue;
+          if (expr[exprPos] is Grammar.ParameterSymbol paramSy)
+            paramSy.Value = instr.Coeff;
+        }
+      }
+
+      // generate a tree from the updated expression to evaluate DL
       var exprTree = HEALExpressionBridge.ConvertToExpressionTree(expr, data.VarNames, out var paramValues);
       var likelihood = new GaussianLikelihood(data.X, data.Target, exprTree, data.InvNoiseSigma);
       try {

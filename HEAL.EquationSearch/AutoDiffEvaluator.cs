@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.ComponentModel;
-using System.Numerics;
-using HEAL.NonlinearRegression;
+﻿using HEAL.NonlinearRegression;
 
 namespace HEAL.EquationSearch {
   public class AutoDiffEvaluator : IEvaluator {
@@ -42,25 +39,22 @@ namespace HEAL.EquationSearch {
 
       var nlr = new NonlinearRegression.NonlinearRegression();
 
-      var bestNLL = double.MaxValue;
-
       var restartPolicy = new RestartPolicy(parameterValues.Length);
       do {
-        nlr.Fit(parameterValues, modelLikelihood, maxIterations: 1000);
-
-        // successful?
-        if (nlr.ParamEst != null && !nlr.ParamEst.Any(double.IsNaN) && nlr.NegLogLikelihood < bestNLL) {
-          bestNLL = nlr.NegLogLikelihood;
-          HEALExpressionBridge.UpdateParameters(expr, nlr.ParamEst);
-        }
+        nlr.Fit(parameterValues, modelLikelihood, maxIterations: 5000);
 
         if (nlr.ParamEst != null && !nlr.ParamEst.Any(double.IsNaN)) {
-          restartPolicy.Update(parameterValues, quality: -nlr.NegLogLikelihood);
+          restartPolicy.Update(nlr.ParamEst, loss: nlr.NegLogLikelihood);
         }
         parameterValues = restartPolicy.Next();
       } while (parameterValues != null);
-      exprQualities.GetOrAdd(semHash, bestNLL);
-      return bestNLL;
+
+      if (restartPolicy.BestParameters != null) {
+        HEALExpressionBridge.UpdateParameters(expr, restartPolicy.BestParameters);
+      }
+
+      exprQualities.GetOrAdd(semHash, restartPolicy.BestLoss);
+      return restartPolicy.BestLoss;
     }
 
     // This method always optimizes parameters in expr but does not use caching to make sure all parameters of the evaluated expressions are set correctly.
@@ -70,48 +64,25 @@ namespace HEAL.EquationSearch {
       var model = HEALExpressionBridge.ConvertToExpressionTree(expr, data.VarNames, out var parameterValues);
       var modelLikelihood = this.likelihood.Clone();
       modelLikelihood.ModelExpr = model;
-
-
-      var funcOk = false;
-      // evaluate function for all combinations of +/-1 parameters
-      for (int i = 0; i < Math.Pow(2, parameterValues.Length); i++) {
-        var p = new double[parameterValues.Length];
-        var v = i;
-        for (int j = 0; j < p.Length; j++) {
-          p[j] = (v % 2 == 0) ? 1.0 : -1.0;
-          v = v / 2;
-        }
-        var nll = modelLikelihood.NegLogLikelihood(p);
-        if (!double.IsNaN(nll)) {
-          funcOk = true;
-        }
-      }
+      bool funcOk = FunctionOk(parameterValues, modelLikelihood);
       if (!funcOk) return double.MaxValue; // all one vectors produced NaN result
-
-      var bestNLL = double.MaxValue;
-      double[] bestParam = (double[])parameterValues.Clone();
 
       var nlr = new NonlinearRegression.NonlinearRegression();
 
       int numRestarts = -1;
-      var restartPolicy = new RestartPolicy(bestParam.Length);
+      var restartPolicy = new RestartPolicy(parameterValues.Length);
       do {
         numRestarts++;
         if (!double.IsNaN(modelLikelihood.NegLogLikelihood(parameterValues))) {
 
-          nlr.Fit(parameterValues, modelLikelihood, maxIterations: 1000);
+          nlr.Fit(parameterValues, modelLikelihood, maxIterations: 5000); // as in https://github.com/DeaglanBartlett/ESR/blob/main/esr/fitting/test_all.py
           // successful?
-          if (nlr.ParamEst != null && !nlr.ParamEst.Any(double.IsNaN) && nlr.NegLogLikelihood < bestNLL) {
+          if (nlr.ParamEst != null && !nlr.ParamEst.Any(double.IsNaN)) {             
             if (nlr.LaplaceApproximation == null) {
               System.Console.Error.WriteLine("Hessian not positive semidefinite after fitting");
               continue;
             }
-            bestNLL = nlr.NegLogLikelihood;
-            bestParam = (double[])nlr.ParamEst.Clone();
-          }
-
-          if (nlr.ParamEst != null && !nlr.ParamEst.Any(double.IsNaN)) {
-            restartPolicy.Update(parameterValues, quality: -nlr.NegLogLikelihood);
+            restartPolicy.Update(nlr.ParamEst, loss: nlr.NegLogLikelihood);
           }
         }
 
@@ -119,10 +90,10 @@ namespace HEAL.EquationSearch {
       } while (parameterValues != null);
 
       System.Console.WriteLine($"Restarts: {numRestarts}  expr: {expr}");
-      if (bestNLL == double.MaxValue) return double.MaxValue;
+      if (restartPolicy.BestLoss == double.MaxValue) return double.MaxValue;
+      var bestParam = restartPolicy.BestParameters;
 
       HEALExpressionBridge.UpdateParameters(expr, bestParam);
-
       try {
         var dl = ModelSelection.DLWithIntegerSnap(bestParam, modelLikelihood);
         // bestLaplaceApproximation.GetParameterIntervals(0.01, out var low, out var high);
@@ -144,6 +115,24 @@ namespace HEAL.EquationSearch {
       }
     }
 
+    private static bool FunctionOk(double[] parameterValues, LikelihoodBase modelLikelihood) {
+      var funcOk = false;
+      // evaluate function for all combinations of +/-1 parameters
+      for (int i = 0; i < Math.Pow(2, parameterValues.Length); i++) {
+        var p = new double[parameterValues.Length];
+        var v = i;
+        for (int j = 0; j < p.Length; j++) {
+          p[j] = (v % 2 == 0) ? 1.0 : -1.0;
+          v = v / 2;
+        }
+        var nll = modelLikelihood.NegLogLikelihood(p);
+        if (!double.IsNaN(nll)) {
+          funcOk = true;
+        }
+      }
+
+      return funcOk;
+    }
 
     public double[] Evaluate(Expression expr, Data data) {
       Interlocked.Increment(ref evaluatedExpressions);
@@ -157,7 +146,5 @@ namespace HEAL.EquationSearch {
       nlr.SetModel(parameterValues, modelLikelihood);
       return nlr.Predict(data.X);
     }
-
-
   }
 }

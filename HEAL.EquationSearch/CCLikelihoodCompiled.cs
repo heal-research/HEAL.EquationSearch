@@ -6,12 +6,16 @@ using System.Reflection;
 namespace HEAL.EquationSearch {
 
   // likelihood for cosmic chonometer
-  public class CCLikelihood : LikelihoodBase {
+  public class CCLikelihoodCompiled : LikelihoodBase {
     private readonly double[] invNoiseSigma;
 
     private static readonly MethodInfo sqrt = typeof(Math).GetMethod("Sqrt", new Type[] { typeof(double) });
     private static readonly MethodInfo abs = typeof(Math).GetMethod("Abs", new Type[] { typeof(double) });
     private Expression<Expr.ParametricFunction> h2Expr;
+    private Expr.ParametricVectorFunction modelFunc;
+    private Expr.ParametricJacobianFunction jacFunc;
+    private Expr.ParametricJacobianFunction[] gradJacFunc; // for hessian
+
 
     public override Expression<Expr.ParametricFunction> ModelExpr {
       get => h2Expr;
@@ -21,16 +25,27 @@ namespace HEAL.EquationSearch {
           // wrap H=sqrt(abs(model))
 
           value = value.Update(System.Linq.Expressions.Expression.Call(null, sqrt, System.Linq.Expressions.Expression.Call(null, abs, value.Body)), value.Parameters);
-        } 
+        }
         base.ModelExpr = value;
+
+        if (base.ModelExpr != null) {
+          modelFunc = Expr.Broadcast(base.ModelExpr).Compile();
+          jacFunc = Expr.Jacobian(base.ModelExpr, NumberOfParameters).Compile();
+          gradJacFunc = base.ModelGradient.Select(g => Expr.Jacobian(g, NumberOfParameters).Compile()).ToArray();
+        } else {
+          modelFunc = null;
+          jacFunc = null;
+          gradJacFunc = null;
+        }
       }
     }
 
-    internal CCLikelihood(CCLikelihood original) : base(original) {
+    internal CCLikelihoodCompiled(CCLikelihoodCompiled original) : base(original) {
       this.invNoiseSigma = original.invNoiseSigma;
       this.h2Expr = original.h2Expr;
+
     }
-    public CCLikelihood(double[,] x, double[] y, Expression<Expr.ParametricFunction> modelExpr, double[] invNoiseSigma)
+    public CCLikelihoodCompiled(double[,] x, double[] y, Expression<Expr.ParametricFunction> modelExpr, double[] invNoiseSigma)
       : base(modelExpr, x, y, numLikelihoodParams: 0) {
       this.invNoiseSigma = invNoiseSigma;
     }
@@ -38,17 +53,17 @@ namespace HEAL.EquationSearch {
     public override double[,] FisherInformation(double[] p) {
       var m = y.Length;
       var n = p.Length;
+      var yPred = new double[m];
+      var gPred = new double[m]; // only tmp buffer
       var yJac = new double[m, n];
       var yHess = new double[n, m, n]; // parameters x rows x parameters
       var yHessJ = new double[m, n]; // buffer
 
-      // var yPred = Expr.EvaluateFuncJac(ModelExpr, p, x, ref yJac);
-      var yPred = interpreter.EvaluateWithJac(p, null, yJac);
+      jacFunc(p, x, yPred, yJac);
 
       // evaluate hessian
       for (int j = 0; j < p.Length; j++) {
-        // Expr.EvaluateFuncJac(ModelGradient[j], p, x, ref yHessJ);
-        gradInterpreter[j].EvaluateWithJac(p, null, yHessJ);
+        gradJacFunc[j](p, X, gPred, yHessJ);
         Buffer.BlockCopy(yHessJ, 0, yHess, j * m * n * sizeof(double), m * n * sizeof(double));
         Array.Clear(yHessJ, 0, yHessJ.Length);
       }
@@ -82,18 +97,19 @@ namespace HEAL.EquationSearch {
     }
 
     public override void NegLogLikelihoodGradient(double[] p, out double nll, double[]? nll_grad) {
+      if (p.Length != NumberOfParameters) throw new InvalidProgramException("len(p) != numModelParameters");
       var m = y.Length;
       var n = p.Length;
       double[,]? yJac = null;
 
       nll = 0.0; //  BestNegLogLikelihood(p);
 
-      double[] yPred;
+      double[] yPred = new double[m];
       if (nll_grad == null) {
-        yPred = interpreter.Evaluate(p);
+        modelFunc(p, X, yPred);
       } else {
         yJac = new double[m, n];
-        yPred = interpreter.EvaluateWithJac(p, null, yJac);
+        jacFunc(p, X, yPred, yJac);
         Array.Clear(nll_grad, 0, n);
       }
 
@@ -110,7 +126,7 @@ namespace HEAL.EquationSearch {
     }
 
     public override LikelihoodBase Clone() {
-      return new CCLikelihood(this);
+      return new CCLikelihoodCompiled(this);
     }
   }
 }

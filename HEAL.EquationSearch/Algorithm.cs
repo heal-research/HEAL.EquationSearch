@@ -1,4 +1,5 @@
-﻿using TreesearchLib;
+﻿using System.Transactions;
+using TreesearchLib;
 namespace HEAL.EquationSearch {
 
   // TODO:
@@ -10,19 +11,22 @@ namespace HEAL.EquationSearch {
   // - Model archive or model selection based on MDL
   // - Connection to HEAL.NLR for simplification, prediction intervals, MDL, ...
 
+  public enum AlgorithmTypeEnum { BreadthFirst, Beam };
+
   public class Algorithm {
+
     public Expression? BestExpression { get; private set; }
     public double? BestMDL { get; private set; }
 
     public string[]? VariableNames { get; private set; }
 
     public void Fit(double[,] x, double[] y, double noiseSigma, string[] varNames, CancellationToken token, Grammar? grammar = null, IEvaluator? evaluator = null,
-      int maxLength = 20, int depthLimit = 20, double earlyStopQuality = double.NegativeInfinity, int? randSeed = null) {
-      Fit(x, y, Enumerable.Repeat(noiseSigma, y.Length).ToArray(), varNames, token, grammar, evaluator, maxLength, depthLimit, earlyStopQuality, randSeed);
+      int maxLength = 20, double earlyStopQuality = double.NegativeInfinity, int? randSeed = null, AlgorithmTypeEnum algorithmType = AlgorithmTypeEnum.Beam, int beamWidth = 1000) {
+      Fit(x, y, Enumerable.Repeat(noiseSigma, y.Length).ToArray(), varNames, token, grammar, evaluator, maxLength, earlyStopQuality, randSeed, algorithmType, beamWidth);
     }
 
     public void Fit(double[,] x, double[] y, double[] noiseSigma, string[] varNames, CancellationToken token, Grammar? grammar = null, IEvaluator? evaluator = null,
-      int maxLength = 20, int depthLimit = 20, double earlyStopQuality = double.NegativeInfinity, int? randSeed = null) {
+      int maxLength = 20, double earlyStopQuality = double.NegativeInfinity, int? randSeed = null, AlgorithmTypeEnum algorithmType = AlgorithmTypeEnum.Beam, int beamWidth=1000) {
       if (randSeed.HasValue) SharedRandom.SetSeed(randSeed.Value);
       if (x.GetLength(1) != varNames.Length) throw new ArgumentException("number of variables does not match number of columns in x");
       grammar ??= new Grammar(varNames); // default grammar if none supplied by user
@@ -41,10 +45,14 @@ namespace HEAL.EquationSearch {
           if (quality.Value < earlyStopQuality) cts.Cancel(); // early stopping
         });
 
-      Algorithms.BreadthSearch(control, control.InitialState, depth: 0, filterWidth: int.MaxValue, depthLimit: int.MaxValue, nodesReached: int.MaxValue);
-      // ConcurrentAlgorithms.ParallelBreadthSearch(control, control.InitialState, depth: 0, filterWidth: int.MaxValue, depthLimit: int.MaxValue, maxDegreeOfParallelism: 16 /*, nodesReached: int.MaxValue*/);
-      // TreesearchLib.Heuristics.BeamSearch(control, new PriorityBiLevelFIFOCollection<State>(control.InitialState), depth: 0, beamWidth: 1000, Heuristics.PartialMSE, filterWidth: int.MaxValue, depthLimit: int.MaxValue);
-
+      switch (algorithmType) {
+        case AlgorithmTypeEnum.Beam:
+          TreesearchLib.Heuristics.BeamSearch(control, new PriorityBiLevelFIFOCollection<State>(control.InitialState), depth: 0, beamWidth, Heuristics.PartialMSE, filterWidth: int.MaxValue, depthLimit: int.MaxValue);
+          break;
+        case AlgorithmTypeEnum.BreadthFirst:
+          Algorithms.BreadthSearch(control, control.InitialState, depth: 0, filterWidth: int.MaxValue, depthLimit: int.MaxValue, nodesReached: int.MaxValue);
+          break;
+      }
 
       if (control.BestQuality != null) {
         Console.WriteLine($"Quality: {control.BestQuality} nodes: {control.VisitedNodes} ({(control.VisitedNodes / control.Elapsed.TotalSeconds):F2} nodes/sec)\n" +

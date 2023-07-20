@@ -1,9 +1,5 @@
 ﻿using System.Diagnostics;
-using System.Linq.Expressions;
-using System.Reflection;
-using HEAL.Expressions;
 using HEAL.NonlinearRegression;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 
 namespace HEAL.EquationSearch.Test {
   [TestClass]
@@ -43,17 +39,17 @@ namespace HEAL.EquationSearch.Test {
       var varNames = new string[] { "x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9", "x10" };
 
       var alg = new Algorithm();
-      alg.Fit(x, y, noiseSigma, varNames, CancellationToken.None, maxLength: maxLength, depthLimit: int.MaxValue);
+      alg.Fit(x, y, noiseSigma, varNames, CancellationToken.None, maxLength: maxLength, randSeed: 1234);
     }
 
     [DataTestMethod]
-    [DataRow(10)]
-    [DataRow(15)]
-    [DataRow(20)]
-    [DataRow(25)]
-    [DataRow(30)]
-    [DataRow(50)]
-    public void Poly10PolynomialGrammar(int maxLength) {
+    [DataRow(10, 2.8948e+05)]
+    [DataRow(15, 1.8342e+05)]
+    [DataRow(20, 69994)]
+    [DataRow(25, 61664)]
+    [DataRow(30, 29770)]
+    [DataRow(50, -310.52)]
+    public void Poly10PolynomialGrammar(int maxLength, double minDL) {
       var rand = new Random(1234);
       var x = Util.GenerateRandom(rand, 100, 10, -1, 1);
       var y = new double[100];
@@ -74,7 +70,41 @@ namespace HEAL.EquationSearch.Test {
       var alg = new Algorithm();
       var g = new Grammar(varNames);
       g.UsePolynomialRules();
-      alg.Fit(x, y, noiseSigma, varNames, CancellationToken.None, grammar: g, maxLength: maxLength, depthLimit: int.MaxValue);
+      alg.Fit(x, y, noiseSigma, varNames, CancellationToken.None, grammar: g, maxLength: maxLength, randSeed: 1234);
+      Assert.AreEqual(minDL, alg.BestMDL.Value, Math.Abs(minDL * 1e-4));
+    }
+
+    [DataTestMethod]
+    [DataRow(10, 2.8948e+05)]
+    [DataRow(15, 1.8342e+05)]
+    // search space too large
+    // [DataRow(20, 69994)]
+    // [DataRow(25, 61664)]
+    // [DataRow(30, 29770)]
+    // [DataRow(50, -310.52)]
+    public void Poly10PolynomialGrammarFullEnumeration(int maxLength, double minDL) {
+      var rand = new Random(1234);
+      var x = Util.GenerateRandom(rand, 100, 10, -1, 1);
+      var y = new double[100];
+      var noiseRange = 0.02;
+      for (int i = 0; i < y.Length; i++) {
+        y[i] = x[i, 0] * x[i, 1]
+          + x[i, 2] * x[i, 3]
+          + x[i, 4] * x[i, 5]
+          + x[i, 0] * x[i, 6] * x[i, 8]
+          + x[i, 2] * x[i, 5] * x[i, 9]
+          + rand.NextDouble() * noiseRange - noiseRange / 2;
+        ;
+      }
+      var noiseSigma = noiseRange / Math.Sqrt(12);
+
+      var varNames = new string[] { "x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9", "x10" };
+
+      var alg = new Algorithm();
+      var g = new Grammar(varNames);
+      g.UsePolynomialRules();
+      alg.Fit(x, y, noiseSigma, varNames, CancellationToken.None, grammar: g, maxLength: maxLength, randSeed: 1234, algorithmType: AlgorithmTypeEnum.BreadthFirst);
+      Assert.AreEqual(minDL, alg.BestMDL.Value, Math.Abs(minDL * 1e-4));
     }
 
     [TestMethod]
@@ -90,7 +120,7 @@ namespace HEAL.EquationSearch.Test {
       var varNames = new string[] { "x1", "x2" };
 
       var alg = new Algorithm();
-      alg.Fit(x, y, noiseSigma: 1e-8, varNames, CancellationToken.None, maxLength: 30); // use a small sigma (we actually have zero noise)
+      alg.Fit(x, y, noiseSigma: 1e-8, varNames, CancellationToken.None, maxLength: 30, randSeed: 1234); // use a small sigma (we actually have zero noise)
     }
 
 
@@ -108,7 +138,7 @@ namespace HEAL.EquationSearch.Test {
       var varNames = new string[] { "x1", "x2" };
 
       var alg = new Algorithm();
-      alg.Fit(x, y, noiseSigma: 1e-8, varNames, CancellationToken.None, maxLength: 40); // use a small sigma (we actually have zero noise)
+      alg.Fit(x, y, noiseSigma: 1e-8, varNames, CancellationToken.None, maxLength: 40, randSeed: 1234); // use a small sigma (we actually have zero noise)
     }
 
     [TestMethod]
@@ -124,7 +154,7 @@ namespace HEAL.EquationSearch.Test {
       var varNames = new string[] { "x1", "x2" };
 
       var alg = new Algorithm();
-      alg.Fit(x, y, noiseSigma: 1e-8, varNames, CancellationToken.None, maxLength: 20); // use a small sigma (we actually have zero noise)
+      alg.Fit(x, y, noiseSigma: 1e-8, varNames, CancellationToken.None, maxLength: 20, randSeed: 1234); // use a small sigma (we actually have zero noise)
     }
 
     [TestMethod]
@@ -145,7 +175,7 @@ namespace HEAL.EquationSearch.Test {
       var varNames = new string[] { "x1", "x2" };
 
       var alg = new Algorithm();
-      alg.Fit(x, y, noiseSigma, varNames, CancellationToken.None, maxLength: 20); // use a small sigma (we actually have zero noise)
+      alg.Fit(x, y, noiseSigma, varNames, CancellationToken.None, maxLength: 20, randSeed: 1234); // use a small sigma (we actually have zero noise)
     }
 
 
@@ -157,31 +187,29 @@ namespace HEAL.EquationSearch.Test {
       options.Target = "H";
       options.TrainingRange = "0:31";
       options.NoiseSigma = "H_err";
-      options.MaxLength = 20;
-      options.Seed = 1234;
       string[] inputs = new[] { "x" }; // x = z+1
       HEAL.EquationSearch.Console.Program.PrepareData(options, ref inputs, out var x, out var y, out var noiseSigma, out var _, out var _, out var _, out var _, out var _, out var _, out var _);
 
-      var likelihood = new CCLikelihood(x, y, modelExpr: null, noiseSigma.Select(s => 1.0 / s).ToArray());
+      var likelihood = new CCLikelihoodCompiled(x, y, modelExpr: null, noiseSigma.Select(s => 1.0 / s).ToArray());
       var evaluator = new AutoDiffEvaluator(likelihood);
       var alg = new Algorithm();
       var grammar = new Grammar(inputs);
-      alg.Fit(x, y, noiseSigma, inputs, CancellationToken.None, evaluator: evaluator, grammar: grammar);
+      alg.Fit(x, y, noiseSigma, inputs, CancellationToken.None, evaluator: evaluator, grammar: grammar, maxLength: 10, randSeed: 1234);
+      Assert.AreEqual(16.39, alg.BestMDL.Value, 1.0e-2);
     }
 
     [TestMethod]
-    public void CosmicChronometerExpr() {
+    public void CosmicChronometerExprDL() {
       var options = new HEAL.EquationSearch.Console.Program.RunOptions();
       options.Dataset = "CC_Hubble.csv";
       options.Target = "H";
       options.TrainingRange = "0:31";
       options.NoiseSigma = "H_err";
-      options.MaxLength = 30;
       options.Seed = 1234;
       string[] inputs = new[] { "x" };
       HEAL.EquationSearch.Console.Program.PrepareData(options, ref inputs, out var x, out var y, out var noiseSigma, out var _, out var _, out var _, out var _, out var _, out var _, out var _);
 
-      var likelihood = new CCLikelihood(x, y, modelExpr: null, noiseSigma.Select(s => 1.0 / s).ToArray());
+      var likelihood = new CCLikelihoodCompiled(x, y, modelExpr: null, noiseSigma.Select(s => 1.0 / s).ToArray());
       var evaluator = new AutoDiffEvaluator(likelihood);
 
       // top two expressions from ESR Paper
@@ -203,6 +231,13 @@ namespace HEAL.EquationSearch.Test {
         var theta = new double[] { 416.93, 4055.4 };
         var dl = ModelSelection.DL(theta, likelihood);
         Assert.AreEqual(27.74, dl, 1e-2);
+      }
+      // This top expression from ESR is also recovered by ESR with integer snap
+      {
+        likelihood.ModelExpr = (p, x) => p[0] * x[0] * x[0];
+        var theta = new double[] { -3.8834e3 };
+        var dl = ModelSelection.DL(theta, likelihood);
+        Assert.AreEqual(16.39, dl, 1e-2);
       }
     }
 
@@ -306,7 +341,7 @@ namespace HEAL.EquationSearch.Test {
         nlr.Fit(theta, likelihood); // fit parameters
         var dl = ModelSelection.DL(theta, likelihood);
         Assert.AreEqual(-1246.92, dl, 1e-1); // reference result: 1250.6, which omits abs() and has DL(func) Math.Log(5)*9 = 14.5
-                                              // we use DL(func) = Math.Log(6)*10 = 17.9 (+3.4 nats more)
+                                             // we use DL(func) = Math.Log(6)*10 = 17.9 (+3.4 nats more)
       }
     }
 

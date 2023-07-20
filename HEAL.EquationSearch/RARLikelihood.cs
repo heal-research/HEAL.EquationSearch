@@ -28,18 +28,18 @@ namespace HEAL.EquationSearch {
 
 
     private Expression<Expr.ParametricFunction> origExpr;
-    private ExpressionInterpreter likelihoodInterpreter = null;
-    private ExpressionInterpreter bestLikelihoodInterpreter = null;
-    private ExpressionInterpreter[] likelihoodGradInterpreter = null;
+    // private ExpressionInterpreter likelihoodInterpreter = null;
+    // private ExpressionInterpreter bestLikelihoodInterpreter = null;
+    // private ExpressionInterpreter[] likelihoodGradInterpreter = null;
     // public ExpressionInterpreter sigmaTotInterpreter = null;
     // public ExpressionInterpreter derivativeInterpreter = null;
 
     private double[,] jacP; // buffer for jacobian
     // private double[] f;
-    // private readonly Expr.ParametricVectorFunction likelihoodFunc;
-    // private readonly Expr.ParametricJacobianFunction likelihoodFuncAndJac;
-    // private readonly Expr.ParametricJacobianFunction bestLikelihoodFunc;
-    // private readonly Expr.ParametricJacobianFunction[] likelihoodGradFunc;
+    private Expr.ParametricVectorFunction likelihoodFunc;
+    private Expr.ParametricJacobianFunction likelihoodFuncAndJac;
+    private Expr.ParametricJacobianFunction bestLikelihoodFunc;
+    private Expr.ParametricJacobianFunction[] likelihoodGradFunc;
 
     public override Expression<Expr.ParametricFunction> ModelExpr {
       get => origExpr;
@@ -96,18 +96,18 @@ namespace HEAL.EquationSearch {
             pParam, xParam);
 
 
-          likelihoodInterpreter = new ExpressionInterpreter(likelihoodExpr, extendedXCol);
-          bestLikelihoodInterpreter = new ExpressionInterpreter(baseLikelihoodExpr, extendedXCol);
-          // likelihoodFunc = Expr.Broadcast(likelihoodExpr).Compile();
-          // likelihoodFuncAndJac = Expr.Jacobian(likelihoodExpr, numParam).Compile();
-          // bestLikelihoodFunc = Expr.Jacobian(baseLikelihoodExpr, numParam).Compile();
+          // likelihoodInterpreter = new ExpressionInterpreter(likelihoodExpr, extendedXCol, y.Length);
+          // bestLikelihoodInterpreter = new ExpressionInterpreter(baseLikelihoodExpr, extendedXCol, y.Length);
+          likelihoodFunc = Expr.Broadcast(likelihoodExpr).Compile();
+          likelihoodFuncAndJac = Expr.Jacobian(likelihoodExpr, numParam).Compile();
+          bestLikelihoodFunc = Expr.Jacobian(baseLikelihoodExpr, numParam).Compile();
 
-          likelihoodGradInterpreter = new ExpressionInterpreter[numParam];
-          // likelihoodGradFunc = new Expr.ParametricJacobianFunction[numParam];
+          // likelihoodGradInterpreter = new ExpressionInterpreter[numParam];
+          likelihoodGradFunc = new Expr.ParametricJacobianFunction[numParam];
           for (int i = 0; i < numParam; i++) {
             var dLikeExpr = Expr.Derive(likelihoodExpr, i);
-            likelihoodGradInterpreter[i] = new ExpressionInterpreter(dLikeExpr, extendedXCol);
-            // likelihoodGradFunc[i] = Expr.Jacobian(dLikeExpr, numParam).Compile();
+            // likelihoodGradInterpreter[i] = new ExpressionInterpreter(dLikeExpr, extendedXCol, y.Length);
+            likelihoodGradFunc[i] = Expr.Jacobian(dLikeExpr, numParam).Compile();
           }
         }
 
@@ -157,13 +157,14 @@ namespace HEAL.EquationSearch {
     public override double[,] FisherInformation(double[] p) {
       var m = y.Length;
       var n = p.Length;
+      var f = new double[y.Length];
 
       // FIM is the negative of the second derivative (Hessian) of the log-likelihood
       // -> FIM is the Hessian of the negative log-likelihood
       var hessian = new double[n, n];
       for (int j = 0; j < n; j++) {
-        likelihoodGradInterpreter[j].EvaluateWithJac(p, null, jacP);
-        // likelihoodGradFunc[j](p, extendedX, f, jacP);
+        // likelihoodGradInterpreter[j].EvaluateWithJac(p, null, jacP);
+        likelihoodGradFunc[j](p, extendedX, f, jacP);
         for (int i = 0; i < m; i++) {
           for (int k = 0; k < n; k++) {
             hessian[j, k] += jacP[i, k];
@@ -176,9 +177,10 @@ namespace HEAL.EquationSearch {
 
     // for the calculation of deviance
     public override double BestNegLogLikelihood(double[] p) {
-      return bestLikelihoodInterpreter.Evaluate(p).Sum();
-      // bestLikelihoodFunc(p, extendedX, f, null);
-      // return f.Sum();
+      // return bestLikelihoodInterpreter.Evaluate(p).Sum();
+      var f = new double[y.Length];
+      bestLikelihoodFunc(p, extendedX, f, null);
+      return f.Sum();
     }
 
     public override double NegLogLikelihood(double[] p) {
@@ -210,13 +212,14 @@ namespace HEAL.EquationSearch {
     }
 
     public double[] NegLogLikelihoodJacobian(double[] p, double[,]? jac) {
-      return likelihoodInterpreter.EvaluateWithJac(p, null, jac);
-      // if (jac != null) {
-      //   likelihoodFuncAndJac(p, extendedX, f, jac);
-      // } else {
-      //   likelihoodFunc(p, extendedX, f);
-      // }
-      // return f;
+      // return likelihoodInterpreter.EvaluateWithJac(p, null, jac);
+      var f = new double[y.Length];
+      if (jac != null) {
+        likelihoodFuncAndJac(p, extendedX, f, jac);
+      } else {
+        likelihoodFunc(p, extendedX, f);
+      }
+      return f;
     }
 
     public override LikelihoodBase Clone() {
