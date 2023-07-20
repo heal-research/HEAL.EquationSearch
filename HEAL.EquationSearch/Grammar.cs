@@ -31,6 +31,7 @@ namespace HEAL.EquationSearch {
 
     // terminals
     public Symbol Plus = new Symbol("+", arity: 2);
+    // public Symbol Minus = new Symbol("-", arity: 2);
     public Symbol Times = new Symbol("*", arity: 2);
     public Symbol Div = new Symbol("/", arity: 2);
     public Symbol Exp = new Symbol("exp", arity: 1);
@@ -119,11 +120,14 @@ namespace HEAL.EquationSearch {
       // be careful with functions in multiple variables (the order of arguments is reversed)
       rules[Factor] = Variables.Select(varSy => new Symbol[] { varSy }).ToList();
       rules[Factor].Add(new[] { PolyExprOne, One, Div });  // it is important that one is the last child (= 1 / PolyExprOne)
-      rules[Factor].Add(new[] { PolyExprOne, Abs, Log });
-      rules[Factor].Add(new[] { PolyExprOne, Abs, Sqrt });
+      // rules[Factor].Add(new[] { PolyExprOne, Abs, Log });
+      // rules[Factor].Add(new[] { PolyExprOne, Abs, Sqrt });
+      rules[Factor].Add(new[] { PolyExprOne, Log });
+      rules[Factor].Add(new[] { PolyExprOne, Sqrt });
       rules[Factor].Add(new[] { Parameter, PolyTerm, Times, Exp });
-      rules[Factor].Add(new[] { PolyExpr, Cos });
-      rules[Factor].Add(new[] { Parameter, PolyExprOne, Abs, Pow }); // is is important that parameter is the first child (= PolyExprOne ^ Parameter)
+      // rules[Factor].Add(new[] { PolyExpr, Cos });
+      // rules[Factor].Add(new[] { Parameter, PolyExprOne, Abs, Pow }); // is is important that parameter is the first child (= PolyExprOne ^ Parameter)
+      rules[Factor].Add(new[] { Parameter, PolyExprOne, Pow }); // is is important that parameter is the first child (= PolyExprOne ^ Parameter)
       // rules[Factor].Add(new[] { PolyExprOne, PolyExprOne, Abs, Pow });
 
 
@@ -135,10 +139,8 @@ namespace HEAL.EquationSearch {
 
       // PolyExpr with one degree of freedom removed
       rules[PolyExprOne] = new List<Symbol[]>() {
-        // new Symbol[] { Parameter, PolyTerm, Times, One, Plus }, // param * PolyTerm + 1
-        // new Symbol[] { Parameter, PolyTerm, Times, PolyExprOne, Plus }, // param * PolyTerm + PolyExprOne
-        
         new Symbol[] { Parameter, PolyTerm, Plus}, // param + PolyTerm
+        // new Symbol[] { Parameter, PolyTerm, Minus}, // TODO: we should also allow log(p0 - x + p1 x ...)
         new Symbol[] { Parameter, PolyTerm, Times, PolyExprOne, Plus }, // PolyExprOne + param * PolyTerm 
       };
 

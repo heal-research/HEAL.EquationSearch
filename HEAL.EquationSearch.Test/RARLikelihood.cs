@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using LinqExpr = System.Linq.Expressions.Expression;
 
-namespace HEAL.EquationSearch {
+namespace HEAL.EquationSearch.Test {
 
   // as reported in https://arxiv.org/pdf/2301.04368.pdf Eq. 3
   // additional info from Harry:

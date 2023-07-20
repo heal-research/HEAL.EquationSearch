@@ -3,7 +3,7 @@ using HEAL.NonlinearRegression;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace HEAL.EquationSearch {
+namespace HEAL.EquationSearch.Test {
 
   // likelihood for cosmic chonometer
   public class CCLikelihood : LikelihoodBase {
