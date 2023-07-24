@@ -221,7 +221,10 @@ namespace HEAL.EquationSearch.Test {
       var models = new[] { (expr: model1, d: 3), (expr: model1a, d: 5), (expr: model7, d: 2) };
       foreach (var tup in models) {
         var nlr = new NonlinearRegression.NonlinearRegression();
+        var sw = new Stopwatch();
+        sw.Start();
         likelihood.ModelExpr = tup.expr;
+        System.Console.Error.WriteLine($"Total time for preparing likelihood: {sw.ElapsedMilliseconds}ms");
         var restartPolicy = new RestartPolicy(length: tup.d, maxSeconds: 10);
         var parameterValues = restartPolicy.Next();
         int numRestarts = -1;
