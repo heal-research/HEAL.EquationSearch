@@ -4,7 +4,7 @@ using LinqExpr = System.Linq.Expressions.Expression;
 
 namespace HEAL.EquationSearch {
   // class with methods to use HEAL.NLR and HEAL.Expressions
-  internal class HEALExpressionBridge {
+  public class HEALExpressionBridge {
 
     // convert to an expression tree that is compatible with HEAL.NLR
     internal static Expression<HEAL.Expressions.Expr.ParametricFunction> ConvertToExpressionTree(Expression expr, string[] variableNames, out double[] parameterValues) {
