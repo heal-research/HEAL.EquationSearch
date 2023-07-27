@@ -59,10 +59,10 @@ namespace HEAL.EquationSearch.Test {
           // this.f = new double[y.Length];
 
           // wrap log(f(x))
-          value = value.Update(LinqExpr.Divide(
+          value = value.Update(LinqExpr.Multiply(
             // LinqExpr.Call(log, LinqExpr.Call(abs, value.Body)),
             LinqExpr.Call(log, value.Body),
-            LinqExpr.Constant(Math.Log(10))), value.Parameters);
+            LinqExpr.Constant(1.0 / Math.Log(10))), value.Parameters);
 
           var d_log_f_dgbar = Expr.Derive(value, value.Parameters[1], 0); // d/dx0
 
@@ -79,7 +79,7 @@ namespace HEAL.EquationSearch.Test {
             );
 
           // for debugging
-          // sigmaTotInterpreter = new ExpressionInterpreter(LinqExpr.Lambda<Expr.ParametricFunction>(sTotExpr, pParam, xParam), extendedXCol);
+          // sigmaTotInterpreter = new ExpressionInterpreter(LinqExpr.Lambda<Expr.ParametricFunction>(sTotExpr, pParam, xParam), extendedXCol, y.Length);
           // derivativeInterpreter = new ExpressionInterpreter(LinqExpr.Lambda<Expr.ParametricFunction>(
           //   LinqExpr.Multiply(LinqExpr.Multiply(d_log_f_dgbar.Body, gbar_expr),
           //                                                          LinqExpr.Constant(Math.Log(10))), pParam, xParam), extendedXCol);
@@ -160,7 +160,6 @@ namespace HEAL.EquationSearch.Test {
     public override double[,] FisherInformation(double[] p) {
       var m = y.Length;
       var n = p.Length;
-      var f = new double[y.Length];
 
       // FIM is the negative of the second derivative (Hessian) of the log-likelihood
       // -> FIM is the Hessian of the negative log-likelihood
