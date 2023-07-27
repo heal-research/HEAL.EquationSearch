@@ -1,9 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Linq.Expressions;
-using CommandLine;
 using HEAL.Expressions;
 using HEAL.NonlinearRegression;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 
 namespace HEAL.EquationSearch.Test {
   [TestClass]
@@ -20,17 +18,60 @@ namespace HEAL.EquationSearch.Test {
     [DataRow(5, -240.91)]
     [DataRow(7, -240.91)]
     [DataRow(9, -1182.4)]
+    [DataRow(11, -1182.4)]
+    [DataRow(13, -1182.4)]
+    [DataRow(15, -1182.4)]
+    public void FullEnumerationReducedGrammarGaussianLikelihood(int maxLength, double expectedDL) {
+      // use EQS to find RAR model (using approximate likelihood)
+
+      var options = new HEAL.EquationSearch.Console.Program.RunOptions();
+      options.Dataset = "RAR_sigma.csv";
+      options.Target = "log_gobs";
+      options.TrainingRange = "0:2695";
+      options.NoiseSigma = "stot";
+      options.Seed = 1234;
+
+      GetRARData(options, out var inputs, out var trainX, out var trainY, out var trainNoiseSigma, out var e_log_gobs, out var e_log_gbar);
+
+      var grammar = new Grammar(inputs);
+      grammar.UseFullRules();
+
+      var alg = new Algorithm();
+      var evaluator = new VarProEvaluator();
+      alg.Fit(trainX, trainY, trainNoiseSigma, inputs, CancellationToken.None, grammar: grammar, evaluator: evaluator, maxLength: maxLength, randSeed: 1234, algorithmType: AlgorithmTypeEnum.BreadthFirst);
+
+      var bestExpr = HEALExpressionBridge.ConvertToExpressionTree(alg.BestExpression, inputs, out var paramValues);
+      var approxLikelihood = new GaussianLikelihood(trainX, trainY, bestExpr, trainNoiseSigma.Select(si => 1.0 / si).ToArray());
+      var fullLikelihood = new RARLikelihood(trainX, trainY, bestExpr, e_log_gobs, e_log_gbar);
+      fullLikelihood.ModelExpr = bestExpr;
+      System.Console.WriteLine($"Approximate L: {approxLikelihood.NegLogLikelihood(paramValues)}, RAR L: {fullLikelihood.NegLogLikelihood(paramValues)}");
+
+      // Assert.AreEqual(expectedDL, alg.BestMDL.Value, Math.Abs(expectedDL * 1e-4));
+    }
+
+
+    [DataTestMethod]
+    [DataRow(3, 53477.0)]
+    [DataRow(5, -240.91)]
+    [DataRow(7, -240.91)]
+    [DataRow(9, -1182.4)]
     public void FullEnumerationReducedGrammar(int maxLength, double expectedDL) {
       // use EQS to find RAR model (using the likelihood from the RAR paper)
+      var options = new HEAL.EquationSearch.Console.Program.RunOptions();
+      options.Dataset = "RAR_sigma.csv";
+      options.Target = "gobs";
+      options.TrainingRange = "0:2695";
+      options.NoiseSigma = "";
+      options.Seed = 1234;
 
-      GetRARData(out var inputs, out var trainX, out var trainY, out var trainNoiseSigma, out var e_log_gobs, out var e_log_gbar);
+      GetRARData(options, out var inputs, out var trainX, out var trainY, out _, out var e_log_gobs, out var e_log_gbar);
 
       var grammar = new Grammar(inputs);
       grammar.UseFullRules();
 
       var alg = new Algorithm();
       var evaluator = new Evaluator(new RARLikelihood(trainX, trainY, modelExpr: null, e_log_gobs, e_log_gbar));
-      alg.Fit(trainX, trainY, trainNoiseSigma, inputs, CancellationToken.None, grammar: grammar, evaluator: evaluator, maxLength: maxLength, randSeed: 1234, algorithmType: AlgorithmTypeEnum.BreadthFirst);
+      alg.Fit(trainX, trainY, noiseSigma: 1.0, inputs, CancellationToken.None, grammar: grammar, evaluator: evaluator, maxLength: maxLength, randSeed: 1234, algorithmType: AlgorithmTypeEnum.BreadthFirst);
       Assert.AreEqual(expectedDL, alg.BestMDL.Value, Math.Abs(expectedDL * 1e-4));
     }
 
@@ -41,28 +82,28 @@ namespace HEAL.EquationSearch.Test {
     [DataRow(9, -1182.4)]
     public void BeamSearchReducedGrammar(int maxLength, double expectedDL) {
       // use EQS to find RAR model (using the likelihood from the RAR paper)
+      var options = new HEAL.EquationSearch.Console.Program.RunOptions();
+      options.Dataset = "RAR_sigma.csv";
+      options.Target = "gobs";
+      options.TrainingRange = "0:2695";
+      options.NoiseSigma = "";
+      options.Seed = 1234;
 
-      GetRARData(out var inputs, out var trainX, out var trainY, out var trainNoiseSigma, out var e_log_gobs, out var e_log_gbar);
+      GetRARData(options, out var inputs, out var trainX, out var trainY, out _, out var e_log_gobs, out var e_log_gbar);
 
       var grammar = new Grammar(inputs);
       grammar.UseFullRules();
 
       var alg = new Algorithm();
       var evaluator = new Evaluator(new RARLikelihood(trainX, trainY, modelExpr: null, e_log_gobs, e_log_gbar));
-      alg.Fit(trainX, trainY, trainNoiseSigma, inputs, CancellationToken.None, grammar: grammar, evaluator: evaluator, maxLength: maxLength, randSeed: 1234, algorithmType: AlgorithmTypeEnum.Beam);
+      alg.Fit(trainX, trainY, noiseSigma: 1.0, inputs, CancellationToken.None, grammar: grammar, evaluator: evaluator, maxLength: maxLength, randSeed: 1234, algorithmType: AlgorithmTypeEnum.Beam);
       Assert.AreEqual(expectedDL, alg.BestMDL.Value, Math.Abs(expectedDL * 1e-4));
     }
 
-    private static void GetRARData(out string[] inputs, out double[,] trainX, out double[] trainY, out double[] trainNoiseSigma, out double[] e_log_gobs, out double[] e_log_gbar) {
+    private static void GetRARData(Console.Program.RunOptions options, out string[] inputs, out double[,] trainX, out double[] trainY, out double[] trainNoiseSigma, out double[] e_log_gobs, out double[] e_log_gbar) {
       // https://arxiv.org/abs/2301.04368
       // File RAR.dat recieved from Harry
 
-      var options = new HEAL.EquationSearch.Console.Program.RunOptions();
-      options.Dataset = "RAR_sigma.csv";
-      options.Target = "gobs";
-      options.TrainingRange = "0:2695";
-      options.MaxLength = 20;
-      options.Seed = 1234;
 
       // extract gbar as x
       inputs = new string[] { "gbar" };
@@ -76,65 +117,19 @@ namespace HEAL.EquationSearch.Test {
     }
 
 
-    /*
+
 
     [TestMethod]
-    public void RARApproximateLikelihood() {
-      // use EQS to find RAR model (using approximate likelihood and default evaluator (VarPro))
-
-      // https://arxiv.org/abs/2301.04368
-      // File RAR.dat recieved from Harry
-
-      var options = new HEAL.EquationSearch.Console.Program.RunOptions();
-      options.Dataset = "RAR_sigma.csv";
-      options.Target = "log_gobs";
-      options.NoiseSigma = "stot";
-      options.TrainingRange = "0:2695";
-      options.MaxLength = 20;
-      options.Seed = 1234;
-      string[] inputs = new string[] { "gbar" };
-      HEAL.EquationSearch.Console.Program.PrepareData(options, ref inputs, out var x, out var y, out var noiseSigma, out var trainStart, out var trainEnd, out var testStart, out var testEnd, out var trainX, out var trainY, out var trainNoiseSigma);
-
-      var alg = new Algorithm();
-      var evaluator = new VarProEvaluator();
-      alg.Fit(trainX, trainY, trainNoiseSigma, inputs, CancellationToken.None, evaluator: evaluator, maxLength: options.MaxLength, randSeed: options.Seed);
-
-      System.Console.WriteLine($"Best expression: {alg.BestExpression.ToInfixString()}");
-    }
-
-    [TestMethod]
-    public void RAR() {
-      // use EQS to find RAR model (using the likelihood from the RAR paper)
-
-      // https://arxiv.org/abs/2301.04368
-      // File RAR.dat recieved from Harry
-
+    public void RARExpr() {
       var options = new HEAL.EquationSearch.Console.Program.RunOptions();
       options.Dataset = "RAR_sigma.csv";
       options.Target = "gobs";
       options.TrainingRange = "0:2695";
-      options.MaxLength = 20;
+      options.NoiseSigma = "stot";
       options.Seed = 1234;
-      string[] inputs = new string[] { "gbar" };
-      HEAL.EquationSearch.Console.Program.PrepareData(options, ref inputs, out var x, out var y, out var noiseSigma, out var trainStart, out var trainEnd, out var testStart, out var testEnd, out var trainX, out var trainY, out var trainNoiseSigma);
 
-      string[] errors = new string[] { "e_log_gobs", "e_log_gbar" };
-      HEAL.EquationSearch.Console.Program.PrepareData(options, ref errors, out var errorX, out var _, out var _, out var _, out var _, out var _, out var _, out var _, out var _, out var _);
-      var e_log_gobs = Enumerable.Range(0, errorX.GetLength(0)).Select(i => errorX[i, 0]).ToArray();
-      var e_log_gbar = Enumerable.Range(0, errorX.GetLength(0)).Select(i => errorX[i, 1]).ToArray();
-      var alg = new Algorithm();
-      var evaluator = new Evaluator(new RARLikelihood(x, y, modelExpr: null, e_log_gobs, e_log_gbar));
-      alg.Fit(trainX, trainY, trainNoiseSigma, inputs, CancellationToken.None, evaluator: evaluator, maxLength: options.MaxLength, randSeed: options.Seed);
-
-      System.Console.WriteLine($"Best expression: {alg.BestExpression.ToInfixString()}");
-    }
-
-    */
-
-    [TestMethod]
-    public void RARExpr() {
       // check likelihood and DL calculation for top expressions from RAR paper
-      GetRARData(out _, out var trainX, out var trainY, out _, out var e_log_gobs, out var e_log_gbar);
+      GetRARData(options, out _, out var trainX, out var trainY, out var sigma_tot, out var e_log_gobs, out var e_log_gbar);
       var likelihood = new RARLikelihood(trainX, trainY, modelExpr: null, e_log_gobs, e_log_gbar);
 
 
@@ -171,6 +166,28 @@ namespace HEAL.EquationSearch.Test {
                                              // we use DL(func) = Math.Log(6)*10 = 17.9 (+3.4 nats more)
         Assert.AreEqual(-1276.98, nlr.NegLogLikelihood, 1e-1); // reference result -1279.1
       }
+     //  {
+     //    // model 1 in RAR paper Gaussian likelihood
+     //    var approxLikelihood = new GaussianLikelihood(likelihood.X, likelihood.Y.Select(Math.Log10).ToArray(), null, sigma_tot.Select(si => 1.0 / si).ToArray());
+     //    approxLikelihood.ModelExpr = (p, x) => Math.Log(p[0] * (Math.Pow(Math.Abs(p[1] + x[0]), p[2]) + x[0])) / Math.Log(10);
+     //    var nlr = new NonlinearRegression.NonlinearRegression();
+     //    var theta = new double[] { 0.84, -0.02, 0.38 };
+     //    nlr.Fit(theta, approxLikelihood); // fit parameters
+     //    var dl = ModelSelection.DL(theta, approxLikelihood);
+     //  }
+
+      {
+        // model 1 in RAR paper with approximate RAR likelihood
+        var approxLikelihood = new RARLikelihoodApprox(likelihood.X, likelihood.Y, null, e_log_gobs, e_log_gbar, sigma_tot);
+        approxLikelihood.ModelExpr = (p, x) => p[0] * (Math.Pow(Math.Abs(p[1] + x[0]), p[2]) + x[0]);
+        var nlr = new NonlinearRegression.NonlinearRegression();
+        var theta = new double[] { 0.84, -0.02, 0.38 };
+        nlr.Fit(theta, approxLikelihood); // fit parameters
+        var dl = ModelSelection.DL(theta, approxLikelihood);
+        // Assert.AreEqual(-1244.66, dl, 1e-1); // reference result: 1250.6, which omits abs() and has DL(func) Math.Log(5)*9 = 14.5
+        //                                      // we use DL(func) = Math.Log(6)*10 = 17.9 (+3.4 nats more)
+        // Assert.AreEqual(-1276.98, nlr.NegLogLikelihood, 1e-1); // reference result -1279.1
+      }
 
       {
         // model 7 in RAR paper
@@ -186,16 +203,26 @@ namespace HEAL.EquationSearch.Test {
 
     [TestMethod]
     public void ParamOptConvergenceWithGaussianLikelihood() {
+
       // Checks the parameter optimization success rate for the best ESR expression reported in the RAR paper
       // Uses approximate likelihood (Gaussian)
       var options = new HEAL.EquationSearch.Console.Program.RunOptions();
       options.Dataset = "RAR_sigma.csv";
       options.Target = "log_gobs";
-      options.NoiseSigma = "stot";
       options.TrainingRange = "0:2695";
-      GetRARData(out _, out var trainX, out var trainY, out var trainNoiseSigma, out _, out _);
+      options.NoiseSigma = "stot";
+      options.Seed = 1234;
 
-      ParamOptConvergence(new GaussianLikelihood(trainX, trainY, modelExpr: null, trainNoiseSigma.Select(s => 1.0 / s).ToArray()));
+      GetRARData(options, out _, out var trainX, out var trainY, out var trainNoiseSigma, out _, out _);
+
+      // best expression from RAR
+      Expression<Expr.ParametricFunction> model1 = (p, x) => Math.Log(p[0] * (Math.Pow(Math.Abs(p[1] + x[0]), p[2]) + x[0])) * (1.0 / Math.Log(10));
+      Expression<Expr.ParametricFunction> model1a = (p, x) => Math.Log(p[0] + p[1] * x[0] + p[2] * Math.Pow(Math.Abs(p[3] + x[0]), p[4])) * (1.0 / Math.Log(10)); // GE version of model 1
+      Expression<Expr.ParametricFunction> model7 = (p, x) => Math.Log(Math.Pow(Math.Pow(p[0], x[0]) / x[0], p[1]) + x[0]) * (1.0 / Math.Log(10));
+
+      var models = new[] { (expr: model1, d: 3), (expr: model1a, d: 5), (expr: model7, d: 2) };
+
+      ParamOptConvergence(new GaussianLikelihood(trainX, trainY, modelExpr: null, trainNoiseSigma.Select(s => 1.0 / s).ToArray()), models);
     }
 
     [TestMethod]
@@ -204,28 +231,53 @@ namespace HEAL.EquationSearch.Test {
       // Uses RAR likelihood
       var options = new HEAL.EquationSearch.Console.Program.RunOptions();
       options.Dataset = "RAR_sigma.csv";
-      options.Target = "log_gobs";
-      options.NoiseSigma = "stot";
+      options.Target = "gobs";
       options.TrainingRange = "0:2695";
-      GetRARData(out _, out var trainX, out var trainY, out _, out var e_log_gobs, out var e_log_gbar);
+      options.NoiseSigma = "";
+      options.Seed = 1234;
 
-      ParamOptConvergence(new RARLikelihood(trainX, trainY, modelExpr: null, e_log_gobs, e_log_gbar));
-    }
+      GetRARData(options, out _, out var trainX, out var trainY, out _, out var e_log_gobs, out var e_log_gbar);
 
-    public void ParamOptConvergence(LikelihoodBase likelihood) {
       // best expression from RAR
       Expression<Expr.ParametricFunction> model1 = (p, x) => p[0] * (Math.Pow(Math.Abs(p[1] + x[0]), p[2]) + x[0]); // likelihood: -1279.1 DL: -1250.6 p: 0.84 -0.02 0.38 
       Expression<Expr.ParametricFunction> model1a = (p, x) => p[0] + p[1] * x[0] + p[2] * Math.Pow(Math.Abs(p[3] + x[0]), p[4]); // GE version of model 1
       Expression<Expr.ParametricFunction> model7 = (p, x) => Math.Pow(Math.Pow(p[0], x[0]) / x[0], p[1]) + x[0]; // likelihood: -1250.6 DL: -1228.5 p: 1.87 -0.52 
 
       var models = new[] { (expr: model1, d: 3), (expr: model1a, d: 5), (expr: model7, d: 2) };
+      ParamOptConvergence(new RARLikelihood(trainX, trainY, modelExpr: null, e_log_gobs, e_log_gbar), models);
+    }
+
+    [TestMethod]
+    public void ParamOptConvergenceWithApproxRARLikelihood() {
+      // Checks the parameter optimization success rate for the best ESR expression reported in the RAR paper
+      // Uses approximate RAR likelihood (ignores partial derivatives of sigma_tot)
+      var options = new HEAL.EquationSearch.Console.Program.RunOptions();
+      options.Dataset = "RAR_sigma.csv";
+      options.Target = "gobs";
+      options.TrainingRange = "0:2695";
+      options.NoiseSigma = "stot";
+      options.Seed = 1234;
+
+      GetRARData(options, out _, out var trainX, out var trainY, out var trainNoiseSigma, out var e_log_gobs, out var e_log_gbar);
+
+      // best expression from RAR
+      Expression<Expr.ParametricFunction> model1 = (p, x) => p[0] * (Math.Pow(Math.Abs(p[1] + x[0]), p[2]) + x[0]); // likelihood: -1279.1 DL: -1250.6 p: 0.84 -0.02 0.38 
+      Expression<Expr.ParametricFunction> model1a = (p, x) => p[0] + p[1] * x[0] + p[2] * Math.Pow(Math.Abs(p[3] + x[0]), p[4]); // GE version of model 1
+      Expression<Expr.ParametricFunction> model7 = (p, x) => Math.Pow(Math.Pow(p[0], x[0]) / x[0], p[1]) + x[0]; // likelihood: -1250.6 DL: -1228.5 p: 1.87 -0.52 
+
+      var models = new[] { (expr: model1, d: 3), (expr: model1a, d: 5), (expr: model7, d: 2) };
+      ParamOptConvergence(new RARLikelihoodApprox(trainX, trainY, modelExpr: null, e_log_gobs, e_log_gbar, trainNoiseSigma), models);
+    }
+
+    public void ParamOptConvergence(LikelihoodBase likelihood, IEnumerable<(Expression<Expr.ParametricFunction> expr, int d)> models) {
+
       foreach (var tup in models) {
         var nlr = new NonlinearRegression.NonlinearRegression();
         var sw = new Stopwatch();
         sw.Start();
         likelihood.ModelExpr = tup.expr;
         System.Console.Error.WriteLine($"Total time for preparing likelihood: {sw.ElapsedMilliseconds}ms");
-        var restartPolicy = new RestartPolicy(length: tup.d, maxSeconds: 10);
+        var restartPolicy = new RestartPolicy(length: tup.d);
         var parameterValues = restartPolicy.Next();
         int numRestarts = -1;
         do {
@@ -235,8 +287,7 @@ namespace HEAL.EquationSearch.Test {
             nlr.Fit(parameterValues, likelihood, maxIterations: 5000); // as in https://github.com/DeaglanBartlett/ESR/blob/main/esr/fitting/test_all.py
                                                                        // successful?
             if (nlr.ParamEst != null && !nlr.ParamEst.Any(double.IsNaN)) {
-              System.Console.Error.WriteLine(nlr.OptReport);
-              System.Console.Error.WriteLine($"Evals/s {nlr.OptReport.NumFuncEvals / nlr.OptReport.Runtime.TotalSeconds}");
+              System.Console.Error.WriteLine($"{nlr.NegLogLikelihood} {nlr.OptReport} evals/s {nlr.OptReport.NumFuncEvals / nlr.OptReport.Runtime.TotalSeconds}");
 
               if (nlr.LaplaceApproximation == null) {
                 System.Console.Error.WriteLine("Hessian not positive semidefinite after fitting");
@@ -250,8 +301,8 @@ namespace HEAL.EquationSearch.Test {
         } while (parameterValues != null);
 
 
-        System.Console.WriteLine($"{tup.expr} Restarts: {numRestarts} Valid restarts: {restartPolicy.Iterations} Number of best: {restartPolicy.NumBest} ({100 * restartPolicy.NumBest / (double)restartPolicy.Iterations:f1}%) " +
-          $"Best loss: {restartPolicy.BestLoss:e2} " +
+        System.Console.WriteLine($"{tup.expr} Restarts: {numRestarts} valid parameters: {restartPolicy.Iterations} number of best: {restartPolicy.NumBest} ({100 * restartPolicy.NumBest / (double)restartPolicy.Iterations:f1}%) " +
+          $"Best loss: {restartPolicy.BestLoss:f2} " +
           $"Best params: {(restartPolicy.BestParameters != null ? string.Join(" ", restartPolicy.BestParameters.Select(pi => pi.ToString("e4"))) : "")}");
       }
     }
