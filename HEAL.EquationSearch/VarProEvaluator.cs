@@ -83,6 +83,7 @@ namespace HEAL.EquationSearch {
       var terms = new List<(int start, int end)>();
       var coeffIndexes = new List<int>();
       GetTerms(expr, terms, coeffIndexes);
+      if (terms.Count != coeffIndexes.Count - 1) throw new InvalidProgramException("len(terms) != len(coefficients) - 1");  // the additional coeff is for the constant offset. this must be the 
 
       // compile all terms individually
       var code = CompileTerms(expr, terms, data, out var termIdx, out var paramIdx);
@@ -98,7 +99,7 @@ namespace HEAL.EquationSearch {
 
       var result = new double[data.Rows];
 
-      var solverOptions = new SolverOptions() { Iterations = 5000, Algorithm = 1 };
+      var solverOptions = new SolverOptions() { Iterations = 50, Algorithm = 1 };
       var coeff = new double[coeffIndexes.Count];
       var bestCost = double.MaxValue;
       double[]? bestCoeff = null;
@@ -128,15 +129,24 @@ namespace HEAL.EquationSearch {
 
         // optimize parameters (objective: minimize sum_i 1/2 (w_i^2 (y_i - y_pred_i)^2)  where we use w = 1/sErr)
         NativeWrapper.OptimizeVarPro(code, termIdx.ToArray(), data.AllRowIdx, data.Target, data.InvNoiseSigma, coeff, solverOptions, result, out var summary);
+
         Interlocked.Increment(ref optimizedExpressions);
 
         // update parameters if optimization lead to an improvement
         if (summary.Success == 1 && summary.FinalCost < bestCost) {
           bestCost = summary.FinalCost;
-          bestCoeff = coeff;
+          bestCoeff = (double[])coeff.Clone();
         }
 
         if (summary.Success == 1) {
+          // extract optimized nonlinear parameters
+          pIdx = 0;
+          for (int i = 0; i < code.Length; i++) {
+            if (code[i].Optimize == 1) {
+              parameterValues[pIdx++] = code[i].Coeff;
+            }
+          }
+
           restartPolicy.Update(parameterValues, loss: summary.FinalCost);
         }
 
@@ -149,11 +159,12 @@ namespace HEAL.EquationSearch {
         // update linear coefficients in expr
         expr.UpdateCoefficients(coeffIndexes.ToArray(), bestCoeff);
         // update nonlinear parameters in expr
-        foreach (var (codePos, exprPos) in paramIdx) {
-          var instr = code[codePos];
-          if (instr.Optimize != 1) continue;
-          if (expr[exprPos] is Grammar.ParameterSymbol paramSy)
-            paramSy.Value = instr.Coeff;
+        pIdx = 0;
+        for (int i = 0; i < code.Length; i++) {
+          if (code[i].Optimize == 1) {
+            var paramSy = expr[paramIdx.Find(tup => tup.codePos == i).exprPos] as Grammar.ParameterSymbol;
+            paramSy.Value = restartPolicy.BestParameters[pIdx++];
+          }
         }
       }
 
@@ -161,9 +172,12 @@ namespace HEAL.EquationSearch {
       var exprTree = HEALExpressionBridge.ConvertToExpressionTree(expr, data.VarNames, out var paramValues);
       var likelihood = new GaussianLikelihood(data.X, data.Target, exprTree, data.InvNoiseSigma);
       try {
-        var dl = ModelSelection.DLWithIntegerSnap(paramValues, likelihood);
+        // var dl = ModelSelection.DLWithIntegerSnap(paramValues, likelihood);
+        var dl = ModelSelection.DL(paramValues, likelihood);
 
-        Console.WriteLine($"len: {expr.Length} DL: {dl} logLik (full): {likelihood.NegLogLikelihood(paramValues)} {expr.ToInfixString()}");
+        Console.WriteLine($"len: {expr.Length} DL: {dl} nll: {likelihood.NegLogLikelihood(paramValues)} {string.Join(" ", paramValues.Select(pi => pi.ToString("e4")))} starts {restartPolicy.Iterations} numBest {restartPolicy.NumBest} {expr.ToInfixString()} ");
+        
+        // Console.Error.WriteLine($"{likelihood.NegLogLikelihood(paramValues) - likelihood.BestNegLogLikelihood(paramValues)} {restartPolicy.BestLoss}"); // for debugging
         return dl;
       } catch (Exception e) {
         System.Console.Error.WriteLine(e.Message);
@@ -261,7 +275,7 @@ namespace HEAL.EquationSearch {
           if (expr[coeffIdx] is not Grammar.ParameterSymbol) throw new NotSupportedException("Invalid expression form. Expected: <coeff> <term> *");
           coeffIndexes.Insert(0, coeffIdx); // TODO: perf
         } else if (expr[exprIdx] is Grammar.ParameterSymbol) {
-          coeffIndexes.Insert(0, exprIdx); // TODO: perf
+          coeffIndexes.Insert(0, exprIdx);
         } else {
           // Assert that each term has the pattern: <coeff * term> or just <coeff>
           // throw new InvalidProgramException($"Term does not have the structure <coeff * term> in {string.Join(" ", expr.Select(sy => sy.ToString()))} at position {exprIdx}");
