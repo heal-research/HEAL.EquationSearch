@@ -75,7 +75,7 @@ namespace HEAL.EquationSearch {
         numRestarts++;
         if (!double.IsNaN(modelLikelihood.NegLogLikelihood(parameterValues))) {
 
-          nlr.Fit(parameterValues, modelLikelihood, maxIterations: 5000); // as in https://github.com/DeaglanBartlett/ESR/blob/main/esr/fitting/test_all.py
+          nlr.Fit(parameterValues, modelLikelihood, maxIterations: 100, epsF: 1e-3); // as in https://github.com/DeaglanBartlett/ESR/blob/main/esr/fitting/test_all.py
           // successful?
           if (nlr.ParamEst != null && !nlr.ParamEst.Any(double.IsNaN)) {             
             if (nlr.LaplaceApproximation == null) {
@@ -89,13 +89,15 @@ namespace HEAL.EquationSearch {
         parameterValues = restartPolicy.Next();
       } while (parameterValues != null);
 
-      System.Console.WriteLine($"Restarts: {numRestarts}  expr: {expr}");
+      // System.Console.WriteLine($"Restarts: {numRestarts}  expr: {expr}");
       if (restartPolicy.BestLoss == double.MaxValue) return double.MaxValue;
       var bestParam = restartPolicy.BestParameters;
 
       HEALExpressionBridge.UpdateParameters(expr, bestParam);
       try {
-        var dl = ModelSelection.DLWithIntegerSnap(bestParam, modelLikelihood);
+        var dl = ModelSelection.DL(bestParam, modelLikelihood);
+        Console.WriteLine($"len: {expr.Length} DL: {dl:f2} nll: {modelLikelihood.NegLogLikelihood(bestParam):f2} {string.Join(" ", bestParam.Select(pi => pi.ToString("e4")))} starts {restartPolicy.Iterations} numBest {restartPolicy.NumBest} {expr.ToInfixString()} ");
+
         // bestLaplaceApproximation.GetParameterIntervals(0.01, out var low, out var high);
         // for(int i=0;i<low.Length;i++) {
         //   System.Console.WriteLine($"{bestParamEst[i]:g4} {low[i]:g4} {high[i]:g4}");
