@@ -3,7 +3,7 @@ using System.Reflection;
 using LinqExpr = System.Linq.Expressions.Expression;
 
 namespace HEAL.EquationSearch {
-  // class with methods to use HEAL.NLR and HEAL.Expressions
+  // class with utility methods to use HEAL.NLR and HEAL.Expressions
   public class HEALExpressionBridge {
 
     // convert to an expression tree that is compatible with HEAL.NLR
@@ -38,9 +38,9 @@ namespace HEAL.EquationSearch {
         return LinqExpr.ArrayIndex(x, LinqExpr.Constant(varIdx));
       } else if (expr[i] == expr.Grammar.One) { return LinqExpr.Constant(1.0); } 
       else if (expr[i] == expr.Grammar.Plus) { return LinqExpr.Add(children[0], children[1]); }    
-      // else if (expr[i] == expr.Grammar.Minus) { return LinqExpr.Subtract(children[0], children[1]); }
+      else if (expr[i] == expr.Grammar.Neg) { return LinqExpr.Negate(children[0]); }
       else if (expr[i] == expr.Grammar.Times) { return LinqExpr.Multiply(children[0], children[1]); } 
-      else if (expr[i] == expr.Grammar.Div) { return LinqExpr.Divide(children[0], children[1]); }
+      else if (expr[i] == expr.Grammar.Inv) { return LinqExpr.Divide(LinqExpr.Constant(1.0), children[0]); }
       else if (expr[i] == expr.Grammar.Abs) { return LinqExpr.Call(abs, children[0]); }
       else if (expr[i] == expr.Grammar.Cos) { return LinqExpr.Call(cos, children[0]); }
       else if (expr[i] == expr.Grammar.Exp) { return LinqExpr.Call(exp, children[0]); }

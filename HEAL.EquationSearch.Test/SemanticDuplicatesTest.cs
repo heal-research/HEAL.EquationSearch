@@ -14,7 +14,11 @@ namespace HEAL.EquationSearch.Test {
     [DataRow("0 0 x y * * + ", "0 0 y x * * + ", true)]
     [DataRow("0 0 x * 0 y * + +", "0 0 y * 0 x * + +", true)] 
     [DataRow("0 0 x * log 0 y * log + +", "0 0 y * log 0 x * log + +", true)]
-    [DataRow("0 0 0 x * 0 y * / * +", "0 0 0 y * 0 x * / * +", false)]  // would need to check within division / division not commutative
+    [DataRow("0 0 0 x * 0 y * inv * * +", "0 0 0 y * 0 x * inv * * +", false)]  // p*x / (p*y) * p + p  != p*y / (p*x) * p + p
+    [DataRow("0 0 0 x * 0 y * inv * * +", "0 0 x * 0 y * inv * +", true)]  // p*x / (p*y) * p + p  == p*x / (p*y) + p // TODO (but not allowed by restricted grammar anyway)
+    [DataRow("0 0 x * neg +", "0 0 x * +", true)]
+    [DataRow("0 0 x * neg 0 x * neg + +", "0 0 x * neg +", true)]
+    [DataRow("0 0 x * 0 x * + +", "0 0 x * +", true)]
     public void SemanticHashing(string exprStr1, string exprStr2, bool equal) {
       var g = new Grammar(new string[] { "x", "y" });
 

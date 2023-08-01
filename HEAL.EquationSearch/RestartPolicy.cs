@@ -32,7 +32,7 @@
 
 
       var p = new double[length];
-      for (int i = 0; i < length; i++) p[i] = SharedRandom.NextDouble() * 6 - 3; // in ESR code only unif(0, 3), TODO
+      for (int i = 0; i < length; i++) p[i] = SharedRandom.NextDouble() * 6 - 3; // NOTE in ESR code only unif(0, 3) is used
       return p;
     }
 

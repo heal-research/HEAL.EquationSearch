@@ -15,10 +15,12 @@ namespace HEAL.EquationSearch {
       return lengths;
     }
 
+    // x1 ° x2 = x2 ° x1
     private static bool IsCommutative(Grammar grammar, Grammar.Symbol sy) {
       return sy == grammar.Plus || sy == grammar.Times;
     }
 
+    // (x1 ° x2) ° x3 = x1 ° (x2 ° x3)
     private static bool IsAssociative(Grammar grammar, Grammar.Symbol sy) {
       return sy == grammar.Plus || sy == grammar.Times;
     }
@@ -34,8 +36,8 @@ namespace HEAL.EquationSearch {
     // The semantic hash function has the following capabilities:
     //   - flatten out the sub-trees for associative expressions (x1 ° x2) ° x3 => x1 ° x2 ° x3 (a single node with three children)
     //   - order sub-expressions of commutative expressions x2 ° x3 ° x1 => x1 ° x2 ° x3. The ordering is deterministic and based on the hash values of subexpressions.
+    //   - ignore negation operator (x * (-1))
     // The steps make sure that most of the semantically equivalent expressions have the same hash value.
-    // We do not yet handle distributive operators p1 * x1 + p2 * x1 => p3 * x1. This is necessary to prevent duplicate terms.
     public class HashNode {
       public readonly Expression expr;
       private readonly int[] lengths;
@@ -102,8 +104,8 @@ namespace HEAL.EquationSearch {
       }
 
       private bool HasNonlinearParameters() {
-        return Symbol == expr.Grammar.Exp || Symbol == expr.Grammar.Log || Symbol == expr.Grammar.Div 
-              || Symbol == expr.Grammar.Cos || Symbol == expr.Grammar.Pow
+        return Symbol == expr.Grammar.Exp || Symbol == expr.Grammar.Log || Symbol == expr.Grammar.Inv
+              || Symbol == expr.Grammar.Cos || Symbol == expr.Grammar.Pow || Symbol == expr.Grammar.Sqrt
               || children.Any(c => c.HasNonlinearParameters());
       }
 
@@ -128,7 +130,10 @@ namespace HEAL.EquationSearch {
         for (int i = 0; i < children.Count; i++) {
           hashValues[i] = children[i].HashValue;
         }
-        return Hash.JSHash(hashValues, (ulong)expr[end].GetHashCode()); // hash values of children, followed by hash value of current symbol
+        if (expr[end] == expr.Grammar.Neg)
+          return hashValues[0]; // neg is a linear operation and can be ignored
+        else
+          return Hash.JSHash(hashValues, (ulong)expr[end].GetHashCode()); // hash values of children, followed by hash value of current symbol
       }
 
       // for debugging

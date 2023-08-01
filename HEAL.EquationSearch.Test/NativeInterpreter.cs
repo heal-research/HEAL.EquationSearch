@@ -16,10 +16,10 @@ namespace HEAL.EquationSearch.Test {
       // check the order of arguments for the VarPro evaluator.
       // we have to use the same order in the Grammar
       var g = new Grammar(new[] { "x" });
-      g.UseFullRules();
+      g.UseLogExpPowRestrictedRules();
       
-      // this is equivalent to 2 / 1
-      var expr = new Expression(g, new[] { g.Parameter.Clone(), g.Parameter.Clone(), g.Div });
+      // this is equivalent to 1 / 2
+      var expr = new Expression(g, new[] { g.Parameter.Clone(), g.Parameter.Clone(), g.Inv, g.Times });
       ((Grammar.ParameterSymbol)expr[0]).Value = 1.0;
       ((Grammar.ParameterSymbol)expr[1]).Value = 2.0;
 
@@ -28,12 +28,37 @@ namespace HEAL.EquationSearch.Test {
 
       var eval = new HEAL.EquationSearch.VarProEvaluator();
       var res = eval.Evaluate(expr, data);
-      Assert.AreEqual(2.0, res[0]);
+      Assert.AreEqual(0.5, res[0]);
 
 
       var eval2 = new Evaluator(new SimpleGaussianLikelihood(data.X, data.Target, modelExpr: null, noiseSigma: 1.0));
       res = eval2.Evaluate(expr, data);
-      Assert.AreEqual(2.0, res[0]);
+      Assert.AreEqual(0.5, res[0]);
+    }
+
+    [TestMethod]
+    public void Minus() {
+      // check the order of arguments for the VarPro evaluator.
+      // we have to use the same order in the Grammar
+      var g = new Grammar(new[] { "x" });
+      g.UseLogExpPowRestrictedRules();
+
+      // this is equivalent to -2 + 1
+      var expr = new Expression(g, new[] { g.Parameter.Clone(), g.Neg, g.Parameter.Clone(), g.Plus });
+      ((Grammar.ParameterSymbol)expr[0]).Value = 2.0;
+      ((Grammar.ParameterSymbol)expr[2]).Value = 1.0;
+
+      // create dataset of one row
+      var data = new Data(new[] { "x" }, new double[1, 1], new double[1], new double[] { 1.0 });
+
+      var eval = new VarProEvaluator();
+      var res = eval.Evaluate(expr, data);
+      Assert.AreEqual(-1.0, res[0]);
+
+
+      var eval2 = new Evaluator(new SimpleGaussianLikelihood(data.X, data.Target, modelExpr: null, noiseSigma: 1.0));
+      res = eval2.Evaluate(expr, data);
+      Assert.AreEqual(-1.0, res[0]);
     }
 
     [TestMethod]
@@ -41,7 +66,7 @@ namespace HEAL.EquationSearch.Test {
       // check the order of arguments for the VarPro evaluator.
       // we have to use the same order in the Grammar
       var g = new Grammar(new[] { "x" });
-      g.UseFullRules();
+      g.UseLogExpPowRestrictedRules();
 
       // this is equivalent to 3^2
       var expr = new Expression(g, new[] { g.Parameter.Clone(), g.Parameter.Clone(), g.Pow });
@@ -51,14 +76,13 @@ namespace HEAL.EquationSearch.Test {
       // create dataset of one row
       var data = new Data(new[] { "x" }, new double[1, 1], new double[1], new double[] { 1.0 });
 
-      var eval = new HEAL.EquationSearch.VarProEvaluator();
+      var eval = new VarProEvaluator();
       var res = eval.Evaluate(expr, data);
       Assert.AreEqual(9.0, res[0]);
 
       var eval2 = new Evaluator(new SimpleGaussianLikelihood(data.X, data.Target, modelExpr: null, noiseSigma: 1.0));
       res = eval2.Evaluate(expr, data);
       Assert.AreEqual(9.0, res[0]);
-
     }
 
   }

@@ -16,7 +16,7 @@ namespace HEAL.EquationSearch {
   public class Algorithm {
 
     public Expression? BestExpression { get; private set; }
-    public double? BestMDL { get; private set; }
+    public double? BestDescriptionLength { get; private set; }
 
     public string[]? VariableNames { get; private set; }
 
@@ -40,9 +40,9 @@ namespace HEAL.EquationSearch {
       var control = GraphSearchControl.Start(new State(data, maxLength, grammar, evaluator))
         .WithCancellationToken(cts.Token)
         .WithImprovementCallback((ctrl, state, quality) => {
-          var mse = CalculateMSE(state.Expression, data);
-          Console.WriteLine($"Found new best solution with {quality} rmse: {Math.Sqrt(mse):g5} after {ctrl.Elapsed} {ctrl.BestQualityState}");
-          if (quality.Value < earlyStopQuality) cts.Cancel(); // early stopping
+          // var mse = CalculateMSE(state.Expression, data);
+          // Console.WriteLine($"Found new best solution with {quality} rmse: {Math.Sqrt(mse):g5} after {ctrl.Elapsed} {ctrl.BestQualityState}");
+          // if (quality.Value < earlyStopQuality) cts.Cancel(); // early stopping
         });
 
       switch (algorithmType) {
@@ -62,7 +62,7 @@ namespace HEAL.EquationSearch {
           $"runtime: {control.Elapsed}");
 
         BestExpression = control.BestQualityState.Expression;
-        BestMDL = control.BestQuality.Value.Value;
+        BestDescriptionLength = control.BestQuality.Value.Value;
       }
     }
 

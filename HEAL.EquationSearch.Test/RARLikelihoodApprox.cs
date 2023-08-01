@@ -124,6 +124,7 @@ namespace HEAL.EquationSearch.Test {
       this.y_idx = original.y_idx;
       this.e_log_gbar_idx = original.e_log_gbar_idx;
       this.e_log_gobs_idx = original.e_log_gobs_idx;
+      this.sigma_tot_idx = original.sigma_tot_idx;
       ModelExpr = original.origExpr; // initializes all interpreters and gradients
     }
 
@@ -145,6 +146,7 @@ namespace HEAL.EquationSearch.Test {
       extendedXCol[xCol.Length + 2] = sigma_tot; this.sigma_tot_idx = xCol.Length + 2;
       extendedXCol[xCol.Length + 3] = y.Select(Math.Log10).ToArray(); this.y_idx = xCol.Length + 3;
 
+      ModelExpr = modelExpr;
     }
 
     public override double[,] FisherInformation(double[] p) {
@@ -207,10 +209,6 @@ namespace HEAL.EquationSearch.Test {
         }
       } else {
         nll = NegLogLikelihoodJacobian(p, null).Sum();
-      }
-
-      if (double.IsNaN(nll)) {
-        nll = 1e300;
       }
     }
 

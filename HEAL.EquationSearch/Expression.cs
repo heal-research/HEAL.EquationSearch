@@ -56,8 +56,15 @@ namespace HEAL.EquationSearch {
         c = c - lengths[c];
       }
       if (subExpressions.Any()) {
+        // functions
         if (subExpressions.Count == 1) {
-          return rootStr + "( " + subExpressions[0] + " )";
+          if (syString[rootIdx] == Grammar.Neg) {
+            return $"- {subExpressions[0]}";
+          } else if (syString[rootIdx] == Grammar.Inv) {
+            return $"1 / {subExpressions[0]}";
+          } else {
+            return rootStr + "( " + subExpressions[0] + " )";
+          }
         } else {
           return string.Join(" " + rootStr + " ", subExpressions);
         }

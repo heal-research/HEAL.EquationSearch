@@ -190,6 +190,7 @@ namespace HEAL.EquationSearch.Test {
       return nll;
     }
 
+    private int nEvals;
     public override void NegLogLikelihoodGradient(double[] p, out double nll, double[]? nll_grad) {
       var m = y.Length;
       var n = p.Length;
@@ -208,9 +209,9 @@ namespace HEAL.EquationSearch.Test {
         nll = NegLogLikelihoodJacobian(p, null).Sum();
       }
 
-      if (double.IsNaN(nll)) {
-        nll = 1e300;
-      }
+      // for debugging
+      // if (!double.IsNaN(nll))
+      //   System.IO.File.AppendAllLines(@"c:\temp\convergence_log.txt", new string[] { $"{nEvals++},{nll},{string.Join(",", p.Select(pi => pi.ToString()))},{(nll_grad != null ? string.Join(",", nll_grad.Select(xi => xi.ToString())) : "")}" });
     }
 
     public double[] NegLogLikelihoodJacobian(double[] p, double[,]? jac) {

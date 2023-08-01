@@ -19,7 +19,6 @@ namespace HEAL.EquationSearch.Test {
         h2Expr = value;
         if (value != null) {
           // wrap H=sqrt(abs(model))
-
           value = value.Update(System.Linq.Expressions.Expression.Call(null, sqrt, System.Linq.Expressions.Expression.Call(null, abs, value.Body)), value.Parameters);
         } 
         base.ModelExpr = value;
@@ -42,12 +41,10 @@ namespace HEAL.EquationSearch.Test {
       var yHess = new double[n, m, n]; // parameters x rows x parameters
       var yHessJ = new double[m, n]; // buffer
 
-      // var yPred = Expr.EvaluateFuncJac(ModelExpr, p, x, ref yJac);
       var yPred = interpreter.EvaluateWithJac(p, null, yJac);
 
       // evaluate hessian
       for (int j = 0; j < p.Length; j++) {
-        // Expr.EvaluateFuncJac(ModelGradient[j], p, x, ref yHessJ);
         gradInterpreter[j].EvaluateWithJac(p, null, yHessJ);
         Buffer.BlockCopy(yHessJ, 0, yHess, j * m * n * sizeof(double), m * n * sizeof(double));
         Array.Clear(yHessJ, 0, yHessJ.Length);
@@ -71,9 +68,9 @@ namespace HEAL.EquationSearch.Test {
 
     // for the calculation of deviance
     public override double BestNegLogLikelihood(double[] p) {
-      return 0.0;
+      return 0.0; // in the ESR paper the constant term of the likelihood is not reported
       // int m = y.Length;
-      // return Enumerable.Range(0, m).Sum(i => 0.5 * Math.Log(2.0 * Math.PI / invNoiseSigma[i] / invNoiseSigma[i])); // residuals are zero
+      // return Enumerable.Range(0, m).Sum(i => 0.5 * Math.Log(2.0 * Math.PI / invNoiseSigma[i] / invNoiseSigma[i]));
     }
 
     public override double NegLogLikelihood(double[] p) {
@@ -86,7 +83,7 @@ namespace HEAL.EquationSearch.Test {
       var n = p.Length;
       double[,]? yJac = null;
 
-      nll = 0.0; //  BestNegLogLikelihood(p);
+      nll = BestNegLogLikelihood(p);
 
       double[] yPred;
       if (nll_grad == null) {

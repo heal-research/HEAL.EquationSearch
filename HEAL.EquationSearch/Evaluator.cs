@@ -24,37 +24,38 @@ namespace HEAL.EquationSearch {
     // This method uses caching for efficiency.
     // IMPORTANT: This method does not update parameter values in expr. Use for heuristic evaluation only.
     public double OptimizeAndEvaluateMSE(Expression expr, Data data) {
-      var semHash = Semantics.GetHashValue(expr);
-      Interlocked.Increment(ref evaluatedExpressions);
-
-      if (exprQualities.TryGetValue(semHash, out double nll)) {
-        // NOTE: parameters of expression are not set in this case
-        return nll;
-      }
-
-
-      var model = HEALExpressionBridge.ConvertToExpressionTree(expr, data.VarNames, out var parameterValues);
-      var modelLikelihood = this.likelihood.Clone();
-      modelLikelihood.ModelExpr = model;
-
-      var nlr = new NonlinearRegression.NonlinearRegression();
-
-      var restartPolicy = new RestartPolicy(parameterValues.Length);
-      do {
-        nlr.Fit(parameterValues, modelLikelihood, maxIterations: 5000);
-
-        if (nlr.ParamEst != null && !nlr.ParamEst.Any(double.IsNaN)) {
-          restartPolicy.Update(nlr.ParamEst, loss: nlr.NegLogLikelihood);
-        }
-        parameterValues = restartPolicy.Next();
-      } while (parameterValues != null);
-
-      if (restartPolicy.BestParameters != null) {
-        HEALExpressionBridge.UpdateParameters(expr, restartPolicy.BestParameters);
-      }
-
-      exprQualities.GetOrAdd(semHash, restartPolicy.BestLoss);
-      return restartPolicy.BestLoss;
+      throw new NotSupportedException(); // TODO: this is untested so far
+      // var semHash = Semantics.GetHashValue(expr);
+      // Interlocked.Increment(ref evaluatedExpressions);
+      // 
+      // if (exprQualities.TryGetValue(semHash, out double nll)) {
+      //   // NOTE: parameters of expression are not set in this case
+      //   return nll;
+      // }
+      // 
+      // 
+      // var model = HEALExpressionBridge.ConvertToExpressionTree(expr, data.VarNames, out var parameterValues);
+      // var modelLikelihood = this.likelihood.Clone();
+      // modelLikelihood.ModelExpr = model;
+      // 
+      // var nlr = new NonlinearRegression.NonlinearRegression();
+      // 
+      // var restartPolicy = new RestartPolicy(parameterValues.Length);
+      // do {
+      //   nlr.Fit(parameterValues, modelLikelihood, maxIterations: 100, epsF: 1e-3);
+      // 
+      //   if (nlr.ParamEst != null && !nlr.ParamEst.Any(double.IsNaN)) {
+      //     restartPolicy.Update(nlr.ParamEst, loss: nlr.NegLogLikelihood);
+      //   }
+      //   parameterValues = restartPolicy.Next();
+      // } while (parameterValues != null);
+      // 
+      // if (restartPolicy.BestParameters != null) {
+      //   HEALExpressionBridge.UpdateParameters(expr, restartPolicy.BestParameters);
+      // }
+      // 
+      // exprQualities.GetOrAdd(semHash, restartPolicy.BestLoss);
+      // return restartPolicy.BestLoss;
     }
 
     // This method always optimizes parameters in expr but does not use caching to make sure all parameters of the evaluated expressions are set correctly.
@@ -75,7 +76,7 @@ namespace HEAL.EquationSearch {
         numRestarts++;
         if (!double.IsNaN(modelLikelihood.NegLogLikelihood(parameterValues))) {
 
-          nlr.Fit(parameterValues, modelLikelihood, maxIterations: 100, epsF: 1e-3); // as in https://github.com/DeaglanBartlett/ESR/blob/main/esr/fitting/test_all.py
+          nlr.Fit(parameterValues, modelLikelihood, maxIterations: 100, epsF: 1e-3); // stop when neg log likelihood changes by less than 0.001
           // successful?
           if (nlr.ParamEst != null && !nlr.ParamEst.Any(double.IsNaN)) {             
             if (nlr.LaplaceApproximation == null) {
@@ -96,20 +97,10 @@ namespace HEAL.EquationSearch {
       HEALExpressionBridge.UpdateParameters(expr, bestParam);
       try {
         var dl = ModelSelection.DL(bestParam, modelLikelihood);
-        Console.WriteLine($"len: {expr.Length} DL: {dl:f2} nll: {modelLikelihood.NegLogLikelihood(bestParam):f2} {string.Join(" ", bestParam.Select(pi => pi.ToString("e4")))} starts {restartPolicy.Iterations} numBest {restartPolicy.NumBest} {expr.ToInfixString()} ");
+        // Console.WriteLine($"len: {expr.Length} DL: {dl:f2} nll: {modelLikelihood.NegLogLikelihood(bestParam):f2} {string.Join(" ", bestParam.Select(pi => pi.ToString("e4")))} starts {restartPolicy.Iterations} numBest {restartPolicy.NumBest} {expr.ToInfixString()} ");
 
-        // bestLaplaceApproximation.GetParameterIntervals(0.01, out var low, out var high);
-        // for(int i=0;i<low.Length;i++) {
-        //   System.Console.WriteLine($"{bestParamEst[i]:g4} {low[i]:g4} {high[i]:g4}");
-        // }
         if (double.IsNaN(dl)) return double.MaxValue;
 
-        // modelLikelihood.ModelExpr = bestExpr;
-        // bestNLL = modelLikelihood.NegLogLikelihood(bestParamEst);
-
-        // TODO: MDL potentially simplifies the expression tree and re-fits the parameters.
-        // We must therefore update our postfix representation of the expression to report the correct (simplified) result.
-        // Console.WriteLine($"{mdl};{-bestNLL};{bestExpr};{string.Join(";", bestParamEst.Select(pi => pi.ToString("g4")))}");
         return dl;
       } catch (Exception e) {
         System.Console.Error.WriteLine(e.Message);

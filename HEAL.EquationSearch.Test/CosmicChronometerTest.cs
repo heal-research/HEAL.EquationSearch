@@ -19,12 +19,17 @@ namespace HEAL.EquationSearch.Test {
       string[] inputs = new[] { "x" }; // x = z+1
       HEAL.EquationSearch.Console.Program.PrepareData(options, ref inputs, out var x, out var y, out var noiseSigma, out var _, out var _, out var _, out var _, out var _, out var _, out var _);
 
-      var likelihood = new CCLikelihoodCompiled(x, y, modelExpr: null, noiseSigma.Select(s => 1.0 / s).ToArray());
+      var likelihood = new CCLikelihood(x, y, modelExpr: null, noiseSigma.Select(s => 1.0 / s).ToArray());
       var evaluator = new Evaluator(likelihood);
       var alg = new Algorithm();
       var grammar = new Grammar(inputs);
       alg.Fit(x, y, noiseSigma, inputs, CancellationToken.None, evaluator: evaluator, grammar: grammar, maxLength: 10, randSeed: 1234);
-      Assert.AreEqual(16.39, alg.BestMDL.Value, 1.0e-2);
+      System.Console.WriteLine(alg.BestExpression.ToInfixString());
+      // Assert.AreEqual(16.39, alg.BestDescriptionLength.Value, 1.0e-2);
+
+      var bestExpr = HEALExpressionBridge.ConvertToExpressionTree(alg.BestExpression, inputs, out var bestParamValues);
+      likelihood.ModelExpr = bestExpr;
+      Assert.AreEqual(16.39, ModelSelection.DLWithIntegerSnap(bestParamValues, likelihood), 1e-2);
     }
 
     [TestMethod]
@@ -38,7 +43,7 @@ namespace HEAL.EquationSearch.Test {
       string[] inputs = new[] { "x" };
       HEAL.EquationSearch.Console.Program.PrepareData(options, ref inputs, out var x, out var y, out var noiseSigma, out var _, out var _, out var _, out var _, out var _, out var _, out var _);
 
-      var likelihood = new CCLikelihoodCompiled(x, y, modelExpr: null, noiseSigma.Select(s => 1.0 / s).ToArray());
+      var likelihood = new CCLikelihood(x, y, modelExpr: null, noiseSigma.Select(s => 1.0 / s).ToArray());
       var evaluator = new Evaluator(likelihood);
 
       // top two expressions from ESR Paper
@@ -60,14 +65,7 @@ namespace HEAL.EquationSearch.Test {
         var theta = new double[] { 416.93, 4055.4 };
         var dl = ModelSelection.DL(theta, likelihood);
         Assert.AreEqual(27.74, dl, 1e-2);
-      }
-      // This top expression from ESR is also recovered by ESR with integer snap
-      {
-        likelihood.ModelExpr = (p, x) => p[0] * x[0] * x[0];
-        var theta = new double[] { -3.8834e3 };
-        var dl = ModelSelection.DL(theta, likelihood);
-        Assert.AreEqual(16.39, dl, 1e-2);
-      }
+      }      
     }
 
   }

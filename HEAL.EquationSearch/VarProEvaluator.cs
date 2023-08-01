@@ -1,4 +1,5 @@
-﻿using HEAL.NativeInterpreter;
+﻿using HEAL.Expressions;
+using HEAL.NativeInterpreter;
 using HEAL.NonlinearRegression;
 using System.Runtime.InteropServices;
 
@@ -56,7 +57,7 @@ namespace HEAL.EquationSearch {
 
       // TODO: restarts
       // optimize parameters (objective: minimize sum_i 1/2 (w_i^2 (y_i - y_pred_i)^2)  where we use w = 1/sErr)
-      var solverOptions = new SolverOptions() { Iterations = 5000, Algorithm = 1 }; // Algorithm 1: Krogh Variable Projection
+      var solverOptions = new SolverOptions() { Iterations = 100, Algorithm = 1 }; // Algorithm 1: Krogh Variable Projection
       var coeff = new double[coeffIndexes.Count];
       // Debug.Assert(coeffIndexes.Count == 1 + termIdx.Count); // one coefficient for each term + intercept
       NativeWrapper.OptimizeVarPro(code, termIdx.ToArray(), data.AllRowIdx, data.Target, data.InvNoiseSigma, coeff, solverOptions, result, out var summary);
@@ -78,6 +79,7 @@ namespace HEAL.EquationSearch {
     // This method always optimizes parameters in expr but does not use caching to make sure all parameters of the evaluated expressions are set correctly.
     // Use this method to optimize the best solutions (found via MSE)
     public double OptimizeAndEvaluateDL(Expression expr, Data data) {
+      AssertExpressionStructure(expr); // VarProEval requires the last coefficient to be the offset. Otherwise evaluation will fail silently!
       Interlocked.Increment(ref evaluatedExpressions);
 
       var terms = new List<(int start, int end)>();
@@ -99,7 +101,7 @@ namespace HEAL.EquationSearch {
 
       var result = new double[data.Rows];
 
-      var solverOptions = new SolverOptions() { Iterations = 50, Algorithm = 1 };
+      var solverOptions = new SolverOptions() { Iterations = 100, Algorithm = 1 };
       var coeff = new double[coeffIndexes.Count];
       var bestCost = double.MaxValue;
       double[]? bestCoeff = null;
@@ -129,6 +131,7 @@ namespace HEAL.EquationSearch {
 
         // optimize parameters (objective: minimize sum_i 1/2 (w_i^2 (y_i - y_pred_i)^2)  where we use w = 1/sErr)
         NativeWrapper.OptimizeVarPro(code, termIdx.ToArray(), data.AllRowIdx, data.Target, data.InvNoiseSigma, coeff, solverOptions, result, out var summary);
+        // NOTE: last coefficient is offset parameter!
 
         Interlocked.Increment(ref optimizedExpressions);
 
@@ -175,9 +178,8 @@ namespace HEAL.EquationSearch {
         // var dl = ModelSelection.DLWithIntegerSnap(paramValues, likelihood);
         var dl = ModelSelection.DL(paramValues, likelihood);
 
-        Console.WriteLine($"len: {expr.Length} DL: {dl} nll: {likelihood.NegLogLikelihood(paramValues)} {string.Join(" ", paramValues.Select(pi => pi.ToString("e4")))} starts {restartPolicy.Iterations} numBest {restartPolicy.NumBest} {expr.ToInfixString()} ");
-        
-        // Console.Error.WriteLine($"{likelihood.NegLogLikelihood(paramValues) - likelihood.BestNegLogLikelihood(paramValues)} {restartPolicy.BestLoss}"); // for debugging
+        // for debugging
+        // Console.WriteLine($"len: {expr.Length} DL: {dl:e6} nll: {likelihood.NegLogLikelihood(paramValues):e6} {string.Join(" ", paramValues.Select(pi => pi.ToString("e4")))} starts {restartPolicy.Iterations} numBest {restartPolicy.NumBest} {expr.ToInfixString()} ");
         return dl;
       } catch (Exception e) {
         System.Console.Error.WriteLine(e.Message);
@@ -185,6 +187,20 @@ namespace HEAL.EquationSearch {
       }
     }
 
+    private void AssertExpressionStructure(Expression expr) {
+      // expression must end with ... p + 
+      if (expr.Length == 1 && expr[0] is Grammar.ParameterSymbol) return;
+      else {
+        // must end with additions
+        int i = expr.Length - 1;
+        while (i >= 0 && expr[i] == expr.Grammar.Plus) {
+          i--;
+        }
+        // the last symbol which is not + must be a parameter
+        if(i >= 0 && expr[i] is Grammar.ParameterSymbol) return;
+      }
+      throw new ArgumentException("The expression must end with addition of the offset");
+    }
 
     public double[] Evaluate(Expression expression, Data data) {
       Interlocked.Increment(ref evaluatedExpressions);
@@ -202,40 +218,21 @@ namespace HEAL.EquationSearch {
         InitCache(data);
       }
 
-      var codeLen = terms.Sum(t => t.end - t.start + 1);
-      var code = new NativeInstruction[codeLen];
+      // var codeLen = terms.Sum(t => t.end - t.start + 1);
+      var code = new List<NativeInstruction>();
       termIdx = new List<int>();
 
       paramSyIdx = new List<(int, int)>();
-      int codeIdx = 0;
       foreach (var (start, end) in terms) {
         var containsVariable = false;
         // requires a postfix representation
         for (int exprIdx = start; exprIdx <= end; exprIdx++) {
-          var curSy = expr[exprIdx];
-          code[codeIdx] = new NativeInstruction { Arity = curSy.Arity, OpCode = SymbolToOpCode(expr.Grammar, curSy), Length = 1, Optimize = 0, Coeff = 1.0 };
-          if (curSy is Grammar.VariableSymbol varSy) {
-            code[codeIdx].Data = cachedDataHandles[varSy.VariableName].AddrOfPinnedObject();
-            containsVariable |= true;
-          } else if (curSy is Grammar.ParameterSymbol paramSy) {
-            code[codeIdx].Coeff = paramSy.Value;
-            code[codeIdx].Optimize = 1;
-            paramSyIdx.Add((codePos: codeIdx, exprPos: exprIdx));
-          } else if (curSy is Grammar.ConstantSymbol constSy) {
-            code[codeIdx].Coeff = constSy.Value;
-          } else {
-            // for all other symbols update the code length
-            var c = codeIdx - 1; // first child idx;
-            for (int j = 0; j < code[codeIdx].Arity; ++j) {
-              code[codeIdx].Length += code[c].Length;
-              c -= code[c].Length; // next child idx
-            }
-          }
-          codeIdx++;
+          AddInstructions(expr, exprIdx, code, paramSyIdx);
+          containsVariable |= expr[exprIdx] is Grammar.VariableSymbol;
         }
-        // remove constant terms because VarPro will be unstable otherwise
+        // skip constant terms because VarPro will be unstable otherwise
         if (containsVariable) {
-          termIdx.Add(codeIdx - 1);
+          termIdx.Add(code.Count - 1);
         }
       }
 
@@ -248,7 +245,53 @@ namespace HEAL.EquationSearch {
       }
 #endif
 
-      return code;
+      return code.ToArray();
+    }
+
+    private void AddInstructions(Expression expr, int exprIdx, List<NativeInstruction> code, List<(int codePos, int exprPos)> paramSyIdx) {
+      var grammar = expr.Grammar;
+      var curSy = expr[exprIdx];
+      if (curSy is Grammar.VariableSymbol varSy) {
+        var curInstr = new NativeInstruction { Arity = curSy.Arity, OpCode = SymbolToOpCode(expr.Grammar, curSy), Length = 1, Optimize = 0, Coeff = 1.0 };
+        curInstr.Data = cachedDataHandles[varSy.VariableName].AddrOfPinnedObject();
+        code.Add(curInstr);
+      } else if (curSy is Grammar.ParameterSymbol paramSy) {
+        var curInstr = new NativeInstruction { Arity = curSy.Arity, OpCode = SymbolToOpCode(expr.Grammar, curSy), Length = 1, Optimize = 0, Coeff = 1.0 };
+        curInstr.Coeff = paramSy.Value;
+        curInstr.Optimize = 1;
+        paramSyIdx.Add((codePos: code.Count, exprPos: exprIdx));
+        code.Add(curInstr);
+      } else if (curSy is Grammar.ConstantSymbol constSy) {
+        var curInstr = new NativeInstruction { Arity = curSy.Arity, OpCode = SymbolToOpCode(expr.Grammar, curSy), Length = 1, Optimize = 0, Coeff = 1.0 };
+        curInstr.Coeff = constSy.Value;
+        code.Add(curInstr);
+      } else if (curSy == grammar.Inv) {
+        // inv(x) => 1/(x)
+        var chIdx = code.Count - 1; // child idx;
+        var chLen = code[chIdx].Length;
+
+        var instr1 = new NativeInstruction { Arity = 0, OpCode = (int)OpCode.Constant, Length = 1, Optimize = 0, Coeff = 1.0 };
+        var instrDiv = new NativeInstruction { Arity = 2, OpCode = (int)OpCode.Div, Length = chLen + 2, Optimize = 0, Coeff = 0.0 };
+        code.Add(instr1);
+        code.Add(instrDiv);
+      } else if (curSy == grammar.Neg) {
+        // neg(x) => (-1)*(x)
+        var chIdx = code.Count - 1; // child idx;
+        var chLen = code[chIdx].Length;
+        var instr1 = new NativeInstruction { Arity = 0, OpCode = (int)OpCode.Constant, Length = 1, Optimize = 0, Coeff = -1.0 };
+        var instrMul = new NativeInstruction { Arity = 2, OpCode = (int)OpCode.Mul, Length = chLen + 2, Optimize = 0, Coeff = 0.0 };
+        code.Add(instr1);
+        code.Add(instrMul);
+      } else {
+        var curInstr = new NativeInstruction { Arity = curSy.Arity, OpCode = SymbolToOpCode(expr.Grammar, curSy), Length = 1, Optimize = 0, Coeff = 0.0 }; // length updated below, coeff irrelevant
+        // for all other symbols update the code length
+        var c = code.Count - 1; // first child idx;
+        for (int j = 0; j < curInstr.Arity; ++j) {
+          curInstr.Length += code[c].Length;
+          c -= code[c].Length; // next child idx
+        }
+        code.Add(curInstr);
+      }
     }
 
     private static void GetTerms(Expression expr, List<(int start, int end)> terms, List<int> coeffIndexes) {
@@ -287,9 +330,13 @@ namespace HEAL.EquationSearch {
     private static int SymbolToOpCode(Grammar grammar, Grammar.Symbol symbol) {
       if (symbol == grammar.Plus) {
         return (int)OpCode.Add;
+      } else if (symbol == grammar.Neg) {
+        throw new NotSupportedException(); // TODO: multiple instructions for one symbol required
+        return (int)OpCode.Sub;
       } else if (symbol == grammar.Times) {
         return (int)OpCode.Mul;
-      } else if (symbol == grammar.Div) {
+      } else if (symbol == grammar.Inv) {
+        throw new NotSupportedException(); // TODO: multiple instructions for one symbol required
         return (int)OpCode.Div;
       } else if (symbol == grammar.Exp) {
         return (int)OpCode.Exp;
