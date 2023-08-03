@@ -12,10 +12,10 @@ namespace HEAL.EquationSearch.Test {
 
     [DataTestMethod]
     // multiple max lengths to analyse runtime growth
-    [DataRow(10, 2.8527e+05)]
-    [DataRow(12, 2.7724e+05)]
-    [DataRow(14, 1.8342e+05)]
-    [DataRow(16, 1.8086e+05)]
+    [DataRow(10, 285270.88)]
+    [DataRow(12, 277235.58)]
+    [DataRow(14, 183420.72)]
+    [DataRow(16, 180863.4)]
     [DataRow(18, null)] // expected DL not known yet
     [DataRow(20, null)] // expected DL not known yet
     [DataRow(25, null)] // expected DL not known yet
@@ -294,7 +294,7 @@ namespace HEAL.EquationSearch.Test {
       var varNames = new string[] { "x1" };
 
       var varProEval = new VarProEvaluator();
-      var data = new Data(varNames, x, y, y.Select(_ => 1.0 / (noiseSigma * noiseSigma)).ToArray());
+      var data = new Data(varNames, x, y, y.Select(_ => 1.0 / noiseSigma ).ToArray());
       var g = new Grammar(varNames);
       g.UseLogExpPowRestrictedRules();
       var x0 = g.Variables.Single();

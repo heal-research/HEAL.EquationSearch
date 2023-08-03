@@ -1,11 +1,11 @@
 ﻿namespace HEAL.EquationSearch {
   // controls random restarts for parameter optimization
   internal class RestartPolicy {
-    public int numParam { get; private set; }
-    public int MaxIterations => numParam == 0 ? 0 : (int)(70.71 * Math.Exp(0.381 * numParam)); // 0, 104, 152, 222, 325 ...
+    public int NumParam { get; private set; }
+    public int MaxIterations => NumParam == 0 ? 0 : (int)(70.71 * Math.Exp(0.381 * NumParam)); // 0, 104, 152, 222, 325 ...
 
     // for early stopping (when finding NConv times the best parameters)
-    public int NConv => 15 + (numParam - 1) * 20; // 15, 35, 55, 75 ... 
+    public int NConv => 15 + (NumParam - 1) * 20; // 15, 35, 55, 75 ... 
 
     public int MaxSeconds { get; private set; }
     public DateTime StartTime { get; private set; }
@@ -17,7 +17,7 @@
     public List<(double[] p, double loss)> Parameters { get; private set; } = new(); // for debugging
 
     public RestartPolicy(int numParam, int maxSeconds = 3600) {
-      this.numParam = numParam;
+      this.NumParam = numParam;
       this.MaxSeconds = maxSeconds;
       this.StartTime = DateTime.Now;
     }
@@ -31,8 +31,8 @@
           ) return null;
 
 
-      var p = new double[numParam];
-      for (int i = 0; i < numParam; i++) p[i] = SharedRandom.NextDouble() * 6 - 3; // NOTE in ESR code only unif(0, 3) is used
+      var p = new double[NumParam];
+      for (int i = 0; i < NumParam; i++) p[i] = SharedRandom.NextDouble() * 6 - 3; // NOTE in ESR code only unif(0, 3) is used
       return p;
     }
 

@@ -32,7 +32,7 @@ namespace HEAL.EquationSearch {
       grammar ??= new Grammar(varNames); // default grammar if none supplied by user
 
       this.VariableNames = (string[])varNames.Clone();
-      var data = new Data(varNames, x, y, invNoiseVariance: noiseSigma.Select(si => 1.0 / (si * si)).ToArray());
+      var data = new Data(varNames, x, y, invNoiseSigma: noiseSigma.Select(si => 1.0 / si).ToArray());
 
       evaluator ??= new VarProEvaluator();
 
@@ -81,7 +81,7 @@ namespace HEAL.EquationSearch {
       if (BestExpression == null) throw new InvalidOperationException("Call fit() first.");
       if (x.GetLength(1) != VariableNames.Length) throw new ArgumentException("x has different number of columns than the training dataset");
       var evaluator = new VarProEvaluator();
-      var data = new Data(VariableNames, x, new double[x.GetLength(0)], new double[x.GetLength(0)]); // no target, or noise variance
+      var data = new Data(VariableNames, x, y: null, invNoiseSigma: null); // no target, or noise variance
       return evaluator.Evaluate(BestExpression, data);
     }
   }

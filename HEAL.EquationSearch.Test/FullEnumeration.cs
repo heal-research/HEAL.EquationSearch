@@ -31,7 +31,7 @@ namespace HEAL.EquationSearch.Test {
 
       var grammar = new Grammar(varNames);
       grammar.UsePolynomialRestrictedRules();
-      var data = new Data(varNames, x, y, invNoiseVariance: Enumerable.Repeat(1.0, y.Length).ToArray());
+      var data = new Data(varNames, x, y, invNoiseSigma: Enumerable.Repeat(1.0, y.Length).ToArray());
       var evaluator = new CountUniqueExpressionsEvaluator();
       var control = SearchControl<State, MinimizeDouble>.Start(new State(data, maxLength, grammar, evaluator))
         .BreadthFirst();
@@ -77,7 +77,7 @@ namespace HEAL.EquationSearch.Test {
       var varNames = new string[] { "x", "y" };
 
       var grammar = new Grammar(varNames); grammar.UsePolynomialRestrictedRules();
-      var data = new Data(varNames, x, y, invNoiseVariance: Enumerable.Repeat(1.0, y.Length).ToArray());
+      var data = new Data(varNames, x, y, invNoiseSigma: Enumerable.Repeat(1.0, y.Length).ToArray());
       var evaluator = new CountUniqueExpressionsEvaluator();
       var control = SearchControl<State, MinimizeDouble>.Start(new State(data, maxLength, grammar, evaluator))
         .BreadthFirst();

@@ -46,7 +46,7 @@ namespace HEAL.EquationSearch {
         var sse = 0.0;
         for (int i = 0; i < data.Target.Length; i++) {
           var res = data.Target[i] - ym;
-          sse += data.InvNoiseVariance[i] * res * res;
+          sse += data.InvNoiseSigma[i] * data.InvNoiseSigma[i] * res * res;
         }
         return sse / data.Target.Length; // weighted MSE of mean model
       }
@@ -187,7 +187,7 @@ namespace HEAL.EquationSearch {
       }
     }
 
-    private void AssertExpressionStructure(Expression expr) {
+    private static void AssertExpressionStructure(Expression expr) {
       // expression must end with ... p + 
       if (expr.Length == 1 && expr[0] is Grammar.ParameterSymbol) return;
       else {
@@ -331,13 +331,11 @@ namespace HEAL.EquationSearch {
       if (symbol == grammar.Plus) {
         return (int)OpCode.Add;
       } else if (symbol == grammar.Neg) {
-        throw new NotSupportedException(); // TODO: multiple instructions for one symbol required
-        return (int)OpCode.Sub;
+        throw new NotSupportedException(); // multiple instructions for one symbol required
       } else if (symbol == grammar.Times) {
         return (int)OpCode.Mul;
       } else if (symbol == grammar.Inv) {
-        throw new NotSupportedException(); // TODO: multiple instructions for one symbol required
-        return (int)OpCode.Div;
+        throw new NotSupportedException(); // multiple instructions for one symbol required
       } else if (symbol == grammar.Exp) {
         return (int)OpCode.Exp;
       } else if (symbol == grammar.Log) {
