@@ -1,4 +1,5 @@
 ﻿using HEAL.NonlinearRegression;
+using static alglib;
 
 namespace HEAL.EquationSearch.Test {
   [TestClass]
@@ -11,15 +12,15 @@ namespace HEAL.EquationSearch.Test {
 
     [DataTestMethod]
     // multiple max lengths to analyse runtime growth
-    [DataRow(10)]
-    [DataRow(12)]
-    [DataRow(14)]
-    [DataRow(16)]
-    [DataRow(18)]
-    [DataRow(20)]
-    [DataRow(25)]
-    [DataRow(30)]
-    public void Poly10DefaultGrammar(int maxLength) {
+    [DataRow(10, 2.8527e+05)]
+    [DataRow(12, 2.7724e+05)]
+    [DataRow(14, 1.8342e+05)]
+    [DataRow(16, 1.8086e+05)]
+    [DataRow(18, null)] // expected DL not known yet
+    [DataRow(20, null)] // expected DL not known yet
+    [DataRow(25, null)] // expected DL not known yet
+    [DataRow(30, null)] // expected DL not known yet
+    public void BeamSearchDefaultGrammarPoly10(int maxLength, double? expectedDl) {
       var rand = new Random(1234);
       var x = Util.GenerateRandom(rand, 100, 10, -1, 1);
       var y = new double[100];
@@ -39,6 +40,7 @@ namespace HEAL.EquationSearch.Test {
 
       var alg = new Algorithm();
       alg.Fit(x, y, noiseSigma, varNames, CancellationToken.None, maxLength: maxLength, randSeed: 1234);
+      if (expectedDl != null) Assert.AreEqual(expectedDl.Value, alg.BestDescriptionLength.Value, 1e-1);
     }
 
     [DataTestMethod]
@@ -48,7 +50,7 @@ namespace HEAL.EquationSearch.Test {
     [DataRow(25, 61664)]
     [DataRow(30, 29770)]
     [DataRow(50, -266.75)]
-    public void Poly10PolynomialGrammar(int maxLength, double minDL) {
+    public void BeamSearchPolynomialGrammarPoly10(int maxLength, double minDL) {
       var rand = new Random(1234);
       var x = Util.GenerateRandom(rand, 100, 10, -1, 1);
       var y = new double[100];
@@ -74,7 +76,7 @@ namespace HEAL.EquationSearch.Test {
     }
 
     [TestMethod]
-    public void CheckPoly10BestExprDL() {
+    public void BestExprDLPoly10() {
       var rand = new Random(1234);
       var x = Util.GenerateRandom(rand, 100, 10, -1, 1);
       var y = new double[100];
@@ -110,7 +112,7 @@ namespace HEAL.EquationSearch.Test {
     // [DataRow(25, 61664)]
     // [DataRow(30, 29770)]
     // [DataRow(50, -310.52)]
-    public void Poly10PolynomialGrammarFullEnumeration(int maxLength, double minDL) {
+    public void FullEnumerationPolyGrammarPoly10(int maxLength, double minDL) {
       var rand = new Random(1234);
       var x = Util.GenerateRandom(rand, 100, 10, -1, 1);
       var y = new double[100];
@@ -136,7 +138,7 @@ namespace HEAL.EquationSearch.Test {
     }
 
     [TestMethod]
-    public void Log() {
+    public void BeamSearchLog() {
       var rand = new Random(1234);
       var x = Util.GenerateRandom(rand, 100, 2);
       var y = new double[100];
@@ -145,15 +147,24 @@ namespace HEAL.EquationSearch.Test {
                2.0 * Math.Log(2 * x[i, 1] + 2);
       }
 
+      double noiseSigma = 1e-8; // use a small sigma (we actually have zero noise)
+      // get nll and DL for generating expression (in restricted grammar form)
+      var likelihood = new SimpleGaussianLikelihood(x, y, (p, x) => p[0] + p[1] * Math.Log(Math.Abs(x[0] + p[2])) + p[3] * Math.Log(Math.Abs(x[1] + p[4])), noiseSigma);
+      var bestNll = likelihood.NegLogLikelihood(new double[] { 3 * Math.Log(2), 1.0, 1.0, 2.0, 1.0 }); // factor 2 extracted out of log into offset
+      var bestDL = ModelSelection.DL(new double[] { 2 * Math.Log(2), 1.0, 1.0, 2.0, 1.0 }, likelihood);
+      System.Console.WriteLine($"Generating expression negLogLik: {bestNll} DL {bestDL}");
+
       var varNames = new string[] { "x1", "x2" };
 
       var alg = new Algorithm();
-      alg.Fit(x, y, noiseSigma: 1e-8, varNames, CancellationToken.None, maxLength: 15, randSeed: 1234); // use a small sigma (we actually have zero noise)
+      alg.Fit(x, y, noiseSigma, varNames, CancellationToken.None, maxLength: 20, randSeed: 1234);
+      System.Console.WriteLine(alg.BestExpression.ToInfixString());
+      Assert.AreEqual(bestDL, alg.BestDescriptionLength.Value, 1e-1);
     }
 
 
     [TestMethod]
-    public void PowerVarPro() {
+    public void BeamSearchPower() {
       var rand = new Random(1234);
       var x = Util.GenerateRandom(rand, 100, 1, 1, 5); // unif(1, 5)
       var y = new double[100];
@@ -163,10 +174,10 @@ namespace HEAL.EquationSearch.Test {
 
       var noiseSigma = 1e-8; // use a small sigma (we actually have zero noise)
 
-      // get nll and DL for generating expression
-      var likelihood = new SimpleGaussianLikelihood(x, y, (p, x) => p[0] * Math.Pow(Math.Abs(x[0]), p[1]), noiseSigma);
-      var bestNll = likelihood.NegLogLikelihood(new double[] { 2.0, -1.5 });
-      var bestDL = ModelSelection.DL(new double[] { 2.0, -1.5 }, likelihood);
+      // get nll and DL for generating expression (in restricted grammar form)
+      var likelihood = new SimpleGaussianLikelihood(x, y, (p, x) => p[0] + p[1] * Math.Pow(Math.Abs(x[0] + p[2]), p[3]), noiseSigma);
+      var bestNll = likelihood.NegLogLikelihood(new double[] { 0.0, 2.0, 0.0, -1.5 });
+      var bestDL = ModelSelection.DL(new double[] { 0.0, 2.0, 0.0, -1.5 }, likelihood);
       System.Console.WriteLine($"Generating expression negLogLik: {bestNll} DL {bestDL}");
 
       var varNames = new string[] { "x1" };
@@ -178,7 +189,7 @@ namespace HEAL.EquationSearch.Test {
     }
 
     [TestMethod]
-    public void PowerFullEnumerationVarPro() {
+    public void FullEnumerationVarProPower() {
       var rand = new Random(1234);
       var x = Util.GenerateRandom(rand, 100, 1, 1, 5); // unif(1, 5)
       var y = new double[100];
@@ -205,7 +216,7 @@ namespace HEAL.EquationSearch.Test {
     }
 
     [TestMethod]
-    public void PowerFullEnumerationNLR() {
+    public void FullEnumerationNlrPower() {
       var rand = new Random(1234);
       var x = Util.GenerateRandom(rand, 100, 1, 1, 5); // unif(1, 5)
       var y = new double[100];
@@ -234,7 +245,7 @@ namespace HEAL.EquationSearch.Test {
     }
 
     [TestMethod]
-    public void PowerParameterOptConvergenceNLR() {
+    public void ParameterOptConvergenceNlrPower() {
       // check if the correct parameters can be found if the (generalized) structure is known 
 
       var rand = new Random(1234);
@@ -268,7 +279,7 @@ namespace HEAL.EquationSearch.Test {
     }
 
     [TestMethod]
-    public void PowerParameterOptConvergenceVarPro() {
+    public void ParameterOptConvergenceVarProPower() {
       // check if the correct parameters can be found if the (generalized) structure is known 
 
       var rand = new Random(1234);
@@ -297,7 +308,7 @@ namespace HEAL.EquationSearch.Test {
     }
 
     [TestMethod]
-    public void Inverse() {
+    public void BeamSearchInverse() {
       var rand = new Random(1234);
       var x = Util.GenerateRandom(rand, 100, 1, 1, 5); // unif(1, 5)
       var y = new double[100];
@@ -306,10 +317,10 @@ namespace HEAL.EquationSearch.Test {
       }
 
       var noiseSigma = 1e-8; // use a small sigma (we actually have zero noise)
-      // get nll and DL for generating expression
-      var likelihood = new SimpleGaussianLikelihood(x, y, (p, x) => p[0] / x[0], noiseSigma);
-      var bestNll = likelihood.NegLogLikelihood(new double[] { 2.0 });
-      var bestDL = ModelSelection.DL(new double[] { 2.0 }, likelihood);
+      // get nll and DL for generating expression (in restricted grammar form)
+      var likelihood = new SimpleGaussianLikelihood(x, y, (p, x) => p[0] * Math.Pow(Math.Abs(x[0] + p[1]), p[2]) + p[3], noiseSigma);
+      var bestNll = likelihood.NegLogLikelihood(new double[] { 2.0, 0.0, -1, 0.0 });
+      var bestDL = ModelSelection.DL(new double[] { 2.0, 0.0, -1, 0.0 }, likelihood);
       System.Console.WriteLine($"Generating expression negLogLik: {bestNll} DL {bestDL}");
 
       var varNames = new string[] { "x1" };
@@ -321,7 +332,7 @@ namespace HEAL.EquationSearch.Test {
     }
 
     [TestMethod]
-    public void Linear() {
+    public void BeamSearchLinear() {
       var rand = new Random(1234);
       var x = Util.GenerateRandom(rand, 100, 2, -2, 2);
       var y = new double[100];
@@ -339,7 +350,7 @@ namespace HEAL.EquationSearch.Test {
     }
 
     [TestMethod]
-    public void LinearWithNoise() {
+    public void BeamSearchLinearWithNoise() {
       var rand = new Random(1234);
       var x = Util.GenerateRandom(rand, 100, 2, -2, 2);
       var y = new double[100];

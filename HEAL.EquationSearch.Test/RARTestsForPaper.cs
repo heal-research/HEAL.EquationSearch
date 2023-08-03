@@ -306,7 +306,7 @@ namespace HEAL.EquationSearch.Test {
         sw.Start();
         likelihood.ModelExpr = tup.expr;
         System.Console.Error.WriteLine($"Total time for preparing likelihood: {sw.ElapsedMilliseconds}ms");
-        var restartPolicy = new RestartPolicy(length: tup.d);
+        var restartPolicy = new RestartPolicy(numParam: tup.d);
         var parameterValues = restartPolicy.Next();
         int numRestarts = -1;
         do {
