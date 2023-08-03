@@ -1,6 +1,10 @@
 ﻿using System.Text;
 
 namespace HEAL.EquationSearch {
+  // TODO:
+  // - ruleset that includes trigonometrics
+  // - variants of the ruleset that have no grammar restrictions
+
   public class Grammar {
     public Symbol Start => Expr;
 
@@ -8,14 +12,14 @@ namespace HEAL.EquationSearch {
       get {
         return new[] { One, Parameter }
                      .Concat(Variables)
-                     .Concat(new[] { Plus, Times, Div, Abs, Log, Sqrt, Exp, Cos })
+                     .Concat(new[] { Plus, Times, Inv, Neg, Abs, Log, Sqrt, Exp, Cos, Pow })
                      .Concat(Nonterminals);
       }
     }
 
     public IEnumerable<Symbol> Nonterminals {
       get {
-        return new[] { Expr, Term, Factor, PolyExpr, PolyExprOne, PolyTerm, PolyFactor };
+        return new[] { Expr, Term, Factor, PolyExpr, PolyTerm, PolyFactor };
       }
     }
 
@@ -25,24 +29,26 @@ namespace HEAL.EquationSearch {
     public Symbol Term = new Symbol("Term");
     public Symbol Factor = new Symbol("Factor");
     public Symbol PolyExpr = new Symbol("PolyExpr"); // allowed within cos()
-    public Symbol PolyExprOne = new Symbol("PolyExprOne"); // allowed within log() and 1/()
     public Symbol PolyTerm = new Symbol("PolyTerm"); // allowed within exp()
     public Symbol PolyFactor = new Symbol("PolyFactor");
 
     // terminals
     public Symbol Plus = new Symbol("+", arity: 2);
+    // public Symbol Minus = new Symbol("-", arity: 2);
     public Symbol Times = new Symbol("*", arity: 2);
-    public Symbol Div = new Symbol("/", arity: 2);
+    public Symbol Inv = new Symbol("inv", arity: 1); // TODO: power(x, -1) and inv(x) are equivalent. Remove?
+    public Symbol Neg = new Symbol("neg", arity: 1);
     public Symbol Exp = new Symbol("exp", arity: 1);
     public Symbol Log = new Symbol("log", arity: 1);
-    public Symbol Sqrt = new Symbol("sqrt", arity: 1);
+    public Symbol Sqrt = new Symbol("sqrt", arity: 1); // TODO: power(x, 1/2) and sqrt(x) are equivalent. Remove?
     public Symbol Abs = new Symbol("abs", arity: 1);
     public Symbol Cos = new Symbol("cos", arity: 1);
+    public Symbol Pow = new Symbol("**", arity: 2);
 
     public Symbol One = new ConstantSymbol(1.0);
     public Symbol Parameter = new ParameterSymbol(0.0);
 
-    private VariableSymbol[] Variables;
+    public VariableSymbol[] Variables;
 
     private Dictionary<Symbol, List<Symbol[]>> rules = new Dictionary<Symbol, List<Symbol[]>>();
 
@@ -53,24 +59,17 @@ namespace HEAL.EquationSearch {
     }
 
     public void UseDefaultRules() {
-      UseFullRules();
+      UseLogExpPowRestrictedRules();
+      // UsePolynomialRules();
     }
 
-    public void UsePolynomialRules() {
+    public void UsePolynomialRestrictedRules() {
       // Original grammar definition:
       // Expr -> param | param * Term + Expr
       // Term -> Fact | Fact * Term 
       // Fact -> var_1 | ... | var_n
 
-      // The following expanded version ensures that each expansion always adds at least one variable.
-      // This removes intermediate states.
-      // Expr -> param 
-      //         | param * (var_1 | ... | var_n) + Expr
-      //         | param * (var_1 | ... | var_n) * Term + Expr
-      // Term -> var_1 | ... | var_n
-      //         | (var_1 | ... | var_n) * Term 
-
-      // evaluator requires a postfix representation 
+      // VarProEvaluator requires a postfix representation and must end with the offset
       rules[Expr] = new List<Symbol[]>() {
         new Symbol[] { Parameter }, // p
         new Symbol[] { Parameter, Term, Times, Expr, Plus}, //  p * Term + Expr
@@ -82,26 +81,31 @@ namespace HEAL.EquationSearch {
       };
 
       rules[Factor] = Variables.Select(varSy => new Symbol[] { varSy }).ToList();
-      
+
       ExpandRules();
     }
 
-    public void UseFullRules() {
+    public void UseLogExpPowRestrictedRules() {
       // Grammar:
       // Expr -> param | param * Term + Expr
       // Term -> Fact | Fact * Term
       // Fact -> var_1 | ... | var_n
-      //         | 1 / '(' PolyExprOne ')'
-      //         | log '(' abs '(' PolyExprOne ')' ')'
-      //         | sqrt '(' abs '(' PolyExprOne ')' ')'
+      //         | log '(' abs '(' PolyExpr ')' ')'
       //         | exp '(' param * PolyTerm ')'
-      //         | cos '(' PolyExpr ')'
-      // PolyExpr    -> param * PolyTerm + param | param * PolyTerm + PolyExpr  // with intercept param
-      // PolyExprOne -> param * PolyTerm + 1 | param * PolyTerm + PolyExprOne   // with constant one intercept
-      // PolyTerm -> PolyFact | PolyFact * PolyTerm
+      //         | pow '(' abs '(' PolyExpr ')' ',' param ')'
+      //         | pow '(' abs '(' PolyExpr ')' ',' PolyExpr ')' // more complex exponents
+      //
+      //         (1/x = x^(-1),  sqrt(x) = x^(1/2)
+
+      // polynomial where the first term has constant coefficient 1 or -1
+      // PolyExpr -> param + PolyTerm
+      //           | param - PolyTerm
+      //           | PolyExpr + param * PolyTerm
+      // PolyTerm -> PolyFact
+      //           | PolyFact * PolyTerm
       // PolyFact -> var_1 | ... | var_n
 
-      // evaluator requires a postfix representation 
+      // VarProEvaluator requires a postfix representation
       rules[Expr] = new List<Symbol[]>() {
         new Symbol[] { Parameter }, // p
         new Symbol[] { Parameter, Term, Times, Expr, Plus }, // p * Term + Expr
@@ -112,25 +116,23 @@ namespace HEAL.EquationSearch {
         new Symbol[] { Factor, Term, Times },
       };
 
+      // NOTE: be careful with functions in multiple variables (the order of arguments is reversed)
+
       // every variable is an alternative
       rules[Factor] = Variables.Select(varSy => new Symbol[] { varSy }).ToList();
-      rules[Factor].Add(new[] { PolyExprOne, One, Div });
-      rules[Factor].Add(new[] { PolyExprOne, Abs, Log });
-      rules[Factor].Add(new[] { PolyExprOne, Abs, Sqrt });
+      rules[Factor].Add(new[] { PolyExpr, Abs, Log });
       rules[Factor].Add(new[] { Parameter, PolyTerm, Times, Exp });
-      rules[Factor].Add(new[] { PolyExpr, Cos });
+      rules[Factor].Add(new[] { Parameter, PolyExpr, Abs, Pow }); // parameter must be the first child! (= PolyExpr ^ Parameter)
+      rules[Factor].Add(new[] { PolyExpr, PolyExpr, Abs, Pow }); // for more complex exponents e.g. x ** x
 
+      // rules[Factor].Add(new[] { PolyExpr, Inv }); // 1 / abs(PolyExpr) == abs(PolyExpr) ** -1
+      // rules[Factor].Add(new[] { PolyExpr, Abs, Sqrt }); // == PolyExpr ** 0.5
 
-      // parametric intercept
+      // polynomial with one degree of freedom removed (always wrapped within abs() )
       rules[PolyExpr] = new List<Symbol[]>() {
-        new Symbol[] { Parameter, PolyTerm, Times, Parameter, Plus }, // param * PolyTerm + param
-        new Symbol[] { Parameter, PolyTerm, Times, PolyExpr, Plus }, // param * PolyTerm + PolyExpr
-      };
-
-      // constant 1 intercept
-      rules[PolyExprOne] = new List<Symbol[]>() {
-        new Symbol[] { Parameter, PolyTerm, Times, One, Plus }, // param * PolyTerm + 1
-        new Symbol[] { Parameter, PolyTerm, Times, PolyExprOne, Plus }, // param * PolyTerm + PolyExprOne
+        new Symbol[] { PolyTerm, Parameter, Plus}, // parameter + PolyTerm 
+        new Symbol[] { PolyTerm, Neg, Parameter, Plus}, // for e.g. log(p0 + (-x) + p1 x ...). 
+        new Symbol[] { PolyExpr, Parameter, PolyTerm, Times, Plus }, // PolyExpr + param * PolyTerm
       };
 
       rules[PolyTerm] = new List<Symbol[]>() {
@@ -145,7 +147,9 @@ namespace HEAL.EquationSearch {
     }
 
     private void ExpandRules() {
-      // Console.WriteLine($"Before expansion: {this}");
+#if DEBUG
+      Console.WriteLine($"Grammar rules before expansion: {this}");
+#endif
 
       // We want to ensure that each derivation introduces a new variables reference (to save intermediate states)
       // For this we expand the rules until each rule contains a variable reference.
@@ -155,6 +159,7 @@ namespace HEAL.EquationSearch {
         changed = false;
         // we iterate the NTs in reverse order (bottom up) for efficiency but the algorithm should work for any order
         foreach (var ntSy in Nonterminals.Reverse()) {
+          if (!rules.ContainsKey(ntSy)) continue;
           var alternatives = rules[ntSy];
 
           // go over all alternatives (including the newly introduced ones)
@@ -167,7 +172,14 @@ namespace HEAL.EquationSearch {
             if (ntIdx >= 0 && varIdx < 0) {
               // replace the existing alternative with all derivations
               alternatives.RemoveAt(altIdx);
-              alternatives.InsertRange(altIdx, CreateAllDerivations(alt));
+              var newAlternatives = CreateAllDerivations(alt).ToArray();
+              // cloned parameters are initialized with a random value. Reset the value to zero here for clean output
+              foreach (var newAlt in newAlternatives) {
+                foreach (var sy in newAlt) {
+                  if (sy is ParameterSymbol paramSy) paramSy.Value = 0.0;
+                }
+              }
+              alternatives.InsertRange(altIdx, newAlternatives);
               changed |= true;
             } else {
               altIdx++;
@@ -176,13 +188,16 @@ namespace HEAL.EquationSearch {
         }
       }
 
+#if DEBUG
       // Console.WriteLine($"After expansion: {this}");
+#endif
     }
     internal int FirstIndexOfNT(Symbol[] syString) => Array.FindIndex(syString, sy => sy.IsNonterminal);
     internal IEnumerable<Symbol[]> CreateAllDerivations(Symbol[] syString) {
 
       var idx = FirstIndexOfNT(syString);
       if (idx < 0) yield break;
+
       foreach (var alternative in rules[syString[idx]]) {
         yield return Replace(syString, idx, alternative);
       }
@@ -225,7 +240,7 @@ namespace HEAL.EquationSearch {
       if (symbol == PolyExpr) return new[] { new ParameterSymbol(0.0) };
       if (symbol == PolyTerm) return new[] { One };
       if (symbol == PolyFactor) return new[] { One };
-      return new[] { new ParameterSymbol(0.0) }; // default
+      throw new InvalidProgramException(); // assert that we have handled all NTs
     }
 
     internal Expression MakeSentence(Expression expr) {

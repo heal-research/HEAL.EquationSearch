@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -21,7 +21,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="HEAL.Expressions">
+      <HintPath>..\HEAL.EquationSearch\HEAL.Expressions.dll</HintPath>
+    </Reference>
+    <Reference Include="HEAL.NonlinearRegression">
+      <HintPath>..\HEAL.EquationSearch\HEAL.NonlinearRegression.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="CC_Hubble.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="RAR_sigma.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

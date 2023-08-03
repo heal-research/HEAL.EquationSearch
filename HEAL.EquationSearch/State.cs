@@ -10,13 +10,13 @@ namespace HEAL.EquationSearch {
     private readonly int maxLength;
     private readonly Grammar grammar;
     private readonly Expression expression;
-    private readonly Evaluator evaluator;
+    private readonly IEvaluator evaluator;
     internal Data Data => data;
     public Grammar Grammar => grammar;
     public Expression Expression => expression;
-    internal Evaluator Evaluator => evaluator;
+    internal IEvaluator Evaluator => evaluator;
 
-    public State(Data data, int maxLength, Grammar grammar, Evaluator evaluator) {
+    public State(Data data, int maxLength, Grammar grammar, IEvaluator evaluator) {
       this.data = data;
       this.maxLength = maxLength;
       this.grammar = grammar;
@@ -24,7 +24,7 @@ namespace HEAL.EquationSearch {
       this.expression = new Expression(grammar, new[] { grammar.Start });
     }
 
-    public State(Data data, int maxLength, Grammar grammar, Expression expression, Evaluator evaluator) {
+    public State(Data data, int maxLength, Grammar grammar, Expression expression, IEvaluator evaluator) {
       this.data = data;
       this.maxLength = maxLength;
       this.grammar = grammar;
@@ -51,7 +51,7 @@ namespace HEAL.EquationSearch {
         if (quality.HasValue) return quality;
 
         if (expression.IsSentence) {
-          quality = new MinimizeDouble(evaluator.OptimizeAndEvaluateMDL(expression, data)); // we use MSE as heuristic but MDL for the quality of states
+          quality = new MinimizeDouble(evaluator.OptimizeAndEvaluateDL(expression, data)); // we use MSE as heuristic but MDL for the quality of states
           return quality;
         } 
 
