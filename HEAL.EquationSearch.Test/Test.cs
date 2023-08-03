@@ -151,7 +151,7 @@ namespace HEAL.EquationSearch.Test {
       // get nll and DL for generating expression (in restricted grammar form)
       var likelihood = new SimpleGaussianLikelihood(x, y, (p, x) => p[0] + p[1] * Math.Log(Math.Abs(x[0] + p[2])) + p[3] * Math.Log(Math.Abs(x[1] + p[4])), noiseSigma);
       var bestNll = likelihood.NegLogLikelihood(new double[] { 3 * Math.Log(2), 1.0, 1.0, 2.0, 1.0 }); // factor 2 extracted out of log into offset
-      var bestDL = ModelSelection.DL(new double[] { 2 * Math.Log(2), 1.0, 1.0, 2.0, 1.0 }, likelihood);
+      var bestDL = ModelSelection.DL(new double[] { 3 * Math.Log(2), 1.0, 1.0, 2.0, 1.0 }, likelihood);
       System.Console.WriteLine($"Generating expression negLogLik: {bestNll} DL {bestDL}");
 
       var varNames = new string[] { "x1", "x2" };
