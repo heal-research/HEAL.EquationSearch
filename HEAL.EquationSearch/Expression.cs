@@ -32,16 +32,21 @@ namespace HEAL.EquationSearch {
     }
 
     #region infix string output
-    public string ToInfixString() {
+    public string ToInfixString(bool includeParamValues = true) {
       // postfix to infix representation to make it more readable
       // for all operations we know the arity 
 
       var lengths = Semantics.GetLengths(this);
-      return ToInfixString(Length - 1, lengths);
+      return ToInfixString(Length - 1, lengths, includeParamValues);
     }
 
-    private string ToInfixString(int rootIdx, int[] lengths) {
-      var rootStr = syString[rootIdx].ToString();
+    private string ToInfixString(int rootIdx, int[] lengths, bool includeParamValues) {
+      string rootStr;
+      if (!includeParamValues && syString[rootIdx] is Grammar.ParameterSymbol) {
+        rootStr = "p";
+      } else {
+        rootStr = syString[rootIdx].ToString();
+      }
       var numC = syString[rootIdx].Arity;
 
       var subExpressions = new List<string>();
@@ -49,9 +54,9 @@ namespace HEAL.EquationSearch {
       for (int cIdx = 0; cIdx < numC; cIdx++) {
         if (lengths[c] == 1) {
           // no need to use ( ... ) for terminal symbols
-          subExpressions.Add(ToInfixString(c, lengths));
+          subExpressions.Add(ToInfixString(c, lengths, includeParamValues));
         } else {
-          subExpressions.Add("(" + ToInfixString(c, lengths) + ")");
+          subExpressions.Add("(" + ToInfixString(c, lengths, includeParamValues) + ")");
         }
         c = c - lengths[c];
       }
