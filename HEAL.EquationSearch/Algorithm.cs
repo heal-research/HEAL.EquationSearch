@@ -1,15 +1,10 @@
-﻿using System.Transactions;
-using TreesearchLib;
+﻿using TreesearchLib;
 namespace HEAL.EquationSearch {
 
   // TODO:
   // - persistence
-  // - Improve performance of semantic hashing (main bottleneck besides evaluation).
   // - stop training anytime (returning best expression so far), and allow to continue running later
   // - Best-first search implementation in Treesearchlib
-  // - Model evaluation results, AIC, BIC, MDL, ...
-  // - Model archive or model selection based on MDL
-  // - Connection to HEAL.NLR for simplification, prediction intervals, MDL, ...
 
   public enum AlgorithmTypeEnum { BreadthFirst, Beam };
 
