@@ -12,7 +12,7 @@ namespace HEAL.EquationSearch {
       get {
         return new[] { One, Parameter }
                      .Concat(Variables)
-                     .Concat(new[] { Plus, Times, Inv, Neg, Abs, Log, Sqrt, Exp, Cos, Pow })
+                     .Concat(new[] { Plus, Minus, Times, Div, Inv, Neg, Abs, Log, Sqrt, Exp, Cos, Pow, PowAbs })
                      .Concat(Nonterminals);
       }
     }
@@ -34,8 +34,9 @@ namespace HEAL.EquationSearch {
 
     // terminals
     public Symbol Plus = new Symbol("+", arity: 2);
-    // public Symbol Minus = new Symbol("-", arity: 2);
+    public Symbol Minus = new Symbol("-", arity: 2);
     public Symbol Times = new Symbol("*", arity: 2);
+    public Symbol Div = new Symbol("/", arity: 2);
     public Symbol Inv = new Symbol("inv", arity: 1); // TODO: power(x, -1) and inv(x) are equivalent. Remove?
     public Symbol Neg = new Symbol("neg", arity: 1);
     public Symbol Exp = new Symbol("exp", arity: 1);
@@ -44,6 +45,7 @@ namespace HEAL.EquationSearch {
     public Symbol Abs = new Symbol("abs", arity: 1);
     public Symbol Cos = new Symbol("cos", arity: 1);
     public Symbol Pow = new Symbol("**", arity: 2);
+    public Symbol PowAbs = new Symbol("powabs", arity: 2); // the pow symbol implicitly is |expr|^expr in the ESR paper. This is necessary to reproduce the search space of ESR
 
     public Symbol One = new ConstantSymbol(1.0);
     public Symbol Parameter = new ParameterSymbol(0.0);
@@ -51,19 +53,25 @@ namespace HEAL.EquationSearch {
     public VariableSymbol[] Variables;
 
     private Dictionary<Symbol, List<Symbol[]>> rules = new Dictionary<Symbol, List<Symbol[]>>();
+    private readonly int maxLength;
+    public int MaxLength => maxLength;
 
-
-    public Grammar(string[] variableNames) {
+    // maxLen required for limiting expansion of rules (a chain can have a maximum of maxLen symbols)
+    public Grammar(string[] variableNames, int maxLen) {
       Variables = variableNames.Select(varName => new VariableSymbol(varName)).ToArray();
+      maxLength = maxLen;
       UseDefaultRules();
     }
 
     public void UseDefaultRules() {
       UseLogExpPowRestrictedRules();
       // UsePolynomialRules();
+      // UseUnrestrictedRulesESR();
     }
 
     public void UsePolynomialRestrictedRules() {
+      rules.Clear();
+
       // Original grammar definition:
       // Expr -> param | param * Term + Expr
       // Term -> Fact | Fact * Term 
@@ -86,6 +94,7 @@ namespace HEAL.EquationSearch {
     }
 
     public void UseLogExpPowRestrictedRules() {
+      rules.Clear();
       // Grammar:
       // Expr -> param | param * Term + Expr
       // Term -> Fact | Fact * Term
@@ -146,6 +155,70 @@ namespace HEAL.EquationSearch {
       ExpandRules();
     }
 
+
+    // TODO: expansion but prevent duplicate paths to same expression
+    public void UseUnrestrictedRulesESR() {
+      // primarily to compare to reported results in ESR paper https://arxiv.org/pdf/2211.11461.pdf
+      // ESR operators: x, a, inv, +, −, ×, ÷, pow
+      // Cannot be evaluated with VarPro evaluator (which requires a constant offset at the end of each expression) (TODO)
+
+      // Grammar: (infix form)
+      // Expr -> Term
+      //         | '-' Term
+      //         | Term '+' Expr
+      //         | Term '-' Expr
+      // Term -> Fact
+      //         | 'inv' '(' Fact ')'
+      //         | Fact '*' Term 
+      //         | Fact '/' Term
+      // Fact -> Expr
+      //         | <param>
+      //         | <var>
+      //         | '(' Expr ')'
+      //         | 'pow' '(' 'abs' '(' Expr ')' ',' Expr ')'
+
+      // Grammar: (postfix form)
+      // Expr -> Term
+      //         | Term Expr +
+      //         | Term Expr -
+      // Term -> Fact
+      //         | Fact inv
+      //         | Fact Term *
+      //         | Fact Term /
+      // Fact    | <var>
+      //         | <param>
+      //         | Expr
+      //         | Expr Expr powabs
+      rules.Clear();
+
+      rules[Expr] = new List<Symbol[]>() {
+        new [] { Term }, // p
+        new [] { Term, Expr, Plus},
+        new [] { Term, Expr, Minus},
+      };
+
+      rules[Term] = new List<Symbol[]>() {
+        new [] { Factor },
+        new [] { Factor, Inv },
+        new [] { Factor, Term, Times },
+        new [] { Factor, Term, Div },
+      };
+
+      rules[Factor] = Variables.Select(varSy => new Symbol[] { varSy }).ToList();      // every variable is an alternative
+      rules[Factor].Add(new[] { Parameter });
+      // 
+      rules[Factor].Add(new[] { Term, Expr, Plus });
+      rules[Factor].Add(new[] { Term, Expr, Minus });
+      
+      rules[Factor].Add(new[] { Expr, Expr, PowAbs });
+    }
+
+
+    // TODO:
+    //  - use set of rules instead of list of rules
+    //  - remove semantic duplicates
+    //  - support recursive grammars
+    //  - remove maxlen restriction
     private void ExpandRules() {
 #if DEBUG
       Console.WriteLine($"Grammar rules before expansion: {this}");
@@ -162,17 +235,26 @@ namespace HEAL.EquationSearch {
           if (!rules.ContainsKey(ntSy)) continue;
           var alternatives = rules[ntSy];
 
+          // clear directly recursive rules: N -> N
+          for (int i = alternatives.Count - 1; i >= 0; i--) {
+            if (alternatives[i].Length > maxLength) {
+              alternatives.RemoveAt(i);
+            }
+          }
+
           // go over all alternatives (including the newly introduced ones)
           var altIdx = 0;
           while (altIdx < alternatives.Count) {
             var alt = alternatives[altIdx];
+
             var ntIdx = Array.FindIndex(alt, sy => sy.IsNonterminal);
             var varIdx = Array.FindIndex(alt, sy => sy is VariableSymbol);
+
             // expand if a rule contains an NT but no variable reference
             if (ntIdx >= 0 && varIdx < 0) {
               // replace the existing alternative with all derivations
               alternatives.RemoveAt(altIdx);
-              var newAlternatives = CreateAllDerivations(alt).ToArray();
+              var newAlternatives = CreateAllDerivations(alt).Where(a => a.Length <= maxLength).ToArray();
               // cloned parameters are initialized with a random value. Reset the value to zero here for clean output
               foreach (var newAlt in newAlternatives) {
                 foreach (var sy in newAlt) {
@@ -189,7 +271,7 @@ namespace HEAL.EquationSearch {
       }
 
 #if DEBUG
-      // Console.WriteLine($"After expansion: {this}");
+      Console.WriteLine($"After expansion: {this}");
 #endif
     }
     internal int FirstIndexOfNT(Symbol[] syString) => Array.FindIndex(syString, sy => sy.IsNonterminal);
@@ -259,6 +341,7 @@ namespace HEAL.EquationSearch {
       var sb = new StringBuilder();
       sb.AppendLine("G:");
       foreach (var ntSy in Nonterminals) {
+        if (!rules.ContainsKey(ntSy)) continue;
         foreach (var alternative in rules[ntSy]) {
           sb.AppendLine($"{ntSy,-20} -> {string.Join(" ", alternative.Select(sy => sy.ToString()))}");
         }

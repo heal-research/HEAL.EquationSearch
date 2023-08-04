@@ -18,7 +18,7 @@ namespace HEAL.EquationSearch.Test {
     [DataRow("0 0 x * neg +", "0 0 x * +", true)]
     [DataRow("0 0 x * neg 0 x * neg + +", "0 0 x * neg +", true)]
     public void SemanticHashing(string exprStr1, string exprStr2, bool equal) {
-      var g = new Grammar(new string[] { "x", "y" });
+      var g = new Grammar(new string[] { "x", "y" }, maxLen: 100);
 
       var expr1 = StringToExpression(g, exprStr1);
       var expr2 = StringToExpression(g, exprStr2);

@@ -282,6 +282,16 @@ namespace HEAL.EquationSearch {
         var instrMul = new NativeInstruction { Arity = 2, OpCode = (int)OpCode.Mul, Length = chLen + 2, Optimize = 0, Coeff = 0.0 };
         code.Add(instr1);
         code.Add(instrMul);
+      } else if (curSy == grammar.PowAbs) {
+        // | base | ^ exponent
+        var ch0Idx = code.Count - 1; // base
+        var ch0Len = code[ch0Idx].Length;
+        var ch1Idx = ch0Idx - ch0Len; // exponent
+        var ch1Len = code[ch1Idx].Length;
+        var instrAbs = new NativeInstruction { Arity = 1, OpCode = (int)OpCode.Abs, Length = ch0Len + 1, Optimize = 0, Coeff = 0.0 };
+        var instrPow = new NativeInstruction { Arity = 2, OpCode = (int)OpCode.Power, Length = ch0Len + ch1Len+ 2, Optimize = 0, Coeff = 0.0 };
+        code.Add(instrAbs);
+        code.Add(instrPow);
       } else {
         var curInstr = new NativeInstruction { Arity = curSy.Arity, OpCode = SymbolToOpCode(expr.Grammar, curSy), Length = 1, Optimize = 0, Coeff = 0.0 }; // length updated below, coeff irrelevant
         // for all other symbols update the code length
@@ -331,11 +341,11 @@ namespace HEAL.EquationSearch {
       if (symbol == grammar.Plus) {
         return (int)OpCode.Add;
       } else if (symbol == grammar.Neg) {
-        throw new NotSupportedException(); // multiple instructions for one symbol required
+        throw new InvalidOperationException("multiple instructions must be generated for neg"); // multiple instructions for one symbol required
       } else if (symbol == grammar.Times) {
         return (int)OpCode.Mul;
       } else if (symbol == grammar.Inv) {
-        throw new NotSupportedException(); // multiple instructions for one symbol required
+        throw new InvalidOperationException("multiple instructions must be generated for inv"); // multiple instructions for one symbol required
       } else if (symbol == grammar.Exp) {
         return (int)OpCode.Exp;
       } else if (symbol == grammar.Log) {
@@ -348,6 +358,8 @@ namespace HEAL.EquationSearch {
         return (int)OpCode.Cos;
       } else if (symbol == grammar.Pow) {
         return (int)OpCode.Power;
+      } else if (symbol == grammar.PowAbs) {
+        throw new InvalidOperationException("multiple instructions must be generated for powabs"); // multiple instructions for one symbol required
       } else if (symbol is Grammar.VariableSymbol) {
         return (int)OpCode.Variable;
       } else if (symbol is Grammar.ParameterSymbol) {

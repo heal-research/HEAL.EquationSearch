@@ -45,7 +45,7 @@ namespace HEAL.EquationSearch {
 
     public MinimizeDouble Bound => new MinimizeDouble(double.NegativeInfinity);
 
-    private MinimizeDouble? quality = null; // cache quality to prevent duplicate evaluation (TODO: necessary?)
+    private MinimizeDouble? quality = null; // cache quality to prevent duplicate evaluation
     public MinimizeDouble? Quality {
       get {
         if (quality.HasValue) return quality;

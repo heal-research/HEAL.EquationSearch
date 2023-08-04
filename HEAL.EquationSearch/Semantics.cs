@@ -87,7 +87,7 @@ namespace HEAL.EquationSearch {
 
         // remove duplicate terms (which have the same hash value)
         // Children are already sorted by hash value
-        if (Symbol == expr.Grammar.Plus) {
+        else if (Symbol == expr.Grammar.Plus) {
           var c = 0;
           while (c < children.Count - 1) {
             Debug.Assert(children[c].HashValue <= children[c + 1].HashValue); // ASSERT: list sorted
@@ -106,6 +106,7 @@ namespace HEAL.EquationSearch {
       private bool HasNonlinearParameters() {
         return Symbol == expr.Grammar.Exp || Symbol == expr.Grammar.Log || Symbol == expr.Grammar.Inv
               || Symbol == expr.Grammar.Cos || Symbol == expr.Grammar.Pow || Symbol == expr.Grammar.Sqrt
+              || Symbol == expr.Grammar.PowAbs
               || children.Any(c => c.HasNonlinearParameters());
       }
 

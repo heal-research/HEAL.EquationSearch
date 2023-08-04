@@ -70,6 +70,8 @@ namespace HEAL.EquationSearch {
           } else {
             return rootStr + "( " + subExpressions[0] + " )";
           }
+        } else if (syString[rootIdx] == Grammar.PowAbs) {
+          return $"pow(abs ({subExpressions[0]}), {subExpressions[1]})";
         } else {
           return string.Join(" " + rootStr + " ", subExpressions);
         }

@@ -1,5 +1,6 @@
 
 using HEAL.NonlinearRegression;
+using static alglib;
 
 namespace HEAL.EquationSearch.Test {
   [TestClass]
@@ -15,7 +16,7 @@ namespace HEAL.EquationSearch.Test {
     public void Division() {
       // check the order of arguments for the VarPro evaluator.
       // we have to use the same order in the Grammar
-      var g = new Grammar(new[] { "x" });
+      var g = new Grammar(new[] { "x" }, maxLen: 100);
       g.UseLogExpPowRestrictedRules();
       
       // this is equivalent to 1 / 2
@@ -40,7 +41,7 @@ namespace HEAL.EquationSearch.Test {
     public void Minus() {
       // check the order of arguments for the VarPro evaluator.
       // we have to use the same order in the Grammar
-      var g = new Grammar(new[] { "x" });
+      var g = new Grammar(new[] { "x" }, maxLen: 100);
       g.UseLogExpPowRestrictedRules();
 
       // this is equivalent to -2 + 1
@@ -65,7 +66,7 @@ namespace HEAL.EquationSearch.Test {
     public void Power() {
       // check the order of arguments for the VarPro evaluator.
       // we have to use the same order in the Grammar
-      var g = new Grammar(new[] { "x" });
+      var g = new Grammar(new[] { "x" }, maxLen: 100);
       g.UseLogExpPowRestrictedRules();
 
       // this is equivalent to 3^2
@@ -85,5 +86,28 @@ namespace HEAL.EquationSearch.Test {
       Assert.AreEqual(9.0, res[0]);
     }
 
+    [TestMethod]
+    public void PowAbs() {
+      // check the order of arguments for the VarPro evaluator.
+      // we have to use the same order in the Grammar
+      var g = new Grammar(new[] { "x" }, maxLen: 100);
+      g.UseUnrestrictedRulesESR();
+
+      // this is equivalent to |-3|^2
+      var expr = new Expression(g, new[] { g.Parameter.Clone(), g.Parameter.Clone(), g.PowAbs });
+      ((Grammar.ParameterSymbol)expr[0]).Value = 2.0;
+      ((Grammar.ParameterSymbol)expr[1]).Value = -3.0;
+
+      // create dataset of one row
+      var data = new Data(new[] { "x" }, new double[1, 1], new double[1], new double[] { 1.0 });
+
+      var eval = new VarProEvaluator();
+      var res = eval.Evaluate(expr, data);
+      Assert.AreEqual(9.0, res[0]);
+
+      var eval2 = new Evaluator(new SimpleGaussianLikelihood(data.X, data.Target, modelExpr: null, noiseSigma: 1.0));
+      res = eval2.Evaluate(expr, data);
+      Assert.AreEqual(9.0, res[0]);
+    }
   }
 }

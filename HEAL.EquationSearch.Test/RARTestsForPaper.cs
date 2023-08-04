@@ -36,7 +36,7 @@ namespace HEAL.EquationSearch.Test {
 
       GetRARData(options, out var inputs, out var trainX, out var trainY, out var trainNoiseSigma, out _, out _);
 
-      var grammar = new Grammar(inputs);
+      var grammar = new Grammar(inputs, maxLength);
       grammar.UseLogExpPowRestrictedRules();
 
       var alg = new Algorithm();
@@ -66,7 +66,7 @@ namespace HEAL.EquationSearch.Test {
 
       GetRARData(options, out var inputs, out var trainX, out var trainY, out _, out var e_log_gobs, out var e_log_gbar);
 
-      var grammar = new Grammar(inputs);
+      var grammar = new Grammar(inputs, maxLength);
       grammar.UseLogExpPowRestrictedRules();
 
       var alg = new Algorithm();
@@ -93,7 +93,7 @@ namespace HEAL.EquationSearch.Test {
 
       GetRARData(options, out var inputs, out var trainX, out var trainY, out var sigma_tot, out var e_log_gobs, out var e_log_gbar);
 
-      var grammar = new Grammar(inputs);
+      var grammar = new Grammar(inputs, maxLength);
       grammar.UseLogExpPowRestrictedRules();
 
       var alg = new Algorithm();
@@ -118,7 +118,7 @@ namespace HEAL.EquationSearch.Test {
 
       GetRARData(options, out var inputs, out var trainX, out var trainY, out _, out var e_log_gobs, out var e_log_gbar);
 
-      var grammar = new Grammar(inputs);
+      var grammar = new Grammar(inputs, maxLength);
       grammar.UseLogExpPowRestrictedRules();
 
       var alg = new Algorithm();
