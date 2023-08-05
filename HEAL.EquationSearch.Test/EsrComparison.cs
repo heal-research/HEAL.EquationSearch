@@ -1,5 +1,4 @@
 ﻿using TreesearchLib;
-using static alglib;
 
 namespace HEAL.EquationSearch.Test {
 
@@ -90,9 +89,22 @@ namespace HEAL.EquationSearch.Test {
       var grammar = new Grammar(inputs, maxLength);
       grammar.UseEsrCoreMaths();
 
-      Enumerate(grammar, maxLength, $@"c:\temp\allExpressions_esr_cosmic_1d_{maxLength}.txt");
+      Enumerate(grammar, maxLength, $@"c:\temp\allExpressions_esr_cosmic_1d_{maxLength}.txt", expectedTotalExpressions: 4103220);
 
-
+      // reported in ESR core_maths.zip:
+      // original_trees:
+      // len #
+      // 1   2
+      // 2   2
+      // 3   20
+      // 4   62
+      // 5   522
+      // 6   2202
+      // 7   16302
+      // 8   84422
+      // 9   588562
+      // 10  3411122
+      // sum 4103218
 
       // reported in ESR paper for complexity 10:
       // 5.2e6 'valid trees'
@@ -100,7 +112,7 @@ namespace HEAL.EquationSearch.Test {
       // 119861 expressions have parameters
     }
 
-    public void Enumerate(Grammar g, int maxLength, string outFilename = "") {
+    public void Enumerate(Grammar g, int maxLength, string outFilename = "", int? expectedTotalExpressions = null, int? expectedUniqExpressions = null) {
       var evaluator = new CollectExpressionsEvaluator();
       var inputs = g.Variables.Select(sy => sy.VariableName).ToArray();
       // we do not require any data
@@ -117,6 +129,13 @@ namespace HEAL.EquationSearch.Test {
       evaluator.WriteSummary();
       if (!string.IsNullOrEmpty(outFilename)) {
         evaluator.WriteAllExpressions(outFilename);
+      }
+
+      if (expectedTotalExpressions.HasValue) {
+        Assert.AreEqual(expectedTotalExpressions.Value, evaluator.numExpressions.Values.Sum());
+      }
+      if (expectedUniqExpressions.HasValue) {
+        Assert.AreEqual(expectedUniqExpressions.Value, evaluator.numUniqExpressions.Values.Sum());
       }
     }
 
@@ -160,15 +179,17 @@ namespace HEAL.EquationSearch.Test {
       }
 
       internal void WriteAllExpressions(string filename) {
+        using (var writer = new StreamWriter(filename.Replace(".txt", "_grouped.txt"), false)) {
+          writer.WriteLine("minLen;numExprs;shortestExpr;expressions");
+          foreach (var kvp in allExpressions) {
+            var shortestExpr = kvp.Value.OrderBy(e => e.Length).First();
+            writer.WriteLine($"{shortestExpr.Length};" +
+              $"{kvp.Value.Count};" +
+              $"{shortestExpr.ToInfixString(includeParamValues: false)};" +
+              $"{string.Join("\t", kvp.Value.Select(expr => expr.ToInfixString(includeParamValues: false)))}");
+          }
+        }
         using (var writer = new StreamWriter(filename, false)) {
-          // writer.WriteLine("minLen;numExprs;shortestExpr;expressions");
-          // foreach (var kvp in allExpressions) {
-          //   var shortestExpr = kvp.Value.OrderBy(e => e.Length).First();
-          //   writer.WriteLine($"{shortestExpr.Length};" +
-          //     $"{kvp.Value.Count};" +
-          //     $"{shortestExpr.ToInfixString(includeParamValues: false)};" +
-          //     $"{string.Join("\t", kvp.Value.Select(expr => expr.ToInfixString(includeParamValues: false)))}");
-          // }
           writer.WriteLine("len;nParam;expr");
           foreach (var group in allExpressions.Values.SelectMany(e => e).GroupBy(e => e.Length)) {
             var len = group.FirstOrDefault()?.Length;

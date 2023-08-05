@@ -1,6 +1,13 @@
 ﻿using System.Diagnostics;
+using HEAL.Expressions;
+using static HEAL.EquationSearch.Grammar;
 
 namespace HEAL.EquationSearch {
+  // TODO: refactoring
+  // - HashNode should not reference expr, lengths, start or end
+  // - move all simplification / transformation of HashNode tree out of ctor into Simplify
+  // - closer connection to grammar (to ensure all nonlinear functions are handled, ...). Changes of grammar almost always imply changes in Semantics
+  // - implement semantic hashing and simplification generally (without asserting restricted grammar)
   public class Semantics {
     public static int[] GetLengths(Expression expr) {
       var lengths = new int[expr.Length]; // length of each part
@@ -16,20 +23,67 @@ namespace HEAL.EquationSearch {
     }
 
     // x1 ° x2 = x2 ° x1
-    private static bool IsCommutative(Grammar grammar, Grammar.Symbol sy) {
+    private static bool IsCommutative(Grammar grammar, Symbol sy) {
       return sy == grammar.Plus || sy == grammar.Times;
     }
 
     // (x1 ° x2) ° x3 = x1 ° (x2 ° x3)
-    private static bool IsAssociative(Grammar grammar, Grammar.Symbol sy) {
+    private static bool IsAssociative(Grammar grammar, Symbol sy) {
       return sy == grammar.Plus || sy == grammar.Times;
     }
 
     internal static ulong GetHashValue(Expression expr) {
-      return new HashNode(expr).HashValue;
+      var tree = Simplify(new HashNode(expr));
+      return tree.HashValue;
     }
 
+    internal static HashNode Simplify(HashNode tree) {
+      // simplify children recursively
+      var originalChildren = tree.children.ToArray();
+      tree.children.Clear();
+      foreach (var ch in originalChildren) {
+        tree.children.Add(Simplify(ch));
+      }
+      if (IsCommutative(tree.expr.Grammar, tree.Symbol)) tree.children.Sort(tree.HashValueComparer);
 
+      // fold parameters
+      if (tree.children.Count > 0 && tree.children.All(ch => ch.Symbol is ParameterSymbol)) {
+        return tree.children.First(); // use first parameter as replacement
+      }
+
+      // x inv inv -> inv
+      if (tree.Symbol == tree.expr.Grammar.Inv && tree.children[0].Symbol == tree.expr.Grammar.Inv) {
+        return tree.children[0].children[0];
+      }
+
+      // remove all multiplications by one
+      if (tree.Symbol == tree.expr.Grammar.Times) {
+        for (int i = tree.children.Count - 1; i >= 0; i--) {
+          if (tree.children[i].Symbol == tree.expr.Grammar.One) tree.children.RemoveAt(i);
+        }
+        return tree;
+      }
+
+      // remove duplicate terms (which have the same hash value)
+      // Children are already sorted by hash value
+      if (tree.Symbol == tree.expr.Grammar.Plus) {
+        var c = 0;
+        while (c < tree.children.Count - 1) {
+          Debug.Assert(tree.children[c].HashValue <= tree.children[c + 1].HashValue); // ASSERT: list sorted
+
+          // If the terms contain non-linear parameters we allow duplicates.
+          // e.g. we keep "p log(p + p x) + p log(p + p x)" or "p exp(p x) + p exp(p x)
+          if (tree.children[c].HashValue == tree.children[c + 1].HashValue && !tree.children[c].HasNonlinearParameters()) {
+            tree.children.RemoveAt(c + 1);
+          } else {
+            c++;
+          }
+        }
+        return tree;
+      }
+
+      return tree; // no changes
+    }
 
     // This class is used for nodes within a tree that is used for calculating semantic hashes for expressions.
     // The tree is build recursively when calling the constructor for the expression.
@@ -38,17 +92,21 @@ namespace HEAL.EquationSearch {
     //   - order sub-expressions of commutative expressions x2 ° x3 ° x1 => x1 ° x2 ° x3. The ordering is deterministic and based on the hash values of subexpressions.
     //   - ignore negation operator (x * (-1))
     // The steps make sure that most of the semantically equivalent expressions have the same hash value.
-    public class HashNode {
+    internal class HashNode {
       public readonly Expression expr;
-      private readonly int[] lengths;
+      internal readonly int[] lengths;
       public readonly int start;
       public readonly int end;
 
-      private readonly List<HashNode> children;
+      internal readonly List<HashNode> children;
       public IEnumerable<HashNode> Children { get { return children; } }
-      public Grammar.Symbol Symbol => expr[end];
+      public Symbol Symbol => expr[end];
 
-      public ulong HashValue { get; private set; }
+      private ulong? hashValue;
+      public ulong HashValue {
+        get { if (!hashValue.HasValue) { hashValue = CalculateHashValue(); } return hashValue.Value; }
+        private set { hashValue = value; }
+      }
 
       // constructor for the root nodes
       public HashNode(Expression expr) : this(expr, GetLengths(expr), 0, expr.Length - 1) { }
@@ -64,46 +122,19 @@ namespace HEAL.EquationSearch {
         if (expr[end].Arity > 0) {
           GetChildrenRec(children, end); // collect all children of this node
           if (IsCommutative(expr.Grammar, Symbol)) children.Sort(HashValueComparer);
-          Simplify();
         }
-
-        HashValue = CalculateHashValue();
       }
 
       // for sorting children by hashvalue above
-      private int HashValueComparer(HashNode x, HashNode y) {
+      internal int HashValueComparer(HashNode x, HashNode y) {
         if (x.HashValue < y.HashValue) return -1;
         else if (x.HashValue == y.HashValue) return 0;
         else return 1;
       }
 
-      private void Simplify() {
-        // remove all multiplications by one
-        if (Symbol == expr.Grammar.Times) {
-          for (int i = children.Count - 1; i >= 0; i--) {
-            if (children[i].Symbol == expr.Grammar.One) children.RemoveAt(i);
-          }
-        }
 
-        // remove duplicate terms (which have the same hash value)
-        // Children are already sorted by hash value
-        else if (Symbol == expr.Grammar.Plus) {
-          var c = 0;
-          while (c < children.Count - 1) {
-            Debug.Assert(children[c].HashValue <= children[c + 1].HashValue); // ASSERT: list sorted
 
-            // If the terms contain non-linear parameters we allow duplicates.
-            // e.g. we keep "p log(p + p x) + p log(p + p x)" or "p exp(p x) + p exp(p x)
-            if (children[c].HashValue == children[c + 1].HashValue && !children[c].HasNonlinearParameters()) {
-              children.RemoveAt(c + 1);
-            } else {
-              c++;
-            }
-          }
-        }
-      }
-
-      private bool HasNonlinearParameters() {
+      internal bool HasNonlinearParameters() {
         return Symbol == expr.Grammar.Exp || Symbol == expr.Grammar.Log || Symbol == expr.Grammar.Inv
               || Symbol == expr.Grammar.Cos || Symbol == expr.Grammar.Pow || Symbol == expr.Grammar.Sqrt
               || Symbol == expr.Grammar.PowAbs
