@@ -156,60 +156,25 @@ namespace HEAL.EquationSearch {
     }
 
 
-    // TODO: expansion but prevent duplicate paths to same expression
     public void UseUnrestrictedRulesESR() {
       // primarily to compare to reported results in ESR paper https://arxiv.org/pdf/2211.11461.pdf
       // ESR operators: x, a, inv, +, −, ×, ÷, pow
       // Cannot be evaluated with VarPro evaluator (which requires a constant offset at the end of each expression) (TODO)
 
-      // Grammar: (infix form)
-      // Expr -> Term
-      //         | Term '+' Expr
-      //         | Term '-' Expr
-      // Term -> Fact
-      //         | 'inv' '(' Term ')'
-      //         | Fact '*' Term 
-      //         | Fact '/' Term
-      // Fact -> Expr
-      //         | <param>
-      //         | <var>
-      //         | '(' Expr ')'
-      //         | 'pow' '(' 'abs' '(' Expr ')' ',' Expr ')'
-
-      // Grammar: (postfix form)
-      // Expr -> Term
-      //         | Term Expr +
-      //         | Term Expr -
-      // Term -> Fact
-      //         | Term inv
-      //         | Fact Term *
-      //         | Fact Term /
-      // Fact    | <var>
-      //         | <param>
-      //         | Expr
-      //         | Expr Expr powabs
       rules.Clear();
 
-      rules[Expr] = new List<Symbol[]>() {
-        new [] { Term }, // p
-        new [] { Term, Expr, Plus},
-        new [] { Term, Expr, Minus},
-      };
-
-      rules[Term] = new List<Symbol[]>() {
-        new [] { Factor },
-        new [] { Term, Inv },
-        new [] { Factor, Term, Times },
-        new [] { Factor, Term, Div },
-      };
-
-      rules[Factor] = Variables.Select(varSy => new Symbol[] { varSy }).ToList();      // every variable is an alternative
-      rules[Factor].Add(new[] { Parameter });
-      // 
-      rules[Factor].Add(new[] { Term, Expr, Plus });
-      rules[Factor].Add(new[] { Term, Expr, Minus });
-
-      rules[Factor].Add(new[] { Expr, Expr, PowAbs });
+      // this is an inverse regular grammar.
+      // each rule introduces at least one terminal symbol
+      rules[Expr] = Variables.Select(varSy => new Symbol[] { varSy }).ToList();      // every variable is an alternative
+      rules[Expr].AddRange(new List<Symbol[]>() {
+        new [] { Parameter },
+        new [] { Expr, Inv }, // 1/x
+        new [] { Expr, Expr, Plus},
+        new [] { Expr, Expr, Minus},
+        new [] { Expr, Expr, Times},
+        new [] { Expr, Expr, Div },
+        new [] { Expr, Expr, PowAbs},
+      });
     }
 
 
