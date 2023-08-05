@@ -37,7 +37,7 @@ namespace HEAL.EquationSearch.Test {
     [TestMethod]
     public void PowAbs() {
       var g = new Grammar(new[] { "x" }, maxLen: 100);
-      g.UseUnrestrictedRulesESR();
+      g.UseEsrCoreMaths();
       var expr = new Expression(g, new[] { g.Parameter.Clone(), g.Variables.First(), g.PowAbs  });
       Assert.AreEqual("pow(abs (x), 0)", expr.ToInfixString());
     }

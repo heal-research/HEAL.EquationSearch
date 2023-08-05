@@ -91,7 +91,7 @@ namespace HEAL.EquationSearch.Test {
       // check the order of arguments for the VarPro evaluator.
       // we have to use the same order in the Grammar
       var g = new Grammar(new[] { "x" }, maxLen: 100);
-      g.UseUnrestrictedRulesESR();
+      g.UseEsrCoreMaths();
 
       // this is equivalent to |-3|^2
       var expr = new Expression(g, new[] { g.Parameter.Clone(), g.Parameter.Clone(), g.PowAbs });

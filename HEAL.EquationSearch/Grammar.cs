@@ -156,7 +156,7 @@ namespace HEAL.EquationSearch {
     }
 
 
-    public void UseUnrestrictedRulesESR() {
+    public void UseEsrCoreMaths() {
       // primarily to compare to reported results in ESR paper https://arxiv.org/pdf/2211.11461.pdf
       // ESR operators: x, a, inv, +, −, ×, ÷, pow
       // Cannot be evaluated with VarPro evaluator (which requires a constant offset at the end of each expression) (TODO)

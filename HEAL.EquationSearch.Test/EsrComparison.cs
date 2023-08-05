@@ -83,27 +83,16 @@ namespace HEAL.EquationSearch.Test {
       // TODO:
       //  - simplification rules in semantics
       //    - constant / parameter folding
-      //    - repeated inv or neg 
+      //    - repeated inv
       //    - ... mul inv(x) (multiplication with inverse = division)
-      //    - ... plus neg(x) (addition of negative = subtraction)
-      //  - interpretation of '/' and '-' symbols in grammar 
       //  - 
       var inputs = new string[] { "x1" };
       var grammar = new Grammar(inputs, maxLength);
-      grammar.UseUnrestrictedRulesESR();
+      grammar.UseEsrCoreMaths();
 
       Enumerate(grammar, maxLength, $@"c:\temp\allExpressions_esr_cosmic_1d_{maxLength}.txt");
-      // len	numExpr	numUniqExpr
-      // 1	2	2
-      // 2	2	2
-      // 3	24	14
-      // 4	52	31
-      // 5	460	177
-      // 6	1556	593
-      // 7	11380	3065
-      // 8	49200	12374
-      // 9	325728	61344
-      // 10	1618800	272986
+
+
 
       // reported in ESR paper for complexity 10:
       // 5.2e6 'valid trees'
@@ -172,21 +161,38 @@ namespace HEAL.EquationSearch.Test {
 
       internal void WriteAllExpressions(string filename) {
         using (var writer = new StreamWriter(filename, false)) {
-          writer.WriteLine("minLen;numExprs;shortestExpr;expressions");
-          foreach (var kvp in allExpressions) {
-            var shortestExpr = kvp.Value.OrderBy(e => e.Length).First();
-            writer.WriteLine($"{shortestExpr.Length};" +
-              $"{kvp.Value.Count};" +
-              $"{shortestExpr.ToInfixString(includeParamValues: false)};" +
-              $"{string.Join("\t", kvp.Value.Select(expr => expr.ToInfixString(includeParamValues: false)))}");
+          // writer.WriteLine("minLen;numExprs;shortestExpr;expressions");
+          // foreach (var kvp in allExpressions) {
+          //   var shortestExpr = kvp.Value.OrderBy(e => e.Length).First();
+          //   writer.WriteLine($"{shortestExpr.Length};" +
+          //     $"{kvp.Value.Count};" +
+          //     $"{shortestExpr.ToInfixString(includeParamValues: false)};" +
+          //     $"{string.Join("\t", kvp.Value.Select(expr => expr.ToInfixString(includeParamValues: false)))}");
+          // }
+          writer.WriteLine("len;nParam;expr");
+          foreach (var group in allExpressions.Values.SelectMany(e => e).GroupBy(e => e.Length)) {
+            var len = group.FirstOrDefault()?.Length;
+            foreach (var expr in group) {
+              var numParam = expr.Count(sy => sy is Grammar.ParameterSymbol);
+              writer.WriteLine($"{len};{numParam};{expr.ToInfixString(includeParamValues: false)}");
+            }
           }
         }
       }
 
       internal void WriteSummary() {
-        System.Console.WriteLine("len\tnumExpr\tnumUniqExpr");
+        System.Console.WriteLine("len\tnumExpr\tnumUniqExpr\tnParam_0\tnParam_1\tnParam_2\tnParam_3\tnParam_4");
         foreach (var len in numExpressions.Keys.Order()) {
-          System.Console.WriteLine($"{len}\t{numExpressions[len]}\t{numUniqExpressions[len]}");
+          // TODO: efficiency
+          var exprs = allExpressions.Values.SelectMany(exprs => exprs.Where(e => e.Length == len)).ToArray();
+          var nParam0 = exprs.Count(expr => expr.Count(sy => sy is Grammar.ParameterSymbol) == 0);
+          var nParam1 = exprs.Count(expr => expr.Count(sy => sy is Grammar.ParameterSymbol) == 1);
+          var nParam2 = exprs.Count(expr => expr.Count(sy => sy is Grammar.ParameterSymbol) == 2);
+          var nParam3 = exprs.Count(expr => expr.Count(sy => sy is Grammar.ParameterSymbol) == 3);
+          var nParam4 = exprs.Count(expr => expr.Count(sy => sy is Grammar.ParameterSymbol) == 4);
+          var nParam5 = exprs.Count(expr => expr.Count(sy => sy is Grammar.ParameterSymbol) == 5);
+
+          System.Console.WriteLine($"{len}\t{numExpressions[len]}\t{numUniqExpressions[len]}\t{nParam0}\t{nParam1}\t{nParam2}\t{nParam3}\t{nParam4}\t{nParam5}");
         }
       }
     }
