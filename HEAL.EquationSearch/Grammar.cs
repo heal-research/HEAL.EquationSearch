@@ -164,11 +164,10 @@ namespace HEAL.EquationSearch {
 
       // Grammar: (infix form)
       // Expr -> Term
-      //         | '-' Term
       //         | Term '+' Expr
       //         | Term '-' Expr
       // Term -> Fact
-      //         | 'inv' '(' Fact ')'
+      //         | 'inv' '(' Term ')'
       //         | Fact '*' Term 
       //         | Fact '/' Term
       // Fact -> Expr
@@ -182,7 +181,7 @@ namespace HEAL.EquationSearch {
       //         | Term Expr +
       //         | Term Expr -
       // Term -> Fact
-      //         | Fact inv
+      //         | Term inv
       //         | Fact Term *
       //         | Fact Term /
       // Fact    | <var>
@@ -199,7 +198,7 @@ namespace HEAL.EquationSearch {
 
       rules[Term] = new List<Symbol[]>() {
         new [] { Factor },
-        new [] { Factor, Inv },
+        new [] { Term, Inv },
         new [] { Factor, Term, Times },
         new [] { Factor, Term, Div },
       };
@@ -209,7 +208,7 @@ namespace HEAL.EquationSearch {
       // 
       rules[Factor].Add(new[] { Term, Expr, Plus });
       rules[Factor].Add(new[] { Term, Expr, Minus });
-      
+
       rules[Factor].Add(new[] { Expr, Expr, PowAbs });
     }
 
@@ -254,7 +253,7 @@ namespace HEAL.EquationSearch {
             if (ntIdx >= 0 && varIdx < 0) {
               // replace the existing alternative with all derivations
               alternatives.RemoveAt(altIdx);
-              var newAlternatives = CreateAllDerivations(alt).Where(a => a.Length <= maxLength).ToArray();
+              var newAlternatives = CreateAllDerivations(alt, maxLength).ToArray();
               // cloned parameters are initialized with a random value. Reset the value to zero here for clean output
               foreach (var newAlt in newAlternatives) {
                 foreach (var sy in newAlt) {
@@ -275,17 +274,19 @@ namespace HEAL.EquationSearch {
 #endif
     }
     internal int FirstIndexOfNT(Symbol[] syString) => Array.FindIndex(syString, sy => sy.IsNonterminal);
-    internal IEnumerable<Symbol[]> CreateAllDerivations(Symbol[] syString) {
+    internal IEnumerable<Symbol[]> CreateAllDerivations(Symbol[] syString, int maxLen) {
 
       var idx = FirstIndexOfNT(syString);
       if (idx < 0) yield break;
 
       foreach (var alternative in rules[syString[idx]]) {
-        yield return Replace(syString, idx, alternative);
+        if (alternative.Length + syString.Length - 1 <= maxLen)
+          yield return Replace(syString, idx, alternative);
       }
     }
-    internal IEnumerable<Expression> CreateAllDerivations(Expression expression) =>
-      CreateAllDerivations(expression.SymbolString).Select(newStr => new Expression(this, newStr));
+    internal IEnumerable<Expression> CreateAllDerivations(Expression expression, int maxLen) =>
+      CreateAllDerivations(expression.SymbolString, maxLen)
+      .Select(newStr => new Expression(this, newStr));
 
     // returns a new string with the symbol at pos replaced with replSyString
     public Symbol[] Replace(Symbol[] syString, int pos, Symbol[] replSyString) {

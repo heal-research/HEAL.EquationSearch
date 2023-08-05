@@ -65,8 +65,7 @@ namespace HEAL.EquationSearch {
     }
 
     public IEnumerable<State> GetBranches() {
-      return Grammar.CreateAllDerivations(expression)
-        .Where(expr => expr.Length <= maxLength)
+      return Grammar.CreateAllDerivations(expression, maxLength)
         .Select(expr => new State(data, maxLength, grammar, expr, evaluator));
 
       // TODO: order by heuristic value?
