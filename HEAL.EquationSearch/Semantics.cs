@@ -1,9 +1,12 @@
 ﻿using System.Diagnostics;
+using System.Linq.Expressions;
 using HEAL.Expressions;
 using static HEAL.EquationSearch.Grammar;
 
 namespace HEAL.EquationSearch {
   // TODO: refactoring
+  // - Simplifcation is easier on the binary tree and should be performed first (before creating tree of hashnodes)
+  // - Use HEAL.NLR for simplification (translate Expr -> LinqExpr -> simplify -> translate back to Expr)
   // - HashNode should not reference expr, lengths, start or end
   // - move all simplification / transformation of HashNode tree out of ctor into Simplify
   // - closer connection to grammar (to ensure all nonlinear functions are handled, ...). Changes of grammar almost always imply changes in Semantics
@@ -33,57 +36,14 @@ namespace HEAL.EquationSearch {
     }
 
     internal static ulong GetHashValue(Expression expr) {
-      var tree = Simplify(new HashNode(expr));
-      return tree.HashValue;
+      var variableNames = expr.Grammar.Variables.Select(v => v.VariableName).ToArray();
+      var tree = HEALExpressionBridge.ConvertToExpressionTree(expr, variableNames, out var parameterValues);
+      tree = Expr.Simplify(tree, parameterValues, out var treeParamValues);
+      var expr1 = HEALExpressionBridge.ConvertToPostfixExpression(tree, treeParamValues, expr.Grammar);
+      return new HashNode(expr1).HashValue;
     }
 
-    internal static HashNode Simplify(HashNode tree) {
-      // simplify children recursively
-      var originalChildren = tree.children.ToArray();
-      tree.children.Clear();
-      foreach (var ch in originalChildren) {
-        tree.children.Add(Simplify(ch));
-      }
-      if (IsCommutative(tree.expr.Grammar, tree.Symbol)) tree.children.Sort(tree.HashValueComparer);
-
-      // fold parameters
-      if (tree.children.Count > 0 && tree.children.All(ch => ch.Symbol is ParameterSymbol)) {
-        return tree.children.First(); // use first parameter as replacement
-      }
-
-      // x inv inv -> inv
-      if (tree.Symbol == tree.expr.Grammar.Inv && tree.children[0].Symbol == tree.expr.Grammar.Inv) {
-        return tree.children[0].children[0];
-      }
-
-      // remove all multiplications by one
-      if (tree.Symbol == tree.expr.Grammar.Times) {
-        for (int i = tree.children.Count - 1; i >= 0; i--) {
-          if (tree.children[i].Symbol == tree.expr.Grammar.One) tree.children.RemoveAt(i);
-        }
-        return tree;
-      }
-
-      // remove duplicate terms (which have the same hash value)
-      // Children are already sorted by hash value
-      if (tree.Symbol == tree.expr.Grammar.Plus) {
-        var c = 0;
-        while (c < tree.children.Count - 1) {
-          Debug.Assert(tree.children[c].HashValue <= tree.children[c + 1].HashValue); // ASSERT: list sorted
-
-          // If the terms contain non-linear parameters we allow duplicates.
-          // e.g. we keep "p log(p + p x) + p log(p + p x)" or "p exp(p x) + p exp(p x)
-          if (tree.children[c].HashValue == tree.children[c + 1].HashValue && !tree.children[c].HasNonlinearParameters()) {
-            tree.children.RemoveAt(c + 1);
-          } else {
-            c++;
-          }
-        }
-        return tree;
-      }
-
-      return tree; // no changes
-    }
+    
 
     // This class is used for nodes within a tree that is used for calculating semantic hashes for expressions.
     // The tree is build recursively when calling the constructor for the expression.
@@ -100,7 +60,11 @@ namespace HEAL.EquationSearch {
 
       internal readonly List<HashNode> children;
       public IEnumerable<HashNode> Children { get { return children; } }
-      public Symbol Symbol => expr[end];
+      private Symbol symbol;
+      public Symbol Symbol {
+        get => symbol;
+        set { if (symbol.Arity != value.Arity) throw new ArgumentException(); else symbol = value; }
+      }
 
       private ulong? hashValue;
       public ulong HashValue {
@@ -118,10 +82,12 @@ namespace HEAL.EquationSearch {
         this.lengths = lengths;
         this.start = start;
         this.end = end;
+        this.symbol = expr[end];
         this.children = new List<HashNode>();
-        if (expr[end].Arity > 0) {
+        if (Symbol.Arity > 0) {
           GetChildrenRec(children, end); // collect all children of this node
           if (IsCommutative(expr.Grammar, Symbol)) children.Sort(HashValueComparer);
+          Simplify();
         }
       }
 
@@ -132,13 +98,36 @@ namespace HEAL.EquationSearch {
         else return 1;
       }
 
+      internal void Simplify() {
+        if (IsCommutative(expr.Grammar, Symbol)) children.Sort(HashValueComparer);
 
+        // remove duplicate terms (which have the same hash value)
+        // Children are already sorted by hash value
+        if (Symbol == expr.Grammar.Plus) {
+          var c = 0;
+          while (c < children.Count - 1) {
+            Debug.Assert(children[c].HashValue <= children[c + 1].HashValue); // ASSERT: list sorted
+
+            // If the terms contain non-linear parameters we allow duplicates.
+            // e.g. we keep "p log(p + p x) + p log(p + p x)" or "p exp(p x) + p exp(p x)
+            if (children[c].HashValue == children[c + 1].HashValue && !children[c].HasNonlinearParameters()) {
+              children.RemoveAt(c + 1);
+            } else {
+              c++;
+            }
+          }
+        }
+      }
 
       internal bool HasNonlinearParameters() {
         return Symbol == expr.Grammar.Exp || Symbol == expr.Grammar.Log || Symbol == expr.Grammar.Inv
               || Symbol == expr.Grammar.Cos || Symbol == expr.Grammar.Pow || Symbol == expr.Grammar.Sqrt
               || Symbol == expr.Grammar.PowAbs
               || children.Any(c => c.HasNonlinearParameters());
+      }
+
+      internal bool HasParameters() {
+        return Symbol is Grammar.ParameterSymbol || children.Any(c => c.HasParameters());
       }
 
       private void GetChildrenRec(List<HashNode> children, int parentIndex) {
@@ -162,16 +151,17 @@ namespace HEAL.EquationSearch {
         for (int i = 0; i < children.Count; i++) {
           hashValues[i] = children[i].HashValue;
         }
-        if (expr[end] == expr.Grammar.Neg)
+        if (Symbol == expr.Grammar.Neg)
           return hashValues[0]; // neg is a linear operation and can be ignored
         else
-          return Hash.JSHash(hashValues, (ulong)expr[end].GetHashCode()); // hash values of children, followed by hash value of current symbol
+          return Hash.JSHash(hashValues, (ulong)Symbol.GetHashCode()); // hash values of children, followed by hash value of current symbol
       }
 
       // for debugging
       public override string ToString() {
         return string.Join(" ", expr.Skip(start).Take(end - start + 1).Select(sy => sy.ToString()));
       }
+
     }
   }
 

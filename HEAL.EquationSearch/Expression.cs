@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using HEAL.Expressions;
+using static HEAL.EquationSearch.Grammar;
 
 namespace HEAL.EquationSearch {
   public class Expression : IEnumerable<Grammar.Symbol> {
@@ -7,15 +9,15 @@ namespace HEAL.EquationSearch {
     public Grammar.Symbol this[int pos] {
       get => syString[pos];
     }
-    public Expression(Grammar grammar, Grammar.Symbol[] syString) {
-      this.Grammar = grammar;
-      this.syString = syString;
-    }
-
     public int Length => syString.Length;
     public bool IsSentence => FirstIndexOfNT() < 0; // no NT found
 
     public Grammar Grammar { get; internal set; }
+
+    public Expression(Grammar grammar, Grammar.Symbol[] syString) {
+      this.Grammar = grammar;
+      this.syString = syString;
+    }
 
     private int FirstIndexOfNT() {
       return Array.FindIndex(syString, sy => sy.IsNonterminal);
@@ -84,6 +86,10 @@ namespace HEAL.EquationSearch {
 
     IEnumerator IEnumerable.GetEnumerator() {
       return this.GetEnumerator();
+    }
+
+    internal Expression Clone() {
+      return new Expression(Grammar, (Symbol[])syString.Clone());
     }
     #endregion
   }
