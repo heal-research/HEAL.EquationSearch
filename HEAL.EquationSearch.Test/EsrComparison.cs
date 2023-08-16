@@ -77,8 +77,11 @@ namespace HEAL.EquationSearch.Test {
 
 
     [DataTestMethod]
-    [DataRow(10)]
-    public void FullEnumerationUnivariateESRCosmicGrammar(int maxLength) {
+
+    [DataRow(5, 610)]
+    [DataRow(9, 692098)]
+    [DataRow(10, 4103220)]
+    public void FullEnumerationUnivariateESRCosmicGrammar(int maxLength, int? expectedTotalExpressions) {
       // TODO:
       //  - simplification rules in semantics
       //    - constant / parameter folding
@@ -89,7 +92,7 @@ namespace HEAL.EquationSearch.Test {
       var grammar = new Grammar(inputs, maxLength);
       grammar.UseEsrCoreMaths();
 
-      Enumerate(grammar, maxLength, $@"c:\temp\allExpressions_esr_cosmic_1d_{maxLength}.txt", expectedTotalExpressions: 4103220);
+      Enumerate(grammar, maxLength, $@"c:\temp\allExpressions_esr_cosmic_1d_{maxLength}.txt", expectedTotalExpressions);
 
       // reported in ESR core_maths.zip:
       // original_trees:
@@ -158,17 +161,17 @@ namespace HEAL.EquationSearch.Test {
       public double OptimizeAndEvaluateDL(Expression expr, Data data) {
         if (!expr.IsSentence) throw new NotSupportedException();
 
-        var h = Semantics.GetHashValue(expr);
-        var len = expr.Length;
+        var h = Semantics.GetHashValue(expr, out var simplifiedExpression);
+        var len = simplifiedExpression.Length;
         if (!numExpressions.ContainsKey(len)) numExpressions.Add(len, 0);
         if (!numUniqExpressions.ContainsKey(len)) numUniqExpressions.Add(len, 0);
 
         numExpressions[len]++;
 
         if (allExpressions.TryGetValue(h, out var list)) {
-          list.Add(expr);
+          list.Add(simplifiedExpression);
         } else {
-          allExpressions.Add(h, new List<Expression>() { expr });
+          allExpressions.Add(h, new List<Expression>() { simplifiedExpression });
           numUniqExpressions[len]++;
         }
         return 0.0;
@@ -180,10 +183,10 @@ namespace HEAL.EquationSearch.Test {
 
       internal void WriteAllExpressions(string filename) {
         using (var writer = new StreamWriter(filename.Replace(".txt", "_grouped.txt"), false)) {
-          writer.WriteLine("minLen;numExprs;shortestExpr;expressions");
+          writer.WriteLine("hash;minLen;numExprs;shortestExpr;expressions");
           foreach (var kvp in allExpressions) {
             var shortestExpr = kvp.Value.OrderBy(e => e.Length).First();
-            writer.WriteLine($"{shortestExpr.Length};" +
+            writer.WriteLine($"{kvp.Key};{shortestExpr.Length};" +
               $"{kvp.Value.Count};" +
               $"{shortestExpr.ToInfixString(includeParamValues: false)};" +
               $"{string.Join("\t", kvp.Value.Select(expr => expr.ToInfixString(includeParamValues: false)))}");

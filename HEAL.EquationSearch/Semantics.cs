@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Linq.Expressions;
+using System.Reflection;
 using HEAL.Expressions;
 using static HEAL.EquationSearch.Grammar;
 
@@ -35,15 +36,24 @@ namespace HEAL.EquationSearch {
       return sy == grammar.Plus || sy == grammar.Times;
     }
 
-    internal static ulong GetHashValue(Expression expr) {
+    internal static ulong GetHashValue(Expression expr, out Expression simplifiedExpr) {
+      // System.IO.File.AppendAllLines(@"c:\temp\log.txt", new[] { $"{expr.ToInfixString()}" });
       var variableNames = expr.Grammar.Variables.Select(v => v.VariableName).ToArray();
       var tree = HEALExpressionBridge.ConvertToExpressionTree(expr, variableNames, out var parameterValues);
       tree = Expr.Simplify(tree, parameterValues, out var treeParamValues);
-      var expr1 = HEALExpressionBridge.ConvertToPostfixExpression(tree, treeParamValues, expr.Grammar);
-      return new HashNode(expr1).HashValue;
+      simplifiedExpr = HEALExpressionBridge.ConvertToPostfixExpression(tree, treeParamValues, expr.Grammar);
+      return new HashNode(simplifiedExpr).HashValue;
     }
 
-    
+    // public static string GetDebugView(System.Linq.Expressions.Expression expr) {
+    //   if (expr == null)
+    //     return null;
+    // 
+    //   var propertyInfo = typeof(System.Linq.Expressions.Expression).GetProperty("DebugView", BindingFlags.Instance | BindingFlags.NonPublic);
+    //   return propertyInfo.GetValue(expr) as string;
+    // }
+
+
 
     // This class is used for nodes within a tree that is used for calculating semantic hashes for expressions.
     // The tree is build recursively when calling the constructor for the expression.
@@ -151,10 +161,7 @@ namespace HEAL.EquationSearch {
         for (int i = 0; i < children.Count; i++) {
           hashValues[i] = children[i].HashValue;
         }
-        if (Symbol == expr.Grammar.Neg)
-          return hashValues[0]; // neg is a linear operation and can be ignored
-        else
-          return Hash.JSHash(hashValues, (ulong)Symbol.GetHashCode()); // hash values of children, followed by hash value of current symbol
+        return Hash.JSHash(hashValues, (ulong)Symbol.GetHashCode()); // hash values of children, followed by hash value of current symbol
       }
 
       // for debugging

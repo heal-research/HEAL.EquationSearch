@@ -1,3 +1,5 @@
+using HEAL.Expressions;
+
 namespace HEAL.EquationSearch.Test {
   [TestClass]
   public class SemanticDuplicatesTest {
@@ -23,9 +25,23 @@ namespace HEAL.EquationSearch.Test {
 
       var expr1 = StringToExpression(g, exprStr1);
       var expr2 = StringToExpression(g, exprStr2);
-      Assert.AreEqual(equal, Semantics.GetHashValue(expr1) == Semantics.GetHashValue(expr2));
+      Assert.AreEqual(equal, Semantics.GetHashValue(expr1, out _) == Semantics.GetHashValue(expr2, out _));
     }
 
+    [DataTestMethod]
+    [DataRow("(1f / (1f / (1f / (1f / (1f / (1f / -1.0)))))) / x")]
+    [DataRow("(1f / (1f / (1f / x)))")]
+    [DataRow("1f / 2.0")]
+    [DataRow("2.0 / 3.0")]
+    [DataRow("1f / ((1f / 3.0) + x)")]
+    public void Simplification(string exprStr) {
+      var varNames = new[] { "x", "y" };
+      var g = new Grammar(varNames, maxLen: 100);
+      var expr1 = StringToExpression(g, exprStr);
+      var tree = EquationSearch.HEALExpressionBridge.ConvertToExpressionTree(expr1, varNames, out var p);
+      var simpleTree = Expr.Simplify(tree, p, out p);
+      System.Console.WriteLine(simpleTree);
+    }
 
     [DataTestMethod]
     [DataRow("x")]

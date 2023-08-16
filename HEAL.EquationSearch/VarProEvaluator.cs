@@ -23,7 +23,7 @@ namespace HEAL.EquationSearch {
     // This method uses caching for efficiency.
     // IMPORTANT: This method does not update parameter values in expr. Use for heuristic evaluation only.
     public double OptimizeAndEvaluateMSE(Expression expr, Data data) {
-      var semHash = Semantics.GetHashValue(expr);
+      var semHash = Semantics.GetHashValue(expr, out _); // TODO: we could use simplified expression here
       Interlocked.Increment(ref evaluatedExpressions);
 
       if (exprQualities.TryGetValue(semHash, out double mse)) {

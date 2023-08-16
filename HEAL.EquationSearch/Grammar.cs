@@ -235,7 +235,7 @@ namespace HEAL.EquationSearch {
       }
 
 #if DEBUG
-      Console.WriteLine($"After expansion: {this}");
+      // Console.WriteLine($"After expansion: {this}");
 #endif
     }
     internal int FirstIndexOfNT(Symbol[] syString) => Array.FindIndex(syString, sy => sy.IsNonterminal);
@@ -355,6 +355,9 @@ namespace HEAL.EquationSearch {
     public class VariableSymbol : TerminalClassSymbol<string> {
       public string VariableName => value;
       public VariableSymbol(string varName) : base("var", varName) { }
+      public override int GetHashCode() {
+        return value.GetHashCode();
+      }
     }
 
     public class ParameterSymbol : TerminalClassSymbol<double> {
@@ -387,6 +390,9 @@ namespace HEAL.EquationSearch {
 
       public override string ToString() {
         return string.Format("{0:g4}", value);
+      }
+      public override int GetHashCode() {
+        return value.GetHashCode();
       }
     }
     #endregion

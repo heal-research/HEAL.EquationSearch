@@ -77,7 +77,7 @@ namespace HEAL.EquationSearch {
     }
 
     internal ulong GetHashValue() {
-      return Semantics.GetHashValue(expression);
+      return Semantics.GetHashValue(expression, out _);
     }
   }
 }
