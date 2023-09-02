@@ -1,4 +1,5 @@
-﻿using TreesearchLib;
+﻿using HEAL.Expressions;
+using TreesearchLib;
 
 namespace HEAL.EquationSearch.Test {
 
@@ -169,9 +170,9 @@ namespace HEAL.EquationSearch.Test {
         numExpressions[len]++;
 
         if (allExpressions.TryGetValue(h, out var list)) {
-          list.Add(simplifiedExpression);
+          list.Add(expr);
         } else {
-          allExpressions.Add(h, new List<Expression>() { simplifiedExpression });
+          allExpressions.Add(h, new List<Expression>() { expr });
           numUniqExpressions[len]++;
         }
         return 0.0;
@@ -183,19 +184,20 @@ namespace HEAL.EquationSearch.Test {
 
       internal void WriteAllExpressions(string filename) {
         using (var writer = new StreamWriter(filename.Replace(".txt", "_grouped.txt"), false)) {
-          writer.WriteLine("hash;minLen;numExprs;shortestExpr;expressions");
+          writer.WriteLine("hash;minLen;numExprs;simplifiedExpr;expressions");
           foreach (var kvp in allExpressions) {
-            var shortestExpr = kvp.Value.OrderBy(e => e.Length).First();
-            writer.WriteLine($"{kvp.Key};{shortestExpr.Length};" +
+            var hCheck = Semantics.GetHashValue(kvp.Value.First(), out var simplifiedExpression);
+            Assert.AreEqual(kvp.Key, hCheck);
+            writer.WriteLine($"{kvp.Key};{simplifiedExpression.Length};" +
               $"{kvp.Value.Count};" +
-              $"{shortestExpr.ToInfixString(includeParamValues: false)};" +
+              $"{simplifiedExpression.ToInfixString(includeParamValues: false)};" +
               $"{string.Join("\t", kvp.Value.Select(expr => expr.ToInfixString(includeParamValues: false)))}");
           }
         }
         using (var writer = new StreamWriter(filename, false)) {
           writer.WriteLine("len;nParam;expr");
           foreach (var group in allExpressions.Values.SelectMany(e => e).GroupBy(e => e.Length)) {
-            var len = group.FirstOrDefault()?.Length;
+            var len = group.Min(e => e.Length);
             foreach (var expr in group) {
               var numParam = expr.Count(sy => sy is Grammar.ParameterSymbol);
               writer.WriteLine($"{len};{numParam};{expr.ToInfixString(includeParamValues: false)}");
