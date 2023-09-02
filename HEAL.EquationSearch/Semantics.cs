@@ -60,7 +60,6 @@ namespace HEAL.EquationSearch {
     // The semantic hash function has the following capabilities:
     //   - flatten out the sub-trees for associative expressions (x1 ° x2) ° x3 => x1 ° x2 ° x3 (a single node with three children)
     //   - order sub-expressions of commutative expressions x2 ° x3 ° x1 => x1 ° x2 ° x3. The ordering is deterministic and based on the hash values of subexpressions.
-    //   - ignore negation operator (x * (-1))
     // The steps make sure that most of the semantically equivalent expressions have the same hash value.
     internal class HashNode {
       public readonly Expression expr;
@@ -125,6 +124,12 @@ namespace HEAL.EquationSearch {
             } else {
               c++;
             }
+          }
+        } else if (Symbol == expr.Grammar.Div) {
+          Debug.Assert(children.Count == 2);
+          if (children[0].HashValue == children[1].HashValue && !children[0].HasNonlinearParameters()) {
+            children[0] = new HashNode(new Expression(this.expr.Grammar, new[] { this.expr.Grammar.Parameter.Clone() }));
+            children[1] = new HashNode(new Expression(this.expr.Grammar, new[] { this.expr.Grammar.One }));
           }
         }
       }
