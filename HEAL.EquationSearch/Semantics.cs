@@ -40,7 +40,7 @@ namespace HEAL.EquationSearch {
       // System.IO.File.AppendAllLines(@"c:\temp\log.txt", new[] { $"{expr.ToInfixString()}" });
       var variableNames = expr.Grammar.Variables.Select(v => v.VariableName).ToArray();
       var tree = HEALExpressionBridge.ConvertToExpressionTree(expr, variableNames, out var parameterValues);
-      tree = Expr.Simplify(tree, parameterValues, out var treeParamValues);
+      tree = Expr.SimplifyRepeated(tree, parameterValues, out var treeParamValues);
       simplifiedExpr = HEALExpressionBridge.ConvertToPostfixExpression(tree, treeParamValues, expr.Grammar);
       return new HashNode(simplifiedExpr).HashValue;
     }

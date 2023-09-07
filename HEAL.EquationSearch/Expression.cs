@@ -29,8 +29,15 @@ namespace HEAL.EquationSearch {
       }
     }
 
+    public string ToString(bool includeParamValues) {
+      if (includeParamValues)
+        return string.Join(" ", syString.Select(sy => sy.ToString()));
+      else
+        return string.Join(" ", syString.Select(sy => sy is ParameterSymbol ? "p" : sy.ToString()));
+    }
+
     public override string ToString() {
-      return string.Join(" ", syString.Select(sy => sy.ToString()));
+      return ToString(includeParamValues: true);
     }
 
     #region infix string output

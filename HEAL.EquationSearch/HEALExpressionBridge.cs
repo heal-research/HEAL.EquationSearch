@@ -49,7 +49,7 @@ namespace HEAL.EquationSearch {
         else if (expr[i] == expr.Grammar.Log) { return LinqExpr.Call(log, children[0]); } 
         else if (expr[i] == expr.Grammar.Sqrt) { return LinqExpr.Call(sqrt, children[0]); } 
         else if (expr[i] == expr.Grammar.Pow) { return LinqExpr.Call(pow, children[0], children[1]); } 
-        else if (expr[i] == expr.Grammar.PowAbs) { return LinqExpr.Call(pow, LinqExpr.Call(abs, children[0]), children[1]); }
+        else if (expr[i] == expr.Grammar.PowAbs) { return LinqExpr.Call(powabs, children[0], children[1]); }
         else if (expr[i] is Grammar.ConstantSymbol constSy) { return LinqExpr.Constant(constSy.Value); } 
         else throw new NotSupportedException("unsupported symbol");
         #pragma warning restore format
@@ -94,7 +94,13 @@ namespace HEAL.EquationSearch {
           } else if (binExpr.NodeType == ExpressionType.Multiply) {
             syList.Add(g.Times);
           } else if (binExpr.NodeType == ExpressionType.Divide) {
-            syList.Add(g.Div);
+            if (syList.Last() is Grammar.ConstantSymbol constSy && constSy.Value == 1.0) {
+              // 1 / x -> inv(x)
+              syList.RemoveAt(syList.Count - 1);
+              syList.Add(g.Inv);
+            } else {
+              syList.Add(g.Div);
+            }
           } else throw new InvalidProgramException();
         }
       } else if (tree is UnaryExpression unaryExpr) {
@@ -137,6 +143,10 @@ namespace HEAL.EquationSearch {
             ConvertToPostfixExpressionRec(callExpr.Arguments[0], theta, x, parameterValues, g, syList);
             syList.Add(g.Pow);
           }
+        } else if (callExpr.Method == powabs) {
+          ConvertToPostfixExpressionRec(callExpr.Arguments[1], theta, x, parameterValues, g, syList);
+          ConvertToPostfixExpressionRec(callExpr.Arguments[0], theta, x, parameterValues, g, syList);
+          syList.Add(g.PowAbs);
         }
       } else if (tree is ConstantExpression constExpr) {
         syList.Add(new Grammar.ConstantSymbol((double)constExpr.Value));
@@ -152,5 +162,6 @@ namespace HEAL.EquationSearch {
     private static readonly MethodInfo cosh = typeof(Math).GetMethod("Cosh", new[] { typeof(double) });
     private static readonly MethodInfo sqrt = typeof(Math).GetMethod("Sqrt", new[] { typeof(double) });
     private static readonly MethodInfo pow = typeof(Math).GetMethod("Pow", new[] { typeof(double), typeof(double) });
+    private static readonly MethodInfo powabs = typeof(Functions).GetMethod("PowAbs", new[] { typeof(double), typeof(double) });
   }
 }

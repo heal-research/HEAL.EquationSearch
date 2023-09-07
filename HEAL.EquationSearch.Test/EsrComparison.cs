@@ -149,9 +149,10 @@ namespace HEAL.EquationSearch.Test {
 
       public long OptimizedExpressions => throw new NotImplementedException();
 
-      public long EvaluatedExpressions => allExpressions.Values.Sum(l => l.Count);
+      public long EvaluatedExpressions => uniqExpressions.Values.Sum(l => l.Count);
 
-      public Dictionary<ulong, List<Expression>> allExpressions = new();
+      public Dictionary<ulong, List<Expression>> uniqExpressions = new();
+      public Dictionary<int, Dictionary<ulong, List<Expression>>> exprByLength = new();
       public Dictionary<int, int> numExpressions = new();
       public Dictionary<int, int> numUniqExpressions = new();
 
@@ -163,18 +164,31 @@ namespace HEAL.EquationSearch.Test {
         if (!expr.IsSentence) throw new NotSupportedException();
 
         var h = Semantics.GetHashValue(expr, out var simplifiedExpression);
-        var len = simplifiedExpression.Length;
-        if (!numExpressions.ContainsKey(len)) numExpressions.Add(len, 0);
-        if (!numUniqExpressions.ContainsKey(len)) numUniqExpressions.Add(len, 0);
+        var simplifiedLen = simplifiedExpression.Length;
+        if (!numExpressions.ContainsKey(simplifiedLen)) numExpressions.Add(simplifiedLen, 0);
+        if (!numUniqExpressions.ContainsKey(simplifiedLen)) numUniqExpressions.Add(simplifiedLen, 0);
 
-        numExpressions[len]++;
+        numExpressions[simplifiedLen]++;
 
-        if (allExpressions.TryGetValue(h, out var list)) {
+        if (uniqExpressions.TryGetValue(h, out var list)) {
           list.Add(expr);
         } else {
-          allExpressions.Add(h, new List<Expression>() { expr });
-          numUniqExpressions[len]++;
+          uniqExpressions.Add(h, new List<Expression>() { expr });
+          numUniqExpressions[simplifiedLen]++;
         }
+
+        // expressions by original length group.
+        // simplified expressions can be looked up in 
+        var origLen = expr.Length;
+        if (!exprByLength.TryGetValue(origLen, out var exprDict)) {
+          exprDict = new();
+          exprByLength.Add(origLen, exprDict);
+        }
+        if(!exprDict.TryGetValue(h, out var exprList)) {
+          exprList = new();
+          exprDict.Add(h, exprList);
+        }
+        exprDict[h].Add(expr);
         return 0.0;
       }
 
@@ -184,19 +198,20 @@ namespace HEAL.EquationSearch.Test {
 
       internal void WriteAllExpressions(string filename) {
         using (var writer = new StreamWriter(filename.Replace(".txt", "_grouped.txt"), false)) {
-          writer.WriteLine("hash;minLen;numExprs;simplifiedExpr;expressions");
-          foreach (var kvp in allExpressions) {
+          writer.WriteLine("hash;minLen;numExprs;simplifiedExpr;simplifiedExpr (postfix);expressions");
+          foreach (var kvp in uniqExpressions) {
             var hCheck = Semantics.GetHashValue(kvp.Value.First(), out var simplifiedExpression);
             Assert.AreEqual(kvp.Key, hCheck);
             writer.WriteLine($"{kvp.Key};{simplifiedExpression.Length};" +
               $"{kvp.Value.Count};" +
               $"{simplifiedExpression.ToInfixString(includeParamValues: false)};" +
+              $"{simplifiedExpression.ToString(includeParamValues: false)};" +
               $"{string.Join("\t", kvp.Value.Select(expr => expr.ToInfixString(includeParamValues: false)))}");
           }
         }
         using (var writer = new StreamWriter(filename, false)) {
           writer.WriteLine("len;nParam;expr");
-          foreach (var group in allExpressions.Values.SelectMany(e => e).GroupBy(e => e.Length)) {
+          foreach (var group in uniqExpressions.Values.SelectMany(e => e).GroupBy(e => e.Length)) {
             var len = group.Min(e => e.Length);
             foreach (var expr in group) {
               var numParam = expr.Count(sy => sy is Grammar.ParameterSymbol);
@@ -204,13 +219,32 @@ namespace HEAL.EquationSearch.Test {
             }
           }
         }
+        foreach (var kvp in exprByLength) {
+          var len = kvp.Key;
+          using (var writer = new StreamWriter(filename.Replace(".txt", $"_len_{len}.txt"), false)) {
+            writer.WriteLine("nParam;count;simplifiedLen;simplifiedExpr;exprs");
+            foreach (var hashExprs in kvp.Value) {
+              var h = hashExprs.Key;
+              var exprs = hashExprs.Value;
+              var hCheck = Semantics.GetHashValue(exprs.First(), out var simplifiedExpression);
+              Assert.AreEqual(h, hCheck);
+              var numParam = simplifiedExpression.Count(sy => sy is Grammar.ParameterSymbol);
+              writer.WriteLine($"{numParam};"+
+              $"{exprs.Count};" +
+              $"{simplifiedExpression.Length};" +
+              $"{simplifiedExpression.ToInfixString(includeParamValues: false)};" +
+              $"{string.Join("\t", exprs.Select(expr => expr.ToInfixString(includeParamValues: false)))}");
+            }
+          }
+
+        }
       }
 
       internal void WriteSummary() {
         System.Console.WriteLine("len\tnumExpr\tnumUniqExpr\tnParam_0\tnParam_1\tnParam_2\tnParam_3\tnParam_4");
         foreach (var len in numExpressions.Keys.Order()) {
           // TODO: efficiency
-          var exprs = allExpressions.Values.SelectMany(exprs => exprs.Where(e => e.Length == len)).ToArray();
+          var exprs = uniqExpressions.Values.SelectMany(exprs => exprs.Where(e => e.Length == len)).ToArray();
           var nParam0 = exprs.Count(expr => expr.Count(sy => sy is Grammar.ParameterSymbol) == 0);
           var nParam1 = exprs.Count(expr => expr.Count(sy => sy is Grammar.ParameterSymbol) == 1);
           var nParam2 = exprs.Count(expr => expr.Count(sy => sy is Grammar.ParameterSymbol) == 2);
