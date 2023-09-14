@@ -79,16 +79,14 @@ namespace HEAL.EquationSearch.Test {
 
     [DataTestMethod]
 
+    [DataRow(4, 88)]
     [DataRow(5, 610)]
+    [DataRow(6, 2812)]
+    [DataRow(7, 19114)]
+    [DataRow(8, 103536)]
     [DataRow(9, 692098)]
     [DataRow(10, 4103220)]
     public void FullEnumerationUnivariateESRCosmicGrammar(int maxLength, int? expectedTotalExpressions) {
-      // TODO:
-      //  - simplification rules in semantics
-      //    - constant / parameter folding
-      //    - repeated inv
-      //    - ... mul inv(x) (multiplication with inverse = division)
-      //  - 
       var inputs = new string[] { "x1" };
       var grammar = new Grammar(inputs, maxLength);
       grammar.UseEsrCoreMaths();
@@ -152,9 +150,12 @@ namespace HEAL.EquationSearch.Test {
       public long EvaluatedExpressions => uniqExpressions.Values.Sum(l => l.Count);
 
       public Dictionary<ulong, List<Expression>> uniqExpressions = new();
+      public Dictionary<ulong, List<Expression>> uniqExpressionsWithoutConst = new();
+
       public Dictionary<int, Dictionary<ulong, List<Expression>>> exprByLength = new();
       public Dictionary<int, int> numExpressions = new();
       public Dictionary<int, int> numUniqExpressions = new();
+      public Dictionary<int, int> numUniqExpressionsWithoutConst = new();
 
       public double[] Evaluate(Expression expression, Data data) {
         throw new NotImplementedException();
@@ -163,33 +164,60 @@ namespace HEAL.EquationSearch.Test {
       public double OptimizeAndEvaluateDL(Expression expr, Data data) {
         if (!expr.IsSentence) throw new NotSupportedException();
 
-        var h = Semantics.GetHashValue(expr, out var simplifiedExpression);
+        var semHash = Semantics.GetHashValue(expr, out var simplifiedExpression);
         var simplifiedLen = simplifiedExpression.Length;
+
+        AddNumUniqueExpressions(expr, semHash, simplifiedLen);
+        AddExpressionByOriginalLength(expr, semHash);
+        CountExpressionBySimplifiedLen(simplifiedLen);
+
+        // replace all constants by parameters and simplify again (assuming we can use integer-snap for parameters)
+        var newExpr = new Expression(simplifiedExpression.Grammar, simplifiedExpression.Select(sy => sy is Grammar.ConstantSymbol constSy ? new Grammar.ParameterSymbol(constSy.Value) : sy).ToArray());
+        var newSemHash = Semantics.GetHashValue(newExpr, out var newSimplifiedExpression);
+        AddNumUniqueExpressionsWithoutConst(expr, newSemHash, newSimplifiedExpression.Length);
+        return 0.0;
+      }
+
+      private void CountExpressionBySimplifiedLen(int simplifiedLen) {
         if (!numExpressions.ContainsKey(simplifiedLen)) numExpressions.Add(simplifiedLen, 0);
-        if (!numUniqExpressions.ContainsKey(simplifiedLen)) numUniqExpressions.Add(simplifiedLen, 0);
 
         numExpressions[simplifiedLen]++;
+      }
 
-        if (uniqExpressions.TryGetValue(h, out var list)) {
-          list.Add(expr);
-        } else {
-          uniqExpressions.Add(h, new List<Expression>() { expr });
-          numUniqExpressions[simplifiedLen]++;
-        }
-
-        // expressions by original length group.
-        // simplified expressions can be looked up in 
+      // expressions by original length group.
+      private void AddExpressionByOriginalLength(Expression expr, ulong semHash) {
         var origLen = expr.Length;
         if (!exprByLength.TryGetValue(origLen, out var exprDict)) {
           exprDict = new();
           exprByLength.Add(origLen, exprDict);
         }
-        if(!exprDict.TryGetValue(h, out var exprList)) {
+        if (!exprDict.TryGetValue(semHash, out var exprList)) {
           exprList = new();
-          exprDict.Add(h, exprList);
+          exprDict.Add(semHash, exprList);
         }
-        exprDict[h].Add(expr);
-        return 0.0;
+        exprDict[semHash].Add(expr);
+      }
+
+      private void AddNumUniqueExpressions(Expression expr, ulong semHash, int simplifiedLen) {
+        if (uniqExpressions.TryGetValue(semHash, out var list)) {
+          list.Add(expr);
+        } else {
+          uniqExpressions.Add(semHash, new List<Expression>() { expr });
+
+          if (!numUniqExpressions.ContainsKey(simplifiedLen)) numUniqExpressions.Add(simplifiedLen, 0);
+          numUniqExpressions[simplifiedLen]++;
+        }
+      }
+
+      private void AddNumUniqueExpressionsWithoutConst(Expression expr, ulong semHash, int simplifiedLen) {
+        if (uniqExpressionsWithoutConst.TryGetValue(semHash, out var list)) {
+          list.Add(expr);
+        } else {
+          uniqExpressionsWithoutConst.Add(semHash, new List<Expression>() { expr });
+
+          if (!numUniqExpressionsWithoutConst.ContainsKey(simplifiedLen)) numUniqExpressionsWithoutConst.Add(simplifiedLen, 0);
+          numUniqExpressionsWithoutConst[simplifiedLen]++;
+        }
       }
 
       public double OptimizeAndEvaluateMSE(Expression expr, Data data) {
@@ -229,7 +257,7 @@ namespace HEAL.EquationSearch.Test {
               var hCheck = Semantics.GetHashValue(exprs.First(), out var simplifiedExpression);
               Assert.AreEqual(h, hCheck);
               var numParam = simplifiedExpression.Count(sy => sy is Grammar.ParameterSymbol);
-              writer.WriteLine($"{numParam};"+
+              writer.WriteLine($"{numParam};" +
               $"{exprs.Count};" +
               $"{simplifiedExpression.Length};" +
               $"{simplifiedExpression.ToInfixString(includeParamValues: false)};" +
@@ -241,7 +269,7 @@ namespace HEAL.EquationSearch.Test {
       }
 
       internal void WriteSummary() {
-        System.Console.WriteLine("len\tnumExpr\tnumUniqExpr\tnParam_0\tnParam_1\tnParam_2\tnParam_3\tnParam_4");
+        System.Console.WriteLine("len\tnumExpr\tnumUniqExpr\tnumUniqNonConstExpr\tnParam_0\tnParam_1\tnParam_2\tnParam_3\tnParam_4");
         foreach (var len in numExpressions.Keys.Order()) {
           // TODO: efficiency
           var exprs = uniqExpressions.Values.SelectMany(exprs => exprs.Where(e => e.Length == len)).ToArray();
@@ -252,8 +280,9 @@ namespace HEAL.EquationSearch.Test {
           var nParam4 = exprs.Count(expr => expr.Count(sy => sy is Grammar.ParameterSymbol) == 4);
           var nParam5 = exprs.Count(expr => expr.Count(sy => sy is Grammar.ParameterSymbol) == 5);
 
-          System.Console.WriteLine($"{len}\t{numExpressions[len]}\t{numUniqExpressions[len]}\t{nParam0}\t{nParam1}\t{nParam2}\t{nParam3}\t{nParam4}\t{nParam5}");
+          System.Console.WriteLine($"{len}\t{numExpressions[len]}\t{numUniqExpressions[len]}\t{numUniqExpressionsWithoutConst[len]}\t{nParam0}\t{nParam1}\t{nParam2}\t{nParam3}\t{nParam4}\t{nParam5}");
         }
+
       }
     }
   }
