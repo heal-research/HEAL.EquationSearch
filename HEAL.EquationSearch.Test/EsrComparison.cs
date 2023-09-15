@@ -1,5 +1,9 @@
-﻿using HEAL.Expressions;
+﻿using System.Collections.Concurrent;
+using System.Diagnostics;
+using CommandLine;
+using HEAL.Expressions;
 using TreesearchLib;
+using static alglib;
 
 namespace HEAL.EquationSearch.Test {
 
@@ -14,49 +18,20 @@ namespace HEAL.EquationSearch.Test {
 
 
     [DataTestMethod]
-    [DataRow(30)]
-    public void FullEnumerationUnivariateReducedGrammar(int maxLength) {
+    [DataRow(10, null)]
+    [DataRow(20, null)]
+    [DataRow(30, null)]
+    public void FullEnumerationUnivariateReducedGrammar(int maxLength, int? expectedTotalExpressions) {
       // Generates all expressions and unique expressions using the reduced grammar.
       // The code uses a custom evaluator that collects all expressions, finds semantic duplicates and at the end produces files with all expressions in infix form.
 
-      var inputs = new string[] { "x1" };
+      var inputs = new string[] { "x" };
       var grammar = new Grammar(inputs, maxLength);
       grammar.UseLogExpPowRestrictedRules();
 
 
-      Enumerate(grammar, maxLength, @"c:\temp\allExpressions_1d.txt");
+      Enumerate(grammar, maxLength, @"c:\temp\allExpressions_eqs_logexppow_1d_" + maxLength + ".txt", expectedTotalExpressions);
 
-      // get number of total expressions and uniq expressions
-      // mlr --csv --fs ";" --from allexpressions_1d.txt stats1 -a sum,count -f numExprs -g minLen then sort -n minLen
-      /*
-        minLen;numExprs_sum;numExprs_count
-        1;1;1
-        5;7;1
-        7;4;1
-        8;1;1
-        9;5;2
-        10;5;3
-        11;81;4
-        12;36;7
-        13;100;8
-        14;147;16
-        15;187;18
-        16;397;35
-        17;435;37
-        18;1135;75
-        19;1198;82
-        20;2840;157
-        21;3382;174
-        22;6887;326
-        23;8054;380
-        24;15728;668
-        25;22333;817
-        26;35460;1362
-        27;52557;1759
-        28;84787;2772
-        29;108327;3744
-        30;65592;5640
-       */
     }
 
     [DataTestMethod]
@@ -65,20 +40,16 @@ namespace HEAL.EquationSearch.Test {
       // Generates all expressions and unique expressions using the reduced grammar.
       // The code uses a custom evaluator that collects all expressions, finds semantic duplicates and at the end produces files with all expressions in infix form.
 
-      var inputs = new string[] { "x1", "x2" };
+      var inputs = new string[] { "x0", "x1" };
       var grammar = new Grammar(inputs, maxLength);
       grammar.UseLogExpPowRestrictedRules();
 
-      Enumerate(grammar, maxLength, @"c:\temp\allExpressions_2d.txt");
-
-      // get number of total expressions and uniq expressions
-      // mlr --csv --fs ";" --from allexpressions_2d.txt stats1 -a sum,count -f numExprs -g minLen then sort -n minLen
+      Enumerate(grammar, maxLength, @"c:\temp\allExpressions_eqs_logexppow_2d_" + maxLength + ".txt");
 
     }
 
 
     [DataTestMethod]
-
     [DataRow(4, 88)]
     [DataRow(5, 610)]
     [DataRow(6, 2812)]
@@ -87,7 +58,7 @@ namespace HEAL.EquationSearch.Test {
     [DataRow(9, 692098)]
     [DataRow(10, 4103220)]
     public void FullEnumerationUnivariateESRCosmicGrammar(int maxLength, int? expectedTotalExpressions) {
-      var inputs = new string[] { "x1" };
+      var inputs = new string[] { "x" };
       var grammar = new Grammar(inputs, maxLength);
       grammar.UseEsrCoreMaths();
 
@@ -134,11 +105,95 @@ namespace HEAL.EquationSearch.Test {
       }
 
       if (expectedTotalExpressions.HasValue) {
-        Assert.AreEqual(expectedTotalExpressions.Value, evaluator.numExpressions.Values.Sum());
+        Assert.AreEqual(expectedTotalExpressions.Value, evaluator.EvaluatedExpressions);
       }
-      if (expectedUniqExpressions.HasValue) {
-        Assert.AreEqual(expectedUniqExpressions.Value, evaluator.numUniqExpressions.Values.Sum());
+    }
+
+    [DataTestMethod]
+    [DataRow(@"c:\temp\allExpressions_eqs_logexppow_1d_10.txt", new[] { "x" })]
+    [DataRow(@"c:\temp\allExpressions_eqs_logexppow_1d_30.txt", new[] { "x" })]
+    public void OptimizeAndEvaluateAll(string fileName, string[] variableNames) {
+      // the files must be produced with Enumerate()
+
+      var uniqExprStr = new HashSet<string>();
+      using (var reader = new StreamReader(fileName)) {
+        reader.ReadLine(); // skip variable names
+
+        var line = reader.ReadLine();
+        while (line != null) {
+          var toks = line.Split(";");
+          // h;len;nParam;expr;simplified;simplifiedLen;noConstHash;simplifiedNoConst;simplifiedNoConstLen
+          var noConstExpr = toks[7];
+          uniqExprStr.Add(noConstExpr);
+          line = reader.ReadLine();
+        }
       }
+
+
+      var options = new HEAL.EquationSearch.Console.Program.RunOptions();
+      options.Dataset = "RAR_sigma.csv";
+      options.Target = "gobs";
+      options.TrainingRange = "0:2695";
+      options.NoiseSigma = "";
+      options.Seed = 1234;
+      GetRARData(options, out var inputVars, out var trainX, out var trainY, out var _, out var e_log_gobs, out var e_log_gbar);
+
+      var grammar = new Grammar(inputVars, maxLen: int.MaxValue);
+      // maxLen and grammar rules do not matter here since we are not generating expressions from the grammar
+
+
+      var likelihood = new RARLikelihood(trainX, trainY, modelExpr: null, e_log_gobs, e_log_gbar);
+      var evaluator = new Evaluator(likelihood);
+      var data = new Data(inputVars, trainX, trainY, null);
+
+      var varSy = System.Linq.Expressions.Expression.Parameter(typeof(double[]), "x");
+      var paramSy = System.Linq.Expressions.Expression.Parameter(typeof(double[]), "p");
+      using (var writer = new StreamWriter(fileName.Replace(".txt", "_optimized.txt"), append: false)) {
+        Parallel.ForEach(uniqExprStr.OrderBy(str => str.Length), exprStr => {
+
+          // parse the expression with additional variable p
+          var parser = new HEAL.Expressions.Parser.ExprParser(exprStr, variableNames.Concat(new string[] { "p" }).ToArray(), varSy, paramSy);
+          var expr = parser.Parse();
+          // replace all usages of p with parameter value 0.01
+          var replaceVarWithParVisitor = new ReplaceVariableWithParameterVisitor(paramSy, new double[0], varSy, 1, 0.01);
+          expr = (System.Linq.Expressions.Expression<Expr.ParametricFunction>)replaceVarWithParVisitor.Visit(expr);
+          var newParamValues = replaceVarWithParVisitor.NewThetaValues.ToArray();
+
+          // System.Console.WriteLine(Expr.ToString(expr, variableNames, newParamValues));
+
+          var postfixExpr = HEALExpressionBridge.ConvertToPostfixExpression(expr, newParamValues, grammar);
+
+          var sw = new Stopwatch();
+          sw.Start();
+          var dl = evaluator.OptimizeAndEvaluateDL(postfixExpr, data); // TODO: remove conversion to postfix expression and back to expression tree
+          sw.Stop();
+
+          var len = postfixExpr.Length;
+          var nParam = postfixExpr.Count(sy => sy is Grammar.ParameterSymbol);
+          lock (writer) {
+            writer.WriteLine($"{len};{nParam};{exprStr};{postfixExpr.ToInfixString()};{dl};{sw.ElapsedMilliseconds}");
+            writer.Flush();
+          }
+        });
+      }
+
+
+    }
+
+    private static void GetRARData(Console.Program.RunOptions options, out string[] inputs, out double[,] trainX, out double[] trainY, out double[] trainNoiseSigma, out double[] e_log_gobs, out double[] e_log_gbar) {
+      // https://arxiv.org/abs/2301.04368
+      // File RAR.dat recieved from Harry
+
+
+      // extract gbar as x
+      inputs = new string[] { "gbar" };
+      HEAL.EquationSearch.Console.Program.PrepareData(options, ref inputs, out _, out _, out _, out _, out _, out _, out _, out trainX, out trainY, out trainNoiseSigma);
+      // extract error variables
+      string[] errors = new string[] { "e_log_gobs", "e_log_gbar" };
+      HEAL.EquationSearch.Console.Program.PrepareData(options, ref errors, out _, out _, out _, out _, out _, out _, out _, out var trainErrorX, out _, out _);
+
+      e_log_gobs = Enumerable.Range(0, trainErrorX.GetLength(0)).Select(i => trainErrorX[i, 0]).ToArray();
+      e_log_gbar = Enumerable.Range(0, trainErrorX.GetLength(0)).Select(i => trainErrorX[i, 1]).ToArray();
     }
 
     private class CollectExpressionsEvaluator : IEvaluator {
@@ -147,15 +202,9 @@ namespace HEAL.EquationSearch.Test {
 
       public long OptimizedExpressions => throw new NotImplementedException();
 
-      public long EvaluatedExpressions => uniqExpressions.Values.Sum(l => l.Count);
+      public long EvaluatedExpressions => allExpressions.Count;
 
-      public Dictionary<ulong, List<Expression>> uniqExpressions = new();
-      public Dictionary<ulong, List<Expression>> uniqExpressionsWithoutConst = new();
-
-      public Dictionary<int, Dictionary<ulong, List<Expression>>> exprByLength = new();
-      public Dictionary<int, int> numExpressions = new();
-      public Dictionary<int, int> numUniqExpressions = new();
-      public Dictionary<int, int> numUniqExpressionsWithoutConst = new();
+      public List<Expression> allExpressions = new();
 
       public double[] Evaluate(Expression expression, Data data) {
         throw new NotImplementedException();
@@ -164,125 +213,62 @@ namespace HEAL.EquationSearch.Test {
       public double OptimizeAndEvaluateDL(Expression expr, Data data) {
         if (!expr.IsSentence) throw new NotSupportedException();
 
-        var semHash = Semantics.GetHashValue(expr, out var simplifiedExpression);
-        var simplifiedLen = simplifiedExpression.Length;
+        allExpressions.Add(expr);
 
-        AddNumUniqueExpressions(expr, semHash, simplifiedLen);
-        AddExpressionByOriginalLength(expr, semHash);
-        CountExpressionBySimplifiedLen(simplifiedLen);
-
-        // replace all constants by parameters and simplify again (assuming we can use integer-snap for parameters)
-        var newExpr = new Expression(simplifiedExpression.Grammar, simplifiedExpression.Select(sy => sy is Grammar.ConstantSymbol constSy ? new Grammar.ParameterSymbol(constSy.Value) : sy).ToArray());
-        var newSemHash = Semantics.GetHashValue(newExpr, out var newSimplifiedExpression);
-        AddNumUniqueExpressionsWithoutConst(expr, newSemHash, newSimplifiedExpression.Length);
         return 0.0;
-      }
-
-      private void CountExpressionBySimplifiedLen(int simplifiedLen) {
-        if (!numExpressions.ContainsKey(simplifiedLen)) numExpressions.Add(simplifiedLen, 0);
-
-        numExpressions[simplifiedLen]++;
-      }
-
-      // expressions by original length group.
-      private void AddExpressionByOriginalLength(Expression expr, ulong semHash) {
-        var origLen = expr.Length;
-        if (!exprByLength.TryGetValue(origLen, out var exprDict)) {
-          exprDict = new();
-          exprByLength.Add(origLen, exprDict);
-        }
-        if (!exprDict.TryGetValue(semHash, out var exprList)) {
-          exprList = new();
-          exprDict.Add(semHash, exprList);
-        }
-        exprDict[semHash].Add(expr);
-      }
-
-      private void AddNumUniqueExpressions(Expression expr, ulong semHash, int simplifiedLen) {
-        if (uniqExpressions.TryGetValue(semHash, out var list)) {
-          list.Add(expr);
-        } else {
-          uniqExpressions.Add(semHash, new List<Expression>() { expr });
-
-          if (!numUniqExpressions.ContainsKey(simplifiedLen)) numUniqExpressions.Add(simplifiedLen, 0);
-          numUniqExpressions[simplifiedLen]++;
-        }
-      }
-
-      private void AddNumUniqueExpressionsWithoutConst(Expression expr, ulong semHash, int simplifiedLen) {
-        if (uniqExpressionsWithoutConst.TryGetValue(semHash, out var list)) {
-          list.Add(expr);
-        } else {
-          uniqExpressionsWithoutConst.Add(semHash, new List<Expression>() { expr });
-
-          if (!numUniqExpressionsWithoutConst.ContainsKey(simplifiedLen)) numUniqExpressionsWithoutConst.Add(simplifiedLen, 0);
-          numUniqExpressionsWithoutConst[simplifiedLen]++;
-        }
       }
 
       public double OptimizeAndEvaluateMSE(Expression expr, Data data) {
         throw new NotImplementedException();
       }
 
-      internal void WriteAllExpressions(string filename) {
-        using (var writer = new StreamWriter(filename.Replace(".txt", "_grouped.txt"), false)) {
-          writer.WriteLine("hash;minLen;numExprs;simplifiedExpr;simplifiedExpr (postfix);expressions");
-          foreach (var kvp in uniqExpressions) {
-            var hCheck = Semantics.GetHashValue(kvp.Value.First(), out var simplifiedExpression);
-            Assert.AreEqual(kvp.Key, hCheck);
-            writer.WriteLine($"{kvp.Key};{simplifiedExpression.Length};" +
-              $"{kvp.Value.Count};" +
-              $"{simplifiedExpression.ToInfixString(includeParamValues: false)};" +
-              $"{simplifiedExpression.ToString(includeParamValues: false)};" +
-              $"{string.Join("\t", kvp.Value.Select(expr => expr.ToInfixString(includeParamValues: false)))}");
-          }
-        }
-        using (var writer = new StreamWriter(filename, false)) {
-          writer.WriteLine("len;nParam;expr");
-          foreach (var group in uniqExpressions.Values.SelectMany(e => e).GroupBy(e => e.Length)) {
-            var len = group.Min(e => e.Length);
-            foreach (var expr in group) {
-              var numParam = expr.Count(sy => sy is Grammar.ParameterSymbol);
-              writer.WriteLine($"{len};{numParam};{expr.ToInfixString(includeParamValues: false)}");
-            }
-          }
-        }
-        foreach (var kvp in exprByLength) {
-          var len = kvp.Key;
-          using (var writer = new StreamWriter(filename.Replace(".txt", $"_len_{len}.txt"), false)) {
-            writer.WriteLine("nParam;count;simplifiedLen;simplifiedExpr;exprs");
-            foreach (var hashExprs in kvp.Value) {
-              var h = hashExprs.Key;
-              var exprs = hashExprs.Value;
-              var hCheck = Semantics.GetHashValue(exprs.First(), out var simplifiedExpression);
-              Assert.AreEqual(h, hCheck);
-              var numParam = simplifiedExpression.Count(sy => sy is Grammar.ParameterSymbol);
-              writer.WriteLine($"{numParam};" +
-              $"{exprs.Count};" +
-              $"{simplifiedExpression.Length};" +
-              $"{simplifiedExpression.ToInfixString(includeParamValues: false)};" +
-              $"{string.Join("\t", exprs.Select(expr => expr.ToInfixString(includeParamValues: false)))}");
-            }
-          }
 
+
+      internal void WriteAllExpressions(string filename) {
+        using (var writer = new StreamWriter(filename, false)) {
+          writer.WriteLine("h;len;nParam;expr;simplified;simplifiedLen;noConstHash;simplifiedNoConst;simplifiedNoConstLen");
+          foreach (var group in allExpressions.GroupBy(e => e.Length)) {
+            var len = group.Key;
+            Parallel.ForEach(group, (expr) => {
+              var numParam = expr.Count(sy => sy is Grammar.ParameterSymbol);
+              var semHash = Semantics.GetHashValue(expr, out var simplifiedExpression);
+              var simplifiedLen = simplifiedExpression.Length;
+
+              var noConstExpr = new Expression(simplifiedExpression.Grammar, simplifiedExpression.Select(sy => sy is Grammar.ConstantSymbol constSy ? new Grammar.ParameterSymbol(constSy.Value) : sy).ToArray());
+              var noConstSemHash = Semantics.GetHashValue(noConstExpr, out var noConstSimplifiedExpr);
+
+              lock (writer)
+                writer.WriteLine($"{semHash};{len};{numParam};{expr.ToInfixString(includeParamValues: false)};" +
+                  $"{simplifiedExpression.ToInfixString(includeParamValues: false)};{simplifiedExpression.Length};" +
+                  $"{noConstSemHash};{noConstSimplifiedExpr.ToInfixString(includeParamValues: false)};{noConstSimplifiedExpr.Length}");
+            });
+          }
         }
       }
 
       internal void WriteSummary() {
-        System.Console.WriteLine("len\tnumExpr\tnumUniqExpr\tnumUniqNonConstExpr\tnParam_0\tnParam_1\tnParam_2\tnParam_3\tnParam_4");
-        foreach (var len in numExpressions.Keys.Order()) {
-          // TODO: efficiency
-          var exprs = uniqExpressions.Values.SelectMany(exprs => exprs.Where(e => e.Length == len)).ToArray();
-          var nParam0 = exprs.Count(expr => expr.Count(sy => sy is Grammar.ParameterSymbol) == 0);
-          var nParam1 = exprs.Count(expr => expr.Count(sy => sy is Grammar.ParameterSymbol) == 1);
-          var nParam2 = exprs.Count(expr => expr.Count(sy => sy is Grammar.ParameterSymbol) == 2);
-          var nParam3 = exprs.Count(expr => expr.Count(sy => sy is Grammar.ParameterSymbol) == 3);
-          var nParam4 = exprs.Count(expr => expr.Count(sy => sy is Grammar.ParameterSymbol) == 4);
-          var nParam5 = exprs.Count(expr => expr.Count(sy => sy is Grammar.ParameterSymbol) == 5);
-
-          System.Console.WriteLine($"{len}\t{numExpressions[len]}\t{numUniqExpressions[len]}\t{numUniqExpressionsWithoutConst[len]}\t{nParam0}\t{nParam1}\t{nParam2}\t{nParam3}\t{nParam4}\t{nParam5}");
+        System.Console.WriteLine("len\tnumExpr\tnumUniqExpr\tnParam_0\tnParam_1\tnParam_2\tnParam_3\tnParam_4");
+        foreach (var group in allExpressions.GroupBy(e => e.Length).OrderBy(g => g.Key)) {
+          var len = group.Key;
+          var semHashCount = new Dictionary<ulong, int>();
+          var paramCount = new Dictionary<int, int>();
+          foreach (var expr in group) {
+            var numParam = expr.Count(sy => sy is Grammar.ParameterSymbol);
+            var semHash = Semantics.GetHashValue(expr, out var simplifiedExpression);
+            if (semHashCount.TryGetValue(semHash, out var curCount)) {
+              semHashCount[semHash] = curCount + 1;
+            } else {
+              semHashCount.Add(semHash, 1);
+            }
+            if (paramCount.TryGetValue(numParam, out curCount)) {
+              paramCount[numParam] = curCount + 1;
+            } else {
+              paramCount.Add(numParam, 1);
+            }
+          }
+          var maxParam = paramCount.Keys.Max();
+          System.Console.WriteLine($"{len}\t{semHashCount.Values.Sum()}\t{semHashCount.Count}\t{string.Join("\t", Enumerable.Range(0, maxParam).Select(i => paramCount.ContainsKey(i) ? paramCount[i].ToString() : "0"))}");
         }
-
       }
     }
   }
