@@ -149,6 +149,7 @@ namespace HEAL.EquationSearch.Test {
       var varSy = System.Linq.Expressions.Expression.Parameter(typeof(double[]), "x");
       var paramSy = System.Linq.Expressions.Expression.Parameter(typeof(double[]), "p");
       using (var writer = new StreamWriter(fileName.Replace(".txt", "_optimized.txt"), append: false)) {
+        writer.WriteLine($"len;nParam;expr;postfixExpr;DL;ms;nll;restarts;restartNumBest");
         Parallel.ForEach(uniqExprStr.OrderBy(str => str.Length), exprStr => {
 
           // parse the expression with additional variable p
@@ -165,13 +166,13 @@ namespace HEAL.EquationSearch.Test {
 
           var sw = new Stopwatch();
           sw.Start();
-          var dl = evaluator.OptimizeAndEvaluateDL(postfixExpr, data); // TODO: remove conversion to postfix expression and back to expression tree
+          var dl = evaluator.OptimizeAndEvaluateDL(postfixExpr, data, out var restarts); // TODO: remove conversion to postfix expression and back to expression tree
           sw.Stop();
 
           var len = postfixExpr.Length;
           var nParam = postfixExpr.Count(sy => sy is Grammar.ParameterSymbol);
           lock (writer) {
-            writer.WriteLine($"{len};{nParam};{exprStr};{postfixExpr.ToInfixString()};{dl};{sw.ElapsedMilliseconds}");
+            writer.WriteLine($"{len};{nParam};{exprStr};{postfixExpr.ToInfixString()};{dl};{sw.ElapsedMilliseconds};{restarts.BestLoss};{restarts.Iterations};{restarts.NumBest}");
             writer.Flush();
           }
         });

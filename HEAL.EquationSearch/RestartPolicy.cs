@@ -1,6 +1,6 @@
 ﻿namespace HEAL.EquationSearch {
   // controls random restarts for parameter optimization
-  internal class RestartPolicy {
+  public class RestartPolicy {
     public int NumParam { get; private set; }
     public int MaxIterations => NumParam == 0 ? 0 : (int)(70.71 * Math.Exp(0.381 * NumParam)); // 0, 104, 152, 222, 325 ...
 

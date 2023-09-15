@@ -23,7 +23,6 @@ namespace HEAL.EquationSearch.Test {
     private readonly int e_log_gobs_idx;
 
     private readonly static MethodInfo log = typeof(Math).GetMethod("Log", new Type[] { typeof(double) });
-    private readonly static MethodInfo abs = typeof(Math).GetMethod("Abs", new Type[] { typeof(double) });
     private readonly static MethodInfo pow = typeof(Math).GetMethod("Pow", new Type[] { typeof(double), typeof(double) });
 
 
@@ -36,11 +35,6 @@ namespace HEAL.EquationSearch.Test {
 
     private double[] nllArr; // buffer for observation likelihoods
     private double[,] jacP; // buffer for jacobian
-    // private double[] f;
-    // private Expr.ParametricVectorFunction likelihoodFunc;
-    // private Expr.ParametricJacobianFunction likelihoodFuncAndJac;
-    // private Expr.ParametricJacobianFunction bestLikelihoodFunc;
-    // private Expr.ParametricJacobianFunction[] likelihoodGradFunc;
 
     public override Expression<Expr.ParametricFunction> ModelExpr {
       get => origExpr;
@@ -60,7 +54,6 @@ namespace HEAL.EquationSearch.Test {
           this.nllArr = new double[y.Length];
           this.jacP = new double[y.Length, numParam];
           // this.f = new double[y.Length];
-
           // wrap log(f(x))
           value = value.Update(LinqExpr.Multiply(
             // LinqExpr.Call(log, LinqExpr.Call(abs, value.Body)),
@@ -101,16 +94,12 @@ namespace HEAL.EquationSearch.Test {
 
           likelihoodInterpreter = new ExpressionInterpreter(likelihoodExpr, extendedXCol, y.Length);
           bestLikelihoodInterpreter = new ExpressionInterpreter(baseLikelihoodExpr, extendedXCol, y.Length);
-          // likelihoodFunc = Expr.Broadcast(likelihoodExpr).Compile();
-          // likelihoodFuncAndJac = Expr.Jacobian(likelihoodExpr, numParam).Compile();
-          // bestLikelihoodFunc = Expr.Jacobian(baseLikelihoodExpr, numParam).Compile();
+
 
           likelihoodGradInterpreter = new ExpressionInterpreter[numParam];
-          // likelihoodGradFunc = new Expr.ParametricJacobianFunction[numParam];
           for (int i = 0; i < numParam; i++) {
             var dLikeExpr = Expr.Derive(likelihoodExpr, i);
             likelihoodGradInterpreter[i] = new ExpressionInterpreter(dLikeExpr, extendedXCol, y.Length);
-            // likelihoodGradFunc[i] = Expr.Jacobian(dLikeExpr, numParam).Compile();
 
             // for debugging
             System.Console.Error.WriteLine($"df/dp_{i} number of nodes: {Expr.NumberOfNodes(dLikeExpr)}");

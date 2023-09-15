@@ -43,11 +43,11 @@ namespace HEAL.EquationSearch.Test {
       var yHess = new double[n, m, n]; // parameters x rows x parameters
       var yHessJ = new double[m, n]; // buffer
 
-      interpreter.EvaluateWithJac(p, yPred, null, yJac);
+      Interpreter.EvaluateWithJac(p, yPred, null, yJac);
 
       // evaluate hessian
       for (int j = 0; j < p.Length; j++) {
-        gradInterpreter[j].EvaluateWithJac(p, tmp, null, yHessJ);
+        GradInterpreter[j].EvaluateWithJac(p, tmp, null, yHessJ);
         Buffer.BlockCopy(yHessJ, 0, yHess, j * m * n * sizeof(double), m * n * sizeof(double));
         Array.Clear(yHessJ, 0, yHessJ.Length);
       }
@@ -89,10 +89,10 @@ namespace HEAL.EquationSearch.Test {
       nll = BestNegLogLikelihood(p);
 
       if (nll_grad == null) {
-        interpreter.Evaluate(p, yPred);
+        Interpreter.Evaluate(p, yPred);
       } else {
         yJac = new double[m, n];
-        interpreter.EvaluateWithJac(p, yPred, null, yJac);
+        Interpreter.EvaluateWithJac(p, yPred, null, yJac);
         Array.Clear(nll_grad, 0, n);
       }
 
