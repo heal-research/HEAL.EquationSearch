@@ -11,8 +11,8 @@ namespace HEAL.EquationSearch.Test {
 
 
     [DataTestMethod]
-    [DataRow(10)]
-    public void BeamSearchReducedGrammar(int maxLength) {
+    [DataRow(8)]
+    public void BreadthFirstSearchReducedGrammar(int maxLength) {
       var options = new HEAL.EquationSearch.Console.Program.RunOptions();
       options.Dataset = "bankruptcy.csv";
       options.Target = "Bankrupt";
@@ -25,8 +25,13 @@ namespace HEAL.EquationSearch.Test {
       grammar.UseLogExpPowRestrictedRules();
 
       var alg = new Algorithm();
-      var evaluator = new Evaluator(new BernoulliLikelihood(trainX, trainY, modelExpr: null));
+      var likelihood = new BernoulliLikelihood(trainX, trainY, modelExpr: null);
+      var evaluator = new Evaluator(likelihood);
       alg.Fit(trainX, trainY, noiseSigma: 1.0, inputs, CancellationToken.None, grammar: grammar, evaluator: evaluator, maxLength: maxLength, randSeed: 1234, algorithmType: AlgorithmTypeEnum.BreadthFirst);
+      
+      likelihood.ModelExpr = HEALExpressionBridge.ConvertToExpressionTree(alg.BestExpression, alg.VariableNames, out var bestParam);
+      System.Console.WriteLine($"Parameters {string.Join(" ", bestParam.Select(p => p.ToString("e4")))}");
+      System.Console.WriteLine($"{alg.BestExpression.ToInfixString()} DL: {alg.BestDescriptionLength:f2} logL {likelihood.NegLogLikelihood(bestParam):f2}");
       // Assert.AreEqual(expectedDL, alg.BestDescriptionLength.Value, Math.Abs(expectedDL * 1e-4));
     }
 
