@@ -112,6 +112,7 @@ namespace HEAL.EquationSearch.Test {
     [DataTestMethod]
     [DataRow(@"c:\temp\allExpressions_eqs_logexppow_1d_10.txt", new[] { "x" })]
     [DataRow(@"c:\temp\allExpressions_eqs_logexppow_1d_30.txt", new[] { "x" })]
+    [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_10.txt", new[] { "x" })]
     public void OptimizeAndEvaluateAll(string fileName, string[] variableNames) {
       // the files must be produced with Enumerate()
 
@@ -123,7 +124,7 @@ namespace HEAL.EquationSearch.Test {
         while (line != null) {
           var toks = line.Split(";");
           // h;len;nParam;expr;simplified;simplifiedLen;noConstHash;simplifiedNoConst;simplifiedNoConstLen
-          var noConstExpr = toks[7];
+          var noConstExpr = toks[4];
           uniqExprStr.Add(noConstExpr);
           line = reader.ReadLine();
         }
@@ -150,30 +151,36 @@ namespace HEAL.EquationSearch.Test {
       var paramSy = System.Linq.Expressions.Expression.Parameter(typeof(double[]), "p");
       using (var writer = new StreamWriter(fileName.Replace(".txt", "_optimized.txt"), append: false)) {
         writer.WriteLine($"len;nParam;expr;postfixExpr;DL;ms;nll;restarts;restartNumBest");
-        Parallel.ForEach(uniqExprStr.OrderBy(str => str.Length), exprStr => {
+        Parallel.ForEach(uniqExprStr.OrderBy(str => str.Length), new ParallelOptions() { MaxDegreeOfParallelism = 12 }, exprStr => {
+          if (!exprStr.Contains("Infinity") && !exprStr.Contains("NaN")) {
+            // parse the expression with additional variable p
+            lock (writer) {
+              writer.WriteLine($"{exprStr}");
+            }
+            var parser = new HEAL.Expressions.Parser.ExprParser(exprStr, variableNames.Concat(new string[] { "p" }).ToArray(), varSy, paramSy);
+            var expr = parser.Parse();
+            // replace all parameters with constants (numbers in the exprStr are constants)
+            expr = Expr.ReplaceParameterWithValues<Expr.ParametricFunction>(expr, expr.Parameters[0], parser.ParameterValues);
+            // replace all usages of p with parameter value 0.01 (variable p in exprStr are parameters)
+            var replaceVarWithParVisitor = new ReplaceVariableWithParameterVisitor(paramSy, new double[0], varSy, 1, 0.01);
+            expr = (System.Linq.Expressions.Expression<Expr.ParametricFunction>)replaceVarWithParVisitor.Visit(expr);
+            var newParamValues = replaceVarWithParVisitor.NewThetaValues.ToArray();
 
-          // parse the expression with additional variable p
-          var parser = new HEAL.Expressions.Parser.ExprParser(exprStr, variableNames.Concat(new string[] { "p" }).ToArray(), varSy, paramSy);
-          var expr = parser.Parse();
-          // replace all usages of p with parameter value 0.01
-          var replaceVarWithParVisitor = new ReplaceVariableWithParameterVisitor(paramSy, new double[0], varSy, 1, 0.01);
-          expr = (System.Linq.Expressions.Expression<Expr.ParametricFunction>)replaceVarWithParVisitor.Visit(expr);
-          var newParamValues = replaceVarWithParVisitor.NewThetaValues.ToArray();
+            // System.Console.WriteLine(Expr.ToString(expr, variableNames, newParamValues));
 
-          // System.Console.WriteLine(Expr.ToString(expr, variableNames, newParamValues));
+            var postfixExpr = HEALExpressionBridge.ConvertToPostfixExpression(expr, newParamValues, grammar);
 
-          var postfixExpr = HEALExpressionBridge.ConvertToPostfixExpression(expr, newParamValues, grammar);
+            var sw = new Stopwatch();
+            sw.Start();
+            var dl = evaluator.OptimizeAndEvaluateDL(postfixExpr, data, out var restarts); // TODO: remove conversion to postfix expression and back to expression tree
+            sw.Stop();
 
-          var sw = new Stopwatch();
-          sw.Start();
-          var dl = evaluator.OptimizeAndEvaluateDL(postfixExpr, data, out var restarts); // TODO: remove conversion to postfix expression and back to expression tree
-          sw.Stop();
-
-          var len = postfixExpr.Length;
-          var nParam = postfixExpr.Count(sy => sy is Grammar.ParameterSymbol);
-          lock (writer) {
-            writer.WriteLine($"{len};{nParam};{exprStr};{postfixExpr.ToInfixString()};{dl};{sw.ElapsedMilliseconds};{restarts.BestLoss};{restarts.Iterations};{restarts.NumBest}");
-            writer.Flush();
+            var len = postfixExpr.Length;
+            var nParam = postfixExpr.Count(sy => sy is Grammar.ParameterSymbol);
+            lock (writer) {
+              writer.WriteLine($"{len};{nParam};{exprStr};{postfixExpr.ToInfixString()};{dl};{sw.ElapsedMilliseconds};{restarts.BestLoss};{restarts.Iterations};{restarts.NumBest}");
+              writer.Flush();
+            }
           }
         });
       }

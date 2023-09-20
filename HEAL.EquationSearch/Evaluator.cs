@@ -62,19 +62,18 @@ namespace HEAL.EquationSearch {
     }
     // This method always optimizes parameters in expr but does not use caching to make sure all parameters of the evaluated expressions are set correctly.
     // Use this method to optimize the best solutions (found via MSE)
-    public double OptimizeAndEvaluateDL(Expression expr, Data data, out RestartPolicy restarts) {
+    public double OptimizeAndEvaluateDL(Expression expr, Data data, out RestartPolicy restartPolicy) {
       Interlocked.Increment(ref evaluatedExpressions);
       var model = HEALExpressionBridge.ConvertToExpressionTree(expr, data.VarNames, out var parameterValues);
       var modelLikelihood = this.likelihood.Clone();
       modelLikelihood.ModelExpr = model;
       bool funcOk = FunctionOk(parameterValues, modelLikelihood);
-      restarts = null;
+      restartPolicy = new RestartPolicy(parameterValues.Length);
       if (!funcOk) return double.MaxValue; // all one vectors produced NaN result
 
       var nlr = new NonlinearRegression.NonlinearRegression();
 
       int numRestarts = -1;
-      var restartPolicy = new RestartPolicy(parameterValues.Length);
       do {
         numRestarts++;
         if (!double.IsNaN(modelLikelihood.NegLogLikelihood(parameterValues))) {
@@ -98,7 +97,6 @@ namespace HEAL.EquationSearch {
       var bestParam = restartPolicy.BestParameters;
 
       HEALExpressionBridge.UpdateParameters(expr, bestParam);
-      restarts = restartPolicy;
       try {
         var dl = ModelSelection.DL(bestParam, modelLikelihood);
         // Console.WriteLine($"len: {expr.Length} DL: {dl:f2} nll: {modelLikelihood.NegLogLikelihood(bestParam):f2} {string.Join(" ", bestParam.Select(pi => pi.ToString("e4")))} starts {restartPolicy.Iterations} numBest {restartPolicy.NumBest} {expr.ToInfixString()} ");
