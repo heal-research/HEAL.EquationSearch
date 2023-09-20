@@ -160,12 +160,13 @@ namespace HEAL.EquationSearch.Test {
     public override double[,] FisherInformation(double[] p) {
       var m = y.Length;
       var n = p.Length;
+      var tmp = new double[m];
 
       // FIM is the negative of the second derivative (Hessian) of the log-likelihood
       // -> FIM is the Hessian of the negative log-likelihood
       var hessian = new double[n, n];
       for (int j = 0; j < n; j++) {
-        likelihoodGradInterpreter[j].EvaluateWithJac(p, null, jacP);
+        likelihoodGradInterpreter[j].EvaluateWithJac(p, tmp, null, jacP);
         // likelihoodGradFunc[j](p, extendedX, f, jacP);
         for (int i = 0; i < m; i++) {
           for (int k = 0; k < n; k++) {
@@ -179,7 +180,9 @@ namespace HEAL.EquationSearch.Test {
 
     // for the calculation of deviance
     public override double BestNegLogLikelihood(double[] p) {
-      return bestLikelihoodInterpreter.Evaluate(p).Sum();
+      var yPred = new double[NumberOfObservations];
+      bestLikelihoodInterpreter.Evaluate(p, yPred);
+      return yPred.Sum();
       // var f = new double[y.Length];
       // bestLikelihoodFunc(p, extendedX, f, null);
       // return f.Sum();
@@ -194,11 +197,12 @@ namespace HEAL.EquationSearch.Test {
     public override void NegLogLikelihoodGradient(double[] p, out double nll, double[]? nll_grad) {
       var m = y.Length;
       var n = p.Length;
+      var nllArr = new double[m];
 
       if (nll_grad != null) {
         Array.Clear(nll_grad);
 
-        var nllArr = NegLogLikelihoodJacobian(p, jacP);
+        NegLogLikelihoodJacobian(p, nllArr, jacP);
         nll = nllArr.Sum();
         for (int i = 0; i < m; i++) {
           for (int j = 0; j < n; j++) {
@@ -206,7 +210,8 @@ namespace HEAL.EquationSearch.Test {
           }
         }
       } else {
-        nll = NegLogLikelihoodJacobian(p, null).Sum();
+        NegLogLikelihoodJacobian(p, nllArr, null);
+        nll = nllArr.Sum();
       }
 
       // for debugging
@@ -214,8 +219,8 @@ namespace HEAL.EquationSearch.Test {
       //   System.IO.File.AppendAllLines(@"c:\temp\convergence_log.txt", new string[] { $"{nEvals++},{nll},{string.Join(",", p.Select(pi => pi.ToString()))},{(nll_grad != null ? string.Join(",", nll_grad.Select(xi => xi.ToString())) : "")}" });
     }
 
-    public double[] NegLogLikelihoodJacobian(double[] p, double[,]? jac) {
-      return likelihoodInterpreter.EvaluateWithJac(p, null, jac);
+    public void NegLogLikelihoodJacobian(double[] p, double[] yPred, double[,]? jac) {
+      likelihoodInterpreter.EvaluateWithJac(p, yPred, null, jac);
       // var f = new double[y.Length];
       // if (jac != null) {
       //   likelihoodFuncAndJac(p, extendedX, f, jac);
