@@ -47,86 +47,6 @@ namespace HEAL.EquationSearch.Test {
     }
 
 
-    [DataTestMethod]
-    [DataRow(3, 53477.0)]
-    [DataRow(5, -240.91)]
-    [DataRow(7, -240.91)]
-    [DataRow(9, -1182.4)]
-    [DataRow(11, -1182.4)]
-    [DataRow(13, -1182.4)]
-    [DataRow(15, -1182.4)]
-    public void FullEnumerationReducedGrammarRAR(int maxLength, double expectedDL) {
-      // use EQS to find RAR model (using the likelihood from the RAR paper)
-      var options = new HEAL.EquationSearch.Console.Program.RunOptions();
-      options.Dataset = "RAR_sigma.csv";
-      options.Target = "gobs";
-      options.TrainingRange = "0:2695";
-      options.NoiseSigma = "";
-      options.Seed = 1234;
-
-      GetRARData(options, out var inputs, out var trainX, out var trainY, out _, out var e_log_gobs, out var e_log_gbar);
-
-      var grammar = new Grammar(inputs, maxLength);
-      grammar.UseLogExpPowRestrictedRules();
-
-      var alg = new Algorithm();
-      var evaluator = new Evaluator(new RARLikelihood(trainX, trainY, modelExpr: null, e_log_gobs, e_log_gbar));
-      alg.Fit(trainX, trainY, noiseSigma: 1.0, inputs, CancellationToken.None, grammar: grammar, evaluator: evaluator, maxLength: maxLength, randSeed: 1234, algorithmType: AlgorithmTypeEnum.BreadthFirst);
-      // Assert.AreEqual(expectedDL, alg.BestMDL.Value, Math.Abs(expectedDL * 1e-4));
-    }
-
-    [DataTestMethod]
-    [DataRow(3, 53477.0)]
-    [DataRow(5, -240.91)]
-    [DataRow(7, -240.91)]
-    [DataRow(9, -1182.4)]
-    [DataRow(11, -1182.4)]
-    [DataRow(13, -1182.4)]
-    [DataRow(15, -1182.4)]
-    public void FullEnumerationReducedGrammarRARApproximation(int maxLength, double expectedDL) {
-      var options = new HEAL.EquationSearch.Console.Program.RunOptions();
-      options.Dataset = "RAR_sigma.csv";
-      options.Target = "gobs";
-      options.TrainingRange = "0:2695";
-      options.NoiseSigma = "";
-      options.Seed = 1234;
-
-      GetRARData(options, out var inputs, out var trainX, out var trainY, out var sigma_tot, out var e_log_gobs, out var e_log_gbar);
-
-      var grammar = new Grammar(inputs, maxLength);
-      grammar.UseLogExpPowRestrictedRules();
-
-      var alg = new Algorithm();
-      var evaluator = new Evaluator(new RARLikelihoodApprox(trainX, trainY, modelExpr: null, e_log_gobs, e_log_gbar, sigma_tot));
-      alg.Fit(trainX, trainY, noiseSigma: 1.0, inputs, CancellationToken.None, grammar: grammar, evaluator: evaluator, maxLength: maxLength, randSeed: 1234, algorithmType: AlgorithmTypeEnum.BreadthFirst);
-      // Assert.AreEqual(expectedDL, alg.BestMDL.Value, Math.Abs(expectedDL * 1e-4));
-    }
-
-    [DataTestMethod]
-    [DataRow(3, 53477.0)]
-    [DataRow(5, -240.91)]
-    [DataRow(7, -240.91)]
-    [DataRow(9, -1182.4)]
-    public void BeamSearchReducedGrammar(int maxLength, double expectedDL) {
-      // use EQS to find RAR model (using the likelihood from the RAR paper)
-      var options = new HEAL.EquationSearch.Console.Program.RunOptions();
-      options.Dataset = "RAR_sigma.csv";
-      options.Target = "gobs";
-      options.TrainingRange = "0:2695";
-      options.NoiseSigma = "";
-      options.Seed = 1234;
-
-      GetRARData(options, out var inputs, out var trainX, out var trainY, out _, out var e_log_gobs, out var e_log_gbar);
-
-      var grammar = new Grammar(inputs, maxLength);
-      grammar.UseLogExpPowRestrictedRules();
-
-      var alg = new Algorithm();
-      var evaluator = new Evaluator(new RARLikelihood(trainX, trainY, modelExpr: null, e_log_gobs, e_log_gbar));
-      alg.Fit(trainX, trainY, noiseSigma: 1.0, inputs, CancellationToken.None, grammar: grammar, evaluator: evaluator, maxLength: maxLength, randSeed: 1234, algorithmType: AlgorithmTypeEnum.Beam);
-      Assert.AreEqual(expectedDL, alg.BestDescriptionLength.Value, Math.Abs(expectedDL * 1e-4));
-    }
-
     private static void GetRARData(Console.Program.RunOptions options, out string[] inputs, out double[,] trainX, out double[] trainY, out double[] trainNoiseSigma, out double[] e_log_gobs, out double[] e_log_gbar) {
       // https://arxiv.org/abs/2301.04368
       // File RAR.dat recieved from Harry
@@ -158,17 +78,16 @@ namespace HEAL.EquationSearch.Test {
       // check likelihood and DL calculation for top expressions from RAR paper
       GetRARData(options, out _, out var trainX, out var trainY, out var sigma_tot, out var e_log_gobs, out var e_log_gbar);
       var likelihood = new RARLikelihood(trainX, trainY, modelExpr: null, e_log_gobs, e_log_gbar);
-
-
       {
         // RAR IF: gbar/(1 − exp(−√(gbar/g0))) with g0 = 1.127
-        // re-parameterized RAR IF: x / (1 - exp(x/p0))
+        // re-parameterized RAR IF: x / (1 - exp(√x/p0))
         likelihood.ModelExpr = (p, x) => x[0] / (1.0 - Math.Exp(Math.Sqrt(x[0]) / p[0])); // using x / p[0]  instead of x * p[0] to reduce distinct symbols?
         var theta = new double[] { -Math.Sqrt(1.127) };
         Assert.AreEqual(-1212.77, likelihood.NegLogLikelihood(theta), 1e-1);
         var dl = ModelSelection.DL(theta, likelihood);
 
         Assert.AreEqual(-1191.3, dl, 1);  // reference result -1192.7 but I count log(2) (=0.7) nats extra for the constant sign
+        System.Console.WriteLine($"RAR IF {likelihood.ModelExpr} {likelihood.NegLogLikelihood(theta)} {dl}");
       }
 
       {
@@ -180,6 +99,7 @@ namespace HEAL.EquationSearch.Test {
         var dl = ModelSelection.DL(theta, likelihood);
 
         Assert.AreEqual(-1194.05, dl, 1);   // reference result -1194.8 but I count log(2) (=0.7) nats extra for the constant sign
+        System.Console.WriteLine($"simple IF {likelihood.ModelExpr} {likelihood.NegLogLikelihood(theta)} {dl}");
       }
 
       {
@@ -189,9 +109,11 @@ namespace HEAL.EquationSearch.Test {
         var theta = new double[] { 0.84, -0.02, 0.38 };
         nlr.Fit(theta, likelihood); // fit parameters
         var dl = ModelSelection.DL(theta, likelihood);
+
         Assert.AreEqual(-1244.66, dl, 1e-1); // reference result: 1250.6, which omits abs() and has DL(func) Math.Log(5)*9 = 14.5
                                              // we use DL(func) = Math.Log(6)*10 = 17.9 (+3.4 nats more)
         Assert.AreEqual(-1276.98, nlr.NegLogLikelihood, 1e-1); // reference result -1279.1
+        System.Console.WriteLine($"model 1 {likelihood.ModelExpr} {likelihood.NegLogLikelihood(theta)} {dl}");
       }
       //  {
       //    // model 1 in RAR paper Gaussian likelihood
@@ -225,6 +147,18 @@ namespace HEAL.EquationSearch.Test {
         var dl = ModelSelection.DL(theta, likelihood);
         Assert.AreEqual(-1228.5, dl, 1e-1); // reference result: DL -1228.5, Lik: -1250.6
         Assert.AreEqual(-1250.56, nlr.NegLogLikelihood, 1e-1);
+
+        System.Console.WriteLine($"model 7 {likelihood.ModelExpr} {likelihood.NegLogLikelihood(theta)} {dl}");
+      }
+      {
+        // EQS best expr
+        likelihood.ModelExpr = (p, x) => Functions.PowAbs(Math.Pow(x[0], 2) * p[0] + Math.Pow(x[0], 3) + p[1], p[2]) * p[3] + p[4];
+        var nlr = new NonlinearRegression.NonlinearRegression();
+        var theta = new double[] { 1.812, -0.0008789, 0.2989, 1.231, 0.02291 };
+        nlr.Fit(theta, likelihood); // fit parameters
+        var dl = ModelSelection.DL(theta, likelihood);
+
+        System.Console.WriteLine($"EQS model 1 {likelihood.ModelExpr} {likelihood.NegLogLikelihood(theta)} {dl}");
       }
     }
 

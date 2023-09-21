@@ -154,9 +154,9 @@ namespace HEAL.EquationSearch.Test {
         Parallel.ForEach(uniqExprStr.OrderBy(str => str.Length), new ParallelOptions() { MaxDegreeOfParallelism = 12 }, exprStr => {
           if (!exprStr.Contains("Infinity") && !exprStr.Contains("NaN")) {
             // parse the expression with additional variable p
-            lock (writer) {
-              writer.WriteLine($"{exprStr}");
-            }
+            // lock (writer) {
+            //   writer.WriteLine($"{exprStr}");
+            // }
             var parser = new HEAL.Expressions.Parser.ExprParser(exprStr, variableNames.Concat(new string[] { "p" }).ToArray(), varSy, paramSy);
             var expr = parser.Parse();
             // replace all parameters with constants (numbers in the exprStr are constants)
