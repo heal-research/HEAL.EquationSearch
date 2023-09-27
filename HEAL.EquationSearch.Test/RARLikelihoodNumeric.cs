@@ -16,7 +16,7 @@ namespace HEAL.EquationSearch.Test {
 
   // partial derivatives of sigma_tot are ignored
 
-  public class RARLikelihoodApprox : LikelihoodBase {
+  public class RARLikelihoodNumeric : LikelihoodBase {
     private readonly double[] e_log_gobs;
     private readonly double[] e_log_gbar;
     private readonly double[] sigma_tot;
@@ -116,7 +116,7 @@ namespace HEAL.EquationSearch.Test {
     }
 
 
-    internal RARLikelihoodApprox(RARLikelihoodApprox original) : base(original) {
+    internal RARLikelihoodNumeric(RARLikelihoodNumeric original) : base(original) {
       this.e_log_gobs = original.e_log_gobs;
       this.e_log_gbar = original.e_log_gbar;
       this.sigma_tot = (double[])original.sigma_tot.Clone();
@@ -128,7 +128,7 @@ namespace HEAL.EquationSearch.Test {
       ModelExpr = original.origExpr; // initializes all interpreters and gradients
     }
 
-    public RARLikelihoodApprox(double[,] x, double[] y, Expression<Expr.ParametricFunction> modelExpr, double[] e_log_gobs, double[] e_log_gbar, double[] sigma_tot)
+    public RARLikelihoodNumeric(double[,] x, double[] y, Expression<Expr.ParametricFunction> modelExpr, double[] e_log_gobs, double[] e_log_gbar, double[] sigma_tot)
       : base(modelExpr, x, y, 0) {
       this.e_log_gobs = e_log_gobs;
       this.e_log_gbar = e_log_gbar;
@@ -160,13 +160,15 @@ namespace HEAL.EquationSearch.Test {
       var hessian = new double[n, n];
       var yPred = new double[m];
       for (int j = 0; j < n; j++) {
-        likelihoodGradInterpreter[j].EvaluateWithJac(p, yPred, null, jacP);
-        // likelihoodGradFunc[j](p, extendedX, f, jacP);
-        for (int i = 0; i < m; i++) {
-          for (int k = 0; k < n; k++) {
-            hessian[j, k] += jacP[i, k];
-          }
-        }
+        throw new NotImplementedException(); // calculate numerically from gradient
+
+        // likelihoodGradInterpreter[j].EvaluateWithJac(p, yPred, null, jacP);
+        // // likelihoodGradFunc[j](p, extendedX, f, jacP);
+        // for (int i = 0; i < m; i++) {
+        //   for (int k = 0; k < n; k++) {
+        //     hessian[j, k] += jacP[i, k];
+        //   }
+        // }
       }
 
       return hessian;
@@ -175,8 +177,12 @@ namespace HEAL.EquationSearch.Test {
     private void UpdateSigmaTot(double[] p) {
       int m = y.Length;
       var df_dgbar = new double[m];
-      throw new NotImplementedException(); // the following can be calculated via autodiff 
-      derivativeInterpreter.Evaluate(p, df_dgbar);     
+
+
+
+      // derivativeInterpreter.Evaluate(p, df_dgbar);
+      throw new NotImplementedException(); // TODO: evaluate numerically by changing gbar or using autodiff
+
       for (int i = 0; i < m; i++) {
         extendedXCol[sigma_tot_idx][i] = e_log_gobs[i] * e_log_gobs[i] + Math.Pow(df_dgbar[i] * xCol[0][i] * Math.Log(10) * e_log_gbar[i], 2);
       }
@@ -198,29 +204,12 @@ namespace HEAL.EquationSearch.Test {
       return nll;
     }
 
-    public override void NegLogLikelihoodGradient(double[] p, out double nll, double[]? nll_grad) {
-      var m = y.Length;
-      var n = p.Length;
-      var nllArr = new double[NumberOfObservations];
-
-      if (nll_grad != null) {
-        Array.Clear(nll_grad);
-
-        NegLogLikelihoodJacobian(p, nllArr, jacP);
-        nll = nllArr.Sum();
-        for (int i = 0; i < m; i++) {
-          for (int j = 0; j < n; j++) {
-            nll_grad[j] += jacP[i, j];
-          }
-        }
-      } else {
-        NegLogLikelihoodJacobian(p, nllArr, null);
-        nll = nllArr.Sum();
-      }
-    }
 
     public void NegLogLikelihoodJacobian(double[] p, double[] yPred, double[,]? jac) {
       UpdateSigmaTot(p);
+
+      throw new NotImplementedException();
+      // TODO approximate jacobian numerically
 
       likelihoodInterpreter.EvaluateWithJac(p, yPred, null, jac);
       // var f = new double[y.Length];
@@ -233,7 +222,7 @@ namespace HEAL.EquationSearch.Test {
     }
 
     public override LikelihoodBase Clone() {
-      return new RARLikelihoodApprox(this);
+      return new RARLikelihoodNumeric(this);
     }
   }
 }
