@@ -14,12 +14,10 @@ namespace HEAL.EquationSearch.Test {
   // sigma2_tot = e_loggobs**2 + (gobs1_diff*e_loggbar)**2
   // negloglike = 0.5 * np.sum((np.log10(gobs) - np.log10(gobs1))**2 ./ sigma2_tot + np.log(2.* np.pi * sigma2_tot))
 
-  // partial derivatives of sigma_tot are ignored
 
   public class RARLikelihoodNumeric : LikelihoodBase {
     private readonly double[] e_log_gobs;
     private readonly double[] e_log_gbar;
-    private readonly double[] sigma_tot;
     private readonly double[][] extendedXCol;
     private readonly int y_idx;
     private readonly int e_log_gbar_idx;
@@ -35,10 +33,11 @@ namespace HEAL.EquationSearch.Test {
     private ExpressionInterpreter likelihoodInterpreter = null;
     private ExpressionInterpreter bestLikelihoodInterpreter = null;
     private ExpressionInterpreter[] likelihoodGradInterpreter = null;
-    public ExpressionInterpreter sigmaTotInterpreter = null;
-    public ExpressionInterpreter derivativeInterpreter = null;
+    private ExpressionInterpreter logModelInterpreter = null;
+
 
     private double[,] jacP; // buffer for jacobian
+    private double[] yPred;
     // private double[] f;
     // private Expr.ParametricVectorFunction likelihoodFunc;
     // private Expr.ParametricJacobianFunction likelihoodFuncAndJac;
@@ -59,10 +58,12 @@ namespace HEAL.EquationSearch.Test {
           var pParam = value.Parameters[0];
           var xParam = value.Parameters[1];
 
-          this.jacP = new double[y.Length, numParam];
+          yPred = new double[y.Length];
+          jacP = new double[y.Length, numParam];
+
           // this.f = new double[y.Length];
 
-          // wrap log(f(x))
+          // log10(f(x))
           value = value.Update(LinqExpr.Multiply(
             // LinqExpr.Call(log, LinqExpr.Call(abs, value.Body)),
             LinqExpr.Call(log, value.Body),
@@ -93,6 +94,7 @@ namespace HEAL.EquationSearch.Test {
           //                                                          LinqExpr.Constant(Math.Log(10))), pParam, xParam), extendedXCol);
 
 
+          logModelInterpreter = new ExpressionInterpreter(value, extendedXCol, y.Length);
           likelihoodInterpreter = new ExpressionInterpreter(likelihoodExpr, extendedXCol, y.Length);
           bestLikelihoodInterpreter = new ExpressionInterpreter(baseLikelihoodExpr, extendedXCol, y.Length);
           // likelihoodFunc = Expr.Broadcast(likelihoodExpr).Compile();
@@ -119,20 +121,24 @@ namespace HEAL.EquationSearch.Test {
     internal RARLikelihoodNumeric(RARLikelihoodNumeric original) : base(original) {
       this.e_log_gobs = original.e_log_gobs;
       this.e_log_gbar = original.e_log_gbar;
-      this.sigma_tot = (double[])original.sigma_tot.Clone();
       this.extendedXCol = original.extendedXCol.Select(xi => (double[])xi.Clone()).ToArray();
       this.y_idx = original.y_idx;
       this.e_log_gbar_idx = original.e_log_gbar_idx;
       this.e_log_gobs_idx = original.e_log_gobs_idx;
       this.sigma_tot_idx = original.sigma_tot_idx;
+
+      if (original.yPred != null)
+        this.yPred = (double[])original.yPred.Clone();
+      if (original.jacP != null)
+        this.jacP = (double[,])original.jacP.Clone();
+
       ModelExpr = original.origExpr; // initializes all interpreters and gradients
     }
 
-    public RARLikelihoodNumeric(double[,] x, double[] y, Expression<Expr.ParametricFunction> modelExpr, double[] e_log_gobs, double[] e_log_gbar, double[] sigma_tot)
+    public RARLikelihoodNumeric(double[,] x, double[] y, Expression<Expr.ParametricFunction> modelExpr, double[] e_log_gobs, double[] e_log_gbar)
       : base(modelExpr, x, y, 0) {
       this.e_log_gobs = e_log_gobs;
       this.e_log_gbar = e_log_gbar;
-      this.sigma_tot = (double[])sigma_tot.Clone();
 
 
       // the interpreter for the likelihood has additional variables e_log_gbar, e_log_gobs, and y
@@ -143,82 +149,113 @@ namespace HEAL.EquationSearch.Test {
 
       extendedXCol[xCol.Length] = e_log_gobs; this.e_log_gobs_idx = xCol.Length;
       extendedXCol[xCol.Length + 1] = e_log_gbar; this.e_log_gbar_idx = xCol.Length + 1;
-      extendedXCol[xCol.Length + 2] = sigma_tot; this.sigma_tot_idx = xCol.Length + 2;
+      extendedXCol[xCol.Length + 2] = new double[e_log_gbar.Length]; this.sigma_tot_idx = xCol.Length + 2; // sigmaTot is recalculed on each evaluation
       extendedXCol[xCol.Length + 3] = y.Select(Math.Log10).ToArray(); this.y_idx = xCol.Length + 3;
+
 
       ModelExpr = modelExpr;
     }
 
     public override double[,] FisherInformation(double[] p) {
-      var m = y.Length;
       var n = p.Length;
-
-      UpdateSigmaTot(p);
 
       // FIM is the negative of the second derivative (Hessian) of the log-likelihood
       // -> FIM is the Hessian of the negative log-likelihood
       var hessian = new double[n, n];
-      var yPred = new double[m];
-      for (int j = 0; j < n; j++) {
-        throw new NotImplementedException(); // calculate numerically from gradient
+      var eps = 1e-8;
+      var nll_grad_low = new double[n];
+      var nll_grad_high = new double[n];
 
-        // likelihoodGradInterpreter[j].EvaluateWithJac(p, yPred, null, jacP);
-        // // likelihoodGradFunc[j](p, extendedX, f, jacP);
-        // for (int i = 0; i < m; i++) {
-        //   for (int k = 0; k < n; k++) {
-        //     hessian[j, k] += jacP[i, k];
-        //   }
-        // }
+      for (int i = 0; i < n; i++) {
+        // numeric approximation (3-point) via gradient
+        var relEps = Math.Max(eps, p[i] * eps);
+        p[i] -= relEps;
+        NegLogLikelihoodGradient(p, out _, nll_grad_low);
+        p[i] += 2 * relEps;
+        NegLogLikelihoodGradient(p, out _, nll_grad_high);
+
+        p[i] -= relEps; // restore
+
+        for (int j = 0; j < n; j++) {
+          hessian[i, j] = (nll_grad_high[j] - nll_grad_low[j]) / (2 * relEps);
+        }
       }
+
+      // enforce symmetry / smooth out numeric errors
+      for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+          hessian[i, j] = (hessian[i, j] + hessian[j, i]) / 2;
+          hessian[j, i] = hessian[i, j];
+        }
+      }
+
+      // check against full implementation
+      // var refLik = new RARLikelihood(this.x, this.y, this.origExpr, this.e_log_gobs, this.e_log_gbar);
+      // refLik.ModelExpr = this.origExpr;
+      // var refHess1ian = refLik.FisherInformation(p);
 
       return hessian;
     }
 
     private void UpdateSigmaTot(double[] p) {
       int m = y.Length;
-      var df_dgbar = new double[m];
+      var log10model = new double[m];
+      var dlog10f_dgbar = new double[m, 1];
 
+      logModelInterpreter.EvaluateWithJac(p, log10model, dlog10f_dgbar, null);
 
+      // d f(x) / d log(x)
+      //   = d f(exp(y)) / d y , y = log(x)
+      //   = d f(exp(y)) / d x * exp(y) 
+      //   = d f(x) / d x * x
 
-      // derivativeInterpreter.Evaluate(p, df_dgbar);
-      throw new NotImplementedException(); // TODO: evaluate numerically by changing gbar or using autodiff
+      // for log10:
+      // d f(x) / d log10(x)
+      //   = d f(10^y) / d y , y = log10(x) = log(x) / log(10),   y * log(10) = log(x)
+      //   = d f(10^y) / d x * 10^y * log(10)
+      //   = d f(x) / d x * x * log(10)
+
 
       for (int i = 0; i < m; i++) {
-        extendedXCol[sigma_tot_idx][i] = e_log_gobs[i] * e_log_gobs[i] + Math.Pow(df_dgbar[i] * xCol[0][i] * Math.Log(10) * e_log_gbar[i], 2);
+        extendedXCol[sigma_tot_idx][i] = e_log_gobs[i] * e_log_gobs[i] + Math.Pow(dlog10f_dgbar[i, 0] * xCol[0][i] * Math.Log(10) * e_log_gbar[i], 2);
       }
     }
 
     // for the calculation of deviance
     public override double BestNegLogLikelihood(double[] p) {
       UpdateSigmaTot(p);
-      var yPred = new double[NumberOfObservations];
       bestLikelihoodInterpreter.Evaluate(p, yPred);
       return yPred.Sum();
-      // var f = new double[y.Length];
-      // bestLikelihoodFunc(p, extendedX, f, null);
-      // return f.Sum();
     }
 
     public override double NegLogLikelihood(double[] p) {
-      NegLogLikelihoodGradient(p, out var nll, nll_grad: null);
-      return nll;
+      UpdateSigmaTot(p);
+      likelihoodInterpreter.Evaluate(p, yPred);
+      return yPred.Sum();
     }
 
+    public override void NegLogLikelihoodGradient(double[] p, out double nll, double[] nll_grad = null) {
+      nll = NegLogLikelihood(p);
+      if (nll_grad != null) {
+        // numeric approximation (2-point)
+        var eps = 1e-8;
+        for (int i = 0; i < p.Length; i++) {
+          var relEps = Math.Max(eps, p[i] * eps);
+          p[i] -= relEps;
+          var low = NegLogLikelihood(p);
+          p[i] += 2 * relEps;
+          var high = NegLogLikelihood(p);
+
+          p[i] -= relEps; // restore
+
+          nll_grad[i] = (high - low) / (2 * relEps);
+        }
+      }
+    }
 
     public void NegLogLikelihoodJacobian(double[] p, double[] yPred, double[,]? jac) {
-      UpdateSigmaTot(p);
 
       throw new NotImplementedException();
-      // TODO approximate jacobian numerically
-
-      likelihoodInterpreter.EvaluateWithJac(p, yPred, null, jac);
-      // var f = new double[y.Length];
-      // if (jac != null) {
-      //   likelihoodFuncAndJac(p, extendedX, f, jac);
-      // } else {
-      //   likelihoodFunc(p, extendedX, f);
-      // }
-      // return f;
     }
 
     public override LikelihoodBase Clone() {

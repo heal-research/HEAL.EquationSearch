@@ -113,6 +113,8 @@ namespace HEAL.EquationSearch.Test {
     [DataRow(@"c:\temp\allExpressions_eqs_logexppow_1d_10.txt", new[] { "x" })]
     [DataRow(@"c:\temp\allExpressions_eqs_logexppow_1d_30.txt", new[] { "x" })]
     [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_10.txt", new[] { "x" })]
+    [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_5.txt", new[] { "x" })]
+    [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_7.txt", new[] { "x" })]
     public void OptimizeAndEvaluateAll(string fileName, string[] variableNames) {
       // the files must be produced with Enumerate()
 
@@ -143,7 +145,7 @@ namespace HEAL.EquationSearch.Test {
       // maxLen and grammar rules do not matter here since we are not generating expressions from the grammar
 
 
-      var likelihood = new RARLikelihood(trainX, trainY, modelExpr: null, e_log_gobs, e_log_gbar);
+      var likelihood = new RARLikelihoodNumeric(trainX, trainY, modelExpr: null, e_log_gobs, e_log_gbar);
       var evaluator = new Evaluator(likelihood);
       var data = new Data(inputVars, trainX, trainY, null);
 

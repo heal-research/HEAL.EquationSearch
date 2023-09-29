@@ -90,7 +90,7 @@ namespace HEAL.EquationSearch {
         }
 
         parameterValues = restartPolicy.Next();
-      } while (parameterValues != null);
+      } while (parameterValues != null && numRestarts < 10 * restartPolicy.MaxIterations); // TODO stop because of timeout
 
       // System.Console.WriteLine($"Restarts: {numRestarts}  expr: {expr}");
       if (restartPolicy.BestLoss == double.MaxValue) return double.MaxValue;
