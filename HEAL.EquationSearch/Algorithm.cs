@@ -41,7 +41,7 @@ namespace HEAL.EquationSearch {
         .WithCancellationToken(cts.Token)
         .WithImprovementCallback((ctrl, state, quality) => {
           // var mse = CalculateMSE(state.Expression, data);
-          // Console.WriteLine($"Found new best solution with {quality} rmse: {Math.Sqrt(mse):g5} after {ctrl.Elapsed} {ctrl.BestQualityState}");
+          Console.WriteLine($"Found new best solution with {quality} after {ctrl.Elapsed} {ctrl.BestQualityState}");
           // if (quality.Value < earlyStopQuality) cts.Cancel(); // early stopping
         });
 
