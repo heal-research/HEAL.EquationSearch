@@ -69,7 +69,7 @@ namespace HEAL.EquationSearch.Test {
       var varNames = new string[] { "x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9", "x10" };
 
       var alg = new Algorithm();
-      var g = new Grammar(varNames);
+      var g = new Grammar(varNames, maxLength);
       g.UsePolynomialRestrictedRules();
       alg.Fit(x, y, noiseSigma, varNames, CancellationToken.None, grammar: g, maxLength: maxLength, randSeed: 1234);
       Assert.AreEqual(minDL, alg.BestDescriptionLength.Value, Math.Abs(minDL * 1e-4));
@@ -131,7 +131,7 @@ namespace HEAL.EquationSearch.Test {
       var varNames = new string[] { "x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9", "x10" };
 
       var alg = new Algorithm();
-      var g = new Grammar(varNames);
+      var g = new Grammar(varNames, maxLength);
       g.UsePolynomialRestrictedRules();
       alg.Fit(x, y, noiseSigma, varNames, CancellationToken.None, grammar: g, maxLength: maxLength, randSeed: 1234, algorithmType: AlgorithmTypeEnum.BreadthFirst);
       Assert.AreEqual(minDL, alg.BestDescriptionLength.Value, Math.Abs(minDL * 1e-4));
@@ -295,7 +295,7 @@ namespace HEAL.EquationSearch.Test {
 
       var varProEval = new VarProEvaluator();
       var data = new Data(varNames, x, y, y.Select(_ => 1.0 / noiseSigma ).ToArray());
-      var g = new Grammar(varNames);
+      var g = new Grammar(varNames, maxLen: 100);
       g.UseLogExpPowRestrictedRules();
       var x0 = g.Variables.Single();
       var expr = new Expression(g, new[] { g.Parameter.Clone(), g.Parameter.Clone(), g.Parameter.Clone(), x0, g.Plus, g.Abs, g.Pow, g.Times, g.Parameter.Clone(), g.Plus });

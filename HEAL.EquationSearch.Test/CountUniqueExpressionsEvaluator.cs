@@ -16,8 +16,8 @@
     }
 
     public double OptimizeAndEvaluateDL(Expression expr, Data data) {
-      if(evaluatedExpressions.Add(Semantics.GetHashValue(expr))) {
-        System.Console.WriteLine(expr.ToInfixString());
+      if(evaluatedExpressions.Add(Semantics.GetHashValue(expr, out var simplifiedExpr))) {
+        System.Console.WriteLine(simplifiedExpr.ToInfixString());
       }
       return 0.0;
     }

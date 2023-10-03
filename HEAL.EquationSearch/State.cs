@@ -45,7 +45,7 @@ namespace HEAL.EquationSearch {
 
     public MinimizeDouble Bound => new MinimizeDouble(double.NegativeInfinity);
 
-    private MinimizeDouble? quality = null; // cache quality to prevent duplicate evaluation (TODO: necessary?)
+    private MinimizeDouble? quality = null; // cache quality to prevent duplicate evaluation
     public MinimizeDouble? Quality {
       get {
         if (quality.HasValue) return quality;
@@ -65,8 +65,7 @@ namespace HEAL.EquationSearch {
     }
 
     public IEnumerable<State> GetBranches() {
-      return Grammar.CreateAllDerivations(expression)
-        .Where(expr => expr.Length <= maxLength)
+      return Grammar.CreateAllDerivations(expression, maxLength)
         .Select(expr => new State(data, maxLength, grammar, expr, evaluator));
 
       // TODO: order by heuristic value?
@@ -78,7 +77,7 @@ namespace HEAL.EquationSearch {
     }
 
     internal ulong GetHashValue() {
-      return Semantics.GetHashValue(expression);
+      return Semantics.GetHashValue(expression, out _);
     }
   }
 }

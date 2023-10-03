@@ -20,7 +20,7 @@ namespace HEAL.EquationSearch.Test {
         if (value != null) {
           // wrap H=sqrt(abs(model))
           value = value.Update(System.Linq.Expressions.Expression.Call(null, sqrt, System.Linq.Expressions.Expression.Call(null, abs, value.Body)), value.Parameters);
-        } 
+        }
         base.ModelExpr = value;
       }
     }

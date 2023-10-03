@@ -1,15 +1,10 @@
-﻿using System.Transactions;
-using TreesearchLib;
+﻿using TreesearchLib;
 namespace HEAL.EquationSearch {
 
   // TODO:
   // - persistence
-  // - Improve performance of semantic hashing (main bottleneck besides evaluation).
   // - stop training anytime (returning best expression so far), and allow to continue running later
   // - Best-first search implementation in Treesearchlib
-  // - Model evaluation results, AIC, BIC, MDL, ...
-  // - Model archive or model selection based on MDL
-  // - Connection to HEAL.NLR for simplification, prediction intervals, MDL, ...
 
   public enum AlgorithmTypeEnum { BreadthFirst, Beam };
 
@@ -29,7 +24,7 @@ namespace HEAL.EquationSearch {
       int maxLength = 20, double earlyStopQuality = double.NegativeInfinity, int? randSeed = null, AlgorithmTypeEnum algorithmType = AlgorithmTypeEnum.Beam, int beamWidth=1000) {
       if (randSeed.HasValue) SharedRandom.SetSeed(randSeed.Value);
       if (x.GetLength(1) != varNames.Length) throw new ArgumentException("number of variables does not match number of columns in x");
-      grammar ??= new Grammar(varNames); // default grammar if none supplied by user
+      grammar ??= new Grammar(varNames, maxLength); // default grammar if none supplied by user
 
       this.VariableNames = (string[])varNames.Clone();
       var data = new Data(varNames, x, y, invNoiseSigma: noiseSigma.Select(si => 1.0 / si).ToArray());

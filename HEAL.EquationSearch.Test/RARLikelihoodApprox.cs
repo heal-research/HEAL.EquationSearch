@@ -68,8 +68,8 @@ namespace HEAL.EquationSearch.Test {
             LinqExpr.Call(log, value.Body),
             LinqExpr.Constant(1.0 / Math.Log(10))), value.Parameters);
 
-          var d_log_f_dgbar = Expr.Derive(value, value.Parameters[1], 0); // d/dx0
-          derivativeInterpreter = new ExpressionInterpreter(d_log_f_dgbar, extendedXCol, y.Length);
+          // var d_log_f_dgbar = Expr.Derive(value, value.Parameters[1], 0); // d/dx0
+          // derivativeInterpreter = new ExpressionInterpreter(d_log_f_dgbar, extendedXCol, y.Length);
 
           var sTotExpr = LinqExpr.ArrayIndex(xParam, LinqExpr.Constant(sigma_tot_idx));
           var y_expr = LinqExpr.ArrayIndex(xParam, LinqExpr.Constant(y_idx));
@@ -159,8 +159,9 @@ namespace HEAL.EquationSearch.Test {
       // FIM is the negative of the second derivative (Hessian) of the log-likelihood
       // -> FIM is the Hessian of the negative log-likelihood
       var hessian = new double[n, n];
+      var yPred = new double[m];
       for (int j = 0; j < n; j++) {
-        likelihoodGradInterpreter[j].EvaluateWithJac(p, tmp, null, jacP);
+        likelihoodGradInterpreter[j].EvaluateWithJac(p, yPred, null, jacP);
         // likelihoodGradFunc[j](p, extendedX, f, jacP);
         for (int i = 0; i < m; i++) {
           for (int k = 0; k < n; k++) {
@@ -175,7 +176,8 @@ namespace HEAL.EquationSearch.Test {
     private void UpdateSigmaTot(double[] p) {
       int m = y.Length;
       var df_dgbar = new double[m];
-      derivativeInterpreter.Evaluate(p, df_dgbar);
+      throw new NotImplementedException(); // the following can be calculated via autodiff 
+      derivativeInterpreter.Evaluate(p, df_dgbar);     
       for (int i = 0; i < m; i++) {
         extendedXCol[sigma_tot_idx][i] = e_log_gobs[i] * e_log_gobs[i] + Math.Pow(df_dgbar[i] * xCol[0][i] * Math.Log(10) * e_log_gbar[i], 2);
       }
@@ -184,9 +186,9 @@ namespace HEAL.EquationSearch.Test {
     // for the calculation of deviance
     public override double BestNegLogLikelihood(double[] p) {
       UpdateSigmaTot(p);
-      var nllArr = new double[NumberOfObservations];
-      bestLikelihoodInterpreter.Evaluate(p, nllArr);
-      return nllArr.Sum();
+      var yPred = new double[NumberOfObservations]; // allocate once
+      bestLikelihoodInterpreter.Evaluate(p, yPred);
+      return yPred.Sum();
       // var f = new double[y.Length];
       // bestLikelihoodFunc(p, extendedX, f, null);
       // return f.Sum();
@@ -198,8 +200,8 @@ namespace HEAL.EquationSearch.Test {
     }
 
     public override void NegLogLikelihoodGradient(double[] p, out double nll, double[]? nll_grad) {
-      var m = y.Length;
       var n = p.Length;
+      var m = NumberOfObservations;
       var nllArr = new double[m];
       if (nll_grad != null) {
         Array.Clear(nll_grad);
@@ -219,8 +221,8 @@ namespace HEAL.EquationSearch.Test {
 
     public void NegLogLikelihoodJacobian(double[] p, double[] nllArr, double[,]? jac) {
       UpdateSigmaTot(p);
-
       likelihoodInterpreter.EvaluateWithJac(p, nllArr, null, jac);
+
       // var f = new double[y.Length];
       // if (jac != null) {
       //   likelihoodFuncAndJac(p, extendedX, f, jac);

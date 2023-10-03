@@ -21,7 +21,7 @@ namespace HEAL.EquationSearch.Test {
 
       GetData(options, out var inputs, out var trainX, out var trainY);
 
-      var grammar = new Grammar(inputs);
+      var grammar = new Grammar(inputs, maxLength);
       grammar.UseLogExpPowRestrictedRules();
 
       var alg = new Algorithm();

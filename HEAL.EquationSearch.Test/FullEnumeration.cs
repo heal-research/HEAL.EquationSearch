@@ -1,4 +1,5 @@
 using TreesearchLib;
+using static alglib;
 
 namespace HEAL.EquationSearch.Test {
   [TestClass]
@@ -29,7 +30,7 @@ namespace HEAL.EquationSearch.Test {
 
       var varNames = new string[] { "x" };
 
-      var grammar = new Grammar(varNames);
+      var grammar = new Grammar(varNames, maxLength);
       grammar.UsePolynomialRestrictedRules();
       var data = new Data(varNames, x, y, invNoiseSigma: Enumerable.Repeat(1.0, y.Length).ToArray());
       var evaluator = new CountUniqueExpressionsEvaluator();
@@ -76,7 +77,8 @@ namespace HEAL.EquationSearch.Test {
 
       var varNames = new string[] { "x", "y" };
 
-      var grammar = new Grammar(varNames); grammar.UsePolynomialRestrictedRules();
+      var grammar = new Grammar(varNames, maxLength); 
+      grammar.UsePolynomialRestrictedRules();
       var data = new Data(varNames, x, y, invNoiseSigma: Enumerable.Repeat(1.0, y.Length).ToArray());
       var evaluator = new CountUniqueExpressionsEvaluator();
       var control = SearchControl<State, MinimizeDouble>.Start(new State(data, maxLength, grammar, evaluator))

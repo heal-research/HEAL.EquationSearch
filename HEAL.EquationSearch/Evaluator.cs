@@ -57,28 +57,30 @@ namespace HEAL.EquationSearch {
       // exprQualities.GetOrAdd(semHash, restartPolicy.BestLoss);
       // return restartPolicy.BestLoss;
     }
-
+    public double OptimizeAndEvaluateDL(Expression expr, Data data) {
+      return OptimizeAndEvaluateDL(expr, data, out _);
+    }
     // This method always optimizes parameters in expr but does not use caching to make sure all parameters of the evaluated expressions are set correctly.
     // Use this method to optimize the best solutions (found via MSE)
-    public double OptimizeAndEvaluateDL(Expression expr, Data data) {
+    public double OptimizeAndEvaluateDL(Expression expr, Data data, out RestartPolicy restartPolicy) {
       Interlocked.Increment(ref evaluatedExpressions);
       var model = HEALExpressionBridge.ConvertToExpressionTree(expr, data.VarNames, out var parameterValues);
       var modelLikelihood = this.likelihood.Clone();
       modelLikelihood.ModelExpr = model;
       bool funcOk = FunctionOk(parameterValues, modelLikelihood);
+      restartPolicy = new RestartPolicy(parameterValues.Length);
       if (!funcOk) return double.MaxValue; // all one vectors produced NaN result
 
       var nlr = new NonlinearRegression.NonlinearRegression();
 
       int numRestarts = -1;
-      var restartPolicy = new RestartPolicy(parameterValues.Length);
       do {
         numRestarts++;
         if (!double.IsNaN(modelLikelihood.NegLogLikelihood(parameterValues))) {
 
           nlr.Fit(parameterValues, modelLikelihood, maxIterations: 100, epsF: 1e-3); // stop when neg log likelihood changes by less than 0.001
           // successful?
-          if (nlr.ParamEst != null && !nlr.ParamEst.Any(double.IsNaN)) {             
+          if (nlr.ParamEst != null && !nlr.ParamEst.Any(double.IsNaN)) {
             if (nlr.LaplaceApproximation == null) {
               System.Console.Error.WriteLine("Hessian not positive semidefinite after fitting");
               continue;
@@ -88,7 +90,7 @@ namespace HEAL.EquationSearch {
         }
 
         parameterValues = restartPolicy.Next();
-      } while (parameterValues != null);
+      } while (parameterValues != null && numRestarts < 10 * restartPolicy.MaxIterations); // TODO stop because of timeout
 
       // System.Console.WriteLine($"Restarts: {numRestarts}  expr: {expr}");
       if (restartPolicy.BestLoss == double.MaxValue) return double.MaxValue;

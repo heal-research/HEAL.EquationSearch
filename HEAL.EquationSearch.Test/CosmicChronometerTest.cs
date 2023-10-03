@@ -18,12 +18,13 @@ namespace HEAL.EquationSearch.Test {
       options.NoiseSigma = "H_err";
       string[] inputs = new[] { "x" }; // x = z+1
       HEAL.EquationSearch.Console.Program.PrepareData(options, ref inputs, out var x, out var y, out var noiseSigma, out var _, out var _, out var _, out var _, out var _, out var _, out var _);
+      int maxLen = 10;
 
       var likelihood = new CCLikelihood(x, y, modelExpr: null, noiseSigma.Select(s => 1.0 / s).ToArray());
       var evaluator = new Evaluator(likelihood);
       var alg = new Algorithm();
-      var grammar = new Grammar(inputs);
-      alg.Fit(x, y, noiseSigma, inputs, CancellationToken.None, evaluator: evaluator, grammar: grammar, maxLength: 10, randSeed: 1234);
+      var grammar = new Grammar(inputs, maxLen);
+      alg.Fit(x, y, noiseSigma, inputs, CancellationToken.None, evaluator: evaluator, grammar: grammar, maxLength: maxLen, randSeed: 1234);
       System.Console.WriteLine(alg.BestExpression.ToInfixString());
       // Assert.AreEqual(16.39, alg.BestDescriptionLength.Value, 1.0e-2);
 

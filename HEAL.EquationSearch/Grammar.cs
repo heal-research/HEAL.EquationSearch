@@ -12,7 +12,7 @@ namespace HEAL.EquationSearch {
       get {
         return new[] { One, Parameter }
                      .Concat(Variables)
-                     .Concat(new[] { Plus, Times, Inv, Neg, Abs, Log, Sqrt, Exp, Cos, Pow })
+                     .Concat(new[] { Plus, Minus, Times, Div, Inv, Neg, Abs, Log, Sqrt, Exp, Cos, Pow, PowAbs })
                      .Concat(Nonterminals);
       }
     }
@@ -34,8 +34,9 @@ namespace HEAL.EquationSearch {
 
     // terminals
     public Symbol Plus = new Symbol("+", arity: 2);
-    // public Symbol Minus = new Symbol("-", arity: 2);
+    public Symbol Minus = new Symbol("-", arity: 2);
     public Symbol Times = new Symbol("*", arity: 2);
+    public Symbol Div = new Symbol("/", arity: 2);
     public Symbol Inv = new Symbol("inv", arity: 1); // TODO: power(x, -1) and inv(x) are equivalent. Remove?
     public Symbol Neg = new Symbol("neg", arity: 1);
     public Symbol Exp = new Symbol("exp", arity: 1);
@@ -44,6 +45,7 @@ namespace HEAL.EquationSearch {
     public Symbol Abs = new Symbol("abs", arity: 1);
     public Symbol Cos = new Symbol("cos", arity: 1);
     public Symbol Pow = new Symbol("**", arity: 2);
+    public Symbol PowAbs = new Symbol("powabs", arity: 2); // the pow symbol implicitly is |expr|^expr in the ESR paper. This is necessary to reproduce the search space of ESR
 
     public Symbol One = new ConstantSymbol(1.0);
     public Symbol Parameter = new ParameterSymbol(0.0);
@@ -51,19 +53,25 @@ namespace HEAL.EquationSearch {
     public VariableSymbol[] Variables;
 
     private Dictionary<Symbol, List<Symbol[]>> rules = new Dictionary<Symbol, List<Symbol[]>>();
+    private readonly int maxLength;
+    public int MaxLength => maxLength;
 
-
-    public Grammar(string[] variableNames) {
+    // maxLen required for limiting expansion of rules (a chain can have a maximum of maxLen symbols)
+    public Grammar(string[] variableNames, int maxLen) {
       Variables = variableNames.Select(varName => new VariableSymbol(varName)).ToArray();
+      maxLength = maxLen;
       UseDefaultRules();
     }
 
     public void UseDefaultRules() {
       UseLogExpPowRestrictedRules();
       // UsePolynomialRules();
+      // UseUnrestrictedRulesESR();
     }
 
     public void UsePolynomialRestrictedRules() {
+      rules.Clear();
+
       // Original grammar definition:
       // Expr -> param | param * Term + Expr
       // Term -> Fact | Fact * Term 
@@ -86,6 +94,7 @@ namespace HEAL.EquationSearch {
     }
 
     public void UseLogExpPowRestrictedRules() {
+      rules.Clear();
       // Grammar:
       // Expr -> param | param * Term + Expr
       // Term -> Fact | Fact * Term
@@ -146,6 +155,34 @@ namespace HEAL.EquationSearch {
       ExpandRules();
     }
 
+
+    public void UseEsrCoreMaths() {
+      // primarily to compare to reported results in ESR paper https://arxiv.org/pdf/2211.11461.pdf
+      // ESR operators: x, a, inv, +, −, ×, ÷, pow
+      // Cannot be evaluated with VarPro evaluator (which requires a constant offset at the end of each expression) (TODO)
+
+      rules.Clear();
+
+      // this is an inverse regular grammar.
+      // each rule introduces at least one terminal symbol
+      rules[Expr] = Variables.Select(varSy => new Symbol[] { varSy }).ToList();      // every variable is an alternative
+      rules[Expr].AddRange(new List<Symbol[]>() {
+        new [] { Parameter },
+        new [] { Expr, Inv }, // 1/x
+        new [] { Expr, Expr, Plus},
+        new [] { Expr, Expr, Minus},
+        new [] { Expr, Expr, Times},
+        new [] { Expr, Expr, Div },
+        new [] { Expr, Expr, PowAbs},
+      });
+    }
+
+
+    // TODO:
+    //  - use set of rules instead of list of rules
+    //  - remove semantic duplicates
+    //  - support recursive grammars
+    //  - remove maxlen restriction
     private void ExpandRules() {
 #if DEBUG
       Console.WriteLine($"Grammar rules before expansion: {this}");
@@ -162,17 +199,26 @@ namespace HEAL.EquationSearch {
           if (!rules.ContainsKey(ntSy)) continue;
           var alternatives = rules[ntSy];
 
+          // clear directly recursive rules: N -> N
+          for (int i = alternatives.Count - 1; i >= 0; i--) {
+            if (alternatives[i].Length > maxLength) {
+              alternatives.RemoveAt(i);
+            }
+          }
+
           // go over all alternatives (including the newly introduced ones)
           var altIdx = 0;
           while (altIdx < alternatives.Count) {
             var alt = alternatives[altIdx];
+
             var ntIdx = Array.FindIndex(alt, sy => sy.IsNonterminal);
             var varIdx = Array.FindIndex(alt, sy => sy is VariableSymbol);
+
             // expand if a rule contains an NT but no variable reference
             if (ntIdx >= 0 && varIdx < 0) {
               // replace the existing alternative with all derivations
               alternatives.RemoveAt(altIdx);
-              var newAlternatives = CreateAllDerivations(alt).ToArray();
+              var newAlternatives = CreateAllDerivations(alt, maxLength).ToArray();
               // cloned parameters are initialized with a random value. Reset the value to zero here for clean output
               foreach (var newAlt in newAlternatives) {
                 foreach (var sy in newAlt) {
@@ -193,17 +239,19 @@ namespace HEAL.EquationSearch {
 #endif
     }
     internal int FirstIndexOfNT(Symbol[] syString) => Array.FindIndex(syString, sy => sy.IsNonterminal);
-    internal IEnumerable<Symbol[]> CreateAllDerivations(Symbol[] syString) {
+    internal IEnumerable<Symbol[]> CreateAllDerivations(Symbol[] syString, int maxLen) {
 
       var idx = FirstIndexOfNT(syString);
       if (idx < 0) yield break;
 
       foreach (var alternative in rules[syString[idx]]) {
-        yield return Replace(syString, idx, alternative);
+        if (alternative.Length + syString.Length - 1 <= maxLen)
+          yield return Replace(syString, idx, alternative);
       }
     }
-    internal IEnumerable<Expression> CreateAllDerivations(Expression expression) =>
-      CreateAllDerivations(expression.SymbolString).Select(newStr => new Expression(this, newStr));
+    internal IEnumerable<Expression> CreateAllDerivations(Expression expression, int maxLen) =>
+      CreateAllDerivations(expression.SymbolString, maxLen)
+      .Select(newStr => new Expression(this, newStr));
 
     // returns a new string with the symbol at pos replaced with replSyString
     public Symbol[] Replace(Symbol[] syString, int pos, Symbol[] replSyString) {
@@ -259,6 +307,7 @@ namespace HEAL.EquationSearch {
       var sb = new StringBuilder();
       sb.AppendLine("G:");
       foreach (var ntSy in Nonterminals) {
+        if (!rules.ContainsKey(ntSy)) continue;
         foreach (var alternative in rules[ntSy]) {
           sb.AppendLine($"{ntSy,-20} -> {string.Join(" ", alternative.Select(sy => sy.ToString()))}");
         }
@@ -306,6 +355,9 @@ namespace HEAL.EquationSearch {
     public class VariableSymbol : TerminalClassSymbol<string> {
       public string VariableName => value;
       public VariableSymbol(string varName) : base("var", varName) { }
+      public override int GetHashCode() {
+        return value.GetHashCode();
+      }
     }
 
     public class ParameterSymbol : TerminalClassSymbol<double> {
@@ -338,6 +390,9 @@ namespace HEAL.EquationSearch {
 
       public override string ToString() {
         return string.Format("{0:g4}", value);
+      }
+      public override int GetHashCode() {
+        return value.GetHashCode();
       }
     }
     #endregion
