@@ -6,7 +6,7 @@
       if (origExpr.IsSentence) {
         return 0.0f; // sentences should always be visited (evaluated) first
       } else {
-        expr = state.Grammar.MakeSentence(origExpr);
+        expr = state.Grammar.ReplaceAllNTWithDefaults(origExpr);
       }
 
       var mse = (float)state.Evaluator.OptimizeAndEvaluateMSE(expr, state.Data);

@@ -20,11 +20,26 @@ namespace HEAL.EquationSearch {
 
     internal static ulong GetHashValue(Expression expr, out Expression simplifiedExpr) {
       // System.IO.File.AppendAllLines(@"c:\temp\log.txt", new[] { $"{expr.ToInfixString()}" });
-      var variableNames = expr.Grammar.Variables.Select(v => v.VariableName).ToArray();
+
+      // replace all NT with placeholder variables
+      var placeholderVars = expr.Grammar.Nonterminals.Select(ntSy => new Grammar.VariableSymbol(ntSy.Name)).ToArray();
+      var syString = expr.SymbolString;
+      var ntIdx = expr.Grammar.FirstIndexOfNT(syString);
+      while(ntIdx >= 0) {
+        syString = expr.Grammar.Replace(syString, ntIdx, new[] { placeholderVars.Single(v => v.VariableName == syString[ntIdx].Name) });
+        ntIdx = expr.Grammar.FirstIndexOfNT(syString);
+      }
+      expr = new Expression(expr.Grammar, syString);
+
+
+      var variableNames = expr.Grammar.Variables.Select(v => v.VariableName)
+        .Concat(placeholderVars.Select(v => v.VariableName))
+        .ToArray();
+
       var tree = HEALExpressionBridge.ConvertToExpressionTree(expr, variableNames, out var parameterValues);
       tree = Expr.SimplifyRepeated(tree, parameterValues, out var treeParamValues);
-      simplifiedExpr = HEALExpressionBridge.ConvertToPostfixExpression(tree, treeParamValues, expr.Grammar);
-      
+      simplifiedExpr = HEALExpressionBridge.ConvertToPostfixExpression(tree, treeParamValues, expr.Grammar, variableNames);
+      // 
       return (ulong)simplifiedExpr.ToInfixString(includeParamValues: false).GetHashCode();
     }
 

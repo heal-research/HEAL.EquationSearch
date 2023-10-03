@@ -199,7 +199,7 @@ namespace HEAL.EquationSearch {
           if (!rules.ContainsKey(ntSy)) continue;
           var alternatives = rules[ntSy];
 
-          // clear directly recursive rules: N -> N
+          // clear rules that would become too long
           for (int i = alternatives.Count - 1; i >= 0; i--) {
             if (alternatives[i].Length > maxLength) {
               alternatives.RemoveAt(i);
@@ -234,8 +234,16 @@ namespace HEAL.EquationSearch {
         }
       }
 
+      // sort rules by length
+      foreach(var ntSy in Nonterminals) {
+        if (!rules.ContainsKey(ntSy)) continue;
+        var alternatives = rules[ntSy];
+
+        alternatives.Sort((a, b) => a.Length - b.Length);
+      }
+
 #if DEBUG
-      // Console.WriteLine($"After expansion: {this}");
+      Console.WriteLine($"After expansion: {this}");
 #endif
     }
     internal int FirstIndexOfNT(Symbol[] syString) => Array.FindIndex(syString, sy => sy.IsNonterminal);
@@ -291,7 +299,7 @@ namespace HEAL.EquationSearch {
       throw new InvalidProgramException(); // assert that we have handled all NTs
     }
 
-    internal Expression MakeSentence(Expression expr) {
+    internal Expression ReplaceAllNTWithDefaults(Expression expr) {
       // Takes an unfinished expression and replaces all NTs with their defaults to make a sentence.
       var syString = expr.SymbolString;
       var ntIdx = FirstIndexOfNT(syString);

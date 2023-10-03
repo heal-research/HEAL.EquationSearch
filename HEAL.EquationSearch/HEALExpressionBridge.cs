@@ -68,25 +68,26 @@ namespace HEAL.EquationSearch {
 
 
 
-    internal static Expression ConvertToPostfixExpression(Expression<Expr.ParametricFunction> tree, double[] parameterValues, Grammar g) {
+    internal static Expression ConvertToPostfixExpression(Expression<Expr.ParametricFunction> tree, double[] parameterValues, Grammar g, string[] varNames = null) {
       var syList = new List<Grammar.Symbol>();
-      ConvertToPostfixExpressionRec(tree.Body, tree.Parameters[0], tree.Parameters[1], parameterValues, g, syList);
+      if (varNames == null) varNames = g.Variables.Select(vSy => vSy.Name).ToArray();
+      ConvertToPostfixExpressionRec(tree.Body, tree.Parameters[0], tree.Parameters[1], parameterValues, g, syList, varNames);
       return new Expression(g, syList.ToArray());
     }
 
-    private static void ConvertToPostfixExpressionRec(LinqExpr tree, ParameterExpression theta, ParameterExpression x, double[] parameterValues, Grammar g, List<Grammar.Symbol> syList) {
+    private static void ConvertToPostfixExpressionRec(LinqExpr tree, ParameterExpression theta, ParameterExpression x, double[] parameterValues, Grammar g, List<Grammar.Symbol> syList, string[] varNames) {
       if (tree is BinaryExpression binExpr) {
         if (binExpr.NodeType == ExpressionType.ArrayIndex) {
           var paramIdx = (int)((ConstantExpression)binExpr.Right).Value;
           if (binExpr.Left == theta) {
             syList.Add(new Grammar.ParameterSymbol(parameterValues[paramIdx]));
           } else if (binExpr.Left == x) {
-            syList.Add(g.Variables.ElementAt(paramIdx));
+            syList.Add(new Grammar.VariableSymbol(varNames[paramIdx])); // TODO: do we have to use the same variable symbols from the original grammar?
           }
         } else {
           // right argument before left argument
-          ConvertToPostfixExpressionRec(binExpr.Right, theta, x, parameterValues, g, syList);
-          ConvertToPostfixExpressionRec(binExpr.Left, theta, x, parameterValues, g, syList);
+          ConvertToPostfixExpressionRec(binExpr.Right, theta, x, parameterValues, g, syList, varNames);
+          ConvertToPostfixExpressionRec(binExpr.Left, theta, x, parameterValues, g, syList, varNames);
           if (binExpr.NodeType == ExpressionType.Add) {
             syList.Add(g.Plus);
           } else if (binExpr.NodeType == ExpressionType.Subtract) {
@@ -104,48 +105,48 @@ namespace HEAL.EquationSearch {
           } else throw new InvalidProgramException();
         }
       } else if (tree is UnaryExpression unaryExpr) {
-        ConvertToPostfixExpressionRec(unaryExpr.Operand, theta, x, parameterValues, g, syList);
+        ConvertToPostfixExpressionRec(unaryExpr.Operand, theta, x, parameterValues, g, syList, varNames);
         if (unaryExpr.NodeType == ExpressionType.Negate) {
           syList.Add(g.Neg);
         } // ignore UnaryPlus
       } else if (tree is MethodCallExpression callExpr) {
         if (callExpr.Method == abs) {
-          ConvertToPostfixExpressionRec(callExpr.Arguments[0], theta, x, parameterValues, g, syList);
+          ConvertToPostfixExpressionRec(callExpr.Arguments[0], theta, x, parameterValues, g, syList, varNames);
           syList.Add(g.Abs);
         } else if (callExpr.Method == sin) {
           throw new NotSupportedException();
         } else if (callExpr.Method == cos) {
-          ConvertToPostfixExpressionRec(callExpr.Arguments[0], theta, x, parameterValues, g, syList);
+          ConvertToPostfixExpressionRec(callExpr.Arguments[0], theta, x, parameterValues, g, syList, varNames);
           syList.Add(g.Cos);
         } else if (callExpr.Method == exp) {
-          ConvertToPostfixExpressionRec(callExpr.Arguments[0], theta, x, parameterValues, g, syList);
+          ConvertToPostfixExpressionRec(callExpr.Arguments[0], theta, x, parameterValues, g, syList, varNames);
           syList.Add(g.Exp);
         } else if (callExpr.Method == log) {
-          ConvertToPostfixExpressionRec(callExpr.Arguments[0], theta, x, parameterValues, g, syList);
+          ConvertToPostfixExpressionRec(callExpr.Arguments[0], theta, x, parameterValues, g, syList, varNames);
           syList.Add(g.Log);
         } else if (callExpr.Method == tanh) {
           throw new NotSupportedException();
         } else if (callExpr.Method == cosh) {
           throw new NotSupportedException();
         } else if (callExpr.Method == sqrt) {
-          ConvertToPostfixExpressionRec(callExpr.Arguments[0], theta, x, parameterValues, g, syList);
+          ConvertToPostfixExpressionRec(callExpr.Arguments[0], theta, x, parameterValues, g, syList, varNames);
           syList.Add(g.Sqrt);
         } else if (callExpr.Method == pow) {
           if (callExpr.Arguments[0] is MethodCallExpression arg0Expr && arg0Expr.Method == abs) {
             // special handling of pow(abs(..), ..)
             // produce sub-expressions for arguments in reverse order
-            ConvertToPostfixExpressionRec(callExpr.Arguments[1], theta, x, parameterValues, g, syList);
-            ConvertToPostfixExpressionRec(arg0Expr.Arguments[0], theta, x, parameterValues, g, syList);
+            ConvertToPostfixExpressionRec(callExpr.Arguments[1], theta, x, parameterValues, g, syList, varNames);
+            ConvertToPostfixExpressionRec(arg0Expr.Arguments[0], theta, x, parameterValues, g, syList, varNames);
             syList.Add(g.PowAbs);
           } else {
             // produce sub-expressions for arguments in reverse order
-            ConvertToPostfixExpressionRec(callExpr.Arguments[1], theta, x, parameterValues, g, syList);
-            ConvertToPostfixExpressionRec(callExpr.Arguments[0], theta, x, parameterValues, g, syList);
+            ConvertToPostfixExpressionRec(callExpr.Arguments[1], theta, x, parameterValues, g, syList, varNames);
+            ConvertToPostfixExpressionRec(callExpr.Arguments[0], theta, x, parameterValues, g, syList, varNames);
             syList.Add(g.Pow);
           }
         } else if (callExpr.Method == powabs) {
-          ConvertToPostfixExpressionRec(callExpr.Arguments[1], theta, x, parameterValues, g, syList);
-          ConvertToPostfixExpressionRec(callExpr.Arguments[0], theta, x, parameterValues, g, syList);
+          ConvertToPostfixExpressionRec(callExpr.Arguments[1], theta, x, parameterValues, g, syList, varNames);
+          ConvertToPostfixExpressionRec(callExpr.Arguments[0], theta, x, parameterValues, g, syList, varNames);
           syList.Add(g.PowAbs);
         }
       } else if (tree is ConstantExpression constExpr) {

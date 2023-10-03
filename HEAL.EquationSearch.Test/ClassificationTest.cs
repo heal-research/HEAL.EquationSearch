@@ -11,7 +11,7 @@ namespace HEAL.EquationSearch.Test {
 
 
     [DataTestMethod]
-    [DataRow(15)]
+    [DataRow(20)]
     public void BreadthFirstSearchReducedGrammar(int maxLength) {
       var options = new HEAL.EquationSearch.Console.Program.RunOptions();
       options.Dataset = "bankruptcy.csv";
