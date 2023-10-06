@@ -24,7 +24,7 @@
     }
 
     // null means to stop restarts
-    internal double[] Next() {
+    public double[] Next() {
       if (Iterations >= MaxIterations
           || NumBest >= NConv
           || BestLoss == double.MaxValue && Iterations > 50 // no valid solution in 50 iterations

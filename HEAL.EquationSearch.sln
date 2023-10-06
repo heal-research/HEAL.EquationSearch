@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HEAL.NativeInterpreter", "H
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HEAL.EquationSearch.Test", "HEAL.EquationSearch.Test\HEAL.EquationSearch.Test.csproj", "{AB274265-B676-4F73-8C1D-536E084C1343}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HEAL.EquationSearch.Console", "HEAL.EquationSearch.Console\HEAL.EquationSearch.Console.csproj", "{03C6714C-C25A-4940-8F72-6953673365C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HEAL.EquationSearch.Console", "HEAL.EquationSearch.Console\HEAL.EquationSearch.Console.csproj", "{03C6714C-C25A-4940-8F72-6953673365C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HEAL.EquationSearch.Benchmark", "HEAL.EquationSearch.Benchmark\HEAL.EquationSearch.Benchmark.csproj", "{FF69BD52-747C-4B9D-BEDF-D66A999EAD70}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,14 @@ Global
 		{03C6714C-C25A-4940-8F72-6953673365C9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{03C6714C-C25A-4940-8F72-6953673365C9}.Release|x64.ActiveCfg = Release|Any CPU
 		{03C6714C-C25A-4940-8F72-6953673365C9}.Release|x64.Build.0 = Release|Any CPU
+		{FF69BD52-747C-4B9D-BEDF-D66A999EAD70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF69BD52-747C-4B9D-BEDF-D66A999EAD70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF69BD52-747C-4B9D-BEDF-D66A999EAD70}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FF69BD52-747C-4B9D-BEDF-D66A999EAD70}.Debug|x64.Build.0 = Debug|Any CPU
+		{FF69BD52-747C-4B9D-BEDF-D66A999EAD70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF69BD52-747C-4B9D-BEDF-D66A999EAD70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF69BD52-747C-4B9D-BEDF-D66A999EAD70}.Release|x64.ActiveCfg = Release|Any CPU
+		{FF69BD52-747C-4B9D-BEDF-D66A999EAD70}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

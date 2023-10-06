@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HEAL.EquationSearch.Test\HEAL.EquationSearch.Test.csproj" />
+    <ProjectReference Include="..\HEAL.EquationSearch\HEAL.EquationSearch.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="HEAL.Expressions">
+      <HintPath>..\HEAL.EquationSearch\HEAL.Expressions.dll</HintPath>
+    </Reference>
+    <Reference Include="HEAL.NonlinearRegression">
+      <HintPath>..\HEAL.EquationSearch\HEAL.NonlinearRegression.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="RAR.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
