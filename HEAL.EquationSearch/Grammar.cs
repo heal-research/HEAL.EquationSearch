@@ -185,7 +185,7 @@ namespace HEAL.EquationSearch {
     //  - remove maxlen restriction
     private void ExpandRules() {
 #if DEBUG
-      Console.WriteLine($"Grammar rules before expansion: {this}");
+      // Console.WriteLine($"Grammar rules before expansion: {this}");
 #endif
 
       // We want to ensure that each derivation introduces a new variables reference (to save intermediate states)
@@ -243,7 +243,7 @@ namespace HEAL.EquationSearch {
       }
 
 #if DEBUG
-      Console.WriteLine($"After expansion: {this}");
+      // Console.WriteLine($"After expansion: {this}");
 #endif
     }
     internal int FirstIndexOfNT(Symbol[] syString) => Array.FindIndex(syString, sy => sy.IsNonterminal);
