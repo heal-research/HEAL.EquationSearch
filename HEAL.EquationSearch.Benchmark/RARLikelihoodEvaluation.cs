@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using HEAL.EquationSearch;
 using HEAL.NonlinearRegression;
 using HEAL.EquationSearch.Test;
+using static alglib;
 
 public class RARLikelihoodEvaluation {
   public double[,] data;
@@ -37,7 +38,17 @@ public class RARLikelihoodEvaluation {
     5.301898110478399 * x[0] * ((2.302585092994046 * (((Math.Pow((Math.Pow(p[0], x[0]) / x[0]), (p[1] - 1)) * (p[1] * (((x[0] * (Math.Pow(p[0], (x[0] - 1)) * (p[0] * Math.Log(p[0])))) - Math.Pow(p[0], x[0])) / Math.Pow(x[0], 2)))) + 1) / (Math.Pow((Math.Pow(p[0], x[0]) / x[0]), p[1]) + x[0]))) / 5.301898110478399)
     * x[2], 2.0)));
 
-  private RARLikelihoodNumeric lik;
+  private LikelihoodBase negloglikNumeric;
+  private LikelihoodBase negloglikAutodiff;
+  private Random random;
+
+  [Params(100)]
+  public int Restarts;
+
+  [Params(0, 1e-2)]
+  public double EpsF;
+
+  public int randSeed = 1234;
 
   [GlobalSetup]
   public void Setup() {
@@ -53,24 +64,70 @@ public class RARLikelihoodEvaluation {
 
     GetRARData(options, out var inputs, out var trainX, out var trainY, out var trainNoiseSigma, out var e_log_gobs, out var e_log_gbar);
 
-    this.lik = new RARLikelihoodNumeric(trainX, trainY, model, e_log_gobs, e_log_gbar);
+    this.negloglikNumeric = new RARLikelihoodNumeric(trainX, trainY, model, e_log_gobs, e_log_gbar);
+    this.negloglikAutodiff = new RARLikelihood(trainX, trainY, model, e_log_gobs, e_log_gbar);
+
+    this.negloglikNumeric.ModelExpr = model;
+    this.negloglikAutodiff.ModelExpr = model;
   }
 
   [Benchmark]
-  public void Optimize() {
+  public void OptimizeNumericDiff() {
+    random = new Random(1234);
     var nlr = new NonlinearRegression();
     var p = GenerateRandomPoint(3);
-    for (int i = 0; i < 100; i++) {
-      nlr.Fit(p, lik, epsF: 1e-2);
-      System.Console.WriteLine($"{nlr.NegLogLikelihood} {nlr.OptReport}");
+
+    var nIters = new List<int>();
+    var nFEvals = new List<int>();
+    var nJEvals = new List<int>();
+    var nlls = new List<double>();
+
+    for (int i = 0; i < Restarts; i++) {
+      nlr.Fit(p, negloglikNumeric, epsF: EpsF);
+
+      nIters.Add(nlr.OptReport.Iterations);
+      nFEvals.Add(nlr.OptReport.NumFuncEvals);
+      nJEvals.Add(nlr.OptReport.NumJacEvals);
+      nlls.Add(nlr.NegLogLikelihood);
+
       p = GenerateRandomPoint(3);
     }
+
+    nlls.Sort();
+    System.Console.WriteLine($"avg nIters: {nIters.Average()} {nFEvals.Average()} {nJEvals.Average()}");
+    System.Console.WriteLine($"nll: {string.Join(" ", nlls.Select(nll => nll.ToString("f2")))}");
+  }
+  [Benchmark]
+  public void OptimizeAutoDiff() {
+    random = new Random(1234);
+    var nlr = new NonlinearRegression();
+    var p = GenerateRandomPoint(3);
+
+    var nIters = new List<int>();
+    var nFEvals = new List<int>();
+    var nJEvals = new List<int>();
+    var nlls = new List<double>();
+
+    for (int i = 0; i < Restarts; i++) {
+      nlr.Fit(p, negloglikAutodiff, epsF: EpsF);
+
+      nIters.Add(nlr.OptReport.Iterations);
+      nFEvals.Add(nlr.OptReport.NumFuncEvals);
+      nJEvals.Add(nlr.OptReport.NumJacEvals);
+      nlls.Add(nlr.NegLogLikelihood);
+
+      p = GenerateRandomPoint(3);
+    }
+
+    nlls.Sort();
+    System.Console.WriteLine($"avg nIters: {nIters.Average()} {nFEvals.Average()} {nJEvals.Average()}");
+    System.Console.WriteLine($"nll: {string.Join(" ", nlls.Select(nll => nll.ToString("f2")))}");
   }
 
   private double[] GenerateRandomPoint(int n) {
     var p = new double[n];
     for (int i = 0; i < n; i++)
-      p[i] = System.Random.Shared.NextDouble() * 4;
+      p[i] = random.NextDouble() * 4;
     return p;
   }
 
