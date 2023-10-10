@@ -1,12 +1,10 @@
 ﻿using BenchmarkDotNet.Attributes;
 using System.Linq.Expressions;
 using HEAL.Expressions;
-using System.Linq.Expressions;
-using HEAL.EquationSearch;
 using HEAL.NonlinearRegression;
 using HEAL.EquationSearch.Test;
-using static alglib;
 
+[SimpleJob(launchCount: 1, warmupCount: 1, iterationCount: 1)]
 public class RARLikelihoodEvaluation {
   public double[,] data;
   public double[][] dataCols;
