@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using CommandLine;
 using HEAL.Expressions;
 using HEAL.NonlinearRegression;
@@ -20,13 +21,13 @@ namespace HEAL.EquationSearch.Test {
 
 
     [DataTestMethod]
-    [DataRow(@"c:\temp\allExpressions_eqs_logexppow_1d_10_optimized.txt", new[] { "gbar" })]
-    [DataRow(@"c:\temp\allExpressions_eqs_logexppow_1d_30_optimized.txt", new[] { "gbar" })]
-    [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_10_optimized.txt", new[] { "gbar" })]
-    [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_5_optimized.txt", new[] { "gbar" })]
-    [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_10_optimized.txt", new[] { "gbar" })]
-    public void IntegerSnap(string fileName, string[] variableNames) {
-      var expressions = new HashSet<string>();
+    [DataRow(@"c:\temp\allExpressions_eqs_logexppow_1d_10_optimized.txt")]
+    [DataRow(@"c:\temp\allExpressions_eqs_logexppow_1d_30_optimized.txt")]
+    [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_10_optimized.txt")]
+    [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_5_optimized.txt")]
+    [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_10_optimized.txt")]
+    public void IntegerSnap(string fileName) {
+      var expressions = new HashSet<(string expr, string parameterizedExpr)>();
       using (var reader = new StreamReader(fileName)) {
         reader.ReadLine(); // skip variable names
 
@@ -37,8 +38,9 @@ namespace HEAL.EquationSearch.Test {
           if (toks[4] == "1.7976931348623157E+308") {
             line = reader.ReadLine();
           } else {
+            var expr = toks[2];
             var parameterizedExpr = toks[3];
-            expressions.Add(parameterizedExpr);
+            expressions.Add((expr, parameterizedExpr));
             line = reader.ReadLine();
           }
         }
@@ -62,28 +64,41 @@ namespace HEAL.EquationSearch.Test {
 
       var varSy = System.Linq.Expressions.Expression.Parameter(typeof(double[]), "x");
       var paramSy = System.Linq.Expressions.Expression.Parameter(typeof(double[]), "p");
-      // Parallel.ForEach(expressions.OrderBy(str => str.Length), new ParallelOptions() { MaxDegreeOfParallelism = 12 }, exprStr => {
-      foreach (var exprStr in expressions.OrderBy(str => str.Length)) {
-        if (!exprStr.Contains("Infinity") && !exprStr.Contains("NaN")) {
-          var parser = new HEAL.Expressions.Parser.ExprParser(exprStr, variableNames, varSy, paramSy);
-          var expr = parser.Parse();
-          var parameters = parser.ParameterValues.ToArray();
+      // Parallel.ForEach(expressions, new ParallelOptions() { MaxDegreeOfParallelism = 12 }, exprStr => {
+      foreach (var (exprStr, parameterizedExprStr) in expressions) {
 
-          for (int i = 0; i < parameters.Length; i++) {
-            if (Math.Floor(parameters[i]) == parameters[i]) {
-              var v = new ReplaceParameterWithConstantVisitor(expr.Parameters[0], i, parameters[i]);
-              expr = (System.Linq.Expressions.Expression<Expr.ParametricFunction>)v.Visit(expr);
+        if (!exprStr.Contains("Infinity") && !exprStr.Contains("NaN")) {
+          // parse the expression without coefficients
+          var expr = ParseExprWithoutParameters(exprStr, new string[] { "x", "p" }, varSy, paramSy);
+          var nodes = FlattenExpressionVisitor.Execute(expr).ToArray();
+
+          // parse the parameterized expression
+          var parser = new HEAL.Expressions.Parser.ExprParser(parameterizedExprStr, new string[] { "gbar" }, varSy, paramSy);
+          var expr2 = parser.Parse();
+          var nodes2 = FlattenExpressionVisitor.Execute(expr2).ToArray();
+          var allNumbers = parser.ParameterValues.ToArray(); // this is the list of all numeric values (coefficients and constants)
+          if (nodes.Length != nodes2.Length) throw new InvalidProgramException();
+          // collect the parameter values
+          var paramList = new List<double>();
+          int j = 0;
+          for (int i = 0; i < nodes.Length; i++) {
+            if (nodes[i].NodeType == ExpressionType.ArrayIndex && ((BinaryExpression)nodes[i]).Left == paramSy) {
+              paramList.Add(allNumbers[j++]);
+            } else if (nodes[i].NodeType == ExpressionType.Constant) {
+              // skip constants (which are also contained in allNumbers)
+              j++;
             }
           }
-          var exprWithoutConstants = Expr.SimplifyAndRemoveParameters(expr, parameters, out parameters);
+
+          var parameters = paramList.ToArray();
 
           if (parameters.Length > 0) {
-            likelihood.ModelExpr = exprWithoutConstants;
+            likelihood.ModelExpr = expr;
             var dl = ModelSelection.DL(parameters, likelihood);
             var integerSnapDl = DLWithIntegerSnap(parameters, likelihood);
 
-            System.Console.WriteLine($"dl: {dl} integer-snap dl: {integerSnapDl} expr: {exprStr}");
             if (dl > integerSnapDl) {
+              System.Console.WriteLine($"dl: {dl} integer-snap dl: {integerSnapDl} expr: {exprStr}");
             }
 
           }
@@ -93,6 +108,20 @@ namespace HEAL.EquationSearch.Test {
 
 
     }
+
+    private System.Linq.Expressions.Expression<Expr.ParametricFunction> ParseExprWithoutParameters(string exprStr, string[] variableNames, ParameterExpression varSy, ParameterExpression paramSy) {
+      var parser = new HEAL.Expressions.Parser.ExprParser(exprStr, variableNames.Concat(new string[] { "p" }).ToArray(), varSy, paramSy);
+      var expr = parser.Parse();
+      // replace all parameters with constants (numbers in the exprStr are constants)
+      expr = Expr.ReplaceParameterWithValues<Expr.ParametricFunction>(expr, expr.Parameters[0], parser.ParameterValues);
+
+      // replace all usages of p with parameters with supplied coefficients
+      var v = new ReplaceVariableWithParameterValuesVisitor(varSy, Array.IndexOf(variableNames, "p"), paramSy);
+      expr = (System.Linq.Expressions.Expression<Expr.ParametricFunction>)v.Visit(expr);
+
+      return expr;
+    }
+
     public static double DLWithIntegerSnap(double[] paramEst, LikelihoodBase likelihood) {
 
       // clone parameters and likelihood for pruning and evaluation (caller continues to work with original expression)
@@ -115,6 +144,7 @@ namespace HEAL.EquationSearch.Test {
     // -> multiple local optima in DL
     // This method modifies the parameter vector and the likelihood
     private static void IntegerSnapPruning(ref double[] paramEst, LikelihoodBase likelihood, Func<double[], LikelihoodBase, double> DL) {
+      paramEst = (double[])paramEst.Clone();
       var fisherInfo = likelihood.FisherInformation(paramEst);
 
       var n = paramEst.Length;
@@ -145,7 +175,7 @@ namespace HEAL.EquationSearch.Test {
       // try all constant values and find best 
       foreach (var constValue in constValues) {
         paramEst[paramIdx] = constValue;
-        double curDL= DL(paramEst, likelihood);
+        double curDL = DL(paramEst, likelihood);
         // System.Console.WriteLine($"param: {paramIdx} const:{constValue} DL:{curDL} negLL:{likelihood.NegLogLikelihood(paramEst)} DL(const):{ConstCodeLength(constValue)}");
         if (curDL < bestDL) {
           bestDL = curDL;
@@ -153,39 +183,41 @@ namespace HEAL.EquationSearch.Test {
         }
       }
 
-      if (!double.IsNaN(bestConstValue)) {
+      if (double.IsNaN(bestConstValue)) {
+        paramEst[paramIdx] = origParamValue;
+        return;
+      }
 
-        // replace parameter with best constant value, simplify and re-fit
-        paramEst[paramIdx] = bestConstValue;
+      // replace parameter with best constant value, simplify and re-fit
+      paramEst[paramIdx] = bestConstValue;
 
-        var v = new ReplaceParameterWithConstantVisitor(origExpr.Parameters[0], paramIdx, bestConstValue);
-        var reducedExpr = (Expression<Expr.ParametricFunction>)v.Visit(origExpr);
-        var simplifiedExpr = Expr.SimplifyAndRemoveParameters(reducedExpr, paramEst, out var simplifiedParamEst);
-        if (simplifiedParamEst.Length > 0) {
-          likelihood.ModelExpr = simplifiedExpr;
-          var nlr = new NonlinearRegression.NonlinearRegression();
-          nlr.Fit(simplifiedParamEst, likelihood); // TODO: here we could use FisherDiag for the scale for improved perf
-          if (nlr.ParamEst == null) {
-            System.Console.Error.WriteLine("Problem while re-fitting pruned expression in DL calculation.");
+      var v = new ReplaceParameterWithConstantVisitor(origExpr.Parameters[0], paramIdx, bestConstValue);
+      var reducedExpr = (Expression<Expr.ParametricFunction>)v.Visit(origExpr);
+      var simplifiedExpr = Expr.SimplifyAndRemoveParameters(reducedExpr, paramEst, out var simplifiedParamEst);
+      if (simplifiedParamEst.Length > 0) {
+        likelihood.ModelExpr = simplifiedExpr;
+        var nlr = new NonlinearRegression.NonlinearRegression();
+        nlr.Fit(simplifiedParamEst, likelihood); // TODO: here we could use FisherDiag for the scale for improved perf
+        if (nlr.ParamEst == null) {
+          System.Console.Error.WriteLine("Problem while re-fitting pruned expression in DL calculation.");
+          likelihood.ModelExpr = origExpr;
+          paramEst[paramIdx] = origParamValue;
+        } else {
+          var newDL = DL(nlr.ParamEst, likelihood);
+          // if the new DL is shorter then continue with next parameter
+          if (newDL < origDL) {
+            System.Console.WriteLine("######################################");
+            System.Console.WriteLine($"In DL: replaced parameter[{paramIdx}]={origParamValue} by constant {bestConstValue}:");
+            System.Console.WriteLine($"Pruned model: {likelihood.ModelExpr}");
+
+            // likelihood.LaplaceApproximation(nlr.ParamEst).WriteStatistics(System.Console.Out);
+
+            paramEst = nlr.ParamEst;
+            IntegerSnapPruning(ref paramEst, likelihood, DL);
+          } else {
+            // no improvement by replacing the parameter with a constant -> restore original expression and return
             likelihood.ModelExpr = origExpr;
             paramEst[paramIdx] = origParamValue;
-          } else {
-            var newDL = DL(nlr.ParamEst, likelihood);
-            // if the new DL is shorter then continue with next parameter
-            if (newDL < origDL) {
-              System.Console.WriteLine("######################################");
-              System.Console.WriteLine($"In DL: replaced parameter[{paramIdx}]={origParamValue} by constant {bestConstValue}:");
-              System.Console.WriteLine($"Pruned model: {likelihood.ModelExpr}");
-
-              likelihood.LaplaceApproximation(nlr.ParamEst).WriteStatistics(System.Console.Out);
-
-              paramEst = nlr.ParamEst;
-              IntegerSnapPruning(ref paramEst, likelihood, DL);
-            } else {
-              // no improvement by replacing the parameter with a constant -> restore original expression and return
-              likelihood.ModelExpr = origExpr;
-              paramEst[paramIdx] = origParamValue;
-            }
           }
         }
       }
@@ -281,6 +313,30 @@ namespace HEAL.EquationSearch.Test {
           System.Console.WriteLine($"{len}\t{semHashCount.Values.Sum()}\t{semHashCount.Count}\t{string.Join("\t", Enumerable.Range(0, maxParam).Select(i => paramCount.ContainsKey(i) ? paramCount[i].ToString() : "0"))}");
         }
       }
+    }
+  }
+
+  internal class ReplaceVariableWithParameterValuesVisitor : ExpressionVisitor {
+    private readonly ParameterExpression varSy;
+    private readonly int varIdx;
+    private readonly ParameterExpression paramSy;
+    private int paramIdx; // the index of the last inserted parameter
+
+    public ReplaceVariableWithParameterValuesVisitor(ParameterExpression varSy, int varIdx, ParameterExpression paramSy) {
+      this.varSy = varSy;
+      this.varIdx = varIdx;
+      this.paramSy = paramSy;
+    }
+
+    protected override System.Linq.Expressions.Expression VisitBinary(BinaryExpression node) {
+      if (node.NodeType == ExpressionType.ArrayIndex && node.Left == varSy && (int)((ConstantExpression)node.Right).Value == varIdx) {
+        return NewParameter();
+      }
+      return base.VisitBinary(node);
+    }
+
+    private System.Linq.Expressions.Expression NewParameter() {
+      return System.Linq.Expressions.Expression.ArrayIndex(paramSy, System.Linq.Expressions.Expression.Constant(paramIdx++));
     }
   }
 }
