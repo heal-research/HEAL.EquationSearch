@@ -109,7 +109,7 @@ namespace HEAL.EquationSearch.Test {
             // likelihoodGradFunc[i] = Expr.Jacobian(dLikeExpr, numParam).Compile();
 
             // for debugging
-            System.Console.Error.WriteLine($"df/dp_{i} number of nodes: {Expr.NumberOfNodes(dLikeExpr)}");
+            // System.Console.Error.WriteLine($"df/dp_{i} number of nodes: {Expr.NumberOfNodes(dLikeExpr)}");
           }
         }
 

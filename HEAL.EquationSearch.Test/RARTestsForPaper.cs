@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Linq.Expressions;
+using System.Security.Principal;
 using HEAL.Expressions;
 using HEAL.NonlinearRegression;
 
@@ -78,6 +79,37 @@ namespace HEAL.EquationSearch.Test {
       // check likelihood and DL calculation for top expressions from RAR paper
       GetRARData(options, out _, out var trainX, out var trainY, out var sigma_tot, out var e_log_gobs, out var e_log_gbar);
       var likelihood = new RARLikelihoodNumeric(trainX, trainY, modelExpr: null, e_log_gobs, e_log_gbar);
+      var adlikelihood = new RARLikelihood(trainX, trainY, modelExpr: null, e_log_gobs, e_log_gbar);
+
+      void evaluateModel(System.Linq.Expressions.Expression<Expr.ParametricFunction> expr, double[] theta) {
+        likelihood.ModelExpr = expr;
+        adlikelihood.ModelExpr = expr;
+        var nlr = new NonlinearRegression.NonlinearRegression();
+        // nlr.Fit(theta, likelihood);
+        var thetaClone = (double[])theta.Clone(); // clone required because DLWithIntegerSnap changes theta 
+        var fi = likelihood.FisherInformation(theta);
+
+        System.Console.WriteLine($"Numeric: " +
+          $"nll: {likelihood.NegLogLikelihood(theta)} " +
+          $"DL: {ModelSelection.DL(theta, likelihood)} " +
+          $"DL (integer-snap): {ModelSelection.DLWithIntegerSnap(thetaClone, likelihood)} " +
+          $"DL (lattice): {ModelSelection.DLLattice(theta, likelihood)} " +
+          $"log det(FI): {Math.Log(alglib.rmatrixdet(likelihood.FisherInformation(theta)))} " +
+          $"log diag(FI): {string.Join(" ", Enumerable.Range(0, theta.Length).Select(i => Math.Log(fi[i, i]).ToString("e4")))}");
+        System.Console.WriteLine($"Params: {string.Join(" ", thetaClone.Select(ti => ti.ToString("e5")))}");
+
+        // restore thetaClone
+        thetaClone = (double[])theta.Clone();
+        var adFI = adlikelihood.FisherInformation(theta);
+        System.Console.WriteLine($"AD: " +
+          $"nll: {adlikelihood.NegLogLikelihood(theta)} " +
+          $"DL: {ModelSelection.DL(theta, adlikelihood)} " +
+          $"DL (integer-snap): {ModelSelection.DLWithIntegerSnap(thetaClone, adlikelihood)} " +
+          $"DL (lattice): {ModelSelection.DLLattice(theta, adlikelihood)} " +
+          $"log det(FI): {Math.Log(alglib.rmatrixdet(adFI))} " +
+          $"log diag(FI): {string.Join(" ", Enumerable.Range(0, theta.Length).Select(i => Math.Log(adFI[i, i]).ToString("e4")))}");
+        System.Console.WriteLine($"Params: {string.Join(" ", thetaClone.Select(ti => ti.ToString("e5")))}");
+      }
       {
         // RAR IF: gbar/(1 − exp(−√(gbar/g0))) with g0 = 1.127
         // re-parameterized RAR IF: x / (1 - exp(√x/p0))
@@ -88,6 +120,7 @@ namespace HEAL.EquationSearch.Test {
 
         Assert.AreEqual(-1191.3, dl, 1);  // reference result -1192.7 but I count log(2) (=0.7) nats extra for the constant sign
         System.Console.WriteLine($"RAR IF {likelihood.ModelExpr} {likelihood.NegLogLikelihood(theta)} {dl}");
+        evaluateModel(likelihood.ModelExpr, theta);
       }
 
       {
@@ -100,6 +133,7 @@ namespace HEAL.EquationSearch.Test {
 
         // Assert.AreEqual(-1194.05, dl, 1);   // reference result -1194.8 but I count log(2) (=0.7) nats extra for the constant sign
         System.Console.WriteLine($"simple IF {likelihood.ModelExpr} {likelihood.NegLogLikelihood(theta)} {dl}");
+        evaluateModel(likelihood.ModelExpr, theta);
       }
 
       {
@@ -111,9 +145,10 @@ namespace HEAL.EquationSearch.Test {
         var dl = ModelSelection.DL(theta, likelihood);
 
         // Assert.AreEqual(-1244.66, dl, 1e-1); // reference result: 1250.6, which omits abs() and has DL(func) Math.Log(5)*9 = 14.5
-                                             // we use DL(func) = Math.Log(6)*10 = 17.9 (+3.4 nats more)
+        // we use DL(func) = Math.Log(6)*10 = 17.9 (+3.4 nats more)
         Assert.AreEqual(-1276.98, nlr.NegLogLikelihood, 1e-1); // reference result -1279.1
         System.Console.WriteLine($"model 1 {likelihood.ModelExpr} {likelihood.NegLogLikelihood(theta)} {dl}");
+        evaluateModel(likelihood.ModelExpr, theta);
       }
       //  {
       //    // model 1 in RAR paper Gaussian likelihood
@@ -149,6 +184,7 @@ namespace HEAL.EquationSearch.Test {
         Assert.AreEqual(-1250.56, nlr.NegLogLikelihood, 1e-1);
 
         System.Console.WriteLine($"model 7 {likelihood.ModelExpr} {likelihood.NegLogLikelihood(theta)} {dl}");
+        evaluateModel(likelihood.ModelExpr, theta);
       }
       {
         // EQS best expr
@@ -159,6 +195,48 @@ namespace HEAL.EquationSearch.Test {
         var dl = ModelSelection.DL(theta, likelihood);
 
         System.Console.WriteLine($"EQS model 1 {likelihood.ModelExpr} {likelihood.NegLogLikelihood(theta)} {dl}");
+        evaluateModel(likelihood.ModelExpr, theta);
+      }
+
+      {
+        // expression found with integer snap
+        likelihood.ModelExpr = (p, x) => Functions.PowAbs((x[0] + p[0]) * x[0], p[1]) * p[2];
+        var theta = new double[] { 7.322, 0.6034, 0.47 };
+
+        // 
+        System.Console.WriteLine("Best ESR model after integer-snap");
+        evaluateModel(likelihood.ModelExpr, (double[])theta.Clone());
+      }
+      {
+        // expression found with integer snap
+        likelihood.ModelExpr = (p, x) => Functions.PowAbs((x[0] + 7) * x[0], p[0]) * p[1];
+        var theta = new double[] { 0.6034, 0.47 };
+
+        var nlr = new NonlinearRegression.NonlinearRegression();
+        nlr.Fit(theta, likelihood);
+        // 
+        System.Console.WriteLine("Best ESR model after integer-snap");
+        evaluateModel(likelihood.ModelExpr, (double[])theta.Clone());
+      }
+
+      {
+        // expression found with integer snap
+        likelihood.ModelExpr = (p, x) => Functions.PowAbs(p[0] / ((x[0] + p[1]) * x[0]), p[2]);
+        var theta = new double[] { -4.13, 8.825, -0.61 };
+
+        System.Console.WriteLine("Second-best ESR model after integer-snap");
+        evaluateModel(likelihood.ModelExpr, (double[])theta.Clone());
+      }
+
+      {
+        // expression found with integer snap
+        likelihood.ModelExpr = (p, x) => Functions.PowAbs(p[0] / ((x[0] + 9) * x[0]), p[1]);
+        var theta = new double[] { -4.13, -0.61 };
+        var nlr = new NonlinearRegression.NonlinearRegression();
+        nlr.Fit(theta, likelihood);
+
+        System.Console.WriteLine("Second-best ESR model after integer-snap");
+        evaluateModel(likelihood.ModelExpr, (double[])theta.Clone());
       }
     }
 
@@ -249,7 +327,7 @@ namespace HEAL.EquationSearch.Test {
           numRestarts++;
           if (!double.IsNaN(likelihood.NegLogLikelihood(parameterValues))) {
             nlr.Fit(parameterValues, likelihood, maxIterations: 5000, epsF: 1e-3); // as in https://github.com/DeaglanBartlett/ESR/blob/main/esr/fitting/test_all.py
-                                                                       // successful?
+                                                                                   // successful?
             if (nlr.ParamEst != null && !nlr.ParamEst.Any(double.IsNaN)) {
               System.Console.Error.WriteLine($"{nlr.NegLogLikelihood} {nlr.OptReport} evals/s {nlr.OptReport.NumFuncEvals / nlr.OptReport.Runtime.TotalSeconds}");
 

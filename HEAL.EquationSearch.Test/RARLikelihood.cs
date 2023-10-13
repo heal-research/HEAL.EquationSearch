@@ -96,7 +96,8 @@ namespace HEAL.EquationSearch.Test {
           bestLikelihoodInterpreter = new ExpressionInterpreter(baseLikelihoodExpr, extendedXCol, y.Length);
 
           // for debugging
-          System.Console.Error.WriteLine($"{likelihoodExpr}");
+          System.Console.Error.WriteLine($"likelihood expr: {likelihoodExpr}");
+          System.Console.Error.WriteLine($"dlogf_dgbar expr: {d_log_f_dgbar}");
 
           likelihoodGradInterpreter = new ExpressionInterpreter[numParam];
           for (int i = 0; i < numParam; i++) {

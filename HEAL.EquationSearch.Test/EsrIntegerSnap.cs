@@ -22,13 +22,13 @@ namespace HEAL.EquationSearch.Test {
 
     [DataTestMethod]
     [DataRow(@"c:\temp\allExpressions_eqs_logexppow_1d_10_optimized.txt")]
-    [DataRow(@"c:\temp\allExpressions_eqs_logexppow_1d_30_optimized.txt")]
+    [DataRow(@"c:\temp\allExpressions_eqs_logexppow_1d_30_optimized_copy.txt")]
     [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_10_optimized.txt")]
     [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_5_optimized.txt")]
     [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_10_optimized.txt")]
     public void IntegerSnap(string fileName) {
       var expressions = new HashSet<(string expr, string parameterizedExpr)>();
-      using (var reader = new StreamReader(fileName)) {
+      using (var reader = new StreamReader(fileName, new FileStreamOptions() { Mode = FileMode.Open, Access = FileAccess.Read })) {
         reader.ReadLine(); // skip variable names
 
         var line = reader.ReadLine();
@@ -59,8 +59,6 @@ namespace HEAL.EquationSearch.Test {
 
 
       var likelihood = new RARLikelihood(trainX, trainY, modelExpr: null, e_log_gobs, e_log_gbar);
-      var evaluator = new Evaluator(likelihood);
-      var data = new Data(inputVars, trainX, trainY, null);
 
       var varSy = System.Linq.Expressions.Expression.Parameter(typeof(double[]), "x");
       var paramSy = System.Linq.Expressions.Expression.Parameter(typeof(double[]), "p");
@@ -98,7 +96,7 @@ namespace HEAL.EquationSearch.Test {
             var integerSnapDl = DLWithIntegerSnap(parameters, likelihood);
 
             if (dl > integerSnapDl) {
-              System.Console.WriteLine($"dl: {dl} integer-snap dl: {integerSnapDl} expr: {exprStr}");
+              File.AppendAllLines(fileName.Replace(".txt", "_integer-snap.txt"), new[] { $"dl: {dl} integer-snap dl: {integerSnapDl} expr: {exprStr}" });
             }
 
           }
