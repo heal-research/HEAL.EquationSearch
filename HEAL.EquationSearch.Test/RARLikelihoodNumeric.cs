@@ -38,6 +38,9 @@ namespace HEAL.EquationSearch.Test {
 
     private double[,] jacP; // buffer for jacobian
     private double[] yPred;
+    double[] log10model;
+    double[,] dlog10f_dgbar;
+
     // private double[] f;
     // private Expr.ParametricVectorFunction likelihoodFunc;
     // private Expr.ParametricJacobianFunction likelihoodFuncAndJac;
@@ -60,6 +63,8 @@ namespace HEAL.EquationSearch.Test {
 
           yPred = new double[y.Length];
           jacP = new double[y.Length, numParam];
+          log10model = new double[y.Length];
+          dlog10f_dgbar = new double[y.Length, 1];
 
           // this.f = new double[y.Length];
 
@@ -101,16 +106,16 @@ namespace HEAL.EquationSearch.Test {
           // likelihoodFuncAndJac = Expr.Jacobian(likelihoodExpr, numParam).Compile();
           // bestLikelihoodFunc = Expr.Jacobian(baseLikelihoodExpr, numParam).Compile();
 
-          likelihoodGradInterpreter = new ExpressionInterpreter[numParam];
-          // likelihoodGradFunc = new Expr.ParametricJacobianFunction[numParam];
-          for (int i = 0; i < numParam; i++) {
-            var dLikeExpr = Expr.Derive(likelihoodExpr, i);
-            likelihoodGradInterpreter[i] = new ExpressionInterpreter(dLikeExpr, extendedXCol, y.Length);
-            // likelihoodGradFunc[i] = Expr.Jacobian(dLikeExpr, numParam).Compile();
-
-            // for debugging
-            // System.Console.Error.WriteLine($"df/dp_{i} number of nodes: {Expr.NumberOfNodes(dLikeExpr)}");
-          }
+          // likelihoodGradInterpreter = new ExpressionInterpreter[numParam];
+          // // likelihoodGradFunc = new Expr.ParametricJacobianFunction[numParam];
+          // for (int i = 0; i < numParam; i++) {
+          //   var dLikeExpr = Expr.Derive(likelihoodExpr, i);
+          //   likelihoodGradInterpreter[i] = new ExpressionInterpreter(dLikeExpr, extendedXCol, y.Length);
+          //   // likelihoodGradFunc[i] = Expr.Jacobian(dLikeExpr, numParam).Compile();
+          // 
+          //   // for debugging
+          //   // System.Console.Error.WriteLine($"df/dp_{i} number of nodes: {Expr.NumberOfNodes(dLikeExpr)}");
+          // }
         }
 
         base.ModelExpr = value;
@@ -131,6 +136,10 @@ namespace HEAL.EquationSearch.Test {
         this.yPred = (double[])original.yPred.Clone();
       if (original.jacP != null)
         this.jacP = (double[,])original.jacP.Clone();
+      if (original.dlog10f_dgbar != null)
+        this.dlog10f_dgbar = (double[,])original.dlog10f_dgbar.Clone();
+      if (original.log10model != null)
+        this.log10model = (double[])original.log10model.Clone();
 
       ModelExpr = original.origExpr; // initializes all interpreters and gradients
     }
@@ -199,8 +208,6 @@ namespace HEAL.EquationSearch.Test {
 
     private void UpdateSigmaTot(double[] p) {
       int m = y.Length;
-      var log10model = new double[m];
-      var dlog10f_dgbar = new double[m, 1];
 
       logModelInterpreter.EvaluateWithJac(p, log10model, dlog10f_dgbar, null);
 
@@ -251,11 +258,6 @@ namespace HEAL.EquationSearch.Test {
           nll_grad[i] = (high - low) / (2 * relEps);
         }
       }
-    }
-
-    public void NegLogLikelihoodJacobian(double[] p, double[] yPred, double[,]? jac) {
-
-      throw new NotImplementedException();
     }
 
     public override LikelihoodBase Clone() {

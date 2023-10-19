@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using CommandLine;
 using HEAL.Expressions;
+using HEAL.NonlinearRegression;
 using TreesearchLib;
 using static alglib;
 
@@ -110,6 +111,101 @@ namespace HEAL.EquationSearch.Test {
     }
 
     [DataTestMethod]
+    [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_7.txt", 0.01, "numeric")]
+    [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_7.txt", 0.01, "autodiff")]
+    [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_7.txt", 0.001, "numeric")]
+    [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_7.txt", 0.001, "autodiff")]
+    [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_7.txt", 0.0001, "numeric")]
+    [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_7.txt", 0.0001, "autodiff")]
+    [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_7.txt", 0.00001, "numeric")]
+    [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_7.txt", 0.00001, "autodiff")]
+    [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_7.txt", 0.00001, "numeric")]
+    [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_7.txt", 0.00001, "autodiff")]
+    [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_7.txt", 0.000001, "numeric")]
+    [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_7.txt", 0.000001, "autodiff")]
+    [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_7.txt", 0.0000001, "numeric")]
+    [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_7.txt", 0.0000001, "autodiff")]
+    public void AnalyseParamOptPerformance(string fileName, double epsF, string likelihoodType) {
+      // the files must be produced with Enumerate()
+
+      var uniqExprStr = new HashSet<string>();
+      using (var reader = new StreamReader(fileName)) {
+        reader.ReadLine(); // skip variable names
+
+        var line = reader.ReadLine();
+        while (line != null) {
+          var toks = line.Split(";");
+          // h;len;nParam;expr;simplified;simplifiedLen;noConstHash;simplifiedNoConst;simplifiedNoConstLen
+          var noConstExpr = toks[4];
+          uniqExprStr.Add(noConstExpr);
+          line = reader.ReadLine();
+        }
+      }
+
+
+      var options = new HEAL.EquationSearch.Console.Program.RunOptions();
+      options.Dataset = "RAR_sigma.csv";
+      options.Target = "gobs";
+      options.TrainingRange = "0:2695";
+      options.NoiseSigma = "";
+      options.Seed = 1234;
+      GetRARData(options, out var inputVars, out var trainX, out var trainY, out var _, out var e_log_gobs, out var e_log_gbar);
+
+      var grammar = new Grammar(inputVars, maxLen: int.MaxValue);
+      // maxLen and grammar rules do not matter here since we are not generating expressions from the grammar
+
+      LikelihoodBase likelihood;
+      switch(likelihoodType) {
+        case "numeric": likelihood = new RARLikelihoodNumeric(trainX, trainY, modelExpr: null, e_log_gobs, e_log_gbar); break;
+        case "autodiff": likelihood = new RARLikelihood(trainX, trainY, modelExpr: null, e_log_gobs, e_log_gbar); break;
+        default: throw new NotImplementedException();
+      }
+
+      var evaluator = new Evaluator(likelihood);
+      var data = new Data(inputVars, trainX, trainY, null);
+
+      var varSy = System.Linq.Expressions.Expression.Parameter(typeof(double[]), "x");
+      var paramSy = System.Linq.Expressions.Expression.Parameter(typeof(double[]), "p");
+      using (var writer = new StreamWriter(fileName.Replace(".txt", $"_optimized_{likelihoodType}_epsF_{epsF:e0}.txt"), append: false)) {
+        writer.WriteLine($"len;nParam;expr;postfixExpr;DL;ms;nll;restarts;restartNumBest;numIter;numEvals");
+        Parallel.ForEach(uniqExprStr, /*new ParallelOptions() { MaxDegreeOfParallelism = 12 },*/ exprStr => {
+          if (!exprStr.Contains("Infinity") && !exprStr.Contains("NaN")) {
+            // parse the expression with additional variable p
+            // lock (writer) {
+            //   writer.WriteLine($"{exprStr}");
+            // }
+            var parser = new HEAL.Expressions.Parser.ExprParser(exprStr, new string[] {"x1", "p" }, varSy, paramSy);
+            var expr = parser.Parse();
+            // replace all parameters with constants (numbers in the exprStr are constants)
+            expr = Expr.ReplaceParameterWithValues<Expr.ParametricFunction>(expr, expr.Parameters[0], parser.ParameterValues);
+            // replace all usages of p with parameter value 0.01 (variable p in exprStr are parameters)
+            var replaceVarWithParVisitor = new ReplaceVariableWithParameterVisitor(paramSy, new double[0], varSy, 1, 0.01);
+            expr = (System.Linq.Expressions.Expression<Expr.ParametricFunction>)replaceVarWithParVisitor.Visit(expr);
+            var newParamValues = replaceVarWithParVisitor.NewThetaValues.ToArray();
+
+            // System.Console.WriteLine(Expr.ToString(expr, variableNames, newParamValues));
+
+            var postfixExpr = HEALExpressionBridge.ConvertToPostfixExpression(expr, newParamValues, grammar);
+
+            var sw = new Stopwatch();
+            sw.Start();
+            var dl = evaluator.OptimizeAndEvaluateDL(postfixExpr, data, out var restarts, out int numIters, out int numEvals, maxIterations: 0, epsF); // TODO: remove conversion to postfix expression and back to expression tree
+            sw.Stop();
+
+            var len = postfixExpr.Length;
+            var nParam = postfixExpr.Count(sy => sy is Grammar.ParameterSymbol);
+            lock (writer) {
+              writer.WriteLine($"{len};{nParam};{exprStr};{postfixExpr.ToInfixString()};{dl};{sw.ElapsedMilliseconds};{restarts.BestLoss};{restarts.Iterations};{restarts.NumBest};{numIters};{numEvals}");
+              writer.Flush();
+            }
+          }
+        });
+      }
+    }
+
+
+
+    [DataTestMethod]
     [DataRow(@"c:\temp\allExpressions_eqs_logexppow_1d_10.txt", new[] { "x" })]
     [DataRow(@"c:\temp\allExpressions_eqs_logexppow_1d_30.txt", new[] { "x" })]
     [DataRow(@"c:\temp\allExpressions_esr_cosmic_1d_10.txt", new[] { "x" })]
@@ -152,8 +248,8 @@ namespace HEAL.EquationSearch.Test {
       var varSy = System.Linq.Expressions.Expression.Parameter(typeof(double[]), "x");
       var paramSy = System.Linq.Expressions.Expression.Parameter(typeof(double[]), "p");
       using (var writer = new StreamWriter(fileName.Replace(".txt", "_optimized.txt"), append: false)) {
-        writer.WriteLine($"len;nParam;expr;postfixExpr;DL;ms;nll;restarts;restartNumBest");
-        Parallel.ForEach(uniqExprStr.OrderBy(str => str.Length), new ParallelOptions() { MaxDegreeOfParallelism = 12 }, exprStr => {
+        writer.WriteLine($"len;nParam;expr;postfixExpr;DL;ms;nll;restarts;restartNumBest;numIters;numEvals");
+        Parallel.ForEach(uniqExprStr, new ParallelOptions() { MaxDegreeOfParallelism = 12 }, exprStr => {
           if (!exprStr.Contains("Infinity") && !exprStr.Contains("NaN")) {
             // parse the expression with additional variable p
             // lock (writer) {
@@ -174,20 +270,18 @@ namespace HEAL.EquationSearch.Test {
 
             var sw = new Stopwatch();
             sw.Start();
-            var dl = evaluator.OptimizeAndEvaluateDL(postfixExpr, data, out var restarts); // TODO: remove conversion to postfix expression and back to expression tree
+            var dl = evaluator.OptimizeAndEvaluateDL(postfixExpr, data, out var restarts, out var nIter, out var nEval); // TODO: remove conversion to postfix expression and back to expression tree
             sw.Stop();
 
             var len = postfixExpr.Length;
             var nParam = postfixExpr.Count(sy => sy is Grammar.ParameterSymbol);
             lock (writer) {
-              writer.WriteLine($"{len};{nParam};{exprStr};{postfixExpr.ToInfixString()};{dl};{sw.ElapsedMilliseconds};{restarts.BestLoss};{restarts.Iterations};{restarts.NumBest}");
+              writer.WriteLine($"{len};{nParam};{exprStr};{postfixExpr.ToInfixString()};{dl};{sw.ElapsedMilliseconds};{restarts.BestLoss};{restarts.Iterations};{restarts.NumBest};{nIter};{nEval}");
               writer.Flush();
             }
           }
         });
       }
-
-
     }
 
     private static void GetRARData(Console.Program.RunOptions options, out string[] inputs, out double[,] trainX, out double[] trainY, out double[] trainNoiseSigma, out double[] e_log_gobs, out double[] e_log_gbar) {

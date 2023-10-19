@@ -96,8 +96,8 @@ namespace HEAL.EquationSearch.Test {
           bestLikelihoodInterpreter = new ExpressionInterpreter(baseLikelihoodExpr, extendedXCol, y.Length);
 
           // for debugging
-          System.Console.Error.WriteLine($"likelihood expr: {likelihoodExpr}");
-          System.Console.Error.WriteLine($"dlogf_dgbar expr: {d_log_f_dgbar}");
+          // System.Console.Error.WriteLine($"likelihood expr: {likelihoodExpr}");
+          // System.Console.Error.WriteLine($"dlogf_dgbar expr: {d_log_f_dgbar}");
 
           likelihoodGradInterpreter = new ExpressionInterpreter[numParam];
           for (int i = 0; i < numParam; i++) {
@@ -177,9 +177,6 @@ namespace HEAL.EquationSearch.Test {
     public override double BestNegLogLikelihood(double[] p) {
       bestLikelihoodInterpreter.Evaluate(p, nllArr);
       return nllArr.Sum();
-      // var f = new double[y.Length];
-      // bestLikelihoodFunc(p, extendedX, f, null);
-      // return f.Sum();
     }
 
     public override double NegLogLikelihood(double[] p) {
@@ -213,13 +210,6 @@ namespace HEAL.EquationSearch.Test {
 
     public void NegLogLikelihoodJacobian(double[] p, double[] nll, double[,]? jac) {
       likelihoodInterpreter.EvaluateWithJac(p, nll, null, jac);
-      // var f = new double[y.Length];
-      // if (jac != null) {
-      //   likelihoodFuncAndJac(p, extendedX, f, jac);
-      // } else {
-      //   likelihoodFunc(p, extendedX, f);
-      // }
-      // return f;
     }
 
     public override LikelihoodBase Clone() {

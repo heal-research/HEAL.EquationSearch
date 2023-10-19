@@ -58,17 +58,19 @@ namespace HEAL.EquationSearch {
       // return restartPolicy.BestLoss;
     }
     public double OptimizeAndEvaluateDL(Expression expr, Data data) {
-      return OptimizeAndEvaluateDL(expr, data, out _);
+      return OptimizeAndEvaluateDL(expr, data, out _, out _, out _, maxIterations: 0, epsF: 0.0);
     }
     // This method always optimizes parameters in expr but does not use caching to make sure all parameters of the evaluated expressions are set correctly.
     // Use this method to optimize the best solutions (found via MSE)
-    public double OptimizeAndEvaluateDL(Expression expr, Data data, out RestartPolicy restartPolicy) {
+    public double OptimizeAndEvaluateDL(Expression expr, Data data, out RestartPolicy restartPolicy, out int numIters, out int numEvals, int maxIterations = 0, double epsF = 0.0) {
       Interlocked.Increment(ref evaluatedExpressions);
       var model = HEALExpressionBridge.ConvertToExpressionTree(expr, data.VarNames, out var parameterValues);
       var modelLikelihood = this.likelihood.Clone();
       modelLikelihood.ModelExpr = model;
       bool funcOk = FunctionOk(parameterValues, modelLikelihood);
       restartPolicy = new RestartPolicy(parameterValues.Length);
+      numIters = 0;
+      numEvals = 0;
       if (!funcOk) return double.MaxValue; // all one vectors produced NaN result
 
       var nlr = new NonlinearRegression.NonlinearRegression();
@@ -78,9 +80,11 @@ namespace HEAL.EquationSearch {
         numRestarts++;
         if (!double.IsNaN(modelLikelihood.NegLogLikelihood(parameterValues))) {
 
-          nlr.Fit(parameterValues, modelLikelihood, maxIterations: 100, epsF: 1e-3); // stop when neg log likelihood changes by less than 0.001
+          nlr.Fit(parameterValues, modelLikelihood, maxIterations, epsF: epsF); // stop when neg log likelihood changes by less than 0.001
           // successful?
           if (nlr.ParamEst != null && !nlr.ParamEst.Any(double.IsNaN)) {
+            numIters += nlr.OptReport.Iterations;
+            numEvals += nlr.OptReport.NumFuncEvals;
             if (nlr.LaplaceApproximation == null) {
               System.Console.Error.WriteLine("Hessian not positive semidefinite after fitting");
               continue;

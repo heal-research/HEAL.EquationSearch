@@ -85,7 +85,7 @@ namespace HEAL.EquationSearch.Test {
         likelihood.ModelExpr = expr;
         adlikelihood.ModelExpr = expr;
         var nlr = new NonlinearRegression.NonlinearRegression();
-        // nlr.Fit(theta, likelihood);
+        nlr.Fit(theta, likelihood, epsF: 1e-9);
         var thetaClone = (double[])theta.Clone(); // clone required because DLWithIntegerSnap changes theta 
         var fi = likelihood.FisherInformation(theta);
 
@@ -207,33 +207,11 @@ namespace HEAL.EquationSearch.Test {
         System.Console.WriteLine("Best ESR model after integer-snap");
         evaluateModel(likelihood.ModelExpr, (double[])theta.Clone());
       }
-      {
-        // expression found with integer snap
-        likelihood.ModelExpr = (p, x) => Functions.PowAbs((x[0] + 7) * x[0], p[0]) * p[1];
-        var theta = new double[] { 0.6034, 0.47 };
-
-        var nlr = new NonlinearRegression.NonlinearRegression();
-        nlr.Fit(theta, likelihood);
-        // 
-        System.Console.WriteLine("Best ESR model after integer-snap");
-        evaluateModel(likelihood.ModelExpr, (double[])theta.Clone());
-      }
 
       {
         // expression found with integer snap
         likelihood.ModelExpr = (p, x) => Functions.PowAbs(p[0] / ((x[0] + p[1]) * x[0]), p[2]);
         var theta = new double[] { -4.13, 8.825, -0.61 };
-
-        System.Console.WriteLine("Second-best ESR model after integer-snap");
-        evaluateModel(likelihood.ModelExpr, (double[])theta.Clone());
-      }
-
-      {
-        // expression found with integer snap
-        likelihood.ModelExpr = (p, x) => Functions.PowAbs(p[0] / ((x[0] + 9) * x[0]), p[1]);
-        var theta = new double[] { -4.13, -0.61 };
-        var nlr = new NonlinearRegression.NonlinearRegression();
-        nlr.Fit(theta, likelihood);
 
         System.Console.WriteLine("Second-best ESR model after integer-snap");
         evaluateModel(likelihood.ModelExpr, (double[])theta.Clone());
