@@ -54,34 +54,59 @@ namespace HEAL.EquationSearch.Test {
       var n = p.Length;
       // FIM is the negative of the second derivative (Hessian) of the log-likelihood
       // -> FIM is the Hessian of the negative log-likelihood
-      var hessian = new double[n, n];
+      var hessianNum = new double[n, n];
       var eps = 1e-8;
       var nll_grad_low = new double[n];
       var nll_grad_high = new double[n];
-
+      
       for (int i = 0; i < n; i++) {
-        // numeric approximation (3-point) via gradient
+        // numeric approximation (2-point) via gradient
         var relEps = Math.Max(eps, p[i] * eps);
         p[i] -= relEps;
         NegLogLikelihoodGradient(p, out _, nll_grad_low);
         p[i] += 2 * relEps;
         NegLogLikelihoodGradient(p, out _, nll_grad_high);
-
+      
         p[i] -= relEps; // restore
-
+      
         for (int j = 0; j < n; j++) {
-          hessian[i, j] = (nll_grad_high[j] - nll_grad_low[j]) / (2 * relEps);
+          hessianNum[i, j] = (nll_grad_high[j] - nll_grad_low[j]) / (2 * relEps);
         }
       }
-
+      
       // enforce symmetry / smooth out numeric errors
       for (int i = 0; i < n; i++) {
         for (int j = i + 1; j < n; j++) {
-          hessian[i, j] = (hessian[i, j] + hessian[j, i]) / 2;
-          hessian[j, i] = hessian[i, j];
+          hessianNum[i, j] = (hessianNum[i, j] + hessianNum[j, i]) / 2;
+          hessianNum[j, i] = hessianNum[i, j];
+        }
+      }
+      
+      // return hessian;
+
+      // d/dx1(d/(dx2)(-y f(x1, x2) + exp(f(x1, x2))))
+      // = f^(1, 1)(x1, x2) (e^f(x1, x2) - y) + e^f(x1, x2) f^(0, 1)(x1, x2) f^(1, 0)(x1, x2)
+      // = f'' (e^f + y) + e^f f' * f'
+      var h = new double[y.Length][,];
+      for (int i = 0; i < h.Length;i++) h[i] = new double[n, n];
+      for (int i = 0; i < p.Length; i++) {
+        GradInterpreter[i].EvaluateWithJac(p, nllArr, null, jacP); // jac for d y / d p_i
+        for (int k = 0; k < jacP.GetLength(0); k++) {
+          for (int j = 0; j < p.Length; j++) {
+            h[k][i, j] = jacP[k, j];
+          }
         }
       }
 
+      Interpreter.EvaluateWithJac(p, yPred, null, jacP);
+      var hessian = new double[n, n];
+      for (int i = 0; i < y.Length; i++) {
+        for (int j = 0; j < n; j++) {
+          for (int k = 0; k < n; k++) {
+            hessian[j, k] += h[i][j, k] * (Math.Exp(yPred[i]) - y[i]) + Math.Exp(yPred[i]) * jacP[i, j] * jacP[i, k];
+          }
+        }
+      }
       return hessian;
     }
 
@@ -89,7 +114,7 @@ namespace HEAL.EquationSearch.Test {
     public override double BestNegLogLikelihood(double[] p) {
       var nllSum = 0.0;
       for (int i = 0; i < y.Length; i++) {
-        nllSum += y[i] * y[i] - Math.Exp(y[i]) - logGamma[i];      // TODO: can be precalculated
+        nllSum += -y[i] * Math.Log(y[i] + 1) + (y[i] + 1) + logGamma[i];      // TODO: can be precalculated
       }
       return nllSum;
     }
