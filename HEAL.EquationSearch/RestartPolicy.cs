@@ -2,8 +2,10 @@
   // controls random restarts for parameter optimization
   public class RestartPolicy {
     public int NumParam { get; private set; }
-    // public int MaxIterations => NumParam == 0 ? 0 : (int)(70.71 * Math.Exp(0.381 * NumParam)); // 0, 104, 152, 222, 325 ...
-    public int MaxIterations => 40 + 60 * NumParam; // same as in ESR https://github.com/DeaglanBartlett/ESR/blob/main/esr/fitting/test_all.py line 105
+
+    // more than in ESR
+    public int MaxIterations => NumParam == 0 ? 0 : (int)(70.71 * Math.Exp(0.381 * NumParam)); // 0, 104, 152, 222, 325 ... 
+    // public int MaxIterations => 40 + 60 * NumParam; // same as in ESR https://github.com/DeaglanBartlett/ESR/blob/main/esr/fitting/test_all.py line 105
 
     // for early stopping (when finding NConv times the best parameters)
     public int NConv => NumParam * 20 - 5; // 15, 35, 55, 75 ...  same as in ESR (URL above)

@@ -241,7 +241,7 @@ namespace HEAL.EquationSearch.Test {
       // maxLen and grammar rules do not matter here since we are not generating expressions from the grammar
 
 
-      var likelihood = new RARLikelihoodNumeric(trainX, trainY, modelExpr: null, e_log_gobs, e_log_gbar);
+      var likelihood = new RARLikelihood(trainX, trainY, modelExpr: null, e_log_gobs, e_log_gbar);
       var evaluator = new Evaluator(likelihood);
       var data = new Data(inputVars, trainX, trainY, null);
 
@@ -270,7 +270,7 @@ namespace HEAL.EquationSearch.Test {
 
             var sw = new Stopwatch();
             sw.Start();
-            var dl = evaluator.OptimizeAndEvaluateDL(postfixExpr, data, out var restarts, out var nIter, out var nEval); // TODO: remove conversion to postfix expression and back to expression tree
+            var dl = evaluator.OptimizeAndEvaluateDL(postfixExpr, data, out var restarts, out var nIter, out var nEval, epsF: 1e-6); // TODO: remove conversion to postfix expression and back to expression tree
             sw.Stop();
 
             var len = postfixExpr.Length;
