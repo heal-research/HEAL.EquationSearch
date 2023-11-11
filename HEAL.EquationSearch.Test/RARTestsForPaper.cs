@@ -92,8 +92,8 @@ namespace HEAL.EquationSearch.Test {
         System.Console.WriteLine($"Numeric: " +
           $"nll: {likelihood.NegLogLikelihood(theta)} " +
           $"DL: {ModelSelection.DL(theta, likelihood)} " +
-          $"DL (integer-snap): {ModelSelection.DLWithIntegerSnap(thetaClone, likelihood)} " +
-          $"DL (lattice): {ModelSelection.DLLattice(theta, likelihood)} " +
+          $"DL (integer-snap): {EsrIntegerSnap.DLWithIntegerSnap(thetaClone, likelihood)} " +
+          //$"DL (lattice): {ModelSelection.DLLattice(theta, likelihood)} " +
           $"log det(FI): {Math.Log(alglib.rmatrixdet(likelihood.FisherInformation(theta)))} " +
           $"log diag(FI): {string.Join(" ", Enumerable.Range(0, theta.Length).Select(i => Math.Log(fi[i, i]).ToString("e4")))}");
         System.Console.WriteLine($"Params: {string.Join(" ", thetaClone.Select(ti => ti.ToString("e5")))}");
@@ -104,8 +104,8 @@ namespace HEAL.EquationSearch.Test {
         System.Console.WriteLine($"AD: " +
           $"nll: {adlikelihood.NegLogLikelihood(theta)} " +
           $"DL: {ModelSelection.DL(theta, adlikelihood)} " +
-          $"DL (integer-snap): {ModelSelection.DLWithIntegerSnap(thetaClone, adlikelihood)} " +
-          $"DL (lattice): {ModelSelection.DLLattice(theta, adlikelihood)} " +
+          $"DL (integer-snap): {EsrIntegerSnap.DLWithIntegerSnap(thetaClone, adlikelihood)} " +
+          // $"DL (lattice): {ModelSelection.DLLattice(theta, adlikelihood)} " +
           $"log det(FI): {Math.Log(alglib.rmatrixdet(adFI))} " +
           $"log diag(FI): {string.Join(" ", Enumerable.Range(0, theta.Length).Select(i => Math.Log(adFI[i, i]).ToString("e4")))}");
         System.Console.WriteLine($"Params: {string.Join(" ", thetaClone.Select(ti => ti.ToString("e5")))}");
@@ -216,6 +216,54 @@ namespace HEAL.EquationSearch.Test {
         System.Console.WriteLine("Second-best ESR model after integer-snap");
         evaluateModel(likelihood.ModelExpr, (double[])theta.Clone());
       }
+
+      {
+        // expression found with EQS
+        // (((((log( (abs( (gbar + -0.02978) )) )) + 9.883) * gbar) * (pow(abs ((0.0003108 - (gbar ** 2))), -0.1804))) * 0.1707) + 0.09654
+        var varSy = System.Linq.Expressions.Expression.Parameter(typeof(double[]), "x");
+        var paramSy = System.Linq.Expressions.Expression.Parameter(typeof(double[]), "p");
+        var parser = new HEAL.Expressions.Parser.ExprParser(
+          "(((((log( (abs( (gbar + -0.02978) )) )) + 9.883) * gbar) * (pow(abs ((0.0003108f - (gbar ** 2f))), -0.1804))) * 0.1707) + 0.09654",
+          // "(log(abs( gbar - 0.02978 )) + 9.883) * pow(gbar, 0.60) + 0.09654",
+
+          new string[] { "gbar" },
+          varSy,
+          paramSy);
+
+        likelihood.ModelExpr = parser.Parse();
+        var theta = parser.ParameterValues;
+
+        var nlr = new NonlinearRegression.NonlinearRegression();
+        nlr.Fit(theta, likelihood);
+        nlr.WriteStatistics();
+
+
+        System.Console.WriteLine("One of the best expressions found with EQS");
+        evaluateModel(likelihood.ModelExpr, (double[])theta.Clone());
+      }
+      /*
+      {
+        // ((((pow(abs ((0.0008929 - (gbar ** 2))), 0.318)) * (pow(abs ((9.828e-06 - (gbar ** 3))), -0.6369))) * (gbar ** 2)) * 1.665) + 0.06779;
+        var varSy = System.Linq.Expressions.Expression.Parameter(typeof(double[]), "x");
+        var paramSy = System.Linq.Expressions.Expression.Parameter(typeof(double[]), "p");
+        var parser = new HEAL.Expressions.Parser.ExprParser(
+          // "((((pow(abs ((0.0008929f - (gbar ** 2))), 0.318)) * (pow(abs ((9.828e-06f - (gbar ** 3f))), -0.6369))) * (gbar ** 2f)) * 1.665) + 0.06779",
+          "pow(gbar, 1.64) * 1.665 + 0.06779",
+          new string[] { "gbar" },
+          varSy,
+          paramSy);
+
+        likelihood.ModelExpr = parser.Parse();
+        var theta = parser.ParameterValues;
+
+        var nlr = new NonlinearRegression.NonlinearRegression();
+        nlr.Fit(theta, likelihood);
+        nlr.WriteStatistics();
+
+        System.Console.WriteLine("One of the best expressions found with EQS");
+        evaluateModel(likelihood.ModelExpr, (double[])theta.Clone());
+      }
+      */
     }
 
     [TestMethod]
